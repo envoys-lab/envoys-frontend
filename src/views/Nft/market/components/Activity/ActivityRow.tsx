@@ -1,9 +1,8 @@
 import React from 'react'
-import { Image, Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoints, useModal } from '@envoysvision/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+import { Box, Flex, Text, Td, IconButton, Link, OpenNewIcon, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Activity, NftToken } from 'state/nftMarket/types'
-import { Price } from '@envoysvision/sdk'
-import styled from 'styled-components'
+import { Price } from '@pancakeswap/sdk'
 import { getBscScanLink } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
@@ -11,12 +10,7 @@ import MobileModal from './MobileModal'
 import ActivityPrice from './ActivityPrice'
 import ActivityEventText from './ActivityEventText'
 import { nftsBaseUrl, pancakeBunniesAddress } from '../../constants'
-
-const RoundedImage = styled(Image)`
-  & > img {
-    border-radius: ${({ theme }) => theme.radii.default};
-  }
-`
+import NFTMedia from '../NFTMedia'
 
 interface ActivityRowProps {
   activity: Activity
@@ -62,7 +56,7 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
       : null
 
   return (
-    <tr {...((isXs || isSm) && { onClick: onPresentMobileModal })}>
+    <tr {...((isXs || isSm) && { onClick: onPresentMobileModal })} data-test="nft-activity-row">
       {!isNftActivity ? (
         <Td
           {...((isXs || isSm) && {
@@ -71,26 +65,32 @@ const ActivityRow: React.FC<ActivityRowProps> = ({
             },
           })}
         >
-          <RouterLink to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}>
-            <Flex justifyContent="flex-start" alignItems="center" flexDirection={['column', null, 'row']}>
-              <RoundedImage
-                src={nft?.image.thumbnail}
-                alt={nft?.name}
-                width={64}
-                height={64}
-                mr={[0, null, '16px']}
-                mb={['8px', null, 0]}
-              />
-              <Flex flexDirection="column">
-                <Text textAlign={['center', null, 'left']} color="textSubtle" fontSize="14px">
-                  {nft?.collectionName}
-                </Text>
-                <Text textAlign={['center', null, 'left']} bold>
-                  {nft?.name}
-                </Text>
-              </Flex>
+          <Flex justifyContent="flex-start" alignItems="center" flexDirection={['column', null, 'row']}>
+            <Box width={64} height={64} mr={[0, null, '16px']} mb={['8px', null, 0]}>
+              <NextLinkFromReactRouter to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}>
+                <NFTMedia nft={nft} width={64} height={64} />
+              </NextLinkFromReactRouter>
+            </Box>
+            <Flex flexDirection="column">
+              <Text
+                as={NextLinkFromReactRouter}
+                to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}` : ``}
+                textAlign={['center', null, 'left']}
+                color="textSubtle"
+                fontSize="14px"
+              >
+                {nft?.collectionName}
+              </Text>
+              <Text
+                as={NextLinkFromReactRouter}
+                to={nft ? `${nftsBaseUrl}/collections/${nft.collectionAddress}/${tokenId}` : ``}
+                textAlign={['center', null, 'left']}
+                bold
+              >
+                {nft?.name}
+              </Text>
             </Flex>
-          </RouterLink>
+          </Flex>
         </Td>
       ) : null}
       <Td>

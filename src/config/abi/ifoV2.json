@@ -286,7 +286,7 @@
     "name": "pancakeProfile",
     "outputs": [
       {
-        "internalType": "contract EnvoysProfile",
+        "internalType": "contract PancakeProfile",
         "name": "",
         "type": "address"
       }

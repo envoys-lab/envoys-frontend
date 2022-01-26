@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { CurrencyAmount, JSBI, Token, Trade } from '@envoysvision/sdk'
+import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -12,11 +12,11 @@ import {
   BottomDrawer,
   useMatchBreakpoints,
   ArrowUpDownIcon,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import Footer from 'components/Menu/Footer'
-import { RouteComponentProps } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import AddressInputPanel from './components/AddressInputPanel'
@@ -34,7 +34,6 @@ import ProgressSteps from './components/ProgressSteps'
 import { AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
@@ -87,7 +86,8 @@ const SwitchIconButton = styled(IconButton)`
   }
 `
 
-export default function Swap({ history }: RouteComponentProps) {
+export default function Swap() {
+  const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
@@ -326,7 +326,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => router.push('/swap')} />,
   )
 
   useEffect(() => {
@@ -396,8 +396,8 @@ export default function Swap({ history }: RouteComponentProps) {
                   setIsChartDisplayed={setIsChartDisplayed}
                   isChartDisplayed={isChartDisplayed}
                 />
-                <Wrapper id="swap-page">
-                  <AutoColumn gap="md">
+                <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
+                  <AutoColumn gap="sm">
                     <CurrencyInputPanel
                       label={
                         independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
@@ -464,31 +464,31 @@ export default function Swap({ history }: RouteComponentProps) {
                     ) : null}
 
                     {showWrap ? null : (
-                      <AutoColumn gap="8px" style={{ padding: '0 16px' }}>
-                        {Boolean(trade) && (
-                          <RowBetween align="center">
-                            <Label>{t('Price')}</Label>
-                            <TradePrice
-                              price={trade?.executionPrice}
-                              showInverted={showInverted}
-                              setShowInverted={setShowInverted}
-                            />
-                          </RowBetween>
-                        )}
-                        {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-                          <RowBetween align="center">
-                            <Label>{t('Slippage Tolerance')}</Label>
-                            <Text bold color="primary">
-                              {allowedSlippage / 100}%
-                            </Text>
-                          </RowBetween>
-                        )}
+                      <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
+                        <RowBetween align="center">
+                          {Boolean(trade) && (
+                            <>
+                              <Label>{t('Price')}</Label>
+                              <TradePrice
+                                price={trade?.executionPrice}
+                                showInverted={showInverted}
+                                setShowInverted={setShowInverted}
+                              />
+                            </>
+                          )}
+                        </RowBetween>
+                        <RowBetween align="center">
+                          <Label>{t('Slippage Tolerance')}</Label>
+                          <Text bold color="primary">
+                            {allowedSlippage / 100}%
+                          </Text>
+                        </RowBetween>
                       </AutoColumn>
                     )}
                   </AutoColumn>
-                  <Box mt="1rem">
+                  <Box mt="0.25rem">
                     {swapIsUnsupported ? (
-                      <Button width="100%" disabled mb="4px">
+                      <Button width="100%" disabled>
                         {t('Unsupported Asset')}
                       </Button>
                     ) : !account ? (
@@ -499,15 +499,9 @@ export default function Swap({ history }: RouteComponentProps) {
                           (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                       </Button>
                     ) : noRoute && userHasSpecifiedInputOutput ? (
-                      <GreyCard style={{ textAlign: 'center' }}>
-                        <Text color="textSubtle" mb="4px">
-                          {t('Insufficient liquidity for this trade.')}
-                        </Text>
-                        {singleHopOnly && (
-                          <Text color="textSubtle" mb="4px">
-                            {t('Try enabling multi-hop trades.')}
-                          </Text>
-                        )}
+                      <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
+                        <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
+                        {singleHopOnly && <Text color="textSubtle">{t('Try enabling multi-hop trades.')}</Text>}
                       </GreyCard>
                     ) : showApproveFlow ? (
                       <RowBetween>

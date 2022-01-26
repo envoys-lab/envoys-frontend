@@ -1,8 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { FetchStatus } from 'config/constants/types'
-import { Contract } from 'ethers'
-import { FormatTypes } from 'ethers/lib/utils'
+import { useMemo } from 'react'
+import { Contract } from '@ethersproject/contracts'
+import { FormatTypes } from '@ethersproject/abi'
 import useSWR, { Middleware, SWRConfiguration, KeyedMutator } from 'swr'
+import { multicallv2, MulticallOptions, Call } from 'utils/multicall'
 
 declare module 'swr' {
   interface SWRResponse<Data = any, Error = any> {
@@ -95,19 +97,24 @@ const serializesContractKey = <T extends Contract = Contract>(
   return serializedKeys
 }
 
-type UseSWRContractKey<T extends Contract = Contract, N extends ContractMethodName<T> = any> =
+export type UseSWRContractKey<T extends Contract = Contract, N extends ContractMethodName<T> = any> =
   | UseSWRContractArrayKey<T, N>
   | UseSWRContractObjectKey<T, N>
+
+/**
+ * @example
+ * const key = [contract, 'methodName', [params]]
+ * const key = { contract, methodName, params }
+ * const { data, error, mutate } = useSWRContract(key)
+ */
 export function useSWRContract<
   Error = any,
   T extends Contract = Contract,
   N extends ContractMethodName<T> = ContractMethodName<T>,
-  // until typescript is upgrade
-  Data = any,
-  // Data = Awaited<ReturnType<T['functions'][N]>>,
+  Data = Awaited<ReturnType<T['callStatic'][N]>>,
 >(key?: UseSWRContractKey<T, N> | null, config: SWRConfiguration<Data, Error> = {}) {
   const { contract, methodName, params } = getContractKey(key) || {}
-  const serializedKeys = serializesContractKey(key)
+  const serializedKeys = useMemo(() => serializesContractKey(key), [key])
 
   return useSWR<Data, Error>(
     serializedKeys,
@@ -127,6 +134,9 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
   return useSWRNext(key, fetcher, config)
 }
 
+export function useSWRMulticall(abi: any[], calls: Call[], options: MulticallOptions = { requireSuccess: true }) {
+  return useSWR(calls, () => multicallv2(abi, calls, options), { revalidateIfStale: false, revalidateOnFocus: false })
+}
 // dev only
 export const loggerMiddleware: Middleware = (useSWRNext) => {
   return (key, fetcher, config) => {

@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token } from '@envoysvision/sdk'
+import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { mainnetTokens, testnetTokens } from './tokens'
 
 export const ROUTER_ADDRESS = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
@@ -100,3 +100,6 @@ export const BLOCKED_ADDRESSES: string[] = [
 export { default as farmsConfig } from './farms'
 export { default as poolsConfig } from './pools'
 export { default as ifosConfig } from './ifo'
+
+export const FAST_INTERVAL = 10000
+export const SLOW_INTERVAL = 60000

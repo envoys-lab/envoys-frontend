@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { Token } from '@envoysvision/sdk'
+import { Token } from '@pancakeswap/sdk'
 
 export type TranslatableText =
   | string
@@ -86,6 +86,10 @@ export interface DeserializedFarmConfig extends FarmConfigBaseProps {
   quoteToken: Token
 }
 
+export interface PoolDeployedBlockNumber {
+  [key: string]: number
+}
+
 interface PoolConfigBaseProps {
   sousId: number
   contractAddress: Address
@@ -95,6 +99,7 @@ interface PoolConfigBaseProps {
   harvest?: boolean
   isFinished?: boolean
   enableEmergencyWithdraw?: boolean
+  deployedBlockNumber?: number
 }
 
 export interface SerializedPoolConfig extends PoolConfigBaseProps {

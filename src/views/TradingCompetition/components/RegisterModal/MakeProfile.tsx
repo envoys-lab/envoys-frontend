@@ -1,17 +1,18 @@
 import React from 'react'
-import { Button, Heading, Text } from '@envoysvision/uikit'
+import { Button, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import history from 'routerHistory'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { useRouter } from 'next/router'
 
 const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const router = useRouter()
 
   const handleClick = () => {
-    history.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
+    router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
     onDismiss()
   }
 
@@ -21,7 +22,7 @@ const MakeProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
         {t('Make a profile!')}
       </Heading>
       <Text color="textSubtle">
-        {t('It looks like you’ve disabled your account by removing your Envoys Collectible (NFT) profile picture.')}
+        {t('It looks like you’ve disabled your account by removing your Pancake Collectible (NFT) profile picture.')}
       </Text>
       <Button mt="24px" width="100%" onClick={handleClick}>
         {t('Make a profile!')}

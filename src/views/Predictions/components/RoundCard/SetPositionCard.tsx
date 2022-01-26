@@ -14,12 +14,13 @@ import {
   Slider,
   Box,
   AutoRenewIcon,
-} from '@envoysvision/uikit'
-import { ethers } from 'ethers'
-import { parseUnits } from 'ethers/lib/utils'
+} from '@pancakeswap/uikit'
+import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { parseUnits } from '@ethersproject/units'
 import { useWeb3React } from '@web3-react/core'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { usePredictionsContract } from 'hooks/useContract'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import useToast from 'hooks/useToast'
@@ -43,11 +44,7 @@ interface SetPositionCardProps {
 const dust = parseUnits('0.01', 18)
 const percentShortcuts = [10, 25, 50, 75]
 
-const getButtonProps = (
-  value: ethers.BigNumber,
-  bnbBalance: ethers.BigNumber,
-  minBetAmountBalance: ethers.BigNumber,
-) => {
+const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBalance: BigNumber) => {
   const hasSufficientBalance = () => {
     if (value.gt(0)) {
       return value.lte(bnbBalance)
@@ -68,7 +65,7 @@ const getButtonProps = (
 
 const getValueAsEthersBn = (value: string) => {
   const valueAsFloat = parseFloat(value)
-  return Number.isNaN(valueAsFloat) ? ethers.BigNumber.from(0) : parseUnits(value)
+  return Number.isNaN(valueAsFloat) ? BigNumber.from(0) : parseUnits(value)
 }
 
 const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosition, epoch, onBack, onSuccess }) => {
@@ -82,7 +79,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
   const { balance: bnbBalance } = useGetBnbBalance()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract()
 
@@ -100,9 +97,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
     if (inputAsBn.eq(0)) {
       setPercent(0)
     } else {
-      const inputAsFn = ethers.FixedNumber.from(inputAsBn)
-      const maxValueAsFn = ethers.FixedNumber.from(maxBalance)
-      const hundredAsFn = ethers.FixedNumber.from(100)
+      const inputAsFn = FixedNumber.from(inputAsBn)
+      const maxValueAsFn = FixedNumber.from(maxBalance)
+      const hundredAsFn = FixedNumber.from(100)
       const percentage = inputAsFn.divUnsafe(maxValueAsFn).mulUnsafe(hundredAsFn)
       const percentageAsFloat = percentage.toUnsafeFloat()
 
@@ -113,9 +110,9 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
   const handlePercentChange = (sliderPercent: number) => {
     if (sliderPercent > 0) {
-      const maxValueAsFn = ethers.FixedNumber.from(maxBalance)
-      const hundredAsFn = ethers.FixedNumber.from(100)
-      const sliderPercentAsFn = ethers.FixedNumber.from(sliderPercent.toFixed(18)).divUnsafe(hundredAsFn)
+      const maxValueAsFn = FixedNumber.from(maxBalance)
+      const hundredAsFn = FixedNumber.from(100)
+      const sliderPercentAsFn = FixedNumber.from(sliderPercent.toFixed(18)).divUnsafe(hundredAsFn)
       const balancePercentage = maxValueAsFn.mulUnsafe(sliderPercentAsFn)
       setValue(formatFixedNumber(balancePercentage))
     } else {
@@ -151,6 +148,7 @@ const SetPositionCard: React.FC<SetPositionCardProps> = ({ position, togglePosit
 
     try {
       const tx = await callWithGasPrice(predictionsContract, betMethod, [epoch], { value: valueAsBn.toString() })
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsTxPending(true)
       const receipt = await tx.wait()
       onSuccess(receipt.transactionHash)

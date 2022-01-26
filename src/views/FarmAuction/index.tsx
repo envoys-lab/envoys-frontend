@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link as RouterLink } from 'react-router-dom'
-import { Button, Heading, Text, Flex, Link, Breadcrumbs } from '@envoysvision/uikit'
+import { Button, Heading, Text, Flex, Link, Breadcrumbs } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
 import PageSection from 'components/PageSection'
 import useTheme from 'hooks/useTheme'
+import NextLink from 'next/link'
 import FAQs from './components/FAQs'
 import AuctionDetails from './components/AuctionDetailsCard'
 import AuctionLeaderboard from './components/AuctionLeaderboard'
@@ -79,12 +79,16 @@ const FarmAuction = () => {
     <>
       <StyledHeader>
         <Breadcrumbs>
-          <RouterLink to="/" color="primary" style={{ fontWeight: 400 }}>
-            {t('Home')}
-          </RouterLink>
-          <RouterLink to="/farms" color="primary" style={{ fontWeight: 400 }}>
-            {t('Farms')}
-          </RouterLink>
+          <NextLink href="/" passHref>
+            <Link href="/" color="primary" style={{ fontWeight: 400 }}>
+              {t('Home')}
+            </Link>
+          </NextLink>
+          <NextLink href="/farms" passHref>
+            <Link href="/farms" color="primary" style={{ fontWeight: 400 }}>
+              {t('Farms')}
+            </Link>
+          </NextLink>
           <Text>{t('Community Farm Auction')}</Text>
         </Breadcrumbs>
         <Flex flexDirection={['column-reverse', null, 'row']}>
@@ -93,7 +97,7 @@ const FarmAuction = () => {
               {t('Community Farm Auction')}
             </Heading>
             <Text color="textSubtle" mb="24px">
-              {t('Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on EnvoysSwap.')}
+              {t('Each week, qualifying projects can bid CAKE for the right to host a 7-day Farm on PancakeSwap.')}
             </Text>
             <Text color="textSubtle">{t('This page is for projects to bid for farms.')}</Text>
             <Text color="textSubtle" mb="24px">

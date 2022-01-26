@@ -14,7 +14,7 @@ import {
   SubMenuItem,
   EllipsisIcon,
   LinkExternal,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { getBscScanLink } from 'utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTranslation } from 'contexts/Localization'

@@ -29,7 +29,7 @@
   {
     "anonymous": false,
     "inputs": [{ "indexed": false, "internalType": "uint256", "name": "thresholdPoints", "type": "uint256" }],
-    "name": "NewEnvoysProfileThresholdPoints",
+    "name": "NewPancakeProfileThresholdPoints",
     "type": "event"
   },
   {
@@ -93,7 +93,7 @@
   {
     "inputs": [],
     "name": "pancakeProfile",
-    "outputs": [{ "internalType": "contract IEnvoysProfile", "name": "", "type": "address" }],
+    "outputs": [{ "internalType": "contract IPancakeProfile", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },

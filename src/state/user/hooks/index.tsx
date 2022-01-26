@@ -1,4 +1,5 @@
-import { ChainId, Pair, Token } from '@envoysvision/sdk'
+import { ChainId, Pair, Token } from '@pancakeswap/sdk'
+import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -56,10 +57,14 @@ export function useAudioModeManager(): [boolean, () => void] {
 
 export function usePhishingBannerManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
-  const showPhishingWarningBanner = useSelector<AppState, AppState['user']['showPhishingWarningBanner']>(
-    (state) => state.user.showPhishingWarningBanner,
-  )
-
+  const hideTimestampPhishingWarningBanner = useSelector<
+    AppState,
+    AppState['user']['hideTimestampPhishingWarningBanner']
+  >((state) => state.user.hideTimestampPhishingWarningBanner)
+  const now = Date.now()
+  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
+    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1
+    : true
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
@@ -352,7 +357,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const chainId = process.env.REACT_APP_CHAIN_ID
+  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   return chainId === ChainId.MAINNET.toString() ? userGas : GAS_PRICE_GWEI.testnet
 }
@@ -395,7 +400,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Envoys LPs')
+  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
 }
 
 /**

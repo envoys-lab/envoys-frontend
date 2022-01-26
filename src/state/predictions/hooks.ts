@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { ethers } from 'ethers'
-import { minBy, orderBy } from 'lodash'
+import orderBy from 'lodash/orderBy'
+import minBy from 'lodash/minBy'
+import { BigNumber } from '@ethersproject/bignumber'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { State, NodeRound, ReduxNodeLedger, NodeLedger, ReduxNodeRound } from '../types'
@@ -97,7 +98,7 @@ export const useGetCurrentHistoryPage = () => {
 
 export const useGetMinBetAmount = () => {
   const minBetAmount = useSelector((state: State) => state.predictions.minBetAmount)
-  return useMemo(() => ethers.BigNumber.from(minBetAmount), [minBetAmount])
+  return useMemo(() => BigNumber.from(minBetAmount), [minBetAmount])
 }
 
 export const useGetBufferSeconds = () => {
@@ -115,7 +116,7 @@ export const useGetHistory = () => {
 export const useGetLastOraclePrice = () => {
   const lastOraclePrice = useSelector((state: State) => state.predictions.lastOraclePrice)
   return useMemo(() => {
-    return ethers.BigNumber.from(lastOraclePrice)
+    return BigNumber.from(lastOraclePrice)
   }, [lastOraclePrice])
 }
 

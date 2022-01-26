@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Modal, InjectedModalProps } from '@envoysvision/uikit'
+import { Flex, Text, Button, Modal, InjectedModalProps } from '@pancakeswap/uikit'
 import confetti from 'canvas-confetti'
 import delay from 'lodash/delay'
 import { useTranslation } from 'contexts/Localization'
@@ -54,7 +54,7 @@ const ClaimNftModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
         />
         <Text bold color="secondary" textAlign="center" fontSize="18px" mb="24px">
           {t(
-            'Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #EnvoysChristmas event.',
+            'Celebrate Christmas and New Year with us! Enjoy this wonderful NFT crafted by Chef Cecy and the winner from our #PancakeChristmas event.',
           )}
         </Text>
         <Button disabled={isClaiming} onClick={claimNft}>

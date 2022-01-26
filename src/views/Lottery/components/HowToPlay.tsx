@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Flex, Text, Heading, useMatchBreakpoints, Link, Image } from '@envoysvision/uikit'
+import { Box, Flex, Text, Heading, useMatchBreakpoints, Link, Image } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs'
@@ -354,7 +354,7 @@ const HowToPlay: React.FC = () => {
           <Text>
             {t('Check our in-depth guide on')}{' '}
             <InlineLink href="https://docs.pancakeswap.finance/products/lottery/lottery-guide">
-              {t('how to play the EnvoysSwap lottery!')}
+              {t('how to play the PancakeSwap lottery!')}
             </InlineLink>
           </Text>
         </Flex>

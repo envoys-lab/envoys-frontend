@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Button, Flex, Text, InjectedModalProps } from '@envoysvision/uikit'
+import { Button, Flex, Text, InjectedModalProps } from '@pancakeswap/uikit'
 import { formatBigNumber } from 'utils/formatBalance'
-import { getEnvoysProfileAddress } from 'utils/addressHelpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
@@ -60,7 +60,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.allowance(account, getEnvoysProfileAddress())
+      const response = await cakeContract.allowance(account, getPancakeProfileAddress())
       setNeedsApproval(response.lt(minimumCakeRequired))
     }
 

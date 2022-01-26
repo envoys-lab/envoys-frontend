@@ -4,8 +4,8 @@ import { getProfileContract } from 'utils/contractHelpers'
 import { Team } from 'config/constants/types'
 import { multicallv2 } from 'utils/multicall'
 import { TeamsById } from 'state/types'
-import profileABI from 'config/abi/envoysProfile.json'
-import { getEnvoysProfileAddress } from 'utils/addressHelpers'
+import profileABI from 'config/abi/pancakeProfile.json'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 
 const profileContract = getProfileContract()
 
@@ -41,7 +41,7 @@ export const getTeams = async (): Promise<TeamsById> => {
     const calls = []
     for (let i = 1; i <= nbTeams.toNumber(); i++) {
       calls.push({
-        address: getEnvoysProfileAddress(),
+        address: getPancakeProfileAddress(),
         name: 'getTeamProfile',
         params: [i],
       })

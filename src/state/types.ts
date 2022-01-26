@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk'
 import { AnyAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import {
   CampaignType,
   SerializedFarmConfig,
@@ -212,11 +212,6 @@ export interface Achievement {
   points: number
 }
 
-export interface AchievementState {
-  achievements: Achievement[]
-  achievementFetchStatus: FetchStatus
-}
-
 // Block
 
 export interface BlockState {
@@ -331,7 +326,7 @@ export interface ReduxNodeLedger {
 
 export interface NodeLedger {
   position: BetPosition
-  amount: ethers.BigNumber
+  amount: EthersBigNumber
   claimed: boolean
 }
 
@@ -357,13 +352,13 @@ export interface NodeRound {
   startTimestamp: number | null
   lockTimestamp: number | null
   closeTimestamp: number | null
-  lockPrice: ethers.BigNumber | null
-  closePrice: ethers.BigNumber | null
-  totalAmount: ethers.BigNumber
-  bullAmount: ethers.BigNumber
-  bearAmount: ethers.BigNumber
-  rewardBaseCalAmount: ethers.BigNumber
-  rewardAmount: ethers.BigNumber
+  lockPrice: EthersBigNumber | null
+  closePrice: EthersBigNumber | null
+  totalAmount: EthersBigNumber
+  bullAmount: EthersBigNumber
+  bearAmount: EthersBigNumber
+  rewardBaseCalAmount: EthersBigNumber
+  rewardAmount: EthersBigNumber
   oracleCalled: boolean
   closeOracleId: string
   lockOracleId: string
@@ -472,9 +467,7 @@ export interface Vote {
   choice: number
   metadata?: {
     votingPower: string
-    verificationHash: string
   }
-  _inValid?: boolean
 }
 
 export interface VotingState {
@@ -564,7 +557,6 @@ export interface UserRound {
 // Global state
 
 export interface State {
-  achievements: AchievementState
   block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState

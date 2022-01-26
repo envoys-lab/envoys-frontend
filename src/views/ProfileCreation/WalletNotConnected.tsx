@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text } from '@envoysvision/uikit'
+import { Heading, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 

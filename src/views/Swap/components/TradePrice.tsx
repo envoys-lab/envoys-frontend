@@ -1,6 +1,6 @@
 import React from 'react'
-import { Price } from '@envoysvision/sdk'
-import { Text, AutoRenewIcon } from '@envoysvision/uikit'
+import { Price } from '@pancakeswap/sdk'
+import { Text, AutoRenewIcon } from '@pancakeswap/uikit'
 import { StyledBalanceMaxMini } from './styleds'
 
 interface TradePriceProps {

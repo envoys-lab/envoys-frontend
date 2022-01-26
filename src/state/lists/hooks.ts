@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@envoysvision/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -43,9 +43,9 @@ export class WrappedTokenInfo extends Token {
   }
 }
 
-export type TokenAddressMap = Readonly<
-  { [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }> }
->
+export type TokenAddressMap = Readonly<{
+  [chainId in ChainId]: Readonly<{ [tokenAddress: string]: { token: WrappedTokenInfo; list: TokenList } }>
+}>
 
 /**
  * An empty result, useful as a default.

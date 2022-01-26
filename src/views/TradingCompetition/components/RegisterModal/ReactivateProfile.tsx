@@ -1,17 +1,18 @@
 import React from 'react'
-import { Heading, Button, Text } from '@envoysvision/uikit'
-import history from 'routerHistory'
+import { Heading, Button, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { useWeb3React } from '@web3-react/core'
+import { useRouter } from 'next/router'
 
 const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
   const { account } = useWeb3React()
   const { t } = useTranslation()
+  const router = useRouter()
 
   const handleClick = () => {
-    history.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
+    router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)
     onDismiss()
   }
 
@@ -21,7 +22,7 @@ const ReactivateProfile: React.FC<CompetitionProps> = ({ onDismiss }) => {
         {t('Reactivate your profile!')}
       </Heading>
       <Text color="textSubtle">
-        {t('It looks like you’ve disabled your account by removing your Envoys Collectible (NFT) profile picture.')}
+        {t('It looks like you’ve disabled your account by removing your Pancake Collectible (NFT) profile picture.')}
       </Text>
       <Text>
         {t('You need to reactivate your profile by replacing your profile picture in order to join the competition.')}

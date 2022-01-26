@@ -41,23 +41,44 @@ const farms: SerializedFarmConfig[] = [
    * V3 by order of release (some may be out of PID order due to multiplier boost)
    */
   {
-    pid: 500,
-    lpSymbol: 'INSUR-BNB',
+    pid: 506,
+    lpSymbol: 'ERTHA-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0xD01bf29EdCA0285A004a25e325A449ba56e5926E',
+      56: '0x70531B39E2Bb4d8dA59E2Ce41a98eBA2990F8497',
     },
-    token: serializedTokens.insur,
+    token: serializedTokens.ertha,
     quoteToken: serializedTokens.wbnb,
   },
   {
-    pid: 497,
-    lpSymbol: 'AOG-BUSD LP',
+    pid: 505,
+    lpSymbol: 'FUSE-BNB LP',
     lpAddresses: {
       97: '',
-      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
+      56: '0x6483F166b9E4310A165a55FEa04F867499aded06',
     },
-    token: serializedTokens.aog,
+    token: serializedTokens.fuse,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 386,
+    lpSymbol: 'HOTCROSS-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
+    },
+    token: serializedTokens.hotcross,
+    quoteToken: serializedTokens.wbnb,
+    isCommunity: true,
+  },
+  {
+    pid: 504,
+    lpSymbol: 'PRL-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0xb5FEAE037c2330a8F298F39bcE96dd6E69f4Fa0E',
+    },
+    token: serializedTokens.prl,
     quoteToken: serializedTokens.busd,
     isCommunity: true,
   },
@@ -71,6 +92,57 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens['8pay'],
     quoteToken: serializedTokens.busd,
     isCommunity: true,
+  },
+  {
+    pid: 503,
+    lpSymbol: 'FROYO-BNB LP',
+    lpAddresses: {
+      97: '',
+      56: '0x1Ce76390Dd210B9C9ae28373FDf79714206ECb73',
+    },
+    token: serializedTokens.froyo,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 497,
+    lpSymbol: 'AOG-BUSD LP',
+    lpAddresses: {
+      97: '',
+      56: '0x88c9bf5E334e2591C6A866D5E20683E31226Be3d',
+    },
+    token: serializedTokens.aog,
+    quoteToken: serializedTokens.busd,
+    isCommunity: false,
+  },
+  {
+    pid: 502,
+    lpSymbol: 'APX-BUSD',
+    lpAddresses: {
+      97: '',
+      56: '0xa0ee789a8f581cb92dd9742ed0b5d54a0916976c',
+    },
+    token: serializedTokens.apx,
+    quoteToken: serializedTokens.busd,
+  },
+  {
+    pid: 501,
+    lpSymbol: 'BCOIN-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0x2Eebe0C34da9ba65521E98CBaA7D97496d05f489',
+    },
+    token: serializedTokens.bcoin,
+    quoteToken: serializedTokens.wbnb,
+  },
+  {
+    pid: 500,
+    lpSymbol: 'INSUR-BNB',
+    lpAddresses: {
+      97: '',
+      56: '0xD01bf29EdCA0285A004a25e325A449ba56e5926E',
+    },
+    token: serializedTokens.insur,
+    quoteToken: serializedTokens.wbnb,
   },
   {
     pid: 499,
@@ -1332,16 +1404,6 @@ const farms: SerializedFarmConfig[] = [
       56: '0xF74ee1e10e097dc326a2ad004F9Cc95CB71088d3',
     },
     token: serializedTokens.hget,
-    quoteToken: serializedTokens.wbnb,
-  },
-  {
-    pid: 386,
-    lpSymbol: 'HOTCROSS-BNB LP',
-    lpAddresses: {
-      97: '',
-      56: '0xf23bad605e94de0e3b60c9718a43a94a5af43915',
-    },
-    token: serializedTokens.hotcross,
     quoteToken: serializedTokens.wbnb,
   },
   {

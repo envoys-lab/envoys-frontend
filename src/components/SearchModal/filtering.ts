@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Token } from '@envoysvision/sdk'
+import { Token } from '@pancakeswap/sdk'
 import { isAddress } from '../../utils'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
@@ -55,7 +55,7 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
     const rest: Token[] = []
 
     // sort tokens by exact match -> substring on symbol match -> rest
-    tokens.map((token) => {
+    tokens.forEach((token) => {
       if (token.symbol?.toLowerCase() === symbolMatch[0]) {
         return exactMatches.push(token)
       }

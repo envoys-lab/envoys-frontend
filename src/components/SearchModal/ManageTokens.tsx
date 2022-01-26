@@ -1,6 +1,6 @@
 import React, { useRef, RefObject, useCallback, useState, useMemo } from 'react'
-import { Token } from '@envoysvision/sdk'
-import { Text, Button, CloseIcon, IconButton, LinkExternal, Input, Link } from '@envoysvision/uikit'
+import { Token } from '@pancakeswap/sdk'
+import { Text, Button, CloseIcon, IconButton, LinkExternal, Input, Link } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Row, { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useToken } from 'hooks/Tokens'
@@ -60,7 +60,7 @@ export default function ManageTokens({
 
   const handleRemoveAll = useCallback(() => {
     if (chainId && userAddedTokens) {
-      userAddedTokens.map((token) => {
+      userAddedTokens.forEach((token) => {
         return removeToken(chainId, token.address)
       })
     }

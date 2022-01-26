@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'contexts/Localization'
 import { multicallv2 } from 'utils/multicall'
-import profileABI from 'config/abi/envoysProfile.json'
-import { getEnvoysProfileAddress } from 'utils/addressHelpers'
+import profileABI from 'config/abi/pancakeProfile.json'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import useToast from 'hooks/useToast'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: ethers.BigNumber.from(0),
-    numberCakeToRegister: ethers.BigNumber.from(0),
-    numberCakeToUpdate: ethers.BigNumber.from(0),
+    numberCakeToReactivate: BigNumber.from(0),
+    numberCakeToRegister: BigNumber.from(0),
+    numberCakeToUpdate: BigNumber.from(0),
   })
   const { toastError } = useToast()
 
@@ -20,11 +20,11 @@ const useGetProfileCosts = () => {
     const fetchCosts = async () => {
       try {
         const calls = ['numberCakeToReactivate', 'numberCakeToRegister', 'numberCakeToUpdate'].map((method) => ({
-          address: getEnvoysProfileAddress(),
+          address: getPancakeProfileAddress(),
           name: method,
         }))
         const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2<
-          [[ethers.BigNumber], [ethers.BigNumber], [ethers.BigNumber]]
+          [[BigNumber], [BigNumber], [BigNumber]]
         >(profileABI, calls)
 
         setCosts({

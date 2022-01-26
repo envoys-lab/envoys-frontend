@@ -1,19 +1,15 @@
-import { SubMenuItems } from '@envoysvision/uikit'
-import Container from 'components/Layout/Container'
+import { SubMenuItems } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import { useRouter } from 'next/router'
 import React from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
 import { useFetchIfoPool } from 'state/pools/hooks'
 import Hero from './components/Hero'
-import CurrentIfo from './CurrentIfo'
-import PastIfo from './PastIfo'
 
-const Ifos = () => {
+export const IfoPageLayout = ({ children }) => {
   const { t } = useTranslation()
-  const { path, isExact } = useRouteMatch()
-
+  const router = useRouter()
+  const isExact = router.route === '/ifo'
   useFetchIfoPool()
-
   return (
     <>
       <SubMenuItems
@@ -30,16 +26,7 @@ const Ifos = () => {
         activeItem={isExact ? '/ifo' : '/ifo/history'}
       />
       <Hero />
-      <Container>
-        <Route exact path={`${path}`}>
-          <CurrentIfo />
-        </Route>
-        <Route path={`${path}/history`}>
-          <PastIfo />
-        </Route>
-      </Container>
+      {children}
     </>
   )
 }
-
-export default Ifos

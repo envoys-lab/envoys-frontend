@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Box, Grid, GridProps, Heading } from '@envoysvision/uikit'
+import { Box, Grid, GridProps, Heading } from '@pancakeswap/uikit'
 
 interface MarketPageTitleProps extends GridProps {
   title: string

@@ -5,7 +5,7 @@ import {
   getCakeContract,
   getBunnyFactoryContract,
   getBunnySpecialContract,
-  getEnvoysRabbitContract,
+  getPancakeRabbitContract,
   getProfileContract,
   getIfoV1Contract,
   getIfoV2Contract,
@@ -30,7 +30,7 @@ import {
   getAnniversaryAchievementContract,
   getNftMarketContract,
   getNftSaleContract,
-  getEnvoysSquadContract,
+  getPancakeSquadContract,
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
 } from 'utils/contractHelpers'
@@ -49,8 +49,8 @@ import {
 
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
-import { ChainId, WETH } from '@envoysvision/sdk'
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { ChainId, WETH } from '@pancakeswap/sdk'
+import IPancakePairABI from '../config/abi/IPancakePair.json'
 import ENS_PUBLIC_RESOLVER_ABI from '../config/abi/ens-public-resolver.json'
 import ENS_ABI from '../config/abi/ens-registrar.json'
 import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
@@ -58,6 +58,8 @@ import ERC20_ABI from '../config/abi/erc20.json'
 import WETH_ABI from '../config/abi/weth.json'
 import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
+
+import { IPancakePair } from '../config/abi/types/IPancakePair'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
@@ -99,14 +101,17 @@ export const useBunnyFactory = () => {
   return useMemo(() => getBunnyFactoryContract(library.getSigner()), [library])
 }
 
-export const useEnvoysRabbits = () => {
+export const usePancakeRabbits = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getEnvoysRabbitContract(library.getSigner()), [library])
+  return useMemo(() => getPancakeRabbitContract(library.getSigner()), [library])
 }
 
-export const useProfile = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getProfileContract(library.getSigner()), [library])
+export const useProfileContract = (withSignerIfPossible = true) => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(
+    () => getProfileContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [withSignerIfPossible, account, library],
+  )
 }
 
 export const useLotteryV2Contract = () => {
@@ -221,25 +226,17 @@ export const useNftSaleContract = () => {
   return useMemo(() => getNftSaleContract(library.getSigner()), [library])
 }
 
-export const useEnvoysSquadContract = () => {
+export const usePancakeSquadContract = () => {
   const { library } = useActiveWeb3React()
-  return useMemo(() => getEnvoysSquadContract(library.getSigner()), [library])
+  return useMemo(() => getPancakeSquadContract(library.getSigner()), [library])
 }
 
-export const useFarmAuctionContract = () => {
+export const useFarmAuctionContract = (withSignerIfPossible = true) => {
   const { account, library } = useActiveWeb3React()
-  // This hook is slightly different from others
-  // Calls were failing if unconnected user goes to farm auction page
-  // Using library instead of library.getSigner() fixes the problem for unconnected users
-  // However, this fix is not ideal, it currently has following behavior:
-  // - If you visit Farm Auction page coming from some other page there are no errors in console (unconnected or connected)
-  // - If you go directly to Farm Auction page
-  //   - as unconnected user you don't see any console errors
-  //   - as connected user you see `unknown account #0 (operation="getAddress", code=UNSUPPORTED_OPERATION, ...` errors
-  //     the functionality of the page is not affected, data is loading fine and you can interact with the contract
-  //
-  // Similar behavior was also noticed on Trading Competition page.
-  return useMemo(() => getFarmAuctionContract(account ? library.getSigner() : library), [library, account])
+  return useMemo(
+    () => getFarmAuctionContract(withSignerIfPossible ? getProviderOrSigner(library, account) : null),
+    [library, account, withSignerIfPossible],
+  )
 }
 
 export const useNftMarketContract = () => {
@@ -310,8 +307,8 @@ export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossi
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
-export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
-  return useContract(pairAddress, IUniswapV2PairABI, withSignerIfPossible)
+export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
+  return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
 }
 
 export function useMulticallContract() {

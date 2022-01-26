@@ -1,17 +1,17 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
-import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Text, Input, Flex, Skeleton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useFetchSearchResults from 'state/info/queries/search'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { useWatchlistTokens, useWatchlistPools } from 'state/user/hooks'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import { useHistory } from 'react-router-dom'
 import { usePoolDatas, useTokenDatas } from 'state/info/hooks'
 import { useTranslation } from 'contexts/Localization'
 import useDebounce from 'hooks/useDebounce'
 import { MINIMUM_SEARCH_CHARACTERS } from 'config/constants/info'
 import { PoolData } from 'state/info/types'
+import { useRouter } from 'next/router'
 
 const Container = styled.div`
   position: relative;
@@ -25,7 +25,7 @@ const StyledInput = styled(Input)`
 `
 
 const Menu = styled.div<{ hide: boolean }>`
-  display: flex;
+  display: ${({ hide }) => (hide ? 'none' : 'flex')};
   flex-direction: column;
   z-index: 9999;
   width: 100%;
@@ -40,7 +40,6 @@ const Menu = styled.div<{ hide: boolean }>`
   border-radius: 8px;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.04);
-  display: ${({ hide }) => hide && 'none'};
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   margin-top: 4px;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -140,7 +139,7 @@ const poolIncludesSearchTerm = (pool: PoolData, value: string) => {
 }
 
 const Search = () => {
-  const history = useHistory()
+  const router = useRouter()
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
 
@@ -196,7 +195,7 @@ const Search = () => {
     setShowMenu(false)
     setPoolsShown(3)
     setTokensShown(3)
-    history.push(to)
+    router.push(to)
   }
 
   // get date for watchlist

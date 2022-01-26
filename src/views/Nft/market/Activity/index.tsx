@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Heading } from '@envoysvision/uikit'
+import { Card, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import Page from 'components/Layout/Page'
 import PageHeader from 'components/PageHeader'
@@ -11,7 +11,7 @@ const Activity = () => {
   return (
     <>
       <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary">
+        <Heading as="h1" scale="xxl" color="secondary" data-test="nft-activity-title">
           {t('Activity')}
         </Heading>
       </PageHeader>

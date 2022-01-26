@@ -11,8 +11,8 @@ import {
   Text,
   WalletFilledIcon,
   Skeleton,
-} from '@envoysvision/uikit'
-import { Price } from '@envoysvision/sdk'
+} from '@pancakeswap/uikit'
+import { Price } from '@pancakeswap/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { multiplyPriceByAmount } from 'utils/prices'
 import styled from 'styled-components'
@@ -33,7 +33,7 @@ export const BNBAmountLabel: React.FC<BNBAmountLabelProps> = ({ amount, ...props
     <Text fontWeight="600">
       {amount.toLocaleString(undefined, {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 4,
+        maximumFractionDigits: 5,
       })}
     </Text>
   </Flex>

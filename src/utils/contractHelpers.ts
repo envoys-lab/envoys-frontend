@@ -1,4 +1,6 @@
-import { ethers } from 'ethers'
+import type { Signer } from '@ethersproject/abstract-signer'
+import type { Provider } from '@ethersproject/providers'
+import { Contract } from '@ethersproject/contracts'
 import { simpleRpcProvider } from 'utils/providers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -7,8 +9,8 @@ import tokens from 'config/constants/tokens'
 // Addresses
 import {
   getAddress,
-  getEnvoysProfileAddress,
-  getEnvoysRabbitsAddress,
+  getPancakeProfileAddress,
+  getPancakeRabbitsAddress,
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getLotteryV2Address,
@@ -29,14 +31,14 @@ import {
   getAnniversaryAchievement,
   getNftMarketAddress,
   getNftSaleAddress,
-  getEnvoysSquadAddress,
+  getPancakeSquadAddress,
   getTradingCompetitionAddressV2,
   getBunnySpecialXmasAddress,
 } from 'utils/addressHelpers'
 
 // ABI
-import profileABI from 'config/abi/envoysProfile.json'
-import pancakeRabbitsAbi from 'config/abi/envoysRabbits.json'
+import profileABI from 'config/abi/pancakeProfile.json'
+import pancakeRabbitsAbi from 'config/abi/pancakeRabbits.json'
 import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 import bep20Abi from 'config/abi/erc20.json'
@@ -68,7 +70,7 @@ import farmAuctionAbi from 'config/abi/farmAuction.json'
 import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
-import pancakeSquadAbi from 'config/abi/envoysSquad.json'
+import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 
 // Types
@@ -84,8 +86,8 @@ import {
   Erc721,
   Cake,
   BunnyFactory,
-  EnvoysRabbits,
-  EnvoysProfile,
+  PancakeRabbits,
+  PancakeProfile,
   LotteryV2,
   Masterchef,
   SousChef,
@@ -103,121 +105,121 @@ import {
   BunnySpecialLottery,
   NftMarket,
   NftSale,
-  EnvoysSquad,
+  PancakeSquad,
   Erc721collection,
   PointCenterIfo,
 } from 'config/abi/types'
 
-const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
-  return new ethers.Contract(address, abi, signerOrProvider)
+  return new Contract(address, abi, signerOrProvider)
 }
 
-export const getBep20Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBep20Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(bep20Abi, address, signer) as Erc20
 }
-export const getErc721Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getErc721Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(erc721Abi, address, signer) as Erc721
 }
-export const getLpContract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getLpContract = (address: string, signer?: Signer | Provider) => {
   return getContract(lpTokenAbi, address, signer) as LpToken
 }
-export const getIfoV1Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getIfoV1Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(ifoV1Abi, address, signer) as IfoV1
 }
-export const getIfoV2Contract = (address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getIfoV2Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(ifoV2Abi, address, signer) as IfoV2
 }
-export const getSouschefContract = (id: number, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const abi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   return getContract(abi, getAddress(config.contractAddress), signer) as SousChef
 }
-export const getSouschefV2Contract = (id: number, signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getSouschefV2Contract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   return getContract(sousChefV2, getAddress(config.contractAddress), signer) as SousChefV2
 }
-export const getPointCenterIfoContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getPointCenterIfoContract = (signer?: Signer | Provider) => {
   return getContract(pointCenterIfo, getPointCenterIfoAddress(), signer) as PointCenterIfo
 }
-export const getCakeContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getCakeContract = (signer?: Signer | Provider) => {
   return getContract(cakeAbi, tokens.cake.address, signer) as Cake
 }
-export const getProfileContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(profileABI, getEnvoysProfileAddress(), signer) as EnvoysProfile
+export const getProfileContract = (signer?: Signer | Provider) => {
+  return getContract(profileABI, getPancakeProfileAddress(), signer) as PancakeProfile
 }
-export const getEnvoysRabbitContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(pancakeRabbitsAbi, getEnvoysRabbitsAddress(), signer) as EnvoysRabbits
+export const getPancakeRabbitContract = (signer?: Signer | Provider) => {
+  return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), signer) as PancakeRabbits
 }
-export const getBunnyFactoryContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnyFactoryContract = (signer?: Signer | Provider) => {
   return getContract(bunnyFactoryAbi, getBunnyFactoryAddress(), signer) as BunnyFactory
 }
-export const getBunnySpecialContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnySpecialContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialAbi, getBunnySpecialAddress(), signer) as BunnySpecial
 }
-export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getLotteryV2Contract = (signer?: Signer | Provider) => {
   return getContract(lotteryV2Abi, getLotteryV2Address(), signer) as LotteryV2
 }
-export const getMasterchefContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getMasterchefContract = (signer?: Signer | Provider) => {
   return getContract(masterChef, getMasterChefAddress(), signer) as Masterchef
 }
-export const getClaimRefundContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getClaimRefundContract = (signer?: Signer | Provider) => {
   return getContract(claimRefundAbi, getClaimRefundAddress(), signer) as ClaimRefund
 }
-export const getTradingCompetitionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getTradingCompetitionContract = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionAbi, getTradingCompetitionAddress(), signer) as TradingCompetition
 }
 
-export const getTradingCompetitionContractV2 = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getTradingCompetitionContractV2 = (signer?: Signer | Provider) => {
   return getContract(tradingCompetitionV2Abi, getTradingCompetitionAddressV2(), signer) as TradingCompetitionV2
 }
-export const getEasterNftContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getEasterNftContract = (signer?: Signer | Provider) => {
   return getContract(easterNftAbi, getEasterNftAddress(), signer) as EasterNft
 }
-export const getCakeVaultContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(cakeVaultAbi, getCakeVaultAddress(), signer) as CakeVault
 }
-export const getIfoPoolContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getIfoPoolContract = (signer?: Signer | Provider) => {
   return getContract(ifoPoolAbi, getIfoPoolAddress(), signer) as IfoPool
 }
 
-export const getPredictionsContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getPredictionsContract = (signer?: Signer | Provider) => {
   return getContract(predictionsAbi, getPredictionsAddress(), signer) as unknown as Predictions
 }
 
-export const getChainlinkOracleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getChainlinkOracleContract = (signer?: Signer | Provider) => {
   return getContract(chainlinkOracleAbi, getChainlinkOracleAddress(), signer) as ChainlinkOracle
 }
-export const getMulticallContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getMulticallContract = (signer?: Signer | Provider) => {
   return getContract(MultiCallAbi, getMulticallAddress(), signer) as Multicall
 }
-export const getBunnySpecialCakeVaultContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnySpecialCakeVaultContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialCakeVaultAbi, getBunnySpecialCakeVaultAddress(), signer) as BunnySpecialCakeVault
 }
-export const getBunnySpecialPredictionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnySpecialPredictionContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialPredictionAbi, getBunnySpecialPredictionAddress(), signer) as BunnySpecialPrediction
 }
-export const getBunnySpecialLotteryContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnySpecialLotteryContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialLotteryAbi, getBunnySpecialLotteryAddress(), signer) as BunnySpecialLottery
 }
-export const getBunnySpecialXmasContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getBunnySpecialXmasContract = (signer?: Signer | Provider) => {
   return getContract(bunnySpecialXmasAbi, getBunnySpecialXmasAddress(), signer)
 }
-export const getFarmAuctionContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getFarmAuctionContract = (signer?: Signer | Provider) => {
   return getContract(farmAuctionAbi, getFarmAuctionAddress(), signer) as unknown as FarmAuction
 }
-export const getAnniversaryAchievementContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {
   return getContract(anniversaryAchievementAbi, getAnniversaryAchievement(), signer) as AnniversaryAchievement
 }
-export const getNftMarketContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getNftMarketContract = (signer?: Signer | Provider) => {
   return getContract(nftMarketAbi, getNftMarketAddress(), signer) as NftMarket
 }
-export const getNftSaleContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+export const getNftSaleContract = (signer?: Signer | Provider) => {
   return getContract(nftSaleAbi, getNftSaleAddress(), signer) as NftSale
 }
-export const getEnvoysSquadContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(pancakeSquadAbi, getEnvoysSquadAddress(), signer) as EnvoysSquad
+export const getPancakeSquadContract = (signer?: Signer | Provider) => {
+  return getContract(pancakeSquadAbi, getPancakeSquadAddress(), signer) as PancakeSquad
 }
-export const getErc721CollectionContract = (signer?: ethers.Signer | ethers.providers.Provider, address?: string) => {
+export const getErc721CollectionContract = (signer?: Signer | Provider, address?: string) => {
   return getContract(erc721CollectionAbi, address, signer) as Erc721collection
 }

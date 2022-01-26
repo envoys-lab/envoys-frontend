@@ -4,9 +4,9 @@ import {
   TokenPairImageProps as UIKitTokenPairImageProps,
   TokenImage as UIKitTokenImage,
   ImageProps,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import tokens from 'config/constants/tokens'
-import { Token } from '@envoysvision/sdk'
+import { Token } from '@pancakeswap/sdk'
 
 interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc' | 'secondarySrc'> {
   primaryToken: Token

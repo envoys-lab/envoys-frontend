@@ -1,14 +1,15 @@
-import { AddIcon, Button, Heading, IconButton, MinusIcon, Skeleton, Text, useModal } from '@envoysvision/uikit'
+import { AddIcon, Button, Heading, IconButton, MinusIcon, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
+import { useRouter } from 'next/router'
 import React, { useCallback, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmUser, useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
@@ -48,13 +49,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { account } = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStakeFarms(pid)
   const { onUnstake } = useUnstakeFarms(pid)
-  const location = useLocation()
+  const router = useRouter()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
 
@@ -68,12 +69,54 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
   const handleStake = async (amount: string) => {
-    await onStake(amount)
+    await onStake(
+      amount,
+      (tx) => {
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      },
+      (receipt) => {
+        toastSuccess(
+          `${t('Staked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your funds have been staked in the farm')}
+          </ToastDescriptionWithTx>,
+        )
+      },
+      (receipt) => {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      },
+    )
     dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
   }
 
   const handleUnstake = async (amount: string) => {
-    await onUnstake(amount)
+    await onUnstake(
+      amount,
+      (tx) => {
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      },
+      (receipt) => {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your earnings have also been harvested to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
+      },
+      (receipt) => {
+        toastError(
+          t('Error'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+          </ToastDescriptionWithTx>,
+        )
+      },
+    )
     dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
   }
 
@@ -113,7 +156,22 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove()
+      await onApprove(
+        (tx) => {
+          toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        },
+        (receipt) => {
+          toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+        },
+        (receipt) => {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        },
+      )
       dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
     } catch (e) {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
@@ -121,7 +179,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
     } finally {
       setRequestedApproval(false)
     }
-  }, [onApprove, dispatch, account, pid, t, toastError])
+  }, [onApprove, dispatch, account, pid, t, toastError, toastSuccess])
 
   if (!account) {
     return (
@@ -171,7 +229,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
               <IconButton
                 variant="secondary"
                 onClick={onPresentDeposit}
-                disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+                disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
               >
                 <AddIcon color="primary" width="14px" />
               </IconButton>
@@ -196,7 +254,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             width="100%"
             onClick={onPresentDeposit}
             variant="secondary"
-            disabled={['history', 'archived'].some((item) => location.pathname.includes(item))}
+            disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
           >
             {t('Stake LP')}
           </Button>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, CardBody, Flex, Text } from '@envoysvision/uikit'
+import { Box, CardBody, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import PreviewImage from './PreviewImage'
@@ -14,7 +14,7 @@ const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation,
   const { t } = useTranslation()
   const { name } = nft
   const bnbBusdPrice = useBNBBusdPrice()
-  const isEnvoysBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
+  const isPancakeBunny = nft.collectionAddress?.toLowerCase() === pancakeBunniesAddress.toLowerCase()
   const { isFetching, lowestPrice } = useGetLowestPriceFromNft(nft)
 
   return (
@@ -32,7 +32,7 @@ const CollectibleCardBody: React.FC<CollectibleCardProps> = ({ nft, nftLocation,
         {name}
       </Text>
       <Box borderTop="1px solid" borderTopColor="cardBorder" pt="8px">
-        {isEnvoysBunny && (
+        {isPancakeBunny && (
           <LowestPriceMetaRow lowestPrice={lowestPrice} isFetching={isFetching} bnbBusdPrice={bnbBusdPrice} />
         )}
         {currentAskPrice && (

@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@envoysvision/uikit'
+import { ModalBody, ModalContainer, Message, ModalHeader, Box, Heading } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
 import { WrappedTokenInfo } from 'state/lists/hooks'
 import SwapWarningTokensConfig from 'config/constants/swapWarningTokens'
 import SafemoonWarning from './SafemoonWarning'
+import ItamWarning from './ItamWarning'
 import BondlyWarning from './BondlyWarning'
 import Acknowledgement from './Acknowledgement'
+import CcarWarning from './CcarWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -57,6 +59,14 @@ const SwapWarningModal: React.FC<SwapWarningModalProps> = ({ swapCurrency, onDis
     [SwapWarningTokensConfig.bondly.address]: {
       symbol: SwapWarningTokensConfig.bondly.symbol,
       component: <BondlyWarning />,
+    },
+    [SwapWarningTokensConfig.itam.address]: {
+      symbol: SwapWarningTokensConfig.itam.symbol,
+      component: <ItamWarning />,
+    },
+    [SwapWarningTokensConfig.ccar.address]: {
+      symbol: SwapWarningTokensConfig.ccar.symbol,
+      component: <CcarWarning />,
     },
   }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@envoysvision/uikit'
+import { Heading, Flex, Text, Skeleton, ChartIcon, CommunityIcon, SwapIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useGetStats } from 'hooks/api'
 import useTheme from 'hooks/useTheme'
@@ -46,7 +46,7 @@ const Stats = () => {
         {t('Trusted with billions.')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        {t('EnvoysSwap has the most users of any decentralized platform, ever.')}
+        {t('PancakeSwap has the most users of any decentralized platform, ever.')}
       </Text>
       <Flex flexWrap="wrap">
         <Text display="inline" textAlign="center" color="textSubtle" mb="20px">

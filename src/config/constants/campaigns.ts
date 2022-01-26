@@ -205,7 +205,7 @@ const campaigns: Campaign[] = [
     id: '516010001',
     type: 'participation',
     title: '1 Year',
-    description: 'Joined EnvoysSwap during the first year of our journey!',
+    description: 'Joined PancakeSwap during the first year of our journey!',
     badge: '1-year.svg',
   },
   {
@@ -327,6 +327,12 @@ const campaigns: Campaign[] = [
     type: 'ifo',
     title: 'Diviner Protocol',
     badge: 'ifo-dpt.svg',
+  },
+  {
+    id: '511170000',
+    type: 'ifo',
+    title: 'Froyo Games',
+    badge: 'ifo-froyo.svg',
   },
 ]
 

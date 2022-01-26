@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { AutoRenewIcon, Button, ButtonProps } from '@envoysvision/uikit'
+import { AutoRenewIcon, Button, ButtonProps } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { usePredictionsContract } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -21,6 +21,7 @@ const ReclaimPositionButton: React.FC<ReclaimPositionButtonProps> = ({ epoch, on
 
   const handleReclaim = async () => {
     const tx = await callWithGasPrice(predictionsContract, 'claim', [[epoch]])
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsPendingTx(true)
 
     const receipt = await tx.wait()

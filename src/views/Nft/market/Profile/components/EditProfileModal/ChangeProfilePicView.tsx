@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, Box, InjectedModalProps, Text } from '@envoysvision/uikit'
+import React, { useState, useMemo } from 'react'
+import { Button, Box, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { useProfile } from 'state/profile/hooks'
@@ -8,38 +8,47 @@ import useToast from 'hooks/useToast'
 import { fetchProfile } from 'state/profile'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { getErc721Contract } from 'utils/contractHelpers'
-import { useProfile as useProfileContract } from 'hooks/useContract'
+import { useProfileContract } from 'hooks/useContract'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { getEnvoysProfileAddress } from 'utils/addressHelpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
-import { useUserNfts } from 'state/nftMarket/hooks'
+import { useApprovalNfts } from 'state/nftMarket/hooks'
 import { NftLocation } from 'state/nftMarket/types'
+import useNftsForAddress from '../../../hooks/useNftsForAddress'
 
-type ChangeProfilePicPageProps = InjectedModalProps
+interface ChangeProfilePicPageProps extends InjectedModalProps {
+  onSuccess?: () => void
+}
 
-const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }) => {
+const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss, onSuccess }) => {
   const [selectedNft, setSelectedNft] = useState({
     tokenId: null,
     collectionAddress: null,
   })
   const { t } = useTranslation()
-  const { nfts } = useUserNfts()
-  const dispatch = useAppDispatch()
-  const { profile } = useProfile()
-  const profileContract = useProfileContract()
   const { account, library } = useWeb3React()
+  const { isLoading: isProfileLoading, profile } = useProfile()
+  const { nfts } = useNftsForAddress(account, profile, isProfileLoading)
+  const dispatch = useAppDispatch()
+  const profileContract = useProfileContract()
   const { toastSuccess } = useToast()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const nftsInWallet = useMemo(() => nfts.filter((nft) => nft.location === NftLocation.WALLET), [nfts])
 
-  const nftsInWallet = nfts.filter((nft) => nft.location === NftLocation.WALLET)
+  const { data } = useApprovalNfts(nftsInWallet)
+
+  const isAlreadyApproved = useMemo(() => {
+    return data ? !!data[selectedNft.tokenId] : false
+  }, [data, selectedNft.tokenId])
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
       onApprove: () => {
         const contract = getErc721Contract(selectedNft.collectionAddress, library.getSigner())
-        return callWithGasPrice(contract, 'approve', [getEnvoysProfileAddress(), selectedNft.tokenId])
+
+        return callWithGasPrice(contract, 'approve', [getPancakeProfileAddress(), selectedNft.tokenId])
       },
       onConfirm: () => {
         if (!profile.isActive) {
@@ -55,10 +64,14 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
         // Re-fetch profile
         await dispatch(fetchProfile(account))
         toastSuccess(t('Profile Updated!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-
+        if (onSuccess) {
+          onSuccess()
+        }
         onDismiss()
       },
     })
+
+  const alreadyApproved = isApproved || isAlreadyApproved
 
   return (
     <>
@@ -94,14 +107,14 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {t('Make sure you have a Envoys Collectible in your wallet and try again!')}
+            {t('Make sure you have a Pancake Collectible in your wallet and try again!')}
           </Text>
         </>
       )}
       <ApproveConfirmButtons
-        isApproveDisabled={isConfirmed || isConfirming || isApproved || selectedNft.tokenId === null}
+        isApproveDisabled={isConfirmed || isConfirming || alreadyApproved || selectedNft.tokenId === null}
         isApproving={isApproving}
-        isConfirmDisabled={!isApproved || isConfirmed || selectedNft.tokenId === null}
+        isConfirmDisabled={!alreadyApproved || isConfirmed || selectedNft.tokenId === null}
         isConfirming={isConfirming}
         onApprove={handleApprove}
         onConfirm={handleConfirm}

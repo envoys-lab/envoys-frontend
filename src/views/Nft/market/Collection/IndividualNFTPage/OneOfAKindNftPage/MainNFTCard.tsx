@@ -1,9 +1,10 @@
-import { BinanceIcon, Box, Button, Card, CardBody, Flex, Skeleton, Text, useModal } from '@envoysvision/uikit'
+import { BinanceIcon, Box, Button, Card, CardBody, Flex, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import React from 'react'
 import { NftToken } from 'state/nftMarket/types'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { formatNumber } from 'utils/formatBalance'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import EditProfileModal from 'views/Nft/market/Profile/components/EditProfileModal'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
@@ -15,9 +16,10 @@ interface MainNFTCardProps {
   nft: NftToken
   isOwnNft: boolean
   nftIsProfilePic: boolean
+  onSuccess: () => void
 }
 
-const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic }) => {
+const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
 
@@ -25,7 +27,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, currentAskPriceAsNumber)
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentSellModal] = useModal(
-    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} />,
+    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccessSale={onSuccess} />,
   )
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
 
@@ -75,7 +77,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
                 <Flex alignItems="center" mt="8px">
                   <BinanceIcon width={18} height={18} mr="4px" />
                   <Text fontSize="24px" bold mr="4px">
-                    {nft.marketData.currentAskPrice}
+                    {formatNumber(currentAskPriceAsNumber, 0, 5)}
                   </Text>
                   {bnbBusdPrice ? (
                     <Text color="textSubtle">{`(~${priceInUsd.toLocaleString(undefined, {
@@ -112,7 +114,7 @@ const MainNFTCard: React.FC<MainNFTCardProps> = ({ nft, isOwnNft, nftIsProfilePi
             </Box>
           </Flex>
           <Flex flex="2" justifyContent={['center', null, 'flex-end']} alignItems="center" maxWidth={440}>
-            <NFTMedia nft={nft} width={440} height={440} />
+            <NFTMedia key={nft.tokenId} nft={nft} width={440} height={440} />
           </Flex>
         </Container>
       </CardBody>

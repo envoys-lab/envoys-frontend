@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@envoysvision/sdk'
+import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useGasPrice } from 'state/user/hooks'
@@ -55,7 +55,7 @@ function useSwapCallArguments(
   return useMemo(() => {
     if (!trade || !recipient || !library || !account || !chainId || !deadline) return []
 
-    const contract: Contract | null = getRouterContract(chainId, library, account)
+    const contract = getRouterContract(chainId, library, account)
     if (!contract) {
       return []
     }

@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { InjectedModalProps } from '@envoysvision/uikit'
-import { ethers } from 'ethers'
+import { InjectedModalProps } from '@pancakeswap/uikit'
+import { BigNumber } from '@ethersproject/bignumber'
+import { MaxUint256 } from '@ethersproject/constants'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from 'contexts/Localization'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethersToBigNumber } from 'utils/bigNumber'
 import tokens from 'config/constants/tokens'
-import { parseUnits, formatEther } from 'ethers/lib/utils'
+import { parseUnits, formatEther } from '@ethersproject/units'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import useToast from 'hooks/useToast'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useAppDispatch } from 'state'
-import { addUserNft } from 'state/nftMarket/reducer'
-import { NftLocation, NftToken } from 'state/nftMarket/types'
+import { NftToken } from 'state/nftMarket/types'
 import { StyledModal } from './styles'
 import ReviewStage from './ReviewStage'
 import ConfirmStage from '../shared/ConfirmStage'
@@ -49,7 +48,6 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
   const nftMarketContract = useNftMarketContract()
 
   const { toastSuccess } = useToast()
-  const dispatch = useAppDispatch()
 
   const nftPriceWei = parseUnits(nftToBuy.marketData.currentAskPrice, 'ether')
   const nftPrice = parseFloat(nftToBuy.marketData.currentAskPrice)
@@ -86,7 +84,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       }
     },
     onApprove: () => {
-      return callWithGasPrice(wbnbContract, 'approve', [nftMarketContract.address, ethers.constants.MaxUint256])
+      return callWithGasPrice(wbnbContract, 'approve', [nftMarketContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -95,9 +93,7 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
       )
     },
     onConfirm: () => {
-      const payAmount = Number.isNaN(nftPrice)
-        ? ethers.BigNumber.from(0)
-        : parseUnits(nftToBuy.marketData.currentAskPrice)
+      const payAmount = Number.isNaN(nftPrice) ? BigNumber.from(0) : parseUnits(nftToBuy.marketData.currentAskPrice)
       if (paymentCurrency === PaymentCurrency.BNB) {
         return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
           value: payAmount,
@@ -112,13 +108,6 @@ const BuyModal: React.FC<BuyModalProps> = ({ nftToBuy, onDismiss }) => {
     onSuccess: async ({ receipt }) => {
       setConfirmedTxHash(receipt.transactionHash)
       setStage(BuyingStage.TX_CONFIRMED)
-      dispatch(
-        addUserNft({
-          tokenId: nftToBuy.tokenId,
-          collectionAddress: nftToBuy.collectionAddress,
-          nftLocation: NftLocation.WALLET,
-        }),
-      )
       toastSuccess(
         t('Your NFT has been sent to your wallet'),
         <ToastDescriptionWithTx txHash={receipt.transactionHash} />,

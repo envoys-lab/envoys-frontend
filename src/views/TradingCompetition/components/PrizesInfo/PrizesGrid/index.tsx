@@ -3,7 +3,6 @@ import {
   Box,
   CheckmarkCircleIcon,
   Flex,
-  Image,
   MedalBronzeIcon,
   MedalGoldIcon,
   MedalPurpleIcon,
@@ -12,7 +11,8 @@ import {
   Tab,
   TabMenu,
   Text,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
+import Image from 'next/image'
 import prizes, { Tiers } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'

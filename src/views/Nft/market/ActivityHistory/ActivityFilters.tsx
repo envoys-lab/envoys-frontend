@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text } from '@envoysvision/uikit'
+import { Flex, Text } from '@pancakeswap/uikit'
 import isEmpty from 'lodash/isEmpty'
 import { useGetNftActivityFilters } from 'state/nftMarket/hooks'
 import { Collection, MarketEvent } from 'state/nftMarket/types'
 import { useTranslation } from 'contexts/Localization'
 import ClearAllButton from './ClearAllButton'
 import { ActivityFilter } from './ActivityFilter'
+import { ListCollectionFilter } from '../components/Filters/ListCollectionFilter'
 
 export const Container = styled(Flex)`
   gap: 16px;
@@ -46,11 +47,14 @@ const ActivityFilters: React.FC<FiltersProps> = ({ collection }) => {
         {t('Filter by')}
       </Text>
       <ScrollableFlexContainer>
+        {address === '' && <ListCollectionFilter />}
         {[MarketEvent.NEW, MarketEvent.CANCEL, MarketEvent.MODIFY, MarketEvent.SELL].map((eventType) => {
           return <ActivityFilter key={eventType} eventType={eventType} collectionAddress={address} />
         })}
       </ScrollableFlexContainer>
-      {!isEmpty(nftActivityFilters.typeFilters) ? <ClearAllButton collectionAddress={address} /> : null}
+      {!isEmpty(nftActivityFilters.typeFilters) || !isEmpty(nftActivityFilters.collectionFilters) ? (
+        <ClearAllButton collectionAddress={address} />
+      ) : null}
     </Container>
   )
 }

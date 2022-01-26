@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import { parseUnits } from 'ethers/lib/utils'
+import { MaxUint256 } from '@ethersproject/constants'
+import { parseUnits } from '@ethersproject/units'
 import {
   Modal,
   ModalBody,
@@ -15,14 +15,18 @@ import {
   TooltipText,
   Box,
   Link,
-} from '@envoysvision/uikit'
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { PoolIds, Ifo } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
 import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useToast from 'hooks/useToast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useERC20 } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
@@ -43,6 +47,20 @@ const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 // Default value for transaction setting, tweak based on BSC network congestion.
 const gasPrice = parseUnits('10', 'gwei').toString()
 
+const SmallAmountNotice: React.FC = () => {
+  const { t } = useTranslation()
+
+  return (
+    <Box maxWidth="350px">
+      <Message variant="warning" mb="16px">
+        <MessageText>
+          {t('If the amount you commit is too small, you may not receive a meaningful amount of IFO tokens.')}
+        </MessageText>
+      </Message>
+    </Box>
+  )
+}
+
 const ContributeModal: React.FC<Props> = ({
   poolId,
   ifo,
@@ -57,13 +75,15 @@ const ContributeModal: React.FC<Props> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { currency } = ifo
+  const { toastSuccess } = useToast()
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const raisingTokenContract = useERC20(currency.address)
+  const raisingTokenContractReader = useERC20(currency.address, false)
+  const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
@@ -72,7 +92,7 @@ const ContributeModal: React.FC<Props> = ({
     useApproveConfirmTransaction({
       onRequiresApproval: async () => {
         try {
-          const response = await raisingTokenContract.allowance(account, contract.address)
+          const response = await raisingTokenContractReader.allowance(account, contract.address)
           const currentAllowance = new BigNumber(response.toString())
           return currentAllowance.gt(0)
         } catch (error) {
@@ -80,9 +100,17 @@ const ContributeModal: React.FC<Props> = ({
         }
       },
       onApprove: () => {
-        return callWithGasPrice(raisingTokenContract, 'approve', [contract.address, ethers.constants.MaxUint256], {
+        return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
           gasPrice,
         })
+      },
+      onApproveSuccess: ({ receipt }) => {
+        toastSuccess(
+          t('Successfully Enabled!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+          </ToastDescriptionWithTx>,
+        )
       },
       onConfirm: () => {
         return callWithGasPrice(
@@ -137,6 +165,7 @@ const ContributeModal: React.FC<Props> = ({
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth="360px">
+        {poolId === PoolIds.poolUnlimited && <SmallAmountNotice />}
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
             {tooltipVisible && tooltip}

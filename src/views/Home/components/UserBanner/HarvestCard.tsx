@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Card, CardBody, Flex, Skeleton, Text, ArrowForwardIcon } from '@envoysvision/uikit'
-import { Link } from 'react-router-dom'
+import { AutoRenewIcon, Button, Card, CardBody, Flex, Skeleton, Text, ArrowForwardIcon } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -9,6 +9,7 @@ import useToast from 'hooks/useToast'
 import { useMasterchef } from 'hooks/useContract'
 import { harvestFarm } from 'utils/calls'
 import Balance from 'components/Balance'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { logError } from 'utils/sentry'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
@@ -40,11 +41,25 @@ const HarvestCard = () => {
     for (const farmWithBalance of farmsWithStakedBalance) {
       try {
         // eslint-disable-next-line no-await-in-loop
-        await harvestFarm(masterChefContract, farmWithBalance.pid)
-        toastSuccess(
-          `${t('Harvested')}!`,
-          t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
-        )
+        const tx = await harvestFarm(masterChefContract, farmWithBalance.pid)
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        // eslint-disable-next-line no-await-in-loop
+        const receipt = await tx.wait()
+        if (receipt.status) {
+          toastSuccess(
+            `${t('Harvested')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+            </ToastDescriptionWithTx>,
+          )
+        } else {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        }
       } catch (error) {
         logError(error)
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
@@ -80,14 +95,14 @@ const HarvestCard = () => {
             </Text>
           </Flex>
           {numTotalToCollect <= 0 ? (
-            <Link to="farms">
+            <NextLinkFromReactRouter to="farms">
               <Button width={['100%', null, null, 'auto']} variant="secondary">
                 <Text color="primary" bold>
                   {t('Start earning')}
                 </Text>
                 <ArrowForwardIcon ml="4px" color="primary" />
               </Button>
-            </Link>
+            </NextLinkFromReactRouter>
           ) : (
             <Button
               width={['100%', null, null, 'auto']}

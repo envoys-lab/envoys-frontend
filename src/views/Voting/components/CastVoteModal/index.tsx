@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Modal } from '@envoysvision/uikit'
+import { Box, Modal } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import { SnapshotCommand } from 'state/types'
@@ -31,7 +31,6 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
     poolsBalance,
     cakeBnbLpBalance,
     ifoPoolBalance,
-    verificationHash,
   } = useGetVotingPower(block, modalIsOpen)
 
   const isStartView = view === ConfirmVoteView.MAIN
@@ -57,10 +56,6 @@ const CastVoteModal: React.FC<CastVoteModalProps> = ({ onSuccess, proposalId, vo
         payload: {
           proposal: proposalId,
           choice: vote.value,
-          metadata: {
-            votingPower: total.toString(),
-            verificationHash,
-          },
         },
       })
 

@@ -4,11 +4,13 @@ import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { isAddress } from 'utils'
 import { FetchStatus } from 'config/constants/types'
+import erc721Abi from 'config/abi/erc721.json'
+import { useSWRMulticall } from 'hooks/useSWRContract'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+
 import { fetchCollection, fetchCollections, fetchNewPBAndUpdateExisting } from './reducer'
 import { State } from '../types'
-import { NftActivityFilter, NftFilter, NftToken, UserNftsState } from './types'
-
-const MAX_GEN0_ID = 4
+import { NftActivityFilter, NftFilter, NftToken } from './types'
 
 export const useFetchCollections = () => {
   const dispatch = useAppDispatch()
@@ -26,11 +28,11 @@ export const useFetchCollection = (collectionAddress: string) => {
 
 // Returns a function that fetches more NFTs for specified bunny id
 // as well as updating existing PB NFTs in state
-// Note: EnvoysBunny specific
+// Note: PancakeBunny specific
 export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
   const dispatch = useAppDispatch()
 
-  const { latestEnvoysBunniesUpdateAt, isUpdatingEnvoysBunnies } = useSelector(
+  const { latestPancakeBunniesUpdateAt, isUpdatingPancakeBunnies } = useSelector(
     (state: State) => state.nftMarket.data.loadingState,
   )
 
@@ -39,8 +41,8 @@ export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
   const existingBunniesInState = useGetAllBunniesByBunnyId(bunnyId)
   const existingTokensWithBunnyId = existingBunniesInState ? existingBunniesInState.map((nft) => nft.tokenId) : []
 
-  const allEnvoysBunnies = useNftsFromCollection(pancakeBunniesAddress)
-  const allExistingPBTokenIds = allEnvoysBunnies ? allEnvoysBunnies.map((nft) => nft.tokenId) : []
+  const allPancakeBunnies = useNftsFromCollection(pancakeBunniesAddress)
+  const allExistingPBTokenIds = allPancakeBunnies ? allPancakeBunnies.map((nft) => nft.tokenId) : []
 
   const firstBunny = existingBunniesInState.length > 0 ? existingBunniesInState[0] : null
 
@@ -57,7 +59,7 @@ export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
   }, [firstBunny])
 
   // This fetches more bunnies when called
-  const fetchMoreEnvoysBunnies = (orderDirection: 'asc' | 'desc') => {
+  const fetchMorePancakeBunnies = (orderDirection: 'asc' | 'desc') => {
     dispatch(
       fetchNewPBAndUpdateExisting({
         bunnyId,
@@ -69,7 +71,7 @@ export const useFetchByBunnyIdAndUpdate = (bunnyId: string) => {
     )
   }
 
-  return { isUpdatingEnvoysBunnies, latestEnvoysBunniesUpdateAt, fetchMoreEnvoysBunnies }
+  return { isUpdatingPancakeBunnies, latestPancakeBunniesUpdateAt, fetchMorePancakeBunnies }
 }
 
 export const useLoadingState = () => {
@@ -101,13 +103,33 @@ export const useGetNFTInitializationState = () => {
   return useSelector((state: State) => state.nftMarket.initializationState)
 }
 
-export const useUserNfts = (): UserNftsState => {
-  return useSelector((state: State) => state.nftMarket.data.user)
-}
+export const useApprovalNfts = (nftsInWallet: NftToken[]) => {
+  const nftApprovalCalls = useMemo(
+    () =>
+      nftsInWallet.map((nft: NftToken) => {
+        const { tokenId, collectionAddress } = nft
 
-export const useHasGen0Nfts = (): boolean => {
-  const userNfts = useSelector((state: State) => state.nftMarket.data.user)
-  return userNfts.nfts.some((nft) => nft.attributes && Number(nft.attributes[0]?.value) <= MAX_GEN0_ID)
+        return {
+          address: collectionAddress,
+          name: 'getApproved',
+          params: [tokenId],
+        }
+      }),
+    [nftsInWallet],
+  )
+
+  const { data } = useSWRMulticall(erc721Abi, nftApprovalCalls)
+
+  const approvedTokenIds = Array.isArray(data)
+    ? data
+        .flat()
+        .reduce(
+          (acc, address, index) => ({ ...acc, [nftsInWallet[index].tokenId]: getPancakeProfileAddress() === address }),
+          {},
+        )
+    : null
+
+  return { data: approvedTokenIds }
 }
 
 export const useGetNftFilters = (collectionAddress: string) => {
@@ -134,5 +156,5 @@ export const useGetNftActivityFilters = (collectionAddress: string) => {
   const collectionFilter: NftActivityFilter = useSelector(
     (state: State) => state.nftMarket.data.activityFilters[collectionAddress],
   )
-  return collectionFilter || { typeFilters: [] }
+  return collectionFilter || { typeFilters: [], collectionFilters: [] }
 }

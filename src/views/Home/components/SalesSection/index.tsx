@@ -1,6 +1,6 @@
 import React from 'react'
-import { Flex, Text, Button, Link } from '@envoysvision/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 import ColoredWordHeading from '../ColoredWordHeading'

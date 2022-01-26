@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Box, Flex, Heading, Skeleton } from '@envoysvision/uikit'
+import { Box, Flex, Heading, Skeleton } from '@pancakeswap/uikit'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
@@ -257,7 +257,7 @@ const Hero = () => {
         <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
       </StarsDecorations>
       <Heading mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
-        {t('The EnvoysSwap Lottery')}
+        {t('The PancakeSwap Lottery')}
       </Heading>
       {getHeroHeading()}
       <TicketContainer

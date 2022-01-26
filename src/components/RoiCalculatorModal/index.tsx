@@ -11,7 +11,7 @@ import {
   HelpIcon,
   ButtonMenuItem,
   useTooltip,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -179,7 +179,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               $1000
             </Button>
             <Button
-              disabled={stakingTokenBalance.lte(0) || !account}
+              disabled={!stakingTokenBalance.isFinite() || stakingTokenBalance.lte(0) || !account}
               scale="xs"
               p="4px 16px"
               width="128px"

@@ -2,7 +2,17 @@ import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
-import { Modal, Text, Flex, Button, HelpIcon, AutoRenewIcon, useTooltip } from '@envoysvision/uikit'
+import {
+  Modal,
+  Text,
+  Flex,
+  Button,
+  HelpIcon,
+  AutoRenewIcon,
+  useTooltip,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useCakeVaultContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
@@ -63,6 +73,7 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
     setPendingTx(true)
     try {
       const tx = await callWithGasPrice(cakeVaultContract, 'harvest', undefined, { gasLimit: 300000 })
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -84,6 +95,9 @@ const BountyModal: React.FC<BountyModalProps> = ({ onDismiss, TooltipComponent }
   return (
     <Modal title={t('Claim Bounty')} onDismiss={onDismiss} headerBackground={theme.colors.gradients.cardHeader}>
       {tooltipVisible && tooltip}
+      <Message variant="warning" mb="16px">
+        <MessageText>{t('Remember that you will pay the gas fee.')}</MessageText>
+      </Message>
       <Flex alignItems="flex-start" justifyContent="space-between">
         <Text>{t('You’ll claim')}</Text>
         <Flex flexDirection="column">

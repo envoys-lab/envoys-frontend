@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
+import { MaxUint256 } from '@ethersproject/constants'
 import {
   Modal,
   Text,
@@ -13,7 +13,7 @@ import {
   Skeleton,
   Button,
   ArrowForwardIcon,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import tokens from 'config/constants/tokens'
@@ -251,7 +251,7 @@ const BuyTicketsModal: React.FC<BuyTicketsModalProps> = ({ onDismiss }) => {
         }
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [lotteryContract.address, ethers.constants.MaxUint256])
+        return callWithGasPrice(cakeContract, 'approve', [lotteryContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(

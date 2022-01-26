@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Card, Grid, SellIcon, Text, useModal, Box, BinanceIcon, Skeleton, Button } from '@envoysvision/uikit'
+import { Flex, Card, Grid, SellIcon, Text, useModal, Box, BinanceIcon, Skeleton, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { NftToken } from 'state/nftMarket/types'
@@ -33,9 +33,10 @@ interface OwnerCardProps {
   nft: NftToken
   isOwnNft: boolean
   nftIsProfilePic: boolean
+  onSuccess: () => void
 }
 
-const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic }) => {
+const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic, onSuccess }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const bnbBusdPrice = useBNBBusdPrice()
@@ -46,7 +47,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic })
 
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentAdjustPriceModal] = useModal(
-    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} />,
+    <SellModal variant={nft.marketData?.isTradable ? 'edit' : 'sell'} nftToSell={nft} onSuccessSale={onSuccess} />,
   )
 
   return (
@@ -80,7 +81,7 @@ const OwnerCard: React.FC<OwnerCardProps> = ({ nft, isOwnNft, nftIsProfilePic })
                 <>
                   <Flex justifySelf="flex-start" alignItems="center" width="max-content">
                     <BinanceIcon width="24px" height="24px" mr="8px" />
-                    <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 3)}</Text>
+                    <Text bold>{formatNumber(parseFloat(nft.marketData.currentAskPrice), 0, 5)}</Text>
                   </Flex>
                   {bnbBusdPrice ? (
                     <Text fontSize="12px" color="textSubtle">

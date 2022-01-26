@@ -15,10 +15,10 @@ import {
   MessageText,
   useModal,
   Link,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
-import { Token } from '@envoysvision/sdk'
+import { Token } from '@pancakeswap/sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
 import tokens from 'config/constants/tokens'
 import { cakeBnbLpToken } from 'config/constants/ifo'
@@ -171,8 +171,8 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Box>
             <MessageText display="inline">
               {publicIfoData.status === 'finished'
-                ? t('Activate EnvoysSwap Profile to take part in next IFO‘s!')
-                : t('You need an active EnvoysSwap Profile to take part in an IFO!')}
+                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
+                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
             </MessageText>{' '}
             <MessageTextLink href="#ifo-how-to" color="#D67E0A" display="inline">
               {t('How does it work?')} »

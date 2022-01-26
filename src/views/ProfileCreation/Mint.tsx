@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { formatUnits } from '@ethersproject/units'
-import { Card, CardBody, Heading, Text } from '@envoysvision/uikit'
+import { Card, CardBody, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -9,9 +9,6 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import useToast from 'hooks/useToast'
-import { useAppDispatch } from 'state'
-import { fetchUserNfts } from 'state/nftMarket/reducer'
-import { useGetCollections } from 'state/nftMarket/hooks'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
@@ -29,9 +26,7 @@ const Mint: React.FC = () => {
   const [selectedBunnyId, setSelectedBunnyId] = useState<string>('')
   const [starterNfts, setStarterNfts] = useState<MintNftData[]>([])
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
-  const collections = useGetCollections()
   const { toastSuccess } = useToast()
-  const dispatch = useAppDispatch()
 
   const { account } = useWeb3React()
   const cakeContract = useCake()
@@ -79,7 +74,6 @@ const Mint: React.FC = () => {
       },
       onSuccess: () => {
         toastSuccess(t('Success'), t('You have minted your starter NFT'))
-        dispatch(fetchUserNfts({ account, collections }))
         actions.nextStep()
       },
     })
@@ -95,7 +89,7 @@ const Mint: React.FC = () => {
       <Text as="p">{t('Every profile starts by making a “starter” collectible (NFT).')}</Text>
       <Text as="p">{t('This starter will also become your first profile picture.')}</Text>
       <Text as="p" mb="24px">
-        {t('You can change your profile pic later if you get another approved Envoys Collectible.')}
+        {t('You can change your profile pic later if you get another approved Pancake Collectible.')}
       </Text>
       <Card mb="24px">
         <CardBody>

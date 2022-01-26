@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import { Modal, Text, Flex, BalanceInput, Box, Button, EnvoysRoundIcon } from '@envoysvision/uikit'
+import { MaxUint256 } from '@ethersproject/constants'
+import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useWeb3React } from '@web3-react/core'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from 'utils/formatBalance'
@@ -112,7 +112,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
         }
       },
       onApprove: () => {
-        return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, ethers.constants.MaxUint256])
+        return callWithGasPrice(cakeContract, 'approve', [farmAuctionContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(
@@ -156,7 +156,7 @@ const PlaceBidModal: React.FC<PlaceBidModalProps> = ({
         <Flex justifyContent="space-between" alignItems="center" pb="8px">
           <Text>{t('Bid a multiple of 10')}</Text>
           <Flex>
-            <EnvoysRoundIcon width="24px" height="24px" mr="4px" />
+            <LogoRoundIcon width="24px" height="24px" mr="4px" />
             <Text bold>CAKE</Text>
           </Flex>
         </Flex>

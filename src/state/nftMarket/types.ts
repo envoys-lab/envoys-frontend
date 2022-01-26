@@ -1,5 +1,5 @@
 import { FetchStatus } from 'config/constants/types'
-import { BigNumberish } from 'ethers'
+import { BigNumberish } from '@ethersproject/bignumber'
 
 // Collections -> Nfts -> Transactions
 // Users -> Nft tokens IDs
@@ -26,18 +26,10 @@ export interface State {
     filters: Record<string, NftFilter> // string is the collection address
     activityFilters: Record<string, NftActivityFilter> // string is the collection address
     loadingState: {
-      isUpdatingEnvoysBunnies: boolean
-      latestEnvoysBunniesUpdateAt: number
+      isUpdatingPancakeBunnies: boolean
+      latestPancakeBunniesUpdateAt: number
     }
-    users: Record<string, User> // string is the address
-    user: UserNftsState
   }
-}
-
-export interface UserNftsState {
-  userNftsInitializationState: UserNftInitializationState
-  nfts: NftToken[]
-  activity: UserActivity
 }
 
 export interface Transaction {
@@ -100,7 +92,7 @@ export interface TokenMarketData {
   transactionHistory?: Transaction[]
 }
 
-// Represents single NFT token, either Squad-like NFT or single EnvoysBunny.
+// Represents single NFT token, either Squad-like NFT or single PancakeBunny.
 export interface NftToken {
   tokenId: string
   name: string
@@ -128,6 +120,7 @@ export interface NftFilter {
 
 export interface NftActivityFilter {
   typeFilters: MarketEvent[]
+  collectionFilters: string[]
 }
 
 export interface TokenIdWithCollectionAddress {
@@ -148,6 +141,7 @@ export interface Collection {
   id: string
   address: string
   name: string
+  createdAt?: string
   description?: string
   symbol: string
   active: boolean

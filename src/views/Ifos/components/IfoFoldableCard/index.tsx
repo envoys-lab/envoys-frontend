@@ -7,18 +7,18 @@ import {
   ExpandableLabel,
   ExpandableButton,
   useMatchBreakpoints,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
-import { useFastFresh } from 'hooks/useRefresh'
 import useToast from 'hooks/useToast'
 import React, { useEffect, useState } from 'react'
-import { useBlock } from 'state/block/hooks'
+import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
+import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIsWindowVisible from '../../../../hooks/useIsWindowVisible'
 import useIfoApprove from '../../hooks/useIfoApprove'
@@ -246,7 +246,7 @@ const IfoFoldableCard = ({
 }
 
 const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfoData }) => {
-  const { currentBlock } = useBlock()
+  const currentBlock = useCurrentBlock()
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
   const {
     contract,
@@ -257,14 +257,13 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
   const [enableStatus, setEnableStatus] = useState(EnableStatus.DISABLED)
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const raisingTokenContract = useERC20(ifo.currency.address)
+  const raisingTokenContract = useERC20(ifo.currency.address, false)
   // Continue to fetch 2 more minutes to get latest data
   const isRecentlyActive =
     (publicIfoData.status !== 'finished' || (publicIfoData.status === 'finished' && secondsUntilEnd >= -120)) &&
     ifo.isActive
-  const onApprove = useIfoApprove(raisingTokenContract, contract.address)
-  const { toastSuccess } = useToast()
-  const fastRefresh = useFastFresh()
+  const onApprove = useIfoApprove(ifo, contract.address)
+  const { toastSuccess, toastError } = useToast()
   const isWindowVisible = useIsWindowVisible()
 
   useEffect(() => {
@@ -273,7 +272,7 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     }
   }, [isRecentlyActive, isPublicIfoDataInitialized, fetchPublicIfoData, currentBlock])
 
-  useEffect(() => {
+  useFastRefreshEffect(() => {
     if (isWindowVisible && (isRecentlyActive || !isWalletDataInitialized)) {
       if (account) {
         fetchWalletIfoData()
@@ -283,29 +282,33 @@ const IfoCard: React.FC<IfoFoldableCardProps> = ({ ifo, publicIfoData, walletIfo
     if (!account && isWalletDataInitialized) {
       resetWalletIfoData()
     }
-  }, [
-    isWindowVisible,
-    account,
-    isRecentlyActive,
-    isWalletDataInitialized,
-    fetchWalletIfoData,
-    resetWalletIfoData,
-    fastRefresh,
-  ])
+  }, [isWindowVisible, account, isRecentlyActive, isWalletDataInitialized, fetchWalletIfoData, resetWalletIfoData])
 
   const handleApprove = async () => {
     try {
       setEnableStatus(EnableStatus.IS_ENABLING)
-
-      const receipt = await onApprove()
-
-      setEnableStatus(EnableStatus.ENABLED)
-      toastSuccess(
-        t('Successfully Enabled!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
-        </ToastDescriptionWithTx>,
+      await onApprove(
+        (tx) => {
+          toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+        },
+        (receipt) => {
+          toastSuccess(
+            t('Successfully Enabled!'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
+            </ToastDescriptionWithTx>,
+          )
+        },
+        (receipt) => {
+          toastError(
+            t('Error'),
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+            </ToastDescriptionWithTx>,
+          )
+        },
       )
+      setEnableStatus(EnableStatus.ENABLED)
     } catch (error) {
       setEnableStatus(EnableStatus.DISABLED)
     }

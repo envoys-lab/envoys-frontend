@@ -1,10 +1,10 @@
 import React from 'react'
-import { Modal, Flex, Text } from '@envoysvision/uikit'
-import { ethers } from 'ethers'
+import { Modal, Flex, Text } from '@pancakeswap/uikit'
+import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import { useAppDispatch } from 'state'
 import { useTranslation } from 'contexts/Localization'
-import { useCake, useProfile } from 'hooks/useContract'
+import { useCake, useProfileContract } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
@@ -19,8 +19,8 @@ interface Props {
   selectedNft: State['selectedNft']
   account: string
   teamId: number
-  minimumCakeRequired: ethers.BigNumber
-  allowance: ethers.BigNumber
+  minimumCakeRequired: BigNumber
+  allowance: BigNumber
   onDismiss?: () => void
 }
 
@@ -33,7 +33,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   onDismiss,
 }) => {
   const { t } = useTranslation()
-  const profileContract = useProfile()
+  const profileContract = useProfileContract()
   const dispatch = useAppDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()

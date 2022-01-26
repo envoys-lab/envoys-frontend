@@ -9,7 +9,7 @@ import {
   useTooltip,
   TooltipText,
   InfoIcon,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { BetPosition } from 'state/types'
 import { useTranslation } from 'contexts/Localization'
 

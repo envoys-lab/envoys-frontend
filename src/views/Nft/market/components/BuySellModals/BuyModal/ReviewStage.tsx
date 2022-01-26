@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWeb3React } from '@web3-react/core'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@envoysvision/uikit'
+import { Flex, Text, Button, ButtonMenu, ButtonMenuItem, Message, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { NftToken } from 'state/nftMarket/types'
 import { getBscScanLinkForNft } from 'utils'
@@ -43,7 +43,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
               {nftToBuy.collectionName}
             </Text>
             <Text bold>{nftToBuy.name}</Text>
-            <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="center">
               <Text fontSize="12px" color="textSubtle" p="0px" height="16px" mr="4px">
                 {t('Token ID:')}
               </Text>

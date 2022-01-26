@@ -1,5 +1,5 @@
 import React from 'react'
-import { AutoRenewIcon, Button } from '@envoysvision/uikit'
+import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from 'contexts/Localization'
@@ -22,18 +22,14 @@ const ClaimButton: React.FC<Props> = ({ poolId, ifoVersion, walletIfoData }) => 
 
   const handleClaim = async () => {
     try {
-      let txHash
       setPendingTx(true)
-
-      if (ifoVersion === 1) {
-        const tx = await walletIfoData.contract.harvest()
-        const receipt = await tx.wait()
-        txHash = receipt.transactionHash
-      } else {
-        const tx = await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
-        const receipt = await tx.wait()
-        txHash = receipt.transactionHash
-      }
+      const tx =
+        ifoVersion === 1
+          ? await walletIfoData.contract.harvest()
+          : await walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+      const receipt = await tx.wait()
+      const txHash = receipt.transactionHash
 
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(

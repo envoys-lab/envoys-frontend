@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@envoysvision/uikit'
+import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { useAppDispatch } from 'state'
@@ -7,14 +7,16 @@ import { useProfile } from 'state/profile/hooks'
 import { fetchProfile } from 'state/profile'
 import useToast from 'hooks/useToast'
 import { formatBigNumber } from 'utils/formatBalance'
-import { useProfile as useProfileContract } from 'hooks/useContract'
+import { useProfileContract } from 'hooks/useContract'
 import { useWeb3React } from '@web3-react/core'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
-type PauseProfilePageProps = InjectedModalProps
+interface PauseProfilePageProps extends InjectedModalProps {
+  onSuccess?: () => void
+}
 
-const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
+const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss, onSuccess }) => {
   const [isAcknowledged, setIsAcknowledged] = useState(false)
   const [isConfirming, setIsConfirming] = useState(false)
   const { profile } = useProfile()
@@ -32,12 +34,16 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
 
   const handleDeactivateProfile = async () => {
     const tx = await callWithGasPrice(pancakeProfileContract, 'pauseProfile')
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {
       // Re-fetch profile
       await dispatch(fetchProfile(account))
       toastSuccess(t('Profile Paused!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      if (onSuccess) {
+        onSuccess()
+      }
       onDismiss()
     } else {
       toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))

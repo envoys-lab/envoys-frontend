@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Heading } from '@envoysvision/uikit'
-import { Link } from 'react-router-dom'
+import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Heading } from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import { formatLocalisedCompactNumber } from 'utils/formatBalance'
-import { useSlowFresh } from 'hooks/useRefresh'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getTotalWon } from 'state/predictions/helpers'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(NextLinkFromReactRouter)`
   width: 100%;
 `
 
 const PredictionCardContent = () => {
   const { t } = useTranslation()
-  const slowRefresh = useSlowFresh()
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [loadData, setLoadData] = useState(false)
   const bnbBusdPrice = useBNBBusdPrice()
@@ -33,7 +32,7 @@ const PredictionCardContent = () => {
     }
   }, [isIntersecting])
 
-  useEffect(() => {
+  useSlowRefreshEffect(() => {
     const fetchMarketData = async () => {
       const totalWon = await getTotalWon()
       setBnbWon(totalWon)
@@ -42,7 +41,7 @@ const PredictionCardContent = () => {
     if (loadData) {
       fetchMarketData()
     }
-  }, [slowRefresh, loadData])
+  }, [loadData])
 
   return (
     <>

@@ -623,7 +623,7 @@
       {
         "components": [
           {
-            "internalType": "enum EnvoysPredictionV2.Position",
+            "internalType": "enum PancakePredictionV2.Position",
             "name": "position",
             "type": "uint8"
           },
@@ -638,7 +638,7 @@
             "type": "bool"
           }
         ],
-        "internalType": "struct EnvoysPredictionV2.BetInfo[]",
+        "internalType": "struct PancakePredictionV2.BetInfo[]",
         "name": "",
         "type": "tuple[]"
       },
@@ -699,7 +699,7 @@
     "name": "ledger",
     "outputs": [
       {
-        "internalType": "enum EnvoysPredictionV2.Position",
+        "internalType": "enum PancakePredictionV2.Position",
         "name": "position",
         "type": "uint8"
       },

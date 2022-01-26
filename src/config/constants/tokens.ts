@@ -1,4 +1,4 @@
-import { ChainId, Token } from '@envoysvision/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { serializeToken } from 'state/user/hooks/helpers'
 import { SerializedToken } from './types'
 
@@ -26,7 +26,7 @@ export const mainnetTokens = defineTokens({
     '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
     18,
     'CAKE',
-    'EnvoysSwap Token',
+    'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
@@ -384,7 +384,7 @@ export const mainnetTokens = defineTokens({
     '0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51',
     18,
     'BUNNY',
-    'Envoysbunny Token',
+    'Pancakebunny Token',
     'https://pancakebunny.finance/',
   ),
   alice: new Token(
@@ -1934,6 +1934,39 @@ export const mainnetTokens = defineTokens({
     'Bsc-Peg INSUR Token',
     'https://www.insurace.io/',
   ),
+  froyo: new Token(
+    MAINNET,
+    '0xe369fec23380f9F14ffD07a1DC4b7c1a9fdD81c9',
+    18,
+    'FROYO',
+    'Froyo Games',
+    'https://froyo.games/',
+  ),
+  apx: new Token(
+    MAINNET,
+    '0x78F5d389F5CDCcFc41594aBaB4B0Ed02F31398b3',
+    18,
+    'APX',
+    'ApolloX Token',
+    'https://www.apollox.finance/',
+  ),
+  prl: new Token(
+    MAINNET,
+    '0xd07e82440A395f3F3551b42dA9210CD1Ef4f8B24',
+    18,
+    'PRL',
+    'Parallel Token',
+    'https://theparallel.io',
+  ),
+  fuse: new Token(MAINNET, '0x5857c96DaE9cF8511B08Cb07f85753C472D36Ea3', 18, 'FUSE', 'Fuse Token', 'https://fuse.io/'),
+  ertha: new Token(
+    MAINNET,
+    '0x62823659d09F9F9D2222058878f89437425eB261',
+    18,
+    'ERTHA',
+    'Ertha Token',
+    'https://ertha.io/',
+  ),
 } as const)
 
 export const testnetTokens = defineTokens({
@@ -1950,7 +1983,7 @@ export const testnetTokens = defineTokens({
     '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
     18,
     'CAKE',
-    'EnvoysSwap Token',
+    'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
   busd: new Token(
@@ -1980,7 +2013,7 @@ export const testnetTokens = defineTokens({
 } as const)
 
 const tokens = () => {
-  const chainId = process.env.REACT_APP_CHAIN_ID
+  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
 
   // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
   if (parseInt(chainId, 10) === ChainId.TESTNET) {

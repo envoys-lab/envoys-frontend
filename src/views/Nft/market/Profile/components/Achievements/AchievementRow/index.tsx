@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { AutoRenewIcon, Button, Flex } from '@envoysvision/uikit'
+import { AutoRenewIcon, Button, Flex } from '@pancakeswap/uikit'
 import { Achievement } from 'state/types'
 import useToast from 'hooks/useToast'
 import { useTranslation } from 'contexts/Localization'
@@ -62,6 +62,7 @@ const AchievementRow: React.FC<AchievementRowProps> = ({ achievement, onCollectS
   const handleCollectPoints = async () => {
     try {
       const tx = await callWithGasPrice(pointCenterContract, 'getPoints', [achievement.address])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsCollecting(true)
       const receipt = await tx.wait()
       if (receipt.status) {

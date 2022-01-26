@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Flex, Heading, Button } from '@envoysvision/uikit'
+import { NextLinkFromReactRouter } from 'components/NextLink'
+import { Flex, Heading, Button } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -114,9 +114,9 @@ const Hero = () => {
           </Heading>
           <Flex>
             {!account && <ConnectWalletButton mr="8px" />}
-            <Link to="/swap">
+            <NextLinkFromReactRouter to="/swap">
               <Button variant={!account ? 'secondary' : 'primary'}>{t('Trade Now')}</Button>
-            </Link>
+            </NextLinkFromReactRouter>
           </Flex>
         </Flex>
         <Flex

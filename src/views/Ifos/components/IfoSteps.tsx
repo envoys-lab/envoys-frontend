@@ -15,12 +15,12 @@ import {
   Flex,
   useTooltip,
   TooltipText,
-  EnvoysRoundIcon,
+  LogoRoundIcon,
   Skeleton,
   useModal,
   Link,
-} from '@envoysvision/uikit'
-import { Link as RouterLink } from 'react-router-dom'
+} from '@pancakeswap/uikit'
+import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useWeb3React } from '@web3-react/core'
 import { Ifo } from 'config/constants/types'
 import { WalletIfoData } from 'views/Ifos/types'
@@ -38,6 +38,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useIfoPoolVault, useIfoPoolCredit, useIfoWithApr } from 'state/pools/hooks'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
+import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 
 interface Props {
   ifo: Ifo
@@ -46,7 +47,6 @@ interface Props {
 }
 
 const Wrapper = styled(Container)`
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
   margin-left: -16px;
   margin-right: -16px;
   padding-top: 48px;
@@ -73,6 +73,10 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
   const ifoPoolVault = useIfoPoolVault()
   const credit = useIfoPoolCredit()
   const { pool } = useIfoWithApr()
+
+  const { isVaultApproved, setLastUpdated } = useCheckVaultApprovalStatus(pool.vaultKey)
+  const { handleApprove, requestedApproval } = useVaultApprove(pool.vaultKey, setLastUpdated)
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Box>
       <span>
@@ -124,7 +128,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
         <SmallStakePoolCard borderRadius="default" p="16px">
           <FlexGap justifyContent="space-between" alignItems="center" flexWrap="wrap" gap="16px">
             <Flex>
-              <EnvoysRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
+              <LogoRoundIcon style={{ alignSelf: 'flex-start' }} width={32} height={32} />
               <Box ml="16px">
                 <Text bold fontSize="12px" textTransform="uppercase" color="secondary">
                   {t('Your max CAKE entry')}
@@ -146,7 +150,13 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
                 </Text>
               </Box>
             </Flex>
-            <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+            {isVaultApproved ? (
+              <Button onClick={onPresentStake}>{t('Stake')} CAKE</Button>
+            ) : (
+              <Button disabled={requestedApproval} onClick={handleApprove}>
+                {t('Enable pool')}
+              </Button>
+            )}
           </FlexGap>
         </SmallStakePoolCard>
       )}
@@ -231,7 +241,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
               {t('Activate your Profile')}
             </Heading>
             <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active EnvoysSwap Profile to take part in an IFO!')}
+              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
             </Text>
             {renderAccountStatus()}
           </CardBody>

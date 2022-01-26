@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { ethers } from 'ethers'
-import { formatUnits } from 'ethers/lib/utils'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Image, Text } from '@envoysvision/uikit'
+import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
@@ -29,6 +28,7 @@ import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
@@ -87,7 +87,7 @@ const ControlStretch = styled(Flex)`
 const NUMBER_OF_POOLS_VISIBLE = 12
 
 const Pools: React.FC = () => {
-  const location = useLocation()
+  const router = useRouter()
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { userDataLoaded } = usePools()
@@ -145,7 +145,7 @@ const Pools: React.FC = () => {
     }
   }, [isIntersecting])
 
-  const showFinishedPools = location.pathname.includes('history')
+  const showFinishedPools = router.pathname.includes('history')
 
   const handleChangeSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -188,13 +188,13 @@ const Pools: React.FC = () => {
               if (pool.stakingTokenPrice && vaultPools[pool.vaultKey].totalCakeInVault.isFinite()) {
                 totalStaked =
                   +formatUnits(
-                    ethers.BigNumber.from(vaultPools[pool.vaultKey].totalCakeInVault.toString()),
+                    EthersBigNumber.from(vaultPools[pool.vaultKey].totalCakeInVault.toString()),
                     pool.stakingToken.decimals,
                   ) * pool.stakingTokenPrice
               }
             } else if (pool.sousId === 0) {
               if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice && cakeInVaults.isFinite()) {
-                const manualCakeTotalMinusAutoVault = ethers.BigNumber.from(pool.totalStaked.toString()).sub(
+                const manualCakeTotalMinusAutoVault = EthersBigNumber.from(pool.totalStaked.toString()).sub(
                   cakeInVaults.toString(),
                 )
                 totalStaked =
@@ -202,7 +202,7 @@ const Pools: React.FC = () => {
               }
             } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
               totalStaked =
-                +formatUnits(ethers.BigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
+                +formatUnits(EthersBigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
                 pool.stakingTokenPrice
             }
             return Number.isFinite(totalStaked) ? totalStaked : 0
@@ -328,7 +328,7 @@ const Pools: React.FC = () => {
           mx="auto"
           mt="12px"
           src="/images/decorations/3d-syrup-bunnies.png"
-          alt="Envoys illustration"
+          alt="Pancake illustration"
           width={192}
           height={184.5}
         />

@@ -1,8 +1,7 @@
-import { Box } from '@envoysvision/uikit'
+import { Box } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 const IfoLayout = styled(Box)`
-  display: grid;
   > div:not(.sticky-header) {
     margin-bottom: 32px;
   }

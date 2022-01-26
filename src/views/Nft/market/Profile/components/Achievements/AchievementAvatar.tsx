@@ -1,6 +1,6 @@
 import React, { ImgHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { BunnyPlaceholderIcon } from '@envoysvision/uikit'
+import { BunnyPlaceholderIcon } from '@pancakeswap/uikit'
 
 interface AchievementAvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
   badge?: string

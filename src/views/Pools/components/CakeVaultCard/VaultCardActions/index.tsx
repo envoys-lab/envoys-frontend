@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Box, Skeleton } from '@envoysvision/uikit'
+import { Flex, Text, Box, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
@@ -24,7 +24,7 @@ export const IfoVaultCardAvgBalance = () => {
   const credit = useIfoPoolCredit()
 
   const cakeAsNumberBalance = getBalanceNumber(credit)
-  const creditsDollarValue = useBUSDCakeAmount(cakeAsNumberBalance)
+  const creditsDollarValue: number | undefined = useBUSDCakeAmount(cakeAsNumberBalance)
 
   return (
     <>
@@ -55,7 +55,7 @@ export const IfoVaultCardAvgBalance = () => {
       <Flex flexDirection="column" pb="16px">
         <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
         <Text fontSize="12px" color="textSubtle" display="flex">
-          {creditsDollarValue ? (
+          {creditsDollarValue !== undefined ? (
             <Balance
               value={creditsDollarValue}
               fontSize="12px"

@@ -10,30 +10,23 @@ import {
   getCollectionsApi,
   getCollectionSg,
   getCollectionsSg,
-  getCompleteAccountNftData,
   getMarketDataForTokenIds,
   getMetadataWithFallback,
   getNftsByBunnyIdSg,
   getNftsFromCollectionApi,
-  getNftsFromDifferentCollectionsApi,
   getNftsMarketData,
-  getEnvoysBunniesAttributesField,
-  getUserActivity,
+  getPancakeBunniesAttributesField,
 } from './helpers'
 import {
-  ApiCollections,
   ApiSingleTokenData,
   Collection,
   MarketEvent,
   NftActivityFilter,
   NftAttribute,
   NftFilter,
-  NftLocation,
   NFTMarketInitializationState,
   NftToken,
   State,
-  TokenIdWithCollectionAddress,
-  UserNftInitializationState,
 } from './types'
 
 const initialNftFilterState: NftFilter = {
@@ -48,6 +41,7 @@ const initialNftFilterState: NftFilter = {
 
 const initialNftActivityFilterState: NftActivityFilter = {
   typeFilters: [],
+  collectionFilters: [],
 }
 
 const initialState: State = {
@@ -58,19 +52,8 @@ const initialState: State = {
     filters: {},
     activityFilters: {},
     loadingState: {
-      isUpdatingEnvoysBunnies: false,
-      latestEnvoysBunniesUpdateAt: 0,
-    },
-    users: {},
-    user: {
-      userNftsInitializationState: UserNftInitializationState.UNINITIALIZED,
-      nfts: [],
-      activity: {
-        initializationState: UserNftInitializationState.UNINITIALIZED,
-        askOrderHistory: [],
-        buyTradeHistory: [],
-        sellTradeHistory: [],
-      },
+      isUpdatingPancakeBunnies: false,
+      latestPancakeBunniesUpdateAt: 0,
     },
   },
 }
@@ -109,7 +92,7 @@ export const fetchNftsFromCollections = createAsyncThunk<
 >('nft/fetchNftsFromCollections', async ({ collectionAddress, page, size }) => {
   try {
     if (collectionAddress === pancakeBunniesAddress) {
-      // EnvoysBunnies don't need to pre-fetch "all nfts" from the collection
+      // PancakeBunnies don't need to pre-fetch "all nfts" from the collection
       // When user visits IndividualNFTPage required nfts will be fetched via bunny id
       return []
     }
@@ -187,7 +170,7 @@ export const filterNftsFromCollection = createAsyncThunk<
 })
 
 /**
- * This action keeps data on the individual EnvoysBunny page up-to-date. Operation is a twofold
+ * This action keeps data on the individual PancakeBunny page up-to-date. Operation is a twofold
  * 1. Update existing NFTs in the state in case some were sold or got price modified
  * 2. Fetch 30 more NFTs with specified bunny id
  */
@@ -215,7 +198,7 @@ export const fetchNewPBAndUpdateExisting = createAsyncThunk<
       }
       const updatedTokens = updatedNftsMarket.map((marketData) => {
         const apiMetadata = getMetadataWithFallback(updatedNfts.data, marketData.otherId)
-        const attributes = getEnvoysBunniesAttributesField(marketData.otherId)
+        const attributes = getPancakeBunniesAttributesField(marketData.otherId)
         return combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
       })
 
@@ -233,65 +216,16 @@ export const fetchNewPBAndUpdateExisting = createAsyncThunk<
 
       const moreTokensWithRequestedBunnyId = nftsMarket.map((marketData) => {
         const apiMetadata = getMetadataWithFallback(newNfts.data, marketData.otherId)
-        const attributes = getEnvoysBunniesAttributesField(marketData.otherId)
+        const attributes = getPancakeBunniesAttributesField(marketData.otherId)
         return combineApiAndSgResponseToNftToken(apiMetadata, marketData, attributes)
       })
       return [...updatedTokens, ...moreTokensWithRequestedBunnyId]
     } catch (error) {
-      console.error(`Failed to update EnvoysBunnies NFTs`, error)
+      console.error(`Failed to update PancakeBunnies NFTs`, error)
       return []
     }
   },
 )
-
-export const fetchUserNfts = createAsyncThunk<
-  NftToken[],
-  { account: string; profileNftWithCollectionAddress?: TokenIdWithCollectionAddress; collections: ApiCollections }
->('nft/fetchUserNfts', async ({ account, profileNftWithCollectionAddress, collections }) => {
-  const completeNftData = await getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress)
-  return completeNftData
-})
-
-export const updateUserNft = createAsyncThunk<
-  NftToken,
-  { tokenId: string; collectionAddress: string; location?: NftLocation }
->('nft/updateUserNft', async ({ tokenId, collectionAddress, location = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({
-    tokenId_in: [tokenId],
-    collection: collectionAddress.toLowerCase(),
-  })
-  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
-  const completeNftData = { ...metadataForNft[0], location, marketData: marketDataForNft[0] }
-
-  return completeNftData
-})
-
-export const removeUserNft = createAsyncThunk<string, { tokenId: string }>(
-  'nft/removeUserNft',
-  async ({ tokenId }) => tokenId,
-)
-
-export const addUserNft = createAsyncThunk<
-  NftToken,
-  { tokenId: string; collectionAddress: string; nftLocation?: NftLocation }
->('nft/addUserNft', async ({ tokenId, collectionAddress, nftLocation = NftLocation.WALLET }) => {
-  const marketDataForNft = await getNftsMarketData({
-    tokenId_in: [tokenId],
-    collection: collectionAddress.toLowerCase(),
-  })
-  const metadataForNft = await getNftsFromDifferentCollectionsApi([{ tokenId, collectionAddress }])
-
-  return {
-    ...metadataForNft[0],
-    location: nftLocation,
-    marketData: marketDataForNft[0],
-  }
-})
-
-export const fetchUserActivity = createAsyncThunk('nft/fetchUserActivity', async (address: string) => {
-  const userActivity = await getUserActivity(address.toLocaleLowerCase())
-  return userActivity
-})
 
 export const NftMarket = createSlice({
   name: 'NftMarket',
@@ -316,6 +250,28 @@ export const NftMarket = createSlice({
         state.data.activityFilters[action.payload.collection].typeFilters = state.data.activityFilters[
           action.payload.collection
         ].typeFilters.filter((activeFilter) => activeFilter !== action.payload.field)
+      }
+    },
+    addActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters.push(action.payload.collection)
+      } else {
+        state.data.activityFilters[''] = {
+          ...initialNftActivityFilterState,
+          collectionFilters: [action.payload.collection],
+        }
+      }
+    },
+    removeActivityCollectionFilters: (state, action: PayloadAction<{ collection: string }>) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = state.data.activityFilters[''].collectionFilters.filter(
+          (activeFilter) => activeFilter !== action.payload.collection,
+        )
+      }
+    },
+    removeAllActivityCollectionFilters: (state) => {
+      if (state.data.activityFilters['']) {
+        state.data.activityFilters[''].collectionFilters = []
       }
     },
     removeAllActivityFilters: (state, action: PayloadAction<string>) => {
@@ -346,9 +302,6 @@ export const NftMarket = createSlice({
           showOnlyOnSale: action.payload.showOnlyOnSale,
         }
       }
-    },
-    resetUserNftState: (state) => {
-      state.data.user = { ...initialState.data.user }
     },
   },
   extraReducers: (builder) => {
@@ -407,53 +360,18 @@ export const NftMarket = createSlice({
       state.data.nfts[collectionAddress] = [...existingNftsWithoutNewOnes, ...action.payload]
     })
     builder.addCase(fetchNewPBAndUpdateExisting.pending, (state) => {
-      state.data.loadingState.isUpdatingEnvoysBunnies = true
+      state.data.loadingState.isUpdatingPancakeBunnies = true
     })
     builder.addCase(fetchNewPBAndUpdateExisting.fulfilled, (state, action) => {
       if (action.payload.length > 0) {
         state.data.nfts[pancakeBunniesAddress] = action.payload
       }
-      state.data.loadingState.isUpdatingEnvoysBunnies = false
-      state.data.loadingState.latestEnvoysBunniesUpdateAt = Date.now()
+      state.data.loadingState.isUpdatingPancakeBunnies = false
+      state.data.loadingState.latestPancakeBunniesUpdateAt = Date.now()
     })
     builder.addCase(fetchNewPBAndUpdateExisting.rejected, (state) => {
-      state.data.loadingState.isUpdatingEnvoysBunnies = false
-      state.data.loadingState.latestEnvoysBunniesUpdateAt = Date.now()
-    })
-    builder.addCase(fetchUserNfts.rejected, (state) => {
-      state.data.user.userNftsInitializationState = UserNftInitializationState.ERROR
-    })
-    builder.addCase(fetchUserNfts.pending, (state) => {
-      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZING
-    })
-    builder.addCase(fetchUserNfts.fulfilled, (state, action) => {
-      state.data.user.nfts = action.payload
-      state.data.user.userNftsInitializationState = UserNftInitializationState.INITIALIZED
-    })
-    builder.addCase(updateUserNft.fulfilled, (state, action) => {
-      const userNftsState: NftToken[] = state.data.user.nfts
-      const nftToUpdate = userNftsState.find((nft) => nft.tokenId === action.payload.tokenId)
-      const indexInState = userNftsState.indexOf(nftToUpdate)
-      state.data.user.nfts[indexInState] = action.payload
-    })
-    builder.addCase(removeUserNft.fulfilled, (state, action) => {
-      const copyOfState: NftToken[] = [...state.data.user.nfts]
-      const nftToRemove = copyOfState.find((nft) => nft.tokenId === action.payload)
-      const indexInState = copyOfState.indexOf(nftToRemove)
-      copyOfState.splice(indexInState, 1)
-      state.data.user.nfts = copyOfState
-    })
-    builder.addCase(addUserNft.fulfilled, (state, action) => {
-      state.data.user.nfts = [...state.data.user.nfts, action.payload]
-    })
-    builder.addCase(fetchUserActivity.fulfilled, (state, action) => {
-      state.data.user.activity = { ...action.payload, initializationState: UserNftInitializationState.INITIALIZED }
-    })
-    builder.addCase(fetchUserActivity.rejected, (state) => {
-      state.data.user.activity.initializationState = UserNftInitializationState.ERROR
-    })
-    builder.addCase(fetchUserActivity.pending, (state) => {
-      state.data.user.activity.initializationState = UserNftInitializationState.INITIALIZING
+      state.data.loadingState.isUpdatingPancakeBunnies = false
+      state.data.loadingState.latestPancakeBunniesUpdateAt = Date.now()
     })
   },
 })
@@ -463,10 +381,12 @@ export const {
   removeAllFilters,
   removeAllActivityFilters,
   removeActivityTypeFilters,
+  removeActivityCollectionFilters,
+  removeAllActivityCollectionFilters,
   addActivityTypeFilters,
+  addActivityCollectionFilters,
   setOrdering,
   setShowOnlyOnSale,
-  resetUserNftState,
 } = NftMarket.actions
 
 export default NftMarket.reducer

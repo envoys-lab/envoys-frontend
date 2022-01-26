@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@envoysvision/uikit'
+import { Heading, Flex, Button, Grid, ChevronRightIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { NftToken } from 'state/nftMarket/types'
 import { getLatestListedNfts, getNftsFromDifferentCollectionsApi } from 'state/nftMarket/helpers'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
@@ -46,9 +46,9 @@ const Newest: React.FC = () => {
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="26px">
-        <Heading>{t('Newest Arrivals')}</Heading>
+        <Heading data-test="nfts-newest">{t('Newest Arrivals')}</Heading>
         <Button
-          as={Link}
+          as={NextLinkFromReactRouter}
           to={`${nftsBaseUrl}/activity/`}
           variant="secondary"
           scale="sm"
@@ -69,6 +69,7 @@ const Newest: React.FC = () => {
               !isPBCollection && nft.marketData?.isTradable ? parseFloat(nft.marketData.currentAskPrice) : undefined
             return (
               <CollectibleLinkCard
+                data-test="newest-nft-card"
                 key={nft.collectionAddress + nft.tokenId}
                 nft={nft}
                 currentAskPrice={currentAskPrice}

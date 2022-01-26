@@ -1,7 +1,7 @@
-import { getStepperStatus } from 'views/EnvoysSquad/components/EventStepsSection/utils'
-import { SaleStatusEnum } from 'views/EnvoysSquad/types'
+import { getStepperStatus } from 'views/PancakeSquad/components/EventStepsSection/utils'
+import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
-describe('EnvoysSquad/EventStepsSection/utils/getStepperStatus', () => {
+describe('PancakeSquad/EventStepsSection/utils/getStepperStatus', () => {
   it('Should return future text', () => {
     // Given
     const eventStatus = []

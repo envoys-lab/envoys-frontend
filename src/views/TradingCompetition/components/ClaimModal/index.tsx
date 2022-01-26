@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Modal, Button, Flex, AutoRenewIcon, Heading, Text, Image } from '@envoysvision/uikit'
+import { Modal, Button, Flex, AutoRenewIcon, Heading, Text } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { useTranslation } from 'contexts/Localization'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -45,6 +46,7 @@ const ClaimModal: React.FC<CompetitionProps> = ({ onDismiss, onClaimSuccess, use
 
   const handleClaimClick = async () => {
     const tx = await callWithGasPrice(tradingCompetitionContract, 'claimReward')
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

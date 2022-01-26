@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Grid, Text, Button, Link, BinanceIcon, LinkExternal, useModal } from '@envoysvision/uikit'
+import { Flex, Grid, Text, Button, Link, BinanceIcon, LinkExternal, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
@@ -13,6 +13,7 @@ interface SellStageProps {
   lowestPrice: number
   continueToNextStage: () => void
   continueToTransferStage: () => void
+  onSuccessEditProfile?: () => void
 }
 
 // Initial stage when user wants to put their NFT for sale or transfer to another wallet
@@ -21,6 +22,7 @@ const SellStage: React.FC<SellStageProps> = ({
   lowestPrice,
   continueToNextStage,
   continueToTransferStage,
+  onSuccessEditProfile,
 }) => {
   const { t } = useTranslation()
   const { hasProfile } = useProfile()
@@ -29,7 +31,7 @@ const SellStage: React.FC<SellStageProps> = ({
       ? nftToSell.attributes[0].value
       : nftToSell.tokenId
 
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccessEditProfile} />, false)
 
   return (
     <>

@@ -15,7 +15,7 @@ import {
   Box,
   ModalCloseButton,
   Skeleton,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useAppDispatch } from 'state'
 import { REWARD_RATE } from 'state/predictions/config'
@@ -101,6 +101,7 @@ const CollectRoundWinningsModal: React.FC<CollectRoundWinningsModalProps> = ({ o
   const handleClick = async () => {
     try {
       const tx = await callWithGasPrice(predictionsContract, 'claim', [epochs])
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       setIsPendingTx(true)
       const receipt = await tx.wait()
 

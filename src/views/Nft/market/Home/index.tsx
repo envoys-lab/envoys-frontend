@@ -1,15 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box, Button, Heading, Flex } from '@envoysvision/uikit'
+import { Box, Button, Heading, Flex } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
-import { Link } from 'react-router-dom'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import PageHeader from 'components/PageHeader'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
 import PageSection from 'components/PageSection'
 import { PageMeta } from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import { useGetCollections } from 'state/nftMarket/hooks'
 import useTheme from 'hooks/useTheme'
+import orderBy from 'lodash/orderBy'
 import SearchBar from '../components/SearchBar'
 import Collections from './Collections'
 import Newest from './Newest'
@@ -53,6 +55,19 @@ const Home = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
+  const collections = useGetCollections()
+
+  const hotCollections = orderBy(
+    collections,
+    (collection) => (collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0),
+    'desc',
+  )
+
+  const newestCollections = orderBy(
+    collections,
+    (collection) => (collection.createdAt ? Date.parse(collection.createdAt) : 0),
+    'desc',
+  )
 
   return (
     <>
@@ -67,7 +82,7 @@ const Home = () => {
               {t('Buy and Sell NFTs on Binance Smart Chain')}
             </Heading>
             {account && (
-              <Button as={Link} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
+              <Button as={NextLinkFromReactRouter} to={`${nftsBaseUrl}/profile/${account.toLowerCase()}`} mt="32px">
                 {t('Manage/Sell')}
               </Button>
             )}
@@ -82,7 +97,18 @@ const Home = () => {
         concaveDivider
         dividerPosition="top"
       >
-        <Collections />
+        <Collections
+          key="newest-collections"
+          title={t('Newest Collections')}
+          testId="nfts-newest-collections"
+          collections={newestCollections}
+        />
+        <Collections
+          key="hot-collections"
+          title={t('Hot Collections')}
+          testId="nfts-hot-collections"
+          collections={hotCollections}
+        />
         <Newest />
       </PageSection>
       <Gradient p="64px 0">

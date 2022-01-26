@@ -1,5 +1,5 @@
 import React from 'react'
-import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, LinkExternal } from '@envoysvision/uikit'
+import { InjectedModalProps, Modal, Flex, Text, Button, useModal, Link, Grid, LinkExternal } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import { NftToken } from 'state/nftMarket/types'
@@ -21,10 +21,11 @@ const TextWrapper = styled(Flex)`
 
 interface ProfileNftModalProps extends InjectedModalProps {
   nft: NftToken
+  onSuccess?: () => void
 }
 
-const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => {
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss, onSuccess }) => {
+  const [onEditProfileModal] = useModal(<EditProfileModal onSuccess={onSuccess} />, false)
   const { t } = useTranslation()
   const { theme } = useTheme()
 
@@ -67,7 +68,7 @@ const ProfileNftModal: React.FC<ProfileNftModalProps> = ({ nft, onDismiss }) => 
           </Flex>
         </Flex>
         <TextWrapper p="24px 16px" flexDirection="column">
-          <Text mb="16px">{t("You're using this NFT as your Envoys Profile picture")}</Text>
+          <Text mb="16px">{t("You're using this NFT as your Pancake Profile picture")}</Text>
           <Text color="textSubtle" mb="16px" fontSize="14px">
             {t(
               'Removing it will suspend your profile, and you won’t be able to earn points, participate in team activities, or be eligible for new NFT drops.',

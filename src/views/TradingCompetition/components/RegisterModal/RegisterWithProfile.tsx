@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@envoysvision/uikit'
+import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractV2 } from 'hooks/useContract'
 import { useTranslation } from 'contexts/Localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -26,6 +26,7 @@ const RegisterWithProfile: React.FC<CompetitionProps> = ({ profile, onDismiss, o
 
   const handleConfirmClick = async () => {
     const tx = await callWithGasPrice(tradingCompetitionContract, 'register')
+    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
     setIsConfirming(true)
     const receipt = await tx.wait()
     if (receipt.status) {

@@ -525,7 +525,7 @@
     "name": "pancakeProfile",
     "outputs": [
       {
-        "internalType": "contract EnvoysProfile",
+        "internalType": "contract PancakeProfile",
         "name": "",
         "type": "address"
       }
@@ -538,7 +538,7 @@
     "name": "pancakeSwapLottery",
     "outputs": [
       {
-        "internalType": "contract IEnvoysSwapLottery",
+        "internalType": "contract IPancakeSwapLottery",
         "name": "",
         "type": "address"
       }

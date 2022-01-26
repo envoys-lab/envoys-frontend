@@ -14,12 +14,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "strictNullChecks": false,
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "incremental": true
   },
   "exclude": ["node_modules", "cypress"],
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+  "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]
 }

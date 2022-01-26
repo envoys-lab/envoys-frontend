@@ -12,7 +12,7 @@ import {
   CardRibbon,
   useMatchBreakpoints,
   BunnyPlaceholderIcon,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { LotteryRound } from 'state/types'
 import { useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import { LotteryStatus } from 'config/constants/types'

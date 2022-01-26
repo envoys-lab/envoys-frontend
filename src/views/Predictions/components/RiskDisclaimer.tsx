@@ -11,7 +11,7 @@ import {
   ModalTitle,
   Heading,
   Box,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 

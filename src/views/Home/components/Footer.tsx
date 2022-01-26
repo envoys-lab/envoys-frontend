@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link } from '@envoysvision/uikit'
+import { Flex, Heading, Text, Link } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
@@ -36,7 +36,7 @@ const Wrapper = styled(Flex)`
   overflow: hidden;
 `
 
-const FloatingEnvoyssWrapper = styled(Container)`
+const FloatingPancakesWrapper = styled(Container)`
   overflow: hidden;
   position: absolute;
   width: 100%;
@@ -66,18 +66,18 @@ const BottomRightImgWrapper = styled(Flex)`
 const topLeftImage = {
   path: '/images/home/flying-pancakes/',
   attributes: [
-    { src: '1-bottom', alt: 'Envoys flying on the bottom' },
-    { src: '1-left', alt: 'Envoys flying on the left' },
-    { src: '1-top', alt: 'Envoys flying on the top' },
+    { src: '1-bottom', alt: 'Pancake flying on the bottom' },
+    { src: '1-left', alt: 'Pancake flying on the left' },
+    { src: '1-top', alt: 'Pancake flying on the top' },
   ],
 }
 
 const bottomRightImage = {
   path: '/images/home/flying-pancakes/',
   attributes: [
-    { src: '2-bottom', alt: 'Envoys flying on the bottom' },
-    { src: '2-top', alt: 'Envoys flying on the top' },
-    { src: '2-right', alt: 'Envoys flying on the right' },
+    { src: '2-bottom', alt: 'Pancake flying on the bottom' },
+    { src: '2-top', alt: 'Pancake flying on the top' },
+    { src: '2-right', alt: 'Pancake flying on the right' },
   ],
 }
 
@@ -92,14 +92,14 @@ const Footer = () => {
           <StyledSunburst />
         </Flex>
       </BgWrapper>
-      <FloatingEnvoyssWrapper>
+      <FloatingPancakesWrapper>
         <TopLeftImgWrapper>
           <CompositeImage {...topLeftImage} maxHeight="256px" />
         </TopLeftImgWrapper>
         <BottomRightImgWrapper>
           <CompositeImage {...bottomRightImage} maxHeight="256px" />
         </BottomRightImgWrapper>
-      </FloatingEnvoyssWrapper>
+      </FloatingPancakesWrapper>
       <Wrapper>
         <Heading mb="24px" scale="xl" color="white">
           {t('Start in seconds.')}

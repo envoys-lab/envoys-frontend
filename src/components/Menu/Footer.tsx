@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@envoysvision/uikit'
+import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 
 const Wrapper = styled.div<{ $isSide: boolean }>`
@@ -80,7 +80,7 @@ const Footer: React.FC<{ variant?: FooterVariant }> = ({ variant = 'default' }) 
             <path d="M0 16V0C0 0 3 1 6 1C9 1 16 -2 16 3.5C16 10.5 7.5 16 0 16Z" />
           </Svg>
         </BubbleWrapper>
-        <Image src="/images/help.svg" alt="Get some help" width={160} height={108} />
+        <Image src="/images/help.png" alt="Get some help" width={160} height={108} />
       </Flex>
     </Wrapper>
   )

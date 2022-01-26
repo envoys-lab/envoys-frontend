@@ -12,7 +12,7 @@ import {
   TwitterIcon,
   Link,
   TelegramIcon,
-} from '@envoysvision/uikit'
+} from '@pancakeswap/uikit'
 import tokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import { PublicIfoData } from 'views/Ifos/types'
@@ -47,6 +47,8 @@ const Container = styled(Flex)`
   flex-direction: column;
   align-items: center;
   text-align: left;
+  gap: 16px;
+
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
     align-items: initial;
@@ -121,8 +123,8 @@ const IfoAchievement: React.FC<Props> = ({ ifo, publicIfoData }) => {
         </Flex>
       </AchievementFlex>
       {ifo.description && (
-        <Flex alignItems="flex-end" flexDirection="column" flex={1} pl="16px">
-          <Text fontSize="14px" lineHeight={1.2}>
+        <Flex alignItems="flex-end" flexDirection="column" flex={1}>
+          <Text fontSize="14px" lineHeight={1.2} style={{ whiteSpace: 'pre-line' }}>
             {ifo.description}
           </Text>
         </Flex>

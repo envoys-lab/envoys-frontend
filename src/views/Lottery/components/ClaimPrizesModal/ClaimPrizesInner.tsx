@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@envoysvision/uikit'
+import { Flex, Button, Text, AutoRenewIcon, PresentWonIcon } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import { getBalanceAmount } from 'utils/formatBalance'
@@ -90,6 +90,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
       const tx = await callWithEstimateGas(lotteryContract, 'claimTickets', [lotteryId, ticketIds, brackets], {
         gasPrice,
       })
+      toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
       const receipt = await tx.wait()
       if (receipt.status) {
         toastSuccess(
@@ -124,6 +125,7 @@ const ClaimInnerContainer: React.FC<ClaimInnerProps> = ({ onSuccess, roundsToCla
           [lotteryId, ticketBatch.ticketIds, ticketBatch.brackets],
           { gasPrice },
         )
+        toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         const receipt = await tx.wait()
         /* eslint-enable no-await-in-loop */
         if (receipt.status) {

@@ -1,5 +1,5 @@
 {
-  "name": "EnvoysSwap Default List",
+  "name": "PancakeSwap Default List",
   "timestamp": "2021-05-06T00:00:00Z",
   "version": {
     "major": 3,
@@ -51,7 +51,7 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059ff775485246999027b3197955.png"
     },
     {
-      "name": "EnvoysSwap Token",
+      "name": "PancakeSwap Token",
       "symbol": "CAKE",
       "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
       "chainId": 56,
@@ -75,7 +75,7 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x4bd17003473389a42daf6a0a729f6fdb328bbbd7.png"
     },
     {
-      "name": "Envoys Bunny",
+      "name": "Pancake Bunny",
       "symbol": "BUNNY",
       "address": "0xC9849E6fdB743d08fAeE3E34dd2D1bc69EA11a51",
       "chainId": 56,

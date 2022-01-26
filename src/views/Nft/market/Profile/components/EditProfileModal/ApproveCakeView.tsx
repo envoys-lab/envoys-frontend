@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@envoysvision/uikit'
+import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useCake } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useProfile } from 'state/profile/hooks'
-import { getEnvoysProfileAddress } from 'utils/addressHelpers'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { formatBigNumber } from 'utils/formatBalance'
 import useGetProfileCosts from 'views/Nft/market/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
@@ -25,7 +25,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
 
   const handleApprove = async () => {
-    const tx = await cakeContract.approve(getEnvoysProfileAddress(), cost.mul(2).toString())
+    const tx = await cakeContract.approve(getPancakeProfileAddress(), cost.mul(2).toString())
     setIsApproving(true)
     const receipt = await tx.wait()
     if (receipt.status) {

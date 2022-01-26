@@ -1,11 +1,13 @@
 import { Contract } from '@ethersproject/contracts'
-import { ethers } from 'ethers'
+import type { Signer } from '@ethersproject/abstract-signer'
+import type { Provider } from '@ethersproject/providers'
 import { getAddress } from '@ethersproject/address'
 import { AddressZero } from '@ethersproject/constants'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@envoysvision/sdk'
+import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
+import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
+import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@pancakeswap/sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
 import { BASE_BSC_SCAN_URLS } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
@@ -83,7 +85,7 @@ export function getProviderOrSigner(library: Web3Provider, account?: string): We
 }
 
 // account is optional
-export function getContract(address: string, ABI: any, signer?: ethers.Signer | ethers.providers.Provider): Contract {
+export function getContract(address: string, ABI: any, signer?: Signer | Provider): Contract {
   if (!isAddress(address) || address === AddressZero) {
     throw Error(`Invalid 'address' parameter '${address}'.`)
   }
@@ -92,8 +94,8 @@ export function getContract(address: string, ABI: any, signer?: ethers.Signer | 
 }
 
 // account is optional
-export function getRouterContract(_: number, library: Web3Provider, account?: string): Contract {
-  return getContract(ROUTER_ADDRESS, IUniswapV2Router02ABI, getProviderOrSigner(library, account))
+export function getRouterContract(_: number, library: Web3Provider, account?: string) {
+  return getContract(ROUTER_ADDRESS, IPancakeRouter02ABI, getProviderOrSigner(library, account)) as IPancakeRouter02
 }
 
 export function escapeRegExp(string: string): string {

@@ -3,7 +3,7 @@ import shuffle from 'lodash/shuffle'
 import styled from 'styled-components'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
-import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@envoysvision/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, IconButton, Text, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { isAddress } from 'utils'
 import { useNftsFromCollection } from 'state/nftMarket/hooks'
@@ -11,7 +11,7 @@ import { fetchNftsFromCollections } from 'state/nftMarket/reducer'
 import { useAppDispatch } from 'state'
 import { pancakeBunniesAddress } from '../../../constants'
 import { CollectibleLinkCard } from '../../../components/CollectibleCard'
-import useAllEnvoysBunnyNfts from '../../../hooks/useAllEnvoysBunnyNfts'
+import useAllPancakeBunnyNfts from '../../../hooks/useAllPancakeBunnyNfts'
 
 import 'swiper/swiper-bundle.css'
 
@@ -50,7 +50,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
   const [activeIndex, setActiveIndex] = useState(1)
   const { isMobile, isMd, isLg } = useMatchBreakpoints()
-  const allEnvoysBunnyNfts = useAllEnvoysBunnyNfts(collectionAddress)
+  const allPancakeBunnyNfts = useAllPancakeBunnyNfts(collectionAddress)
   const collectionNfts = useNftsFromCollection(collectionAddress)
 
   const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
@@ -69,11 +69,11 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
 
   let nftsToShow = useMemo(() => {
     return shuffle(
-      allEnvoysBunnyNfts
-        ? allEnvoysBunnyNfts.filter((nft) => nft.name !== currentTokenName)
+      allPancakeBunnyNfts
+        ? allPancakeBunnyNfts.filter((nft) => nft.name !== currentTokenName)
         : collectionNfts?.filter((nft) => nft.name !== currentTokenName && nft.marketData?.isTradable),
     )
-  }, [allEnvoysBunnyNfts, collectionNfts, currentTokenName])
+  }, [allPancakeBunnyNfts, collectionNfts, currentTokenName])
 
   if (!nftsToShow || nftsToShow.length === 0) {
     return null
@@ -93,7 +93,7 @@ const MoreFromThisCollection: React.FC<MoreFromThisCollectionProps> = ({
   }
 
   if (isPBCollection) {
-    // EnvoysBunnies should display 1 card per bunny id
+    // PancakeBunnies should display 1 card per bunny id
     nftsToShow = nftsToShow.reduce((nftArray, current) => {
       const bunnyId = current.attributes[0].value
       if (!nftArray.find((nft) => nft.attributes[0].value === bunnyId)) {

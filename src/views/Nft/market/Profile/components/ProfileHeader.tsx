@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link as ReactRouterLink } from 'react-router-dom'
-import styled from 'styled-components'
-import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@envoysvision/uikit'
+import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
+import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { getBscScanLink } from 'utils'
 import { formatNumber } from 'utils/formatBalance'
@@ -23,11 +22,8 @@ interface HeaderProps {
   isAchievementsLoading: boolean
   isNftLoading: boolean
   isProfileLoading: boolean
+  onSuccess?: () => void
 }
-
-const StyledIconButton = styled(IconButton)`
-  width: fit-content;
-`
 
 // Account and profile passed down as the profile could be used to render _other_ users' profiles.
 const ProfileHeader: React.FC<HeaderProps> = ({
@@ -38,10 +34,20 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   isAchievementsLoading,
   isNftLoading,
   isProfileLoading,
+  onSuccess,
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const [onEditProfileModal] = useModal(<EditProfileModal />, false)
+  const [onEditProfileModal] = useModal(
+    <EditProfileModal
+      onSuccess={() => {
+        if (onSuccess) {
+          onSuccess()
+        }
+      }}
+    />,
+    false,
+  )
 
   const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
@@ -77,14 +83,18 @@ const ProfileHeader: React.FC<HeaderProps> = ({
         // TODO: Share functionality once user profiles routed by ID
         <Flex display="inline-flex">
           {accountPath && (
-            <StyledIconButton
-              target="_blank"
+            <IconButton
               as="a"
-              href={getBscScanLink(accountPath, 'address')}
+              target="_blank"
+              style={{
+                width: 'fit-content',
+              }}
+              href={getBscScanLink(accountPath, 'address') || ''}
+              // @ts-ignore
               alt={t('View BscScan for user address')}
             >
               <BscScanIcon width="20px" color="primary" />
-            </StyledIconButton>
+            </IconButton>
           )}
         </Flex>
       )
@@ -94,7 +104,15 @@ const ProfileHeader: React.FC<HeaderProps> = ({
       return (
         <>
           {profile && accountPath && isConnectedAccount ? (
-            <EditProfileAvatar src={avatarImage} alt={t('User profile picture')} />
+            <EditProfileAvatar
+              src={avatarImage}
+              alt={t('User profile picture')}
+              onSuccess={() => {
+                if (onSuccess) {
+                  onSuccess()
+                }
+              }}
+            />
           ) : (
             <AvatarImage src={avatarImage} alt={t('User profile picture')} />
           )}
