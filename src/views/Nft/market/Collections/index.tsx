@@ -12,7 +12,7 @@ import {
   ArrowBackIcon,
   Text,
   ArrowForwardIcon,
-} from '@pancakeswap/uikit'
+} from '@envoysvision/uikit'
 import styled from 'styled-components'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useGetCollections } from 'state/nftMarket/hooks'

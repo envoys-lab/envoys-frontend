@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Link } from '@envoysvision/uikit'
 import { NextLinkFromReactRouter as RouterLink } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'

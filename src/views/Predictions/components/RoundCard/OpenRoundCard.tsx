@@ -8,7 +8,7 @@ import {
   useTooltip,
   ArrowUpIcon,
   ArrowDownIcon,
-} from '@pancakeswap/uikit'
+} from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
