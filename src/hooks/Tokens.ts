@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, ETHER, Token, currencyEquals } from '@pancakeswap/sdk'
+import { Currency, ETHER, Token, currencyEquals } from '@envoysvision/sdk'
 import { useMemo } from 'react'
 import { arrayify } from '@ethersproject/bytes'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'

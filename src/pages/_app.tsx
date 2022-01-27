@@ -1,4 +1,4 @@
-import { ResetCSS } from '@pancakeswap/uikit'
+import { ResetCSS } from '@envoysvision/uikit'
 import Script from 'next/script'
 import BigNumber from 'bignumber.js'
 import EasterEgg from 'components/EasterEgg'

@@ -13,7 +13,7 @@ import {
   CalculateIcon,
   IconButton,
   Skeleton,
-} from '@pancakeswap/uikit'
+} from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import useToast from 'hooks/useToast'
