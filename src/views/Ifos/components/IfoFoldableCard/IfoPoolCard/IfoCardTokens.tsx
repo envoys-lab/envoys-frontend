@@ -171,8 +171,8 @@ const IfoCardTokens: React.FC<IfoCardTokensProps> = ({
           <Box>
             <MessageText display="inline">
               {publicIfoData.status === 'finished'
-                ? t('Activate PancakeSwap Profile to take part in next IFO‘s!')
-                : t('You need an active PancakeSwap Profile to take part in an IFO!')}
+                ? t('Activate Envoys Profile to take part in next IFO‘s!')
+                : t('You need an active Envoys Profile to take part in an IFO!')}
             </MessageText>{' '}
             <MessageTextLink href="#ifo-how-to" color="#D67E0A" display="inline">
               {t('How does it work?')} »

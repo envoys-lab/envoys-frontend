@@ -130,7 +130,7 @@ export function MinimalPositionCard({ pair, showUnwrapped = false }: PositionCar
       ) : (
         <LightCard>
           <Text fontSize="14px" style={{ textAlign: 'center' }}>
-            <span role="img" aria-label="pancake-icon">
+            <span role="img" aria-label="envoys-icon">
               🥞
             </span>{' '}
             {t(

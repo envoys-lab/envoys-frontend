@@ -1,4 +1,4 @@
-# 🥞 Pancake Frontend
+# 🥞 Envoys Frontend
 
 ## Run the project
 

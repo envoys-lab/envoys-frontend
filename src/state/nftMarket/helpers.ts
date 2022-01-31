@@ -676,7 +676,7 @@ export const getMetadataWithFallback = (apiMetadata: ApiResponseCollectionTokens
     apiMetadata[bunnyId] ?? {
       name: '',
       description: '',
-      collection: { name: 'Pancake Bunnies' },
+      collection: { name: 'Envoys Bunnies' },
       image: {
         original: '',
         thumbnail: '',
