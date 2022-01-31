@@ -241,7 +241,7 @@ const IfoSteps: React.FC<Props> = ({ ifo, walletIfoData, isLive }) => {
               {t('Activate your Profile')}
             </Heading>
             <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
+              {t('You’ll need an active Envoys Profile to take part in an IFO!')}
             </Text>
             {renderAccountStatus()}
           </CardBody>

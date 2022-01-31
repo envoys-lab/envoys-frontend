@@ -29,7 +29,7 @@ const ExpandChartButton = styled(Button)`
   position: absolute;
   z-index: 50;
 
-  &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+  &:hover:not(:disabled):not(.envoys-button--disabled):not(.envoys-button--disabled):not(:active) {
     background-color: ${({ theme }) => theme.card.background};
     opacity: 1;
   }
