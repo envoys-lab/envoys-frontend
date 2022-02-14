@@ -4,6 +4,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
+const path = require('path')
+
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
   // the following options are set automatically, and overriding them is not
@@ -19,6 +21,11 @@ const sentryWebpackPluginOptions = {
 
 /** @type {import('next').NextConfig} */
 const config = {
+  webpack: (config) => {
+    config.resolve.alias['react'] = path.resolve('./node_modules/react')
+    config.resolve.alias['styled-components'] = path.resolve('./node_modules/styled-components')
+    return config
+  },
   experimental: {
     styledComponents: true,
   },
