@@ -7,8 +7,20 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
 
-const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+const Body = styled(Flex)`
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-between;
+  width: 670px;
+`
+
+const TextCard = styled(CardBody)`
+  background-color: ${({ theme }) => theme.colors.backgroundText};
+  border-radius: 16px;
+`
+
+const Space = styled.div`
+  height: 20px;
 `
 
 export default function Settings() {
@@ -17,9 +29,9 @@ export default function Settings() {
   const [activeTab, setActiveTab] = useState(0)
 
   const handleItemClick = (index: number) => setActiveTab(index)
-  const tabs = ['Personal', 'Company']
+  const tabs = ['My KYC', 'Business']
 
-  const isMetamaskConnected = true
+  const isMetamaskConnected = false
   const reviewStatus = 1
 
   const statusLookup = {
@@ -29,19 +41,26 @@ export default function Settings() {
   }
 
   const renderContent = () => {
-    if (!isMetamaskConnected) {
-      return renderNoMetamask()
-    }
-
     return (
       <>
         {renderTabs()}
-        {renderTabContent()}
+        { isMetamaskConnected ? renderTabContent() : renderNoMetamask()}
       </>
     )
   }
 
-  const renderNoMetamask = () => <Button>Connect to metamask!</Button>
+  const renderNoMetamask = () => {
+
+    return <>
+      <Space/>
+      <TextCard>
+        <Text fontSize="12px" color="primary">The image file format must be jpg or png, the file size cannot exceed 4 MB. The face must be clearly visible! The note must be clearly legible! The passport must be clearly legible 3. Please upload photos of materials in strict accordance with the requirements, otherwise
+          your certification will not pass the audit, save your precious time!</Text>
+      </TextCard>
+      <Space/>
+      <Button>Connect to metamask!</Button>
+    </>
+  }
 
   const renderTabs = () => {
     return (
@@ -91,7 +110,6 @@ export default function Settings() {
   return (
     <Page>
       <AppBody>
-        <AppHeader title="KYC" subtitle="" />
         <Body>{renderContent()}</Body>
       </AppBody>
     </Page>
