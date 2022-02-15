@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BigNumber } from '@ethersproject/bignumber'
 import React, { useEffect, useState } from 'react'
-import { AutoRenewIcon, Button, useModal } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, useModal } from '@envoysvision/uikit'
 import { ContextApi } from 'contexts/Localization/types'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@envoysvision/uikit'
+import { Text, EnvoysToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@envoysvision/uikit'
 import {
   useAudioModeManager,
   useExpertModeManager,
@@ -136,7 +136,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
               ml="4px"
             />
           </Flex>
-          <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+          <EnvoysToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
         </Flex>
       </ScrollableContainer>
     </Modal>
