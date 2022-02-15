@@ -569,7 +569,6 @@
     "tslib" "^2"
 
 "@envoys-libs/envoys-swap-core@../envoys-swap-core":
-  "resolved" "file:node_modules/@envoysvision/envoys-swap-core"
 
 "@envoysvision/sdk@^2.4.0":
   "integrity" "sha512-Qo/FBz+X8t8iRKf/IOOyF9FEDpwRlI0OUPRhuv6Md8P001i6D2U8r7VJAC6mBu9prxEaykPEHJzbewx9yt0nQQ=="
@@ -4802,8 +4801,6 @@
     "setimmediate" "^1.0.5"
 
 "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
-  "integrity" "sha512-qs8G5KwnIO/thOQjv1RvR/4oiTsy6IaCsN+ory5dbiqFXz8sd239aWJH0wmsVNPimL5X1KzQheUpi6xAo6FU4w=="
-  "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git"
   "version" "0.6.8"
   dependencies:
     "bn.js" "^4.11.8"
