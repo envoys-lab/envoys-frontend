@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Text, Flex, CardBody, CardFooter, Button, AddIcon, Tab, TabMenu } from '@envoysvision/uikit'
-import Link from 'next/link'
+import { CardBody, Button, Tab, TabMenu, useWalletModal, Flex, Text } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useAuth from 'hooks/useAuth'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
+import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 const Body = styled(Flex)`
   flex-direction: column;
@@ -23,22 +24,68 @@ const Space = styled.div`
   height: 20px;
 `
 
+interface User {
+  userType: string
+  userWalletAddress: string
+  verification: { status: string; verified: boolean }
+  verificationId: string
+  _id: string
+}
 export default function Settings() {
-  const { account } = useActiveWeb3React()
+  const { account, library } = useActiveWeb3React()
   const { t } = useTranslation()
+  const { login, logout } = useAuth()
+  const { onPresentConnectModal } = useWalletModal(login, logout, t)
   const [activeTab, setActiveTab] = useState(0)
+  const [userId, setUserId] = useState<string>('')
+  const [user, setUser] = useState<User>()
+  const [verificationLinks, setVerificationLinks] = useState({ personal: '', company: '' })
+  const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false)
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = ['My KYC', 'Business']
-
-  const isMetamaskConnected = false
   const reviewStatus = 1
+  const isMetamaskConnected = false
 
-  const statusLookup = {
-    1: 'In progress',
+  const verificationStatusLookup = {
+    unused: 'unused',
     2: 'Accepted',
     3: 'Denied',
   }
+
+  useEffect(() => {
+    const handlePostUserWallet = async () => {
+      const data = await postUserWallet(account)
+      console.log({ data })
+      setUserId(data._id)
+    }
+
+    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
+
+    if (account) {
+      handlePostUserWallet()
+    }
+  }, [account, library])
+
+  useEffect(() => {
+    const handleGetUser = async () => {
+      const user = await getUser(userId)
+
+      setUser(user)
+    }
+    const getVerificationLinks = async () => {
+      const redirectUrl = window.location.href
+      const personal = await getPersonVerificationLink(userId, redirectUrl)
+      const company = await getCompanyVerificationLink(userId, redirectUrl)
+
+      setVerificationLinks({ personal: personal.formUrl, company: company.formUrl })
+    }
+
+    if (isMetaMaskConnected && userId) {
+      handleGetUser()
+      getVerificationLinks()
+    }
+  }, [userId, isMetaMaskConnected])
 
   const renderContent = () => {
     return (
@@ -54,11 +101,10 @@ export default function Settings() {
     return <>
       <Space/>
       <TextCard>
-        <Text fontSize="12px" color="primary">The image file format must be jpg or png, the file size cannot exceed 4 MB. The face must be clearly visible! The note must be clearly legible! The passport must be clearly legible 3. Please upload photos of materials in strict accordance with the requirements, otherwise
-          your certification will not pass the audit, save your precious time!</Text>
+        <Text fontSize="12px" color="primary">You need to connect your metamask wallet</Text>
       </TextCard>
       <Space/>
-      <Button>Connect to metamask!</Button>
+      <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
     </>
   }
 
@@ -82,26 +128,26 @@ export default function Settings() {
   }
 
   const renderPersonal = () => {
-    if (reviewStatus === 0) {
-      return <Button>Pass Personal KYC</Button>
+    if (user && verificationStatusLookup[user?.verification?.status]) {
+      return <a href={verificationLinks.personal}>Pass Personal KYC</a>
     }
 
     return (
       <div>
-        <div>{statusLookup[reviewStatus]}</div>
+        <div>{verificationStatusLookup[user?.verification?.status]}</div>
         Documents
       </div>
     )
   }
 
   const renderCompany = () => {
-    if (reviewStatus === 0) {
-      return <Button>Pass Company KYC</Button>
+    if (verificationStatusLookup[user?.verification?.status]) {
+      return <a href={verificationLinks.company}>Pass Company KYC</a>
     }
 
     return (
       <div>
-        <div>{statusLookup[reviewStatus]}</div>
+        <div>{verificationStatusLookup[user?.verification?.status]}</div>
         Documents
       </div>
     )
