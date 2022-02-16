@@ -1,12 +1,21 @@
+const axios = require('axios')
+
 const ENVOYS_PUBLIC_API = 'https://api.beta.envoys.vision'
+
+const axiosInstance = axios.create({
+  baseURL: ENVOYS_PUBLIC_API,
+})
+
+const defaultOptions = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+}
 
 const postUserWallet = async (account: string) => {
   try {
-    const res = await fetch(`${ENVOYS_PUBLIC_API}/users/${account}`, {
-      method: 'post',
-    })
-    const data = await res.json()
-    return data
+    const response = await axiosInstance.post(`${ENVOYS_PUBLIC_API}/users/${account}`)
+    return response.data
   } catch (e) {
     console.error(e)
   }
@@ -14,9 +23,17 @@ const postUserWallet = async (account: string) => {
 
 const getUser = async (userId: string) => {
   try {
-    const res = await fetch(`${ENVOYS_PUBLIC_API}/users/${userId}`)
-    const data = await res.json()
-    return data
+    const response = await axiosInstance.get(`${ENVOYS_PUBLIC_API}/users/${userId}`)
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+const refreshVerification = async (userId: string) => {
+  try {
+    const response = await axiosInstance.post(`${ENVOYS_PUBLIC_API}/users/${userId}/verification/refresh`)
+    return response.data
   } catch (e) {
     console.error(e)
   }
@@ -24,12 +41,12 @@ const getUser = async (userId: string) => {
 
 const getPersonVerificationLink = async (userId: string, redirectUrl: string) => {
   try {
-    const res = await fetch(`${ENVOYS_PUBLIC_API}/users/${userId}/verification/PERSON/create`, {
-      method: 'post',
-      body: JSON.stringify({ redirectUrl }),
-    })
-    const data = await res.json()
-    return data
+    const response = await axiosInstance.post(
+      `${ENVOYS_PUBLIC_API}/users/${userId}/verification/PERSON/create`,
+      { redirectUrl },
+      defaultOptions,
+    )
+    return response.data
   } catch (e) {
     console.error(e)
   }
@@ -37,15 +54,15 @@ const getPersonVerificationLink = async (userId: string, redirectUrl: string) =>
 
 const getCompanyVerificationLink = async (userId: string, redirectUrl: string) => {
   try {
-    const res = await fetch(`${ENVOYS_PUBLIC_API}/users/${userId}/verification/COMPANY/create`, {
-      method: 'post',
-      body: JSON.stringify({ redirectUrl }),
-    })
-    const data = await res.json()
-    return data
+    const response = await axiosInstance.post(
+      `${ENVOYS_PUBLIC_API}/users/${userId}/verification/COMPANY/create`,
+      { redirectUrl },
+      defaultOptions,
+    )
+    return response.data
   } catch (e) {
     console.error(e)
   }
 }
 
-export { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink }
+export { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink, refreshVerification }

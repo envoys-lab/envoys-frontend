@@ -6,7 +6,16 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import { AppHeader, AppBody } from '../../components/App'
 import Page from '../Page'
-import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
+import {
+  postUserWallet,
+  getUser,
+  getPersonVerificationLink,
+  getCompanyVerificationLink,
+  refreshVerification,
+} from './api'
+
+import { documentNormalize } from './heplers'
+import { User } from './types'
 
 const Body = styled(Flex)`
   flex-direction: column;
@@ -24,13 +33,6 @@ const Space = styled.div`
   height: 20px;
 `
 
-interface User {
-  userType: string
-  userWalletAddress: string
-  verification: { status: string; verified: boolean }
-  verificationId: string
-  _id: string
-}
 export default function Settings() {
   const { account, library } = useActiveWeb3React()
   const { t } = useTranslation()
@@ -44,13 +46,11 @@ export default function Settings() {
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = ['My KYC', 'Business']
-  const reviewStatus = 1
-  const isMetamaskConnected = false
 
   const verificationStatusLookup = {
     unused: 'unused',
-    2: 'Accepted',
-    3: 'Denied',
+    completed: 'completed',
+    pending: 'pending',
   }
 
   useEffect(() => {
@@ -60,11 +60,13 @@ export default function Settings() {
       setUserId(data._id)
     }
 
-    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
-
     if (account) {
       handlePostUserWallet()
     }
+  }, [account])
+
+  useEffect(() => {
+    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
   }, [account, library])
 
   useEffect(() => {
@@ -87,25 +89,34 @@ export default function Settings() {
     }
   }, [userId, isMetaMaskConnected])
 
+  const handleRefresh = async () => {
+    const user = await refreshVerification(userId)
+
+    setUser(user)
+  }
+
   const renderContent = () => {
     return (
       <>
         {renderTabs()}
-        { isMetamaskConnected ? renderTabContent() : renderNoMetamask()}
+        {isMetaMaskConnected ? renderTabContent() : renderNoMetamask()}
       </>
     )
   }
 
   const renderNoMetamask = () => {
-
-    return <>
-      <Space/>
-      <TextCard>
-        <Text fontSize="12px" color="primary">You need to connect your metamask wallet</Text>
-      </TextCard>
-      <Space/>
-      <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
-    </>
+    return (
+      <>
+        <Space />
+        <TextCard>
+          <Text fontSize="12px" color="primary">
+            You need to connect your metamask wallet
+          </Text>
+        </TextCard>
+        <Space />
+        <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
+      </>
+    )
   }
 
   const renderTabs = () => {
@@ -128,27 +139,41 @@ export default function Settings() {
   }
 
   const renderPersonal = () => {
-    if (user && verificationStatusLookup[user?.verification?.status]) {
-      return <a href={verificationLinks.personal}>Pass Personal KYC</a>
+    if (user?.personVerification?.status === verificationStatusLookup.unused) {
+      return (
+        <div>
+          <a href={verificationLinks.personal}>Pass Personal KYC</a>
+        </div>
+      )
     }
 
     return (
       <div>
-        <div>{verificationStatusLookup[user?.verification?.status]}</div>
-        Documents
+        <div onClick={handleRefresh}>Refresh</div>
+        <div>{verificationStatusLookup[user?.personVerification?.status]}</div>
+        <ul>
+          {documentNormalize(user?.personVerification?.verifications).map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </div>
     )
   }
 
   const renderCompany = () => {
-    if (verificationStatusLookup[user?.verification?.status]) {
+    if (user?.companyVerification?.status === verificationStatusLookup.unused) {
       return <a href={verificationLinks.company}>Pass Company KYC</a>
     }
 
     return (
       <div>
-        <div>{verificationStatusLookup[user?.verification?.status]}</div>
-        Documents
+        <div onClick={handleRefresh}>Refresh</div>
+        <div>{verificationStatusLookup[user?.companyVerification?.status]}</div>
+        <ul>
+          {documentNormalize(user?.companyVerification?.verifications).map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul>
       </div>
     )
   }
