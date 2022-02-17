@@ -75,19 +75,29 @@ export default function Settings() {
 
       setUser(user)
     }
-    const getVerificationLinks = async () => {
-      const redirectUrl = window.location.href
-      const personal = await getPersonVerificationLink(userId, redirectUrl)
-      const company = await getCompanyVerificationLink(userId, redirectUrl)
-
-      setVerificationLinks({ personal: personal.formUrl, company: company.formUrl })
-    }
 
     if (isMetaMaskConnected && userId) {
       handleGetUser()
-      getVerificationLinks()
     }
   }, [userId, isMetaMaskConnected])
+
+  const handleGetPersonVerificationLink = async () => {
+    const redirectUrl = window.location.href
+    const personal = await getPersonVerificationLink(userId, redirectUrl)
+
+    setVerificationLinks({ ...verificationLinks, personal: personal.formUrl })
+
+    window.location.href = personal.formUrl
+  }
+
+  const handleGetCompanyVerificationLink = async () => {
+    const redirectUrl = window.location.href
+    const company = await getCompanyVerificationLink(userId, redirectUrl)
+
+    setVerificationLinks({ ...verificationLinks, company: company.formUrl })
+
+    window.location.href = company.formUrl
+  }
 
   const handleRefresh = async () => {
     const user = await refreshVerification(userId)
@@ -142,38 +152,54 @@ export default function Settings() {
     if (user?.personVerification?.status === verificationStatusLookup.unused) {
       return (
         <div>
-          <a href={verificationLinks.personal}>Pass Personal KYC</a>
+          <Button onClick={handleRefresh}>Refresh</Button>
+          <Button type="button" onClick={handleGetPersonVerificationLink}>
+            Pass Personal KYC
+          </Button>
         </div>
       )
     }
 
     return (
       <div>
-        <div onClick={handleRefresh}>Refresh</div>
+        <Button onClick={handleRefresh}>Refresh</Button>
         <div>{verificationStatusLookup[user?.personVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.personVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>
+        <Button type="button" onClick={handleGetPersonVerificationLink}>
+          Pass Personal KYC
+        </Button>
       </div>
     )
   }
 
   const renderCompany = () => {
     if (user?.companyVerification?.status === verificationStatusLookup.unused) {
-      return <a href={verificationLinks.company}>Pass Company KYC</a>
+      return (
+        <div>
+          <Button onClick={handleRefresh}>Refresh</Button>
+          <Button type="button" onClick={handleGetCompanyVerificationLink}>
+            Pass Company KYC
+          </Button>
+        </div>
+      )
     }
 
     return (
       <div>
-        <div onClick={handleRefresh}>Refresh</div>
+        <Button onClick={handleRefresh}>Refresh</Button>
         <div>{verificationStatusLookup[user?.companyVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.companyVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>
+        <Button type="button" onClick={handleGetCompanyVerificationLink}>
+          Pass Company KYC
+        </Button>
       </div>
     )
   }
