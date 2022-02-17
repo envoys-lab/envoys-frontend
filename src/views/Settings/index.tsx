@@ -17,7 +17,7 @@ import {
 } from './api'
 
 import { documentNormalize } from './heplers'
-import { User, verificationStatus } from './types'
+import { User, VerificationStatus } from './types'
 
 const Body = styled(Flex)`
   flex-direction: column;
@@ -58,8 +58,8 @@ const Settings = () => {
     }, 5000)
 
     if (
-      user?.companyVerification?.status !== verificationStatus.pending &&
-      user?.personVerification?.status !== verificationStatus.pending
+      user?.companyVerification?.status !== VerificationStatus.pending &&
+      user?.personVerification?.status !== VerificationStatus.pending
     ) {
       clearInterval(intervalId)
       return
@@ -170,7 +170,7 @@ const Settings = () => {
         <Button onClick={handleRefresh} isLoading={isRefreshing}>
           Refresh
         </Button>
-        <div>{verificationStatus[user?.personVerification?.status]}</div>
+        <div>{VerificationStatus[user?.personVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.personVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
@@ -189,7 +189,7 @@ const Settings = () => {
         <Button onClick={handleRefresh} isLoading={isRefreshing}>
           Refresh
         </Button>
-        <div>{verificationStatus[user?.companyVerification?.status]}</div>
+        <div>{VerificationStatus[user?.companyVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.companyVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
