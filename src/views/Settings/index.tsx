@@ -58,8 +58,8 @@ const Settings = () => {
     }, 5000)
 
     if (
-      user?.companyVerification?.status !== VerificationStatus.pending &&
-      user?.personVerification?.status !== VerificationStatus.pending
+      user?.companyVerification?.status === VerificationStatus.completed &&
+      user?.personVerification?.status === VerificationStatus.completed
     ) {
       clearInterval(intervalId)
       return
