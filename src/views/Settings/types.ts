@@ -4,7 +4,7 @@ interface Verification {
   applicant_id?: string
   request_id?: string
   type?: string
-  verifications?: Object
+  verifications?: object
 }
 
 export interface User {

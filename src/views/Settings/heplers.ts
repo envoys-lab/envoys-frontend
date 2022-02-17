@@ -2,7 +2,7 @@ const capitalize = (text: string) => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-export const documentNormalize = (response: Object) => {
+export const documentNormalize = (response: object) => {
   const arr = []
 
   if (!response) return arr

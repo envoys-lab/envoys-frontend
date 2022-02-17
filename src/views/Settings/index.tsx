@@ -43,15 +43,34 @@ export default function Settings() {
   const [user, setUser] = useState<User>()
   const [verificationLinks, setVerificationLinks] = useState({ personal: '', company: '' })
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = ['My KYC', 'Business']
 
-  const verificationStatusLookup = {
-    unused: 'unused',
-    completed: 'completed',
-    pending: 'pending',
+  enum verificationStatus {
+    unused = 'unused',
+    completed = 'completed',
+    pending = 'pending',
   }
+
+  useEffect(() => {
+    if (!userId) return
+
+    const intervalId = setInterval(() => {
+      handleRefresh()
+    }, 5000)
+
+    if (
+      user?.companyVerification?.status !== verificationStatus.pending &&
+      user?.personVerification?.status !== verificationStatus.pending
+    ) {
+      clearInterval(intervalId)
+      return
+    }
+
+    return () => clearInterval(intervalId)
+  }, [userId, user])
 
   useEffect(() => {
     const handlePostUserWallet = async () => {
@@ -100,7 +119,9 @@ export default function Settings() {
   }
 
   const handleRefresh = async () => {
+    setIsRefreshing(true)
     const user = await refreshVerification(userId)
+    setIsRefreshing(false)
 
     setUser(user)
   }
@@ -149,10 +170,12 @@ export default function Settings() {
   }
 
   const renderPersonal = () => {
-    if (user?.personVerification?.status === verificationStatusLookup.unused) {
+    if (user?.personVerification?.status === verificationStatus.unused) {
       return (
         <div>
-          <Button onClick={handleRefresh}>Refresh</Button>
+          <Button onClick={handleRefresh} isLoading={isRefreshing}>
+            Refresh
+          </Button>
           <Button type="button" onClick={handleGetPersonVerificationLink}>
             Pass Personal KYC
           </Button>
@@ -162,8 +185,10 @@ export default function Settings() {
 
     return (
       <div>
-        <Button onClick={handleRefresh}>Refresh</Button>
-        <div>{verificationStatusLookup[user?.personVerification?.status]}</div>
+        <Button onClick={handleRefresh} isLoading={isRefreshing}>
+          Refresh
+        </Button>
+        <div>{verificationStatus[user?.personVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.personVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
@@ -177,10 +202,12 @@ export default function Settings() {
   }
 
   const renderCompany = () => {
-    if (user?.companyVerification?.status === verificationStatusLookup.unused) {
+    if (user?.companyVerification?.status === verificationStatus.unused) {
       return (
         <div>
-          <Button onClick={handleRefresh}>Refresh</Button>
+          <Button onClick={handleRefresh} isLoading={isRefreshing}>
+            Refresh
+          </Button>
           <Button type="button" onClick={handleGetCompanyVerificationLink}>
             Pass Company KYC
           </Button>
@@ -190,8 +217,10 @@ export default function Settings() {
 
     return (
       <div>
-        <Button onClick={handleRefresh}>Refresh</Button>
-        <div>{verificationStatusLookup[user?.companyVerification?.status]}</div>
+        <Button onClick={handleRefresh} isLoading={isRefreshing}>
+          Refresh
+        </Button>
+        <div>{verificationStatus[user?.companyVerification?.status]}</div>
         <ul>
           {documentNormalize(user?.companyVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
