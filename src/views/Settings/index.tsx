@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { CardBody, Button, Tab, TabMenu, useWalletModal, Flex, Text } from '@envoysvision/uikit'
+
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
-import { AppHeader, AppBody } from '../../components/App'
+
+import { AppBody } from '../../components/App'
 import Page from '../Page'
 import {
   postUserWallet,
@@ -15,7 +17,7 @@ import {
 } from './api'
 
 import { documentNormalize } from './heplers'
-import { User } from './types'
+import { User, verificationStatus } from './types'
 
 const Body = styled(Flex)`
   flex-direction: column;
@@ -33,7 +35,7 @@ const Space = styled.div`
   height: 20px;
 `
 
-export default function Settings() {
+const Settings = () => {
   const { account, library } = useActiveWeb3React()
   const { t } = useTranslation()
   const { login, logout } = useAuth()
@@ -47,12 +49,6 @@ export default function Settings() {
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = ['My KYC', 'Business']
-
-  enum verificationStatus {
-    unused = 'unused',
-    completed = 'completed',
-    pending = 'pending',
-  }
 
   useEffect(() => {
     if (!userId) return
@@ -75,7 +71,6 @@ export default function Settings() {
   useEffect(() => {
     const handlePostUserWallet = async () => {
       const data = await postUserWallet(account)
-      console.log({ data })
       setUserId(data._id)
     }
 
@@ -153,9 +148,9 @@ export default function Settings() {
   const renderTabs = () => {
     return (
       <TabMenu activeIndex={activeTab} onItemClick={handleItemClick}>
-        {tabs.map((tabText) => {
-          return <Tab key={tabText}>{tabText}</Tab>
-        })}
+        {tabs.map((tabText) => (
+          <Tab key={tabText}>{tabText}</Tab>
+        ))}
       </TabMenu>
     )
   }
@@ -170,19 +165,6 @@ export default function Settings() {
   }
 
   const renderPersonal = () => {
-    if (user?.personVerification?.status === verificationStatus.unused) {
-      return (
-        <div>
-          <Button onClick={handleRefresh} isLoading={isRefreshing}>
-            Refresh
-          </Button>
-          <Button type="button" onClick={handleGetPersonVerificationLink}>
-            Pass Personal KYC
-          </Button>
-        </div>
-      )
-    }
-
     return (
       <div>
         <Button onClick={handleRefresh} isLoading={isRefreshing}>
@@ -202,19 +184,6 @@ export default function Settings() {
   }
 
   const renderCompany = () => {
-    if (user?.companyVerification?.status === verificationStatus.unused) {
-      return (
-        <div>
-          <Button onClick={handleRefresh} isLoading={isRefreshing}>
-            Refresh
-          </Button>
-          <Button type="button" onClick={handleGetCompanyVerificationLink}>
-            Pass Company KYC
-          </Button>
-        </div>
-      )
-    }
-
     return (
       <div>
         <Button onClick={handleRefresh} isLoading={isRefreshing}>
@@ -241,3 +210,5 @@ export default function Settings() {
     </Page>
   )
 }
+
+export default Settings

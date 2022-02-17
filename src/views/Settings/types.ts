@@ -16,3 +16,9 @@ export interface User {
   companyVerificationId: string
   _id: string
 }
+
+export enum verificationStatus {
+  unused = 'unused',
+  completed = 'completed',
+  pending = 'pending',
+}
