@@ -69,7 +69,7 @@ const Home: React.FC = () => {
   return (
     <>
       <PageMeta />
-      <StyledHeroSection
+      {/* <StyledHeroSection
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
@@ -154,7 +154,7 @@ const Home: React.FC = () => {
         hasCurvedDivider={false}
       >
         <Footer />
-      </PageSection>
+      </PageSection> */}
     </>
   )
 }

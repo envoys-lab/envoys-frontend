@@ -19,6 +19,10 @@ import { FetchStatus } from 'config/constants/types'
 import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
 import ProfileUserMenuItem from './ProfileUserMenutItem'
 import WalletUserMenuItem from './WalletUserMenuItem'
+import styled from 'styled-components'
+import { MenuOptions } from 'icons'
+
+const ButtonsContainer = styled.div``
 
 const UserMenu = () => {
   const router = useRouter()
@@ -30,31 +34,25 @@ const UserMenu = () => {
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const hasProfile = isInitialized && !!profile
-  const avatarSrc = profile?.nft?.image?.thumbnail
   const hasLowBnbBalance = fetchStatus === FetchStatus.Fetched && balance.lte(LOW_BNB_BALANCE)
 
   if (!account) {
-    return <ConnectWalletButton scale="sm" />
+    return (
+      <ButtonsContainer>
+        <ConnectWalletButton width="100%" scale="md" />
+      </ButtonsContainer>
+    )
   }
 
   return (
-    <UIKitUserMenu account={account} avatarSrc={avatarSrc}>
-      <WalletUserMenuItem hasLowBnbBalance={hasLowBnbBalance} onPresentWalletModal={onPresentWalletModal} />
-      <UserMenuItem as="button" onClick={onPresentTransactionModal}>
-        {t('Transactions')}
-      </UserMenuItem>
-      <UserMenuDivider />
-      <UserMenuItem as="button" onClick={() => router.push(`${nftsBaseUrl}/profile/${account.toLowerCase()}`)}>
-        {t('Your NFTs')}
-      </UserMenuItem>
-      <ProfileUserMenuItem isLoading={isLoading} hasProfile={hasProfile} />
+    <UIKitUserMenu account={account} leftIcon={MenuOptions}>
       <UserMenuDivider />
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}
           <LogoutIcon />
         </Flex>
-      </UserMenuItem>
+      </UserMenuItem> 
     </UIKitUserMenu>
   )
 }
