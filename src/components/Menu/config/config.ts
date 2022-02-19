@@ -34,7 +34,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
         href: '/pools',
       },
     ],
-  }
+  },
 ]
 
 export default config
