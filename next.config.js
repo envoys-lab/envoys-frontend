@@ -28,6 +28,7 @@ const config = {
   },
   experimental: {
     styledComponents: true,
+    outputStandalone: true,
   },
   reactStrictMode: true,
   async rewrites() {
