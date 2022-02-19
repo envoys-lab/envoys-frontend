@@ -26,9 +26,6 @@ const config = {
     config.resolve.alias['styled-components'] = path.resolve('./node_modules/styled-components')
     return config
   },
-  experimental: {
-    styledComponents: true,
-  },
   reactStrictMode: true,
   async rewrites() {
     return [

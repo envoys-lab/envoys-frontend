@@ -8,13 +8,7 @@ import useAuth from 'hooks/useAuth'
 
 import { AppBody } from '../../components/App'
 import Page from '../Page'
-import {
-  postUserWallet,
-  getUser,
-  getPersonVerificationLink,
-  getCompanyVerificationLink,
-  refreshVerification,
-} from './api'
+import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 import { documentNormalize } from './heplers'
 import { User, VerificationStatus } from './types'
@@ -58,8 +52,8 @@ const Settings = () => {
     }, 5000)
 
     if (
-      user?.companyVerification?.status === VerificationStatus.completed &&
-      user?.personVerification?.status === VerificationStatus.completed
+      user?.company?.verification?.status === VerificationStatus.completed &&
+      user?.person?.verification?.status === VerificationStatus.completed
     ) {
       clearInterval(intervalId)
       return
@@ -99,23 +93,27 @@ const Settings = () => {
     const redirectUrl = window.location.href
     const personal = await getPersonVerificationLink(userId, redirectUrl)
 
-    setVerificationLinks({ ...verificationLinks, personal: personal.formUrl })
+    if (personal?.formUrl) {
+      setVerificationLinks({ ...verificationLinks, personal: personal?.formUrl })
 
-    window.location.href = personal.formUrl
+      window.location.href = personal?.formUrl
+    }
   }
 
   const handleGetCompanyVerificationLink = async () => {
     const redirectUrl = window.location.href
     const company = await getCompanyVerificationLink(userId, redirectUrl)
 
-    setVerificationLinks({ ...verificationLinks, company: company.formUrl })
+    if (company?.formUrl) {
+      setVerificationLinks({ ...verificationLinks, company: company?.formUrl })
 
-    window.location.href = company.formUrl
+      window.location.href = company?.formUrl
+    }
   }
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
-    const user = await refreshVerification(userId)
+    const user = await getUser(userId)
     setIsRefreshing(false)
 
     setUser(user)
@@ -165,14 +163,26 @@ const Settings = () => {
   }
 
   const renderPersonal = () => {
+    const personalVerification = user?.person?.verification
+    const personalData = user?.person?.data
+
     return (
       <div>
-        <Button onClick={handleRefresh} isLoading={isRefreshing}>
-          Refresh
-        </Button>
-        <div>{VerificationStatus[user?.personVerification?.status]}</div>
+        <div>{VerificationStatus[personalVerification?.status]}</div>
+        <div>You ID Envoys Vision: {userId}</div>
+        {personalData && (
+          <>
+            <div>Name: {personalData?.first_name}</div>
+            <div>Last name: {personalData?.last_name}</div>
+            <div>Middle name: {personalData?.middle_name}</div>
+            <div>Residence country: {personalData?.residence_country}</div>
+
+            <img src={personalData?.documents.front_side} />
+            <img src={personalData?.documents.back_side} />
+          </>
+        )}
         <ul>
-          {documentNormalize(user?.personVerification?.verifications).map((item, index) => (
+          {documentNormalize(personalVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>
@@ -184,14 +194,31 @@ const Settings = () => {
   }
 
   const renderCompany = () => {
+    const companyVerification = user?.company?.verification
+    const companyData = user?.company?.data
+
     return (
       <div>
-        <Button onClick={handleRefresh} isLoading={isRefreshing}>
-          Refresh
-        </Button>
-        <div>{VerificationStatus[user?.companyVerification?.status]}</div>
+        <div>{VerificationStatus[companyVerification?.status]}</div>
+        {userId && <div>You ID Envoys Vision: {userId}</div>}
+        {companyData && (
+          <>
+            <div>registration_country: {companyData?.registration_country}</div>
+            <div>
+              business_activity: {companyData?.business_activity[1]?.label}{' '}
+              {companyData?.business_activity[1]?.language_code}
+            </div>
+            <div>
+              business_activity: {companyData?.business_activity[0]?.label}{' '}
+              {companyData?.business_activity[0]?.language_code}
+            </div>
+            <div>companyName: {companyData?.companyName}</div>
+            <img src={companyData?.documents.front_side} />
+            <img src={companyData?.documents.back_side} />
+          </>
+        )}
         <ul>
-          {documentNormalize(user?.companyVerification?.verifications).map((item, index) => (
+          {documentNormalize(companyVerification?.verifications).map((item, index) => (
             <li key={index}>{item}</li>
           ))}
         </ul>

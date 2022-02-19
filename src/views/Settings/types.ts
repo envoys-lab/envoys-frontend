@@ -1,3 +1,18 @@
+interface PersonData {
+  documents: any
+  first_name: string
+  last_name: string
+  middle_name: string
+  residence_country: string
+}
+
+interface CompanyData {
+  registration_country: string
+  documents: any
+  companyName: string
+  business_activity?: any
+}
+
 interface Verification {
   status: string
   verified: boolean
@@ -7,13 +22,24 @@ interface Verification {
   verifications?: object
 }
 
+interface PersonVerifications {
+  verification: Verification
+  data?: PersonData
+  formUrl?: string
+  verification_id?: string
+}
+
+interface CompanyVerifications {
+  verification: Verification
+  data?: CompanyData
+  formUrl?: string
+  verification_id?: string
+}
+
 export interface User {
-  userType: string
   userWalletAddress: string
-  personVerification: Verification
-  companyVerification: Verification
-  personVerificationId: string
-  companyVerificationId: string
+  person: PersonVerifications
+  company: CompanyVerifications
   _id: string
 }
 
