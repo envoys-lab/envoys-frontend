@@ -5,7 +5,9 @@ workflows:
   master:
     jobs:
       - build
-      - check
+      - check:
+          requires:
+            - build
       - image:
           context: develop
           requires:
