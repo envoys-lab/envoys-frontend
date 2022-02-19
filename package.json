@@ -14,6 +14,7 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "format:check:staged": "pretty-quick --staged --check",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
+    "ci": "yarn format:check && yarn lint && yarn test",
     "updateLPsAPR": "NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install",
     "postinstall": "yarn run typechain",
