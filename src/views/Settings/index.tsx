@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { CardBody, Button, Tab, TabMenu, useWalletModal, Flex, Text } from '@envoysvision/uikit'
+import { Button, Tab, TabMenu, useWalletModal, Flex, useMatchBreakpoints } from '@envoysvision/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,26 +10,112 @@ import { AppBody } from '../../components/App'
 import Page from '../Page'
 import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
-import { documentNormalize } from './heplers'
+import { documentNormalize, isVerificationPassed } from './heplers'
 import { User, VerificationStatus } from './types'
 
 const Body = styled(Flex)`
   flex-direction: column;
-  padding: 20px;
+  padding: 30px;
   justify-content: space-between;
-  width: 670px;
-`
-
-const TextCard = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.backgroundText};
-  border-radius: 16px;
+  width: 90vw;
+  max-width: 670px;
 `
 
 const Space = styled.div`
   height: 20px;
 `
 
+const SpaceSmall = styled.div`
+  height: 10px;
+`
+
+const TitleContainer = styled.div`
+  padding-top: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  display: flex;
+  align-items: flex-end;
+
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
+
+const PersonalInfoContainer = styled.div<{ singleColumn: boolean }>`
+  display: grid;
+
+  ${({ singleColumn }) => (singleColumn ? 'grid-template-columns: 1fr;' : 'grid-template-columns: 1fr 1fr;')};
+
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+
+  padding-top: 20px;
+  padding-bottom: 0px;
+`
+
+const TipContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+
+  width: 100%;
+
+  background: ${({ theme }) => theme.colors.tipBackground};
+  border-radius: 16px;
+
+  font-size: 12px;
+  line-height: 14px;
+
+  color: ${({ theme }) => theme.colors.primary};
+`
+
+const BottomContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+`
+
+const VerificationErrorContainer = styled.ul`
+  color: ${({ theme }) => theme.colors.error};
+  padding-top: 20px;
+`
+
+const IdentifierTextLabel = styled.div`
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+
+  display: flex;
+
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const IdentifierLabel = styled.div`
+  font-weight: 700;
+  padding-left: 4px;
+`
+
+const IdentifierContainer = styled.div<{ showBorder?: boolean }>`
+  background: ${({ theme }) => theme.colors.background};
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  height: 60px;
+
+  ${({ showBorder, theme }) => (showBorder ? `border: 1px solid ${theme.colors.primary};` : '')}
+
+  box-sizing: border-box;
+  border-radius: 14px;
+`
+
 const Settings = () => {
+  const { isMobile, isTablet } = useMatchBreakpoints()
+  const smallVersion = isMobile || isTablet
   const { account, library } = useActiveWeb3React()
   const { t } = useTranslation()
   const { login, logout } = useAuth()
@@ -42,7 +128,9 @@ const Settings = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleItemClick = (index: number) => setActiveTab(index)
-  const tabs = ['My KYC', 'Business']
+  const tabs = [t('My KYC'), t('Business')]
+
+  const shortUserId = userId?.slice(0, 7).toUpperCase()
 
   useEffect(() => {
     if (!userId) return
@@ -80,7 +168,6 @@ const Settings = () => {
   useEffect(() => {
     const handleGetUser = async () => {
       const user = await getUser(userId)
-
       setUser(user)
     }
 
@@ -103,10 +190,8 @@ const Settings = () => {
   const handleGetCompanyVerificationLink = async () => {
     const redirectUrl = window.location.href
     const company = await getCompanyVerificationLink(userId, redirectUrl)
-
     if (company?.formUrl) {
       setVerificationLinks({ ...verificationLinks, company: company?.formUrl })
-
       window.location.href = company?.formUrl
     }
   }
@@ -115,7 +200,6 @@ const Settings = () => {
     setIsRefreshing(true)
     const user = await getUser(userId)
     setIsRefreshing(false)
-
     setUser(user)
   }
 
@@ -132,11 +216,8 @@ const Settings = () => {
     return (
       <>
         <Space />
-        <TextCard>
-          <Text fontSize="12px" color="primary">
-            You need to connect your metamask wallet
-          </Text>
-        </TextCard>
+        <Space />
+        <TipContainer>{t('You need to connect your Wallet first')}</TipContainer>
         <Space />
         <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
       </>
@@ -162,75 +243,103 @@ const Settings = () => {
     }
   }
 
-  const renderPersonal = () => {
-    const personalVerification = user?.person?.verification
-    const personalData = user?.person?.data
-
+  const renderKYCFlow = (application?: any, data?: any, children?: any, callback?: () => Promise<void>) => {
+    const isInitialState = application?.status === undefined
+    const isCompleted = application?.status === VerificationStatus.completed
+    const isPending = !isInitialState && !isCompleted
+    const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
     return (
       <div>
-        <div>{VerificationStatus[personalVerification?.status]}</div>
-        <div>You ID Envoys Vision: {userId}</div>
-        {personalData && (
-          <>
-            <div>Name: {personalData?.first_name}</div>
-            <div>Last name: {personalData?.last_name}</div>
-            <div>Middle name: {personalData?.middle_name}</div>
-            <div>Residence country: {personalData?.residence_country}</div>
+        {!isInitialState && data && <>{children}</>}
+        <TitleContainer>{t('Basic Information')}</TitleContainer>
+        <PersonalInfoContainer singleColumn={smallVersion}>
+          <IdentifierContainer showBorder={true}>
+            <IdentifierTextLabel>
+              {t('You ID Envoys Vision:')}
+              <IdentifierLabel>{shortUserId}</IdentifierLabel>
+            </IdentifierTextLabel>
+          </IdentifierContainer>
+          <IdentifierContainer>
+            {isInitialState
+              ? t('Not Verified')
+              : isPending
+              ? t('Pending Verification')
+              : isVerificationAccepted
+              ? t('Verification Complete')
+              : t('Verification Failed')}
+          </IdentifierContainer>
+        </PersonalInfoContainer>
 
-            <img src={personalData?.documents.front_side} />
-            <img src={personalData?.documents.back_side} />
+        {!isPending && !isInitialState && !isVerificationAccepted && (
+          <VerificationErrorContainer>
+            {documentNormalize(application?.verifications).map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </VerificationErrorContainer>
+        )}
+
+        {isInitialState && (
+          <>
+            <Space />
+            <TipContainer>{t('To be able to trade you must proceed with KYC.')}</TipContainer>
           </>
         )}
-        <ul>
-          {documentNormalize(personalVerification?.verifications).map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-        <Button type="button" onClick={handleGetPersonVerificationLink}>
-          Pass Personal KYC
-        </Button>
+
+        {isPending && (
+          <>
+            <Space />
+            <TipContainer>{t('KYC Verification process may take from 2 minutes and up to 6 hours.')}</TipContainer>
+          </>
+        )}
+
+        <BottomContainer>
+          <Button type="button" onClick={callback}>
+            {isInitialState ? t('Start KYC Verification') : t('Restart KYC Verification')}
+          </Button>
+        </BottomContainer>
       </div>
     )
   }
 
+  const renderPersonal = () => {
+    let personalVerification = user?.person?.verification
+    const personalData = user?.person?.applicant
+
+    const children = (
+      <>
+        <TitleContainer>{t('Personal Information')}</TitleContainer>
+        <PersonalInfoContainer singleColumn={smallVersion}>
+          <IdentifierContainer>{personalData?.first_name}</IdentifierContainer>
+          <IdentifierContainer>{personalData?.last_name}</IdentifierContainer>
+          <IdentifierContainer>{personalData?.email}</IdentifierContainer>
+          <IdentifierContainer>{personalData?.residence_country}</IdentifierContainer>
+        </PersonalInfoContainer>
+      </>
+    )
+
+    return <>{renderKYCFlow(personalVerification, personalData, children, handleGetPersonVerificationLink)}</>
+  }
+
   const renderCompany = () => {
-    const companyVerification = user?.company?.verification
+    let companyVerification = user?.company?.verification
     const companyData = user?.company?.data
 
-    return (
-      <div>
-        <div>{VerificationStatus[companyVerification?.status]}</div>
-        {userId && <div>You ID Envoys Vision: {userId}</div>}
-        {companyData && (
-          <>
-            <div>registration_country: {companyData?.registration_country}</div>
-            <div>
-              business_activity: {companyData?.business_activity[1]?.label}{' '}
-              {companyData?.business_activity[1]?.language_code}
-            </div>
-            <div>
-              business_activity: {companyData?.business_activity[0]?.label}{' '}
-              {companyData?.business_activity[0]?.language_code}
-            </div>
-            <div>companyName: {companyData?.companyName}</div>
-            <img src={companyData?.documents.front_side} />
-            <img src={companyData?.documents.back_side} />
-          </>
-        )}
-        <ul>
-          {documentNormalize(companyVerification?.verifications).map((item, index) => (
-            <li key={index}>{item}</li>
-          ))}
-        </ul>
-        <Button type="button" onClick={handleGetCompanyVerificationLink}>
-          Pass Company KYC
-        </Button>
-      </div>
+    const children = (
+      <>
+        <TitleContainer>{t('Company Information')}</TitleContainer>
+        <PersonalInfoContainer singleColumn={smallVersion}>
+          <IdentifierContainer>{companyData?.companyName}</IdentifierContainer>
+          <IdentifierContainer>{companyData?.registration_country}</IdentifierContainer>
+        </PersonalInfoContainer>
+      </>
     )
+
+    return <>{renderKYCFlow(companyVerification, companyData, children, handleGetCompanyVerificationLink)}</>
   }
 
   return (
     <Page>
+      <Space />
       <AppBody>
         <Body>{renderContent()}</Body>
       </AppBody>

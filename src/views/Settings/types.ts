@@ -2,13 +2,19 @@ interface PersonData {
   documents: any
   first_name: string
   last_name: string
+  email: string
   middle_name: string
   residence_country: string
 }
 
+interface Document {
+  front_side: string
+  back_side?: string
+}
+
 interface CompanyData {
   registration_country: string
-  documents: any
+  documents: Document[]
   companyName: string
   business_activity?: any
 }
@@ -24,7 +30,7 @@ interface Verification {
 
 interface PersonVerifications {
   verification: Verification
-  data?: PersonData
+  applicant?: PersonData
   formUrl?: string
   verification_id?: string
 }
