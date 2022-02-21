@@ -5,10 +5,13 @@ workflows:
   master:
     jobs:
       - build
+      - check:
+          requires:
+            - build
       - image:
           context: develop
           requires:
-            - build
+            - check
           filters:
             branches:
               only:
@@ -34,6 +37,21 @@ jobs:
       - run:
           name: Build project
           command: yarn build
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - node_modules
+
+  check:
+    docker:
+      - image: node:16
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /root/project
+      - run:
+          name: Check project
+          command: yarn ci
 
   image:
     machine: true
