@@ -330,7 +330,7 @@ const Farms: React.FC = ({ children }) => {
 
   return (
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
-      <PageHeader>
+      {/* <PageHeader>
         <Heading as="h1" scale="xxl" color="secondary" mb="24px">
           {t('Farms')}
         </Heading>
@@ -345,7 +345,7 @@ const Farms: React.FC = ({ children }) => {
             <ArrowForwardIcon color="primary" />
           </Button>
         </NextLinkFromReactRouter>
-      </PageHeader>
+      </PageHeader> */}
       <Page>
         <ControlContainer>
           <ViewControls>

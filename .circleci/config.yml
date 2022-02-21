@@ -1,0 +1,83 @@
+version: 2
+
+workflows:
+  version: 2
+  master:
+    jobs:
+      - build
+      - check:
+          requires:
+            - build
+      - image:
+          context: develop
+          requires:
+            - check
+          filters:
+            branches:
+              only:
+                - develop
+      - deploy:
+          context: develop
+          requires:
+            - image
+          filters:
+            branches:
+              only:
+                - develop
+
+jobs:
+  build:
+    docker:
+      - image: node:16
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: yarn install
+      - run:
+          name: Build project
+          command: yarn build
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - node_modules
+
+  check:
+    docker:
+      - image: node:16
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /root/project
+      - run:
+          name: Check project
+          command: yarn ci
+
+  image:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Docker login
+          command: docker login -u ${REGISTRY_LOGIN} -p ${REGISTRY_PASSWORD} ${REGISTRY_HOST}
+      - run:
+          name: Build docker image
+          command: docker build -t envoys-frontend .
+      - run:
+          name: Publish docker image
+          command: |
+            echo "Build number: ${CIRCLE_BUILD_NUM}"
+            docker tag envoys-frontend "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
+            docker push "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
+
+  deploy:
+    docker:
+      - image: bash:5-alpine3.15
+    steps:
+      - checkout
+      - run:
+          name: Install cURL
+          command: apk add curl
+      - run:
+          name: Run deploy
+          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "${CIRCLE_PREVIOUS_BUILD_NUM}"
