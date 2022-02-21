@@ -467,7 +467,7 @@ export default function Swap() {
                       <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
                         <RowBetween align="center">
                           {Boolean(trade) && (
-                            <>
+                            <>250px
                               <Label>{t('Price')}</Label>
                               <TradePrice
                                 price={trade?.executionPrice}
@@ -492,7 +492,7 @@ export default function Swap() {
                         {t('Unsupported Asset')}
                       </Button>
                     ) : !account ? (
-                      <ConnectWalletButton width="100%" />
+                      <ConnectWalletButton width="100%" scale="ld" />
                     ) : showWrap ? (
                       <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                         {wrapInputError ??
