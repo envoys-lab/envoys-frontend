@@ -250,9 +250,10 @@ const Settings = () => {
     const isCompleted = application?.status === VerificationStatus.completed
     const isPending = !isInitialState && !isCompleted
     const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
+    const noData = !data || Object.keys(data).length === 0
     return (
       <div>
-        {!isInitialState && data && <>{children}</>}
+        {!isInitialState && !noData && <>{children}</>}
         <TitleContainer>{t('Basic Information')}</TitleContainer>
         <PersonalInfoContainer singleColumn={smallVersion}>
           <IdentifierContainer showBorder={true}>
