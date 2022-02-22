@@ -12,7 +12,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/swap',
     showItemsOnMobile: false,
     items: [],
-    iconComponent: MenuTrade
+    iconComponent: MenuTrade,
   },
   {
     label: t('Finance'),
@@ -20,7 +20,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     active: true,
     href: '/farms',
     items: [],
-    iconComponent: MenuFinance
+    iconComponent: MenuFinance,
   },
   {
     label: t('Companies'),
@@ -28,7 +28,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     active: false,
     href: '/companies',
     items: [],
-    iconComponent: MenuCompanies
+    iconComponent: MenuCompanies,
   },
   {
     label: t('Wallet'),
@@ -36,7 +36,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     active: false,
     href: '/wallet',
     items: [],
-    iconComponent: MenuWallet
+    iconComponent: MenuWallet,
   },
   {
     label: t('OTC'),
@@ -44,7 +44,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     active: false,
     href: '/otc',
     items: [],
-    iconComponent: MenuOTC
+    iconComponent: MenuOTC,
   },
   {
     label: t('Settings'),
@@ -53,8 +53,8 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     bottom: true,
     href: '/settings',
     items: [],
-    iconComponent: MenuSettings
-  }
+    iconComponent: MenuSettings,
+  },
 ]
 
 export default config

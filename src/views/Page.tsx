@@ -11,6 +11,7 @@ const StyledPage = styled.div<{ $removePadding: boolean }>`
   width: 100%;
   padding: ${({ $removePadding }) => ($removePadding ? '0' : '16px')};
   padding-bottom: 0;
+
   background: ${({ theme }) => theme.colors.background};
 
   ${({ theme }) => theme.mediaQueries.xs} {

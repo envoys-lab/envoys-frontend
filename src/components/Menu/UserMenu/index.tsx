@@ -14,11 +14,8 @@ import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useGetBnbBalance } from 'hooks/useTokenBalance'
 import { useTranslation } from 'contexts/Localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { FetchStatus } from 'config/constants/types'
 import WalletModal, { WalletView, LOW_BNB_BALANCE } from './WalletModal'
-import ProfileUserMenuItem from './ProfileUserMenutItem'
-import WalletUserMenuItem from './WalletUserMenuItem'
 import styled from 'styled-components'
 import { MenuOptions } from 'icons'
 
@@ -52,7 +49,7 @@ const UserMenu = () => {
           {t('Disconnect')}
           <LogoutIcon />
         </Flex>
-      </UserMenuItem> 
+      </UserMenuItem>
     </UIKitUserMenu>
   )
 }
