@@ -1,18 +1,18 @@
 {
   "short_name": "Envoys",
   "name": "Envoys",
-  "description": "Farm CAKE with Envoys LP Tokens",
-  "homepage_url": "https://pancakeswap.finance",
+  "description": "Envoys LP Tokens",
+  "homepage_url": "https://beta.envoys.vision/",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1FC7D4",
-  "background_color": "#ffffff",
+  "theme_color": "#0F2B46",
+  "background_color": "#E4E4E4",
   "orientation": "portrait",
   "icons": [
     {
       "src": "favicon.ico",
       "type": "image/x-icon",
-      "sizes": "16x16"
+      "sizes": "128x128"
     },
     {
       "src": "logo.png",

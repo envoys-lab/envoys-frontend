@@ -12,7 +12,7 @@ const isUserRejected = (err) => {
 }
 
 Sentry.init({
-  dsn: SENTRY_DSN || 'https://ed98e16b9d704c22bef92d24bdd5f3b7@o1092725.ingest.sentry.io/6111410',
+  dsn: SENTRY_DSN || 'https://2677b04409364119a8ad0f18cb10b706@o1149660.ingest.sentry.io/6222024',
   integrations: [
     new Sentry.Integrations.Breadcrumbs({
       console: process.env.NODE_ENV === 'production',

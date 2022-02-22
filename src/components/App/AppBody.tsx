@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Card } from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
-  border-radius: 24px;
-  max-width: 436px;
-  width: 100%;
-  z-index: 1;
+  border-radius: 28px;
+  border: none;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  background: white;
 `
 
 /**
