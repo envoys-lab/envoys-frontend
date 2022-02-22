@@ -467,7 +467,8 @@ export default function Swap() {
                       <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
                         <RowBetween align="center">
                           {Boolean(trade) && (
-                            <>250px
+                            <>
+                              250px
                               <Label>{t('Price')}</Label>
                               <TradePrice
                                 price={trade?.executionPrice}
