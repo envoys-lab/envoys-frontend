@@ -13,6 +13,8 @@ import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificat
 import { documentNormalize, isVerificationPassed } from './heplers'
 import { User, VerificationStatus } from './types'
 
+const COLOR_ERROR = '#f15555'
+
 const Body = styled(Flex)`
   flex-direction: column;
   padding: 30px;
@@ -78,7 +80,7 @@ const BottomContainer = styled.div`
 `
 
 const VerificationErrorContainer = styled.ul`
-  color: ${({ theme }) => theme.colors.error};
+  color: ${COLOR_ERROR};
   padding-top: 20px;
 `
 
@@ -248,9 +250,10 @@ const Settings = () => {
     const isCompleted = application?.status === VerificationStatus.completed
     const isPending = !isInitialState && !isCompleted
     const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
+    const noData = !data || Object.keys(data).length === 0
     return (
       <div>
-        {!isInitialState && data && <>{children}</>}
+        {!isInitialState && !noData && <>{children}</>}
         <TitleContainer>{t('Basic Information')}</TitleContainer>
         <PersonalInfoContainer singleColumn={smallVersion}>
           <IdentifierContainer showBorder={true}>
