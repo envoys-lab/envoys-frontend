@@ -19,7 +19,7 @@ export const documentNormalize = (response: object) => {
   if (!response) return arr
 
   for (const [type, { comment }] of Object.entries(response)) {
-    arr.push(`${comment}`)
+    if (type === 'profile') arr.push(`${comment}`)
   }
 
   return arr
