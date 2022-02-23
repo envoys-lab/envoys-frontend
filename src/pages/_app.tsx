@@ -56,7 +56,7 @@ function MyApp(props: AppProps) {
           name="description"
           content="Cheaper and faster than Uniswap? Discover Envoys, the leading DEX on Binance Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
         />
-        <meta name="theme-color" content="#1FC7D4" />
+        <meta name="theme-color" content="#FFFFFF" />
         <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
         <meta
           name="twitter:description"
