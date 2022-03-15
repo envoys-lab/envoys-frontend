@@ -39,6 +39,7 @@ const PriceChart = ({
   token0Address,
   token1Address,
   currentSwapPrice,
+  withBorder
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
@@ -56,6 +57,7 @@ const PriceChart = ({
       overflow={chartView === ChartViewMode.TRADING_VIEW ? 'hidden' : 'unset'}
       $isDark={isDark}
       $isExpanded={isChartExpanded}
+      $withBorder={withBorder}
     >
       <Flex justifyContent="space-between" px="24px">
         <Flex alignItems="center">

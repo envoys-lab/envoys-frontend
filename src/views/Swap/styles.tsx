@@ -11,10 +11,10 @@ export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean }>`
   }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
-    ${({ $isChartExpanded }) => ($isChartExpanded ? 'padding: 0 120px' : 'padding: 0 40px')};
+    padding: 0 0 0 40px;
   }
 `
 
 export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 328px;
+  width: 310px;
 `
