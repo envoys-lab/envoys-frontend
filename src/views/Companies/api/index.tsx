@@ -6,9 +6,9 @@ const axiosInstance = axios.create({
   baseURL: ENVOYS_PUBLIC_API,
 })
 
-const getCompanies = async () => {
+const getCompanies = async (page = 1, size = 50) => {
   try {
-    const response = await axiosInstance.get(`${ENVOYS_PUBLIC_API}/companies`)
+    const response = await axiosInstance.get(`${ENVOYS_PUBLIC_API}/companies`, { params: { page, size } })
     return response.data
   } catch (e) {
     console.error(e)
