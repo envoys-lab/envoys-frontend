@@ -1,4 +1,11 @@
-import { Box, ButtonMenu, ButtonMenuItem, Flex, Text } from '@envoysvision/uikit'
+import {
+  ArrowSwitch,
+  Box,
+  ButtonMenu,
+  ButtonMenuItem,
+  Flex,
+  Text
+} from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
@@ -22,6 +29,7 @@ const BasicChart = ({
   outputCurrency,
   isMobile,
   currentSwapPrice,
+  onTokenSwitch,
 }) => {
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum>(0)
 
@@ -72,35 +80,39 @@ const BasicChart = ({
   return (
     <>
       <Flex
-        flexDirection={['column', null, null, null, null, null, 'row']}
-        alignItems={['flex-start', null, null, null, null, null, 'center']}
-        justifyContent="space-between"
-        px="24px"
+        flexDirection="column"
+        alignItems={'stretch'}
+        p="20px"
       >
-        <Flex flexDirection="column" pt="12px">
-          <TokenDisplay
-            value={pairPrices?.length > 0 && valueToDisplay}
-            inputSymbol={inputCurrency?.symbol}
-            outputSymbol={outputCurrency?.symbol}
-          >
-            <Text color={isChangePositive ? 'success' : 'failure'} fontSize="20px" mt="-8px" mb="8px" bold>
-              {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
-            </Text>
-          </TokenDisplay>
-          <Text small color="secondary">
-            {hoverDate || currentDate}
-          </Text>
+        <Flex flexDirection="row" alignItems={'flex-start'} justifyContent="space-between">
+          <Flex flexDirection="column" justifyContent={'flex-start'}>
+            <TokenDisplay
+                value={pairPrices?.length > 0 && valueToDisplay}
+                inputSymbol={inputCurrency?.symbol}
+                outputSymbol={outputCurrency?.symbol}
+            >
+              <ArrowSwitch color={'primary'} height={14} onClick={onTokenSwitch} mx={"16px"}/>
+              <Text color={isChangePositive ? 'success' : 'failure'} fontSize="14px">
+                {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
+              </Text>
+            </TokenDisplay>
+            <Flex flexDirection="row">
+              <Text small color="secondary">
+                {hoverDate || currentDate}
+              </Text>
+            </Flex>
+          </Flex>
+          <Box>
+            <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm" slim>
+              <ButtonMenuItem mx={1} my={2}>{t('24H')}</ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>{t('1W')}</ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>{t('1M')}</ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>{t('1Y')}</ButtonMenuItem>
+            </ButtonMenu>
+          </Box>
         </Flex>
-        <Box>
-          <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm">
-            <ButtonMenuItem>{t('24H')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1W')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1M')}</ButtonMenuItem>
-            <ButtonMenuItem>{t('1Y')}</ButtonMenuItem>
-          </ButtonMenu>
-        </Box>
       </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
+      <Box height={isMobile ? '100%' : chartHeight} width="100%">
         <SwapLineChart
           data={pairPrices}
           setHoverValue={setHoverValue}

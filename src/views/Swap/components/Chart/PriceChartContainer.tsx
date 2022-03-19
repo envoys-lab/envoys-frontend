@@ -13,12 +13,13 @@ type PriceChartContainerProps = {
   outputCurrency: Currency
   isChartExpanded: boolean
   setIsChartExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  onSwitchCurrency: () => void,
   isChartDisplayed: boolean
   currentSwapPrice: {
     [key: string]: number
   }
   isMobile?: boolean
-  withBorder?: boolean
+  withBorder?: boolean,
 }
 
 const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
@@ -28,6 +29,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   outputCurrencyId,
   isChartExpanded,
   setIsChartExpanded,
+  onSwitchCurrency,
   isChartDisplayed,
   isMobile,
   currentSwapPrice,

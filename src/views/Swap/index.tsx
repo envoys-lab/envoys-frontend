@@ -68,7 +68,7 @@ const Label = styled(Text)`
   color: ${({ theme }) => theme.colors.secondary};
 `
 
-const SwitchIconButton = styled(IconButton)`
+export const SwitchIconButton = styled(IconButton)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
   .icon-up-down {
     display: none;
@@ -91,7 +91,7 @@ export default function Swap() {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const [isChartExpanded, setIsChartExpanded] = useState(false)
+  const [isChartExpanded, setIsChartExpanded] = useState(true)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
 
@@ -357,15 +357,20 @@ export default function Swap() {
   return (
     <Page hideFooterOnDesktop={isChartExpanded}>
       <AppBody>
-      <Flex width="100%" justifyContent="space-between" position="relative">
+      <Flex justifyContent="space-between" position="relative">
           {!isMobile && (
             <PriceChartContainer
+              withBorder={false}
               inputCurrencyId={inputCurrencyId}
               inputCurrency={currencies[Field.INPUT]}
               outputCurrencyId={outputCurrencyId}
               outputCurrency={currencies[Field.OUTPUT]}
               isChartExpanded={isChartExpanded}
               setIsChartExpanded={setIsChartExpanded}
+              onSwitchCurrency={() => {
+                setApprovalSubmitted(false) // reset 2 step UI for approvals
+                onSwitchTokens()
+              }}
               isChartDisplayed={isChartDisplayed}
               currentSwapPrice={singleTokenPrice}
             />
