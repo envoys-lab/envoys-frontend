@@ -3,7 +3,7 @@ import {
   Box,
   ButtonMenu,
   ButtonMenuItem,
-  Flex,
+  Flex, Link,
   Text
 } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -91,7 +91,9 @@ const BasicChart = ({
                 inputSymbol={inputCurrency?.symbol}
                 outputSymbol={outputCurrency?.symbol}
             >
-              <ArrowSwitch color={'primary'} height={14} onClick={onTokenSwitch} mx={"16px"}/>
+              <Link onClick={onTokenSwitch}>
+                <ArrowSwitch color={'primary'} height={14} mx={"16px"}/>
+              </Link>
               <Text color={isChangePositive ? 'success' : 'failure'} fontSize="14px">
                 {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
               </Text>

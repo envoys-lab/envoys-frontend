@@ -119,6 +119,7 @@ const PriceChart = ({
           outputCurrency={outputCurrency}
           isMobile={isMobile}
           currentSwapPrice={currentSwapPrice}
+          onTokenSwitch={onSwitchTokens}
         />
       )}
       {chartView === ChartViewMode.TRADING_VIEW && (
