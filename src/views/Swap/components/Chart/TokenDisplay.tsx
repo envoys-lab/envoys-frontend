@@ -1,8 +1,7 @@
-import {ArrowDownIcon, ArrowUpDownIcon, Flex, FlexProps, Skeleton, Text} from '@envoysvision/uikit'
+import {Flex, FlexProps, Skeleton, Text} from '@envoysvision/uikit'
 import React, { FC } from 'react'
 import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
-import {Field} from "../../../../state/swap/actions";
-import {SwitchIconButton} from "../../index";
+
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,
