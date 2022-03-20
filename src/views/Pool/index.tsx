@@ -21,6 +21,7 @@ import { AppBody } from '../../components/App'
 import Page from '../Page'
 import { Wrapper} from "../Swap/components/styleds";
 import { useRouter } from "next/router";
+import AppHeader from "../../components/App/AppHeader";
 
 export const StyledPoolContainer = styled(Flex)`
   flex-shrink: 0;
@@ -110,14 +111,14 @@ export default function Pool() {
       <AppBody>
         {/*<AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />*/}
         <StyledPoolContainer>
-          <Wrapper>
+          <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
             <Flex position={'relative'} alignItems={"center"} width={"100%"}>
               <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedItems={2}>
                 <Tab>{t('Swap')}</Tab>
                 <Tab>{t('Liquidity')}</Tab>
               </TabMenu>
             </Flex>
-          </Wrapper>
+          </AppHeader>
           <Wrapper id="liquidity-page">
             <Body>
               {renderBody()}

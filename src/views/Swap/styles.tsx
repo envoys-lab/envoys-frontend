@@ -5,8 +5,5 @@ export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean, $is
   flex-shrink: 0;
   height: fit-content;
   width: ${({ $isChartDisplayed }) => $isChartDisplayed ? `320px` : `440px`};
-`
-
-export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 100%;
+  flex-direction: column;
 `
