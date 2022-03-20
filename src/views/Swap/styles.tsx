@@ -1,20 +1,12 @@
 import { Box, Flex } from '@envoysvision/uikit'
 import styled from 'styled-components'
 
-export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean }>`
+export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean, $isChartDisplayed: boolean }>`
   flex-shrink: 0;
   height: fit-content;
-  padding: 0 24px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 0 40px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    padding: 0 0 0 40px;
-  }
+  width: ${({ $isChartDisplayed }) => $isChartDisplayed ? `320px` : `440px`};
 `
 
 export const StyledInputCurrencyWrapper = styled(Box)`
-  width: 310px;
+  width: 100%;
 `

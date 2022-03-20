@@ -1,7 +1,14 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
-import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@envoysvision/uikit'
+import {
+  Text,
+  Flex,
+  CardFooter,
+  Button,
+  AddIcon,
+  TabMenu, Tab, Card
+} from '@envoysvision/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,14 +17,24 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
-import { AppHeader, AppBody } from '../../components/App'
+import { AppBody } from '../../components/App'
 import Page from '../Page'
+import { Wrapper} from "../Swap/components/styleds";
+import { useRouter } from "next/router";
 
-const Body = styled(CardBody)`
+export const StyledPoolContainer = styled(Flex)`
+  flex-shrink: 0;
+  flex-direction: column;
+  height: fit-content;
+  width: 440px;
+`
+
+export const Body = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
 `
 
 export default function Pool() {
+  const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -82,32 +99,50 @@ export default function Pool() {
     )
   }
 
+  const handleTabClick = (newTabIndex) => {
+    if (newTabIndex === 0) {
+      return router.push('/swap');
+    }
+  };
+
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
-        <Body>
-          {renderBody()}
-          {account && !v2IsLoading && (
-            <Flex flexDirection="column" alignItems="center" mt="24px">
-              <Text color="textSubtle" mb="8px">
-                {t("Don't see a pool you joined?")}
-              </Text>
-              <Link href="/find">
-                <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
-                  {t('Find other LP tokens')}
-                </Button>
-              </Link>
+        {/*<AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />*/}
+        <StyledPoolContainer>
+          <Wrapper>
+            <Flex position={'relative'} alignItems={"center"} width={"100%"}>
+              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedItems={2}>
+                <Tab>{t('Swap')}</Tab>
+                <Tab>{t('Liquidity')}</Tab>
+              </TabMenu>
             </Flex>
-          )}
-        </Body>
-        <CardFooter style={{ textAlign: 'center' }}>
-          <Link href="/add">
-            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
-              {t('Add Liquidity')}
-            </Button>
-          </Link>
-        </CardFooter>
+          </Wrapper>
+          <Wrapper id="liquidity-page">
+            <Body>
+              {renderBody()}
+              {account && !v2IsLoading && (
+                <Flex flexDirection="column" alignItems="center" mt="24px">
+                  <Text color="textSubtle" mb="8px">
+                    {t("Don't see a pool you joined?")}
+                  </Text>
+                  <Link href="/find">
+                    <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
+                      {t('Find other LP tokens')}
+                    </Button>
+                  </Link>
+                </Flex>
+              )}
+            </Body>
+          </Wrapper>
+          <CardFooter style={{ textAlign: 'center' }}>
+            <Link href="/add">
+              <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
+                {t('Add Liquidity')}
+              </Button>
+            </Link>
+          </CardFooter>
+        </StyledPoolContainer>
       </AppBody>
     </Page>
   )
