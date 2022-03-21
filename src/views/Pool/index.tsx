@@ -109,11 +109,10 @@ export default function Pool() {
   return (
     <Page>
       <AppBody>
-        {/*<AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />*/}
         <StyledPoolContainer>
           <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
             <Flex position={'relative'} alignItems={"center"} width={"100%"}>
-              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedItems={2}>
+              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
                 <Tab>{t('Swap')}</Tab>
                 <Tab>{t('Liquidity')}</Tab>
               </TabMenu>
