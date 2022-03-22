@@ -7,16 +7,7 @@ import { useLoadItems } from './utils'
 
 const Companies = () => {
   const { t } = useTranslation()
-  const [companies, setCompanies] = useState([])
-  const [pagination, setPagination] = useState({
-    itemsPerPage: 10,
-    totalItems: 1,
-    loadedItems: 1,
-    totalPages: 1,
-    currentPage: 1,
-  })
-
-  const { loading, items, hasNextPage, error, loadMore } = useLoadItems()
+  const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
 
   const [infiniteRef] = useInfiniteScroll({
     loading,
@@ -31,27 +22,17 @@ const Companies = () => {
     rootMargin: '0px 0px 400px 0px',
   })
 
-  useEffect(() => {
-    handleGetCompanies()
-  }, [])
-
-  const handleGetCompanies = async () => {
-    const { items, meta } = await getCompanies()
-    // console.log({ companies })
-    setCompanies(items)
-    setPagination(meta)
-  }
-
   const renderCompany = (item) => {
-    return <div key={item._id}>{item.name}</div>
+    return (
+      <div key={item._id}>
+        {item.name} {item.status}
+      </div>
+    )
   }
 
-  //   return <div>{companies.map((item) => renderCompany(item))}</div>
   return (
     <div>
-      {items.map((item) => (
-        <div key={item.key}>{item.value}</div>
-      ))}
+      {companies.map((item) => renderCompany(item))}
       {/* 
               As long as we have a "next page", we show "Loading" right under the list.
               When it becomes visible on the screen, or it comes near, it triggers 'onLoadMore'.

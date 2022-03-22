@@ -1,43 +1,32 @@
-import * as React from 'react'
+import { useState } from 'react'
 import { getCompanies } from '../api'
 
-const ARRAY_SIZE = 20
-const RESPONSE_TIME_IN_MS = 1000
-
 export interface Item {
-  key: number
-  value: string
+  about: object
+  active: boolean
+  activity: object
+  description: string
+  details: object
+  documents: object[]
+  homePageUrl: string
+  logoUrl: string
+  members: object[]
+  name: string
+  roadmap: object[]
+  sellType: string[]
+  social: object
+  stages: object[]
+  status: string
+  videoUrl: string
+  _id: string
 }
 
-interface Response {
-  hasNextPage: boolean
-  data: Item[]
-}
-
-function loadItems(startCursor = 0): Promise<Response> {
-  return new Promise((resolve) => {
-    let newArray: Item[] = []
-
-    setTimeout(() => {
-      for (let i = startCursor; i < startCursor + ARRAY_SIZE; i++) {
-        const newItem = {
-          key: i,
-          value: `This is item ${i}`,
-        }
-        newArray = [...newArray, newItem]
-      }
-
-      resolve({ hasNextPage: true, data: newArray })
-    }, RESPONSE_TIME_IN_MS)
-  })
-}
-
-export function useLoadItems() {
-  const [loading, setLoading] = React.useState(false)
-  const [items, setItems] = React.useState<Item[]>([])
-  const [hasNextPage, setHasNextPage] = React.useState<boolean>(true)
-  const [error, setError] = React.useState<Error>()
-  const [nextPage, setNextPage] = React.useState(1)
+export const useLoadItems = () => {
+  const [loading, setLoading] = useState(false)
+  const [items, setItems] = useState<Item[]>([])
+  const [hasNextPage, setHasNextPage] = useState<boolean>(true)
+  const [error, setError] = useState<Error>()
+  const [nextPage, setNextPage] = useState(1)
 
   async function loadMore() {
     setLoading(true)
