@@ -16,7 +16,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
+  padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0 0.5rem;
@@ -34,26 +34,32 @@ const InputPanel = styled.div`
   display: flex;
   flex-flow: column nowrap;
   position: relative;
-  border-radius: '20px';
+  border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
 const Container = styled.div`
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  background-color: ${({ theme }) => theme.colors.backgroundPage};
+  height: 70px;
+  padding: 10px;
 `
 
 const CurrencySelect = styled(Flex)`
   align-items: center;
   position: absolute;
-  height: 100%;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  bottom: 0;
   z-index: 2;
   justify-content: space-between;
   >button {
-    background: ${({ theme }) => theme.colors.background};
-    margin: 15px 10px;
-    >div {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: 0;
+    height: auto;
+    border-radius: 14px;
+    >* {
       margin: 10px;
     }
   }
@@ -68,6 +74,7 @@ interface CurrencyInputPanelProps {
   onCurrencySelect: (currency: Currency) => void
   currency?: Currency | null
   disableCurrencySelect?: boolean
+  useBackInsteadOfDismiss?: boolean
   hideBalance?: boolean
   pair?: Pair | null
   otherCurrency?: Currency | null
@@ -83,6 +90,7 @@ export default function CurrencyInputPanel({
   onCurrencySelect,
   currency,
   disableCurrencySelect = false,
+  useBackInsteadOfDismiss = false,
   hideBalance = false,
   pair = null, // used for double token logo
   otherCurrency,
@@ -99,6 +107,7 @@ export default function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
+      useBackInsteadOfDismiss={useBackInsteadOfDismiss}
     />,
   )
   return (

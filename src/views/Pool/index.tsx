@@ -27,7 +27,10 @@ export const StyledPoolContainer = styled(Flex)`
   flex-shrink: 0;
   flex-direction: column;
   height: fit-content;
-  width: 440px;
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 440px;
+  }
 `
 
 export const Body = styled(Card)`

@@ -99,7 +99,7 @@ const BasicChart = ({
               </Text>
             </TokenDisplay>
             <Flex flexDirection="row">
-              <Text small color="secondary">
+              <Text small style={{opacity: 0.7}}>
                 {hoverDate || currentDate}
               </Text>
             </Flex>

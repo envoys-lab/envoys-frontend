@@ -6,6 +6,7 @@ import {
   ModalTitle,
   ModalBackButton,
   ModalCloseButton,
+  ModalBackAsDismissButton,
   ModalBody,
   InjectedModalProps,
   Heading,
@@ -46,7 +47,8 @@ interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean
+  showCommonBases?: boolean;
+  useBackInsteadOfDismiss?: boolean;
 }
 
 export default function CurrencySearchModal({
@@ -55,6 +57,7 @@ export default function CurrencySearchModal({
   selectedCurrency,
   otherSelectedCurrency,
   showCommonBases = false,
+  useBackInsteadOfDismiss = false,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
 
@@ -93,10 +96,14 @@ export default function CurrencySearchModal({
     <StyledModalContainer minWidth="320px">
       <ModalHeader>
         <ModalTitle>
-          {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
+          {!useBackInsteadOfDismiss && config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
           <Heading>{config[modalView].title}</Heading>
         </ModalTitle>
-        <ModalCloseButton onDismiss={onDismiss} />
+        {useBackInsteadOfDismiss ? (
+            <ModalBackAsDismissButton onDismiss={onDismiss} />
+        ) : (
+            <ModalCloseButton onDismiss={onDismiss} />
+        )}
       </ModalHeader>
       <StyledModalBody>
         {modalView === CurrencyModalView.search ? (

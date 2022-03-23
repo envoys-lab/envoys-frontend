@@ -33,7 +33,7 @@ export const AutoRow = styled(Row)<{ gap?: string; justify?: string }>`
   justify-content: ${({ justify }) => justify};
 
   & > * {
-    margin: ${({ gap }) => gap} !important;
+    ${({ gap }) => gap && `margin: ${gap} !important;`} 
   }
 `
 

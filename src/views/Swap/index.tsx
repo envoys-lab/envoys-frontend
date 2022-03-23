@@ -11,7 +11,7 @@ import {
   IconButton,
   BottomDrawer,
   useMatchBreakpoints,
-  ArrowUpDownIcon, ChartDisableIcon, ChartIcon,
+  ArrowUpDownIcon, ChartDisableIcon, ChartIcon, SwapVertIcon,
   TabMenu, Tab
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -69,7 +69,9 @@ const Label = styled(Text)`
 `
 
 export const SwitchIconButton = styled(IconButton)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  background: transparent;
+  border: solid 1px ${({ theme }) => theme.colors.mainDark};
+  color: ${({ theme }) => theme.colors.mainDark};
   .icon-up-down {
     display: none;
   }
@@ -415,7 +417,7 @@ export default function Swap() {
                   </TabMenu>
                 </Flex>
               </AppHeader>
-              <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
+              <Wrapper id="swap-page" style={{ minHeight: '260px' }}>
                 <AutoColumn gap="sm">
                   <CurrencyInputPanel
                       label={
@@ -429,20 +431,20 @@ export default function Swap() {
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies[Field.OUTPUT]}
                       hideBalance={true}
+                      useBackInsteadOfDismiss={true}
                       id="swap-currency-input"
                   />
-                  {false && (
-                    <AutoColumn justify="space-between">
+                  <AutoColumn justify="space-between">
                     <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                       <SwitchIconButton
                           variant="light"
-                          scale="sm"
+                          scale="xs"
                           onClick={() => {
                             setApprovalSubmitted(false) // reset 2 step UI for approvals
                             onSwitchTokens()
                           }}
                       >
-                        <ArrowDownIcon
+                        <SwapVertIcon
                             className="icon-down"
                             color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
                         />
@@ -458,7 +460,6 @@ export default function Swap() {
                       ) : null}
                     </AutoRow>
                   </AutoColumn>
-                  )}
                   <CurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
@@ -468,6 +469,7 @@ export default function Swap() {
                       onCurrencySelect={handleOutputSelect}
                       otherCurrency={currencies[Field.INPUT]}
                       hideBalance={true}
+                      useBackInsteadOfDismiss={false}
                       id="swap-currency-output"
                   />
 
@@ -485,7 +487,7 @@ export default function Swap() {
                       </>
                   ) : null}
 
-                  {showWrap ? null : (
+                  {true || showWrap ? null : (
                       <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
                         <RowBetween align="center">
                           {Boolean(trade) && (
@@ -514,7 +516,7 @@ export default function Swap() {
                         {t('Unsupported Asset')}
                       </Button>
                   ) : !account ? (
-                      <ConnectWalletButton width="100%" scale="ld" />
+                      <ConnectWalletButton width="100%" scale="lg" />
                   ) : showWrap ? (
                       <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                         {wrapInputError ??
@@ -601,7 +603,7 @@ export default function Swap() {
                                     : t('Swap'))}
                       </Button>
                   )}
-                  {showApproveFlow && (
+                  {false && showApproveFlow && (
                       <Column style={{ marginTop: '1rem' }}>
                         <ProgressSteps steps={[approval === ApprovalState.APPROVED]} />
                       </Column>
@@ -609,13 +611,15 @@ export default function Swap() {
                   {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
                 </Box>
               </Wrapper>
-              {!swapIsUnsupported ? (
-                trade && <AdvancedSwapDetailsDropdown trade={trade} />
-              ) : (
-                <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+              {false && (
+                !swapIsUnsupported ? (
+                  trade && <AdvancedSwapDetailsDropdown trade={trade} />
+                ) : (
+                  <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+                )
               )}
             </StyledSwapContainer>
-            {isChartExpanded && (
+            {false && isChartExpanded && (
               <Box display={['none', null, null, 'block']} width="100%" height="100%">
                 <Footer variant="side" />
               </Box>
