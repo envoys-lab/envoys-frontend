@@ -90,7 +90,6 @@ export default function CurrencyInputPanel({
   onCurrencySelect,
   currency,
   disableCurrencySelect = false,
-  useBackInsteadOfDismiss = false,
   hideBalance = false,
   pair = null, // used for double token logo
   otherCurrency,
@@ -107,11 +106,10 @@ export default function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
-      useBackInsteadOfDismiss={useBackInsteadOfDismiss}
     />,
   )
   return (
-    <Box id={id} position={"relative"}>
+    <Box id={id} position={"relative"} width={"100%"}>
       <InputPanel>
         <Container>
           <CurrencySelect>

@@ -71,12 +71,12 @@ const Label = styled(Text)`
 export const SwitchIconButton = styled(IconButton)`
   background: transparent;
   border: solid 1px ${({ theme }) => theme.colors.mainDark};
-  color: ${({ theme }) => theme.colors.mainDark};
+  fill: ${({ theme }) => theme.colors.mainDark};
   .icon-up-down {
     display: none;
   }
   &:hover {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.mainDark};
     .icon-down {
       display: none;
       fill: white;
@@ -96,9 +96,9 @@ export default function Swap() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(true)
-  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
+  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile || isTablet)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
 
   useEffect(() => {
@@ -218,7 +218,7 @@ export default function Swap() {
   }, [approval, approvalSubmitted])
 
   const maxAmountInput: CurrencyAmount | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  const atMaxAmountInput = true;//Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, recipient)
@@ -366,11 +366,15 @@ export default function Swap() {
     }
   };
 
+  useEffect(() => {
+    onUserInput(Field.INPUT, '0.000001')
+  },[onUserInput]);
+
   return (
     <Page hideFooterOnDesktop={isChartExpanded}>
       <AppBody>
       <Flex justifyContent="space-between" position="relative">
-          {!isMobile && (
+          {!(isMobile || isTablet) && (
             <PriceChartContainer
               withBorder={false}
               inputCurrencyId={inputCurrencyId}
@@ -400,7 +404,7 @@ export default function Swap() {
             isOpen={isChartDisplayed}
             setIsOpen={setIsChartDisplayed}
           />
-          <Flex flexDirection="column">
+
             <StyledSwapContainer $isChartExpanded={isChartExpanded} $isChartDisplayed={isChartDisplayed}>
               <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} noSettings>
                 <Flex position={'relative'} alignItems={"center"} width={"100%"}>
@@ -431,7 +435,6 @@ export default function Swap() {
                       onCurrencySelect={handleInputSelect}
                       otherCurrency={currencies[Field.OUTPUT]}
                       hideBalance={true}
-                      useBackInsteadOfDismiss={true}
                       id="swap-currency-input"
                   />
                   <AutoColumn justify="space-between">
@@ -439,19 +442,14 @@ export default function Swap() {
                       <SwitchIconButton
                           variant="light"
                           scale="xs"
+                          circle={true}
                           onClick={() => {
                             setApprovalSubmitted(false) // reset 2 step UI for approvals
                             onSwitchTokens()
                           }}
                       >
-                        <SwapVertIcon
-                            className="icon-down"
-                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                        />
-                        <ArrowUpDownIcon
-                            className="icon-up-down"
-                            color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                        />
+                        <SwapVertIcon className="icon-down" color={'mainDark'} />
+                        <ArrowUpDownIcon className="icon-up-down" color={'mainDark'} />
                       </SwitchIconButton>
                       {recipient === null && !showWrap && isExpertMode ? (
                           <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
@@ -469,7 +467,6 @@ export default function Swap() {
                       onCurrencySelect={handleOutputSelect}
                       otherCurrency={currencies[Field.INPUT]}
                       hideBalance={true}
-                      useBackInsteadOfDismiss={false}
                       id="swap-currency-output"
                   />
 
@@ -624,7 +621,7 @@ export default function Swap() {
                 <Footer variant="side" />
               </Box>
             )}
-          </Flex>
+
       </Flex>
     </AppBody>
     </Page>

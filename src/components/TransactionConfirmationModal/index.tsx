@@ -142,6 +142,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
 
 interface ConfirmationModalProps {
   title: string
+  subtitle?: string
   customOnDismiss?: () => void
   hash: string | undefined
   content: () => React.ReactNode
@@ -152,6 +153,7 @@ interface ConfirmationModalProps {
 
 const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationModalProps> = ({
   title,
+  subtitle,
   onDismiss,
   customOnDismiss,
   attemptingTxn,
@@ -172,7 +174,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   if (!chainId) return null
 
   return (
-    <Modal title={title} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+    <Modal title={title} subtitle={subtitle} onDismiss={handleDismiss} bodyPadding={16}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (
