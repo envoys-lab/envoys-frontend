@@ -1,6 +1,7 @@
 import React, { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
+import styled from "styled-components";
 import { Currency, ETHER, Token } from '@envoysvision/sdk'
-import { Text, Input, Box } from '@envoysvision/uikit'
+import { Text, Input, InputGroup, Box, SearchIcon } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { FixedSizeList } from 'react-window'
 import { useAudioModeManager } from 'state/user/hooks'
@@ -17,6 +18,10 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
+
+const RoundInput = styled(Input)`
+  border-radius: 36px;
+`
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -123,16 +128,17 @@ function CurrencySearch({
       <div>
         <AutoColumn gap="16px">
           <Row>
-            <Input
-              id="token-search-input"
-              placeholder={t('Search name or paste address')}
-              scale="lg"
-              autoComplete="off"
-              value={searchQuery}
-              ref={inputRef as RefObject<HTMLInputElement>}
-              onChange={handleInput}
-              onKeyDown={handleEnter}
-            />
+            <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={"darkClear"}/>} scale={'lg'}>
+              <RoundInput
+                  id="token-search-input"
+                  placeholder={t('Search name or paste address')}
+                  autoComplete="off"
+                  value={searchQuery}
+                  ref={inputRef as RefObject<HTMLInputElement>}
+                  onChange={handleInput}
+                  onKeyDown={handleEnter}
+              />
+            </InputGroup>
           </Row>
           {showCommonBases && (
             <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
