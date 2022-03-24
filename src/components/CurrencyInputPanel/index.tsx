@@ -134,7 +134,7 @@ export default function CurrencyInputPanel({
                     </Text>
                 ) : (
                     <Flex alignItems={"center"}>
-                      <TokenIcon mr={2}/>
+                      {!currency && <TokenIcon mr={2}/>}
                       <Text small id="pair">
                         {(currency && currency.symbol && currency.symbol.length > 20
                             ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(

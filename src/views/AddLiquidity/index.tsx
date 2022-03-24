@@ -363,6 +363,7 @@ export default function AddLiquidity() {
                     onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                   }}
                   onCurrencySelect={handleCurrencyASelect}
+                  hideBalance={true}
                   showMaxButton={false && !atMaxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
                   id="add-liquidity-input-tokena"
@@ -376,6 +377,7 @@ export default function AddLiquidity() {
                   onMax={() => {
                     onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                   }}
+                  hideBalance={true}
                   showMaxButton={false && !atMaxAmounts[Field.CURRENCY_B]}
                   currency={currencies[Field.CURRENCY_B]}
                   id="add-liquidity-input-tokenb"
@@ -471,7 +473,7 @@ export default function AddLiquidity() {
           </CardFooter>
         </PageContainer>
       </AppBody>
-      {!addIsUnsupported ? (
+      {/*!addIsUnsupported ? (
           pair && !noLiquidity && pairState !== PairState.INVALID ? (
               <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
                 <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
@@ -479,7 +481,7 @@ export default function AddLiquidity() {
           ) : null
       ) : (
           <UnsupportedCurrencyFooter currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]} />
-      )}
+      )*/}
     </Page>
   )
 }
