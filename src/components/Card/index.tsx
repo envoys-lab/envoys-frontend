@@ -16,8 +16,8 @@ const Card = styled(Box)<{
 export default Card
 
 export const LightCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.colors.background};
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  border: 1px solid ${({ theme }) => theme.colors.tipBackground};
+  background-color: ${({ theme }) => theme.colors.tipBackground};
 `
 
 export const LightGreyCard = styled(Card)`

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@envoysvision/sdk'
-import {Button, Text, Flex, AddIcon, CardBody, Message, useModal, TabMenu, Tab, CardFooter} from '@envoysvision/uikit'
+import {Button, Text, Flex, Box, Message, useModal, TabMenu, Tab, CardFooter} from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -363,7 +363,7 @@ export default function AddLiquidity() {
                     onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                   }}
                   onCurrencySelect={handleCurrencyASelect}
-                  showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                  showMaxButton={false && !atMaxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
                   id="add-liquidity-input-tokena"
                   showCommonBases={false}
@@ -376,29 +376,27 @@ export default function AddLiquidity() {
                   onMax={() => {
                     onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                   }}
-                  showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                  showMaxButton={false && !atMaxAmounts[Field.CURRENCY_B]}
                   currency={currencies[Field.CURRENCY_B]}
                   id="add-liquidity-input-tokenb"
                   showCommonBases={false}
               />
               {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-                  <>
-                    <LightCard padding="0px" borderRadius="20px">
-                      <RowBetween padding="1rem">
-                        <Text fontSize="14px">
-                          {noLiquidity ? t('Initial prices and pool share') : t('Prices and pool share')}
-                        </Text>
-                      </RowBetween>{' '}
-                      <LightCard padding="1rem" borderRadius="20px">
-                        <PoolPriceBar
-                            currencies={currencies}
-                            poolTokenPercentage={poolTokenPercentage}
-                            noLiquidity={noLiquidity}
-                            price={price}
-                        />
-                      </LightCard>
-                    </LightCard>
-                  </>
+                <Box>
+                  <RowBetween padding="1rem">
+                    <Text small color="primary" fontWeight={500}>
+                      {noLiquidity ? t('Initial prices and pool share') : t('Prices and pool share')}
+                    </Text>
+                  </RowBetween>{' '}
+                  <LightCard padding="2rem 1rem">
+                    <PoolPriceBar
+                        currencies={currencies}
+                        poolTokenPercentage={poolTokenPercentage}
+                        noLiquidity={noLiquidity}
+                        price={price}
+                    />
+                  </LightCard>
+                </Box>
               )}
 
               {addIsUnsupported ? (

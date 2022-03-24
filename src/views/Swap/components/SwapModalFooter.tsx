@@ -10,7 +10,7 @@ import {
   formatExecutionPrice,
   warningSeverity,
 } from 'utils/prices'
-import QuestionHelper from 'components/QuestionHelper'
+// import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
@@ -22,8 +22,9 @@ const SwapModalFooterContainer = styled(Card)`
   grid-row-gap: 6px;
 `
 
-const ThinText = styled(Text)`
-  opacity: 0.7;
+const ThinText = styled(Text).attrs({
+  thin: true,
+})`
   font-size: 14px;
 `
 
