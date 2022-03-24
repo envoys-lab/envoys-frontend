@@ -1,12 +1,8 @@
-import { Box, Flex } from '@envoysvision/uikit'
 import styled from 'styled-components'
+import {PageContainer} from "../../components/Layout/PageContainer";
 
-export const StyledSwapContainer = styled(Flex)<{ $isChartExpanded: boolean, $isChartDisplayed: boolean }>`
-  flex-shrink: 0;
-  height: fit-content;
-  width: 100%;
+export const StyledSwapContainer = styled(PageContainer)<{ $isChartDisplayed: boolean }>`
   ${({ theme }) => theme.mediaQueries.sm} {
     width: ${({ $isChartDisplayed }) => $isChartDisplayed ? `320px` : `440px`};
   }
-  flex-direction: column;
 `

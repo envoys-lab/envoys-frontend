@@ -22,19 +22,16 @@ import Page from '../Page'
 import { Wrapper} from "../Swap/components/styleds";
 import { useRouter } from "next/router";
 import AppHeader from "../../components/App/AppHeader";
-
-export const StyledPoolContainer = styled(Flex)`
-  flex-shrink: 0;
-  flex-direction: column;
-  height: fit-content;
-  width: 100%;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 440px;
-  }
-`
+import {PageContainer} from "../../components/Layout/PageContainer";
 
 export const Body = styled(Card)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  padding: 30px 20px;
+  border-radius: 16px;
+`
+
+const ThinText = styled(Text)`
+  opacity: 0.7;
+  font-weight: 700;
 `
 
 export default function Pool() {
@@ -97,9 +94,9 @@ export default function Pool() {
       ))
     }
     return (
-      <Text color="textSubtle" textAlign="center">
+      <ThinText color="primary" textAlign="center">
         {t('No liquidity found.')}
-      </Text>
+      </ThinText>
     )
   }
 
@@ -112,7 +109,7 @@ export default function Pool() {
   return (
     <Page>
       <AppBody>
-        <StyledPoolContainer>
+        <PageContainer>
           <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
             <Flex position={'relative'} alignItems={"center"} width={"100%"}>
               <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
@@ -121,17 +118,17 @@ export default function Pool() {
               </TabMenu>
             </Flex>
           </AppHeader>
-          <Wrapper id="liquidity-page">
-            <Body>
+          <Wrapper id="liquidity-page" pb={'0 !important'}>
+            <Body background={"tipBackground"}>
               {renderBody()}
               {account && !v2IsLoading && (
-                <Flex flexDirection="column" alignItems="center" mt="24px">
-                  <Text color="textSubtle" mb="8px">
+                <Flex flexDirection="column" alignItems="center">
+                  <ThinText color="primary" my="16px">
                     {t("Don't see a pool you joined?")}
-                  </Text>
+                  </ThinText>
                   <Link href="/find">
-                    <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
-                      {t('Find other LP tokens')}
+                    <Button id="import-pool-link" variant="tertiary" as="a">
+                      <b>{t('Find other LP tokens')}</b>
                     </Button>
                   </Link>
                 </Flex>
@@ -140,12 +137,12 @@ export default function Pool() {
           </Wrapper>
           <CardFooter style={{ textAlign: 'center' }}>
             <Link href="/add">
-              <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
+              <Button id="join-pool-button" width="100%" scale="lg" startIcon={<AddIcon color="white" />}>
                 {t('Add Liquidity')}
               </Button>
             </Link>
           </CardFooter>
-        </StyledPoolContainer>
+        </PageContainer>
       </AppBody>
     </Page>
   )
