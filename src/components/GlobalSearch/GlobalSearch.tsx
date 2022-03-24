@@ -26,18 +26,18 @@ const GlobalSearch = () => {
   }, [allPoolData])
 
   console.log({ unfetchedPoolAddresses })
-  const { data: poolDatas } = usePoolDatas(unfetchedPoolAddresses)
+  const { data } = usePoolDatas(unfetchedPoolAddresses)
 
   useEffect(() => {
-    if (poolDatas) {
-      setPoolsLiquidity(poolDatas)
+    if (data) {
+      setPoolsLiquidity(data)
     }
-  }, [poolDatas])
+  }, [data])
 
   useEffect(() => {
     // useUpdatePoolData()
     updateSearchResults()
-  }, [query])
+  }, [query, poolsLiquidity])
 
   const updateSearchResults = async () => {
     const searchResults = await getSearchResults({ tokens, farms, poolsLiquidity, poolsSyrup, query })
@@ -48,7 +48,7 @@ const GlobalSearch = () => {
   }
 
   const renderResults = () => {
-    console.log(searchResults.poolsLiquidity)
+    console.log(searchResults)
     return <div>asd</div>
   }
 
