@@ -1,6 +1,6 @@
 import React from 'react'
 import { Currency, Pair } from '@envoysvision/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@envoysvision/uikit'
+import { Button, Text, useModal, Flex, Box, TokenIcon } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -133,14 +133,17 @@ export default function CurrencyInputPanel({
                       {pair?.token0.symbol}:{pair?.token1.symbol}
                     </Text>
                 ) : (
-                    <Text id="pair" bold>
-                      {(currency && currency.symbol && currency.symbol.length > 20
-                          ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                              currency.symbol.length - 5,
-                              currency.symbol.length,
-                          )}`
-                          : currency?.symbol) || t('Select a currency')}
-                    </Text>
+                    <Flex alignItems={"center"}>
+                      <TokenIcon mr={2}/>
+                      <Text small id="pair">
+                        {(currency && currency.symbol && currency.symbol.length > 20
+                            ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                                currency.symbol.length - 5,
+                                currency.symbol.length,
+                            )}`
+                            : currency?.symbol) || t('Select a currency')}
+                      </Text>
+                    </Flex>
                 )}
               </Flex>
             </CurrencySelectButton>
@@ -148,7 +151,7 @@ export default function CurrencyInputPanel({
                 <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
                   {!!currency
                       ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                      : ' -'}
+                      : ' '}
                 </Text>
             )}
           </CurrencySelect>
