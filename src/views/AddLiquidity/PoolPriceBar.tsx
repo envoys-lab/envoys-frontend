@@ -50,7 +50,7 @@ function PoolPriceBar({
           </ThinText>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text thin small bold>
+          <Text thin small bold color={"success"}>
             {noLiquidity && price
               ? '100'
               : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}

@@ -90,6 +90,7 @@ export default function Pool() {
           key={v2Pair.liquidityToken.address}
           pair={v2Pair}
           mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
+          background={"transparent"}
         />
       ))
     }
@@ -119,7 +120,7 @@ export default function Pool() {
             </Flex>
           </AppHeader>
           <Wrapper id="liquidity-page" pb={'0 !important'}>
-            <Body background={"tipBackground"}>
+            <Body background={"transparent"}>
               {renderBody()}
               {account && !v2IsLoading && (
                 <Flex flexDirection="column" alignItems="center">

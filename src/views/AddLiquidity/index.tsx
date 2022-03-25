@@ -5,7 +5,7 @@ import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@envoysvisio
 import {Button, Text, Flex, Box, Message, useModal, TabMenu, Tab, CardFooter} from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { DoubleCurrencyLogo } from '../../components/Logo'
 import { AppHeader, AppBody } from '../../components/App'
-import { MinimalPositionCard } from '../../components/PositionCard'
+// import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
@@ -207,7 +207,7 @@ export default function AddLiquidity() {
   const modalHeader = () => {
     return noLiquidity ? (
       <Flex alignItems="center">
-        <Text fontSize="48px" marginRight="10px">
+        <Text fontSize="40px" marginRight="10px">
           {`${currencies[Field.CURRENCY_A]?.symbol}/${currencies[Field.CURRENCY_B]?.symbol}`}
         </Text>
         <DoubleCurrencyLogo
@@ -219,7 +219,7 @@ export default function AddLiquidity() {
     ) : (
       <AutoColumn>
         <Flex alignItems="center">
-          <Text fontSize="48px" marginRight="10px">
+          <Text fontSize="40px" marginRight="10px">
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -415,6 +415,7 @@ export default function AddLiquidity() {
                             <RowBetween>
                               {approvalA !== ApprovalState.APPROVED && (
                                   <Button
+                                      scale={"lg"}
                                       onClick={approveACallback}
                                       disabled={approvalA === ApprovalState.PENDING}
                                       width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
@@ -428,6 +429,7 @@ export default function AddLiquidity() {
                               )}
                               {approvalB !== ApprovalState.APPROVED && (
                                   <Button
+                                      scale={"lg"}
                                       onClick={approveBCallback}
                                       disabled={approvalB === ApprovalState.PENDING}
                                       width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}

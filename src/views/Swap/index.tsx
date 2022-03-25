@@ -367,8 +367,10 @@ export default function Swap() {
   };
 
   useEffect(() => {
-    onUserInput(Field.INPUT, '0.000001')
-  },[onUserInput]);
+    if (window.location.hostname === 'localhost') {
+      onUserInput(Field.INPUT, '0.000001')
+    }
+  },[onUserInput, window.location.hostname]);
 
   return (
     <Page hideFooterOnDesktop={isChartExpanded}>
