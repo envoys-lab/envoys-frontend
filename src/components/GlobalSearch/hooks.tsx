@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { State } from '../../state/types'
 
@@ -12,14 +13,21 @@ const getTokens = () => {
 
   return out
 }
-const getFarms = () => {
-  return useSelector((state: State) => state.farms.data)
-}
-const getPoolsLiquidity = () => {
-  return useSelector((state: State) => state.pools.data)
-}
-const getPoolsSyrup = () => {
-  return null
+
+const useDebounce = (value, delay = 400) => {
+  const [debouncedValue, setDebouncedValue] = useState(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value])
+
+  return debouncedValue
 }
 
-export { getTokens, getFarms, getPoolsLiquidity, getPoolsSyrup }
+export { getTokens, useDebounce }
