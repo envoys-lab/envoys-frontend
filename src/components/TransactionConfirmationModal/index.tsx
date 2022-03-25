@@ -174,7 +174,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   if (!chainId) return null
 
   return (
-    <Modal title={title} subtitle={subtitle} onDismiss={handleDismiss} bodyPadding={16}>
+    <Modal title={title} subtitle={subtitle} onDismiss={handleDismiss} bodyPadding={'16px'}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (
