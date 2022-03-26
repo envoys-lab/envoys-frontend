@@ -407,7 +407,7 @@ export default function Swap() {
             setIsOpen={setIsChartDisplayed}
           />
 
-            <StyledSwapContainer $isChartExpanded={isChartExpanded} $isChartDisplayed={isChartDisplayed}>
+            <StyledSwapContainer $isChartDisplayed={isChartDisplayed}>
               <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} noSettings>
                 <Flex position={'relative'} alignItems={"center"} width={"100%"}>
                   {setIsChartDisplayed && (
