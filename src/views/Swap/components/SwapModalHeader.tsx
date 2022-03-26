@@ -101,7 +101,7 @@ export default function SwapModalHeader({
           </Text>
         </RowFixed>
       </RowBetween>)}
-      <Card justify="center" position={"relative"} padding={0}>
+      <Card position={"relative"} padding={0}>
         <CurrencyInputPanel
             value={trade.inputAmount.toSignificant(6)}
             onUserInput={() => null}
