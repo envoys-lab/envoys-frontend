@@ -1,6 +1,6 @@
 import React from 'react'
 import { Currency, Pair } from '@envoysvision/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@envoysvision/uikit'
+import { Button, Text, useModal, Flex, Box, TokenIcon } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -16,7 +16,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
+  padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0 0.5rem;
@@ -34,15 +34,37 @@ const InputPanel = styled.div`
   display: flex;
   flex-flow: column nowrap;
   position: relative;
-  border-radius: '20px';
+  border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
 const Container = styled.div`
   border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  background-color: ${({ theme }) => theme.colors.backgroundPage};
+  height: 70px;
+  padding: 10px;
 `
+
+const CurrencySelect = styled(Flex)`
+  align-items: center;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  justify-content: space-between;
+  > button {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: 0;
+    height: auto;
+    border-radius: 14px;
+    > * {
+      margin: 10px;
+    }
+  }
+`
+
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
@@ -52,6 +74,7 @@ interface CurrencyInputPanelProps {
   onCurrencySelect: (currency: Currency) => void
   currency?: Currency | null
   disableCurrencySelect?: boolean
+  useBackInsteadOfDismiss?: boolean
   hideBalance?: boolean
   pair?: Pair | null
   otherCurrency?: Currency | null
@@ -86,50 +109,56 @@ export default function CurrencyInputPanel({
     />,
   )
   return (
-    <Box id={id}>
-      <Flex mb="6px" alignItems="center" justifyContent="space-between">
-        <CurrencySelectButton
-          className="open-currency-select-button"
-          selected={!!currency}
-          onClick={() => {
-            if (!disableCurrencySelect) {
-              onPresentCurrencyModal()
-            }
-          }}
-        >
-          <Flex alignItems="center" justifyContent="space-between">
-            {pair ? (
-              <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-            ) : currency ? (
-              <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-            ) : null}
-            {pair ? (
-              <Text id="pair" bold>
-                {pair?.token0.symbol}:{pair?.token1.symbol}
-              </Text>
-            ) : (
-              <Text id="pair" bold>
-                {(currency && currency.symbol && currency.symbol.length > 20
-                  ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                      currency.symbol.length - 5,
-                      currency.symbol.length,
-                    )}`
-                  : currency?.symbol) || t('Select a currency')}
-              </Text>
-            )}
-            {!disableCurrencySelect && <ChevronDownIcon />}
-          </Flex>
-        </CurrencySelectButton>
-        {account && (
-          <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
-            {!hideBalance && !!currency
-              ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-              : ' -'}
-          </Text>
-        )}
-      </Flex>
+    <Box id={id} position={'relative'} width={'100%'}>
       <InputPanel>
         <Container>
+          <CurrencySelect>
+            <CurrencySelectButton
+              className="open-currency-select-button"
+              selected={!!currency}
+              onClick={() => {
+                if (!disableCurrencySelect) {
+                  onPresentCurrencyModal()
+                }
+              }}
+            >
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                style={{ opacity: disableCurrencySelect ? 0.7 : 1 }}
+              >
+                {pair ? (
+                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+                ) : currency ? (
+                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                ) : null}
+                {pair ? (
+                  <Text id="pair" bold>
+                    {pair?.token0.symbol}:{pair?.token1.symbol}
+                  </Text>
+                ) : (
+                  <Flex alignItems={'center'}>
+                    {!currency && <TokenIcon mr={2} />}
+                    <Text small id="pair">
+                      {(currency && currency.symbol && currency.symbol.length > 20
+                        ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                            currency.symbol.length - 5,
+                            currency.symbol.length,
+                          )}`
+                        : currency?.symbol) || t('Select a currency')}
+                    </Text>
+                  </Flex>
+                )}
+              </Flex>
+            </CurrencySelectButton>
+            {account && !hideBalance && (
+              <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+                {!!currency
+                  ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+                  : ' '}
+              </Text>
+            )}
+          </CurrencySelect>
           <LabelRow>
             <RowBetween>
               <NumericalInput

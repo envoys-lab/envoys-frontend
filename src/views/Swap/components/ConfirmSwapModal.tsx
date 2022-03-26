@@ -101,6 +101,7 @@ const ConfirmSwapModal: React.FC<InjectedModalProps & ConfirmSwapModalProps> = (
   return (
     <TransactionConfirmationModal
       title={t('Confirm Swap')}
+      subtitle={t('Trade tokens in an instant')}
       onDismiss={onDismiss}
       customOnDismiss={customOnDismiss}
       attemptingTxn={attemptingTxn}

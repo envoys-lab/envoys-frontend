@@ -7,7 +7,7 @@ const Transactions = () => {
   return (
     <>
       <Button variant="text" p={0} onClick={onPresentTransactionsModal} ml="16px">
-        <HistoryIcon color="textSubtle" width="24px" />
+        <HistoryIcon color="mainDark" opacity={0.5} width="24px" />
       </Button>
     </>
   )

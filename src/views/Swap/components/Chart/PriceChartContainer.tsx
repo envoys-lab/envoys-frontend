@@ -18,6 +18,7 @@ type PriceChartContainerProps = {
     [key: string]: number
   }
   isMobile?: boolean
+  withBorder?: boolean
 }
 
 const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
@@ -30,6 +31,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
   isChartDisplayed,
   isMobile,
   currentSwapPrice,
+  withBorder,
 }) => {
   const token0Address = getTokenAddress(inputCurrencyId)
   const token1Address = getTokenAddress(outputCurrencyId)
@@ -60,6 +62,7 @@ const PriceChartContainer: React.FC<PriceChartContainerProps> = ({
       setIsChartExpanded={setIsChartExpanded}
       isMobile={isMobile}
       currentSwapPrice={currentSwapPrice}
+      withBorder={withBorder}
     />
   )
 }

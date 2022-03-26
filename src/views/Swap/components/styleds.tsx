@@ -44,7 +44,6 @@ export const StyledBalanceMaxMini = styled.button`
   padding: 0.2rem;
   font-size: 0.875rem;
   font-weight: 400;
-  margin-left: 0.4rem;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.text};
   display: flex;
@@ -106,8 +105,6 @@ export function SwapCallbackError({ error }: { error: string }) {
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => `${theme.colors.warning}33`};
-  padding: 0.5rem;
   border-radius: 12px;
   margin-top: 8px;
 `

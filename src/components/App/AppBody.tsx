@@ -7,6 +7,17 @@ export const BodyWrapper = styled(Card)`
   border: none;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
   background: white;
+  width: 100%;
+  max-width: 90vw;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: auto;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    max-width: calc(90vw - 290px);
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-width: min(968px, 90vw - 290px);
+  }
 `
 
 /**

@@ -13,49 +13,70 @@ interface Props {
   helper?: string
   backTo?: string
   noConfig?: boolean
+  noSettings?: boolean
 }
 
 const AppHeaderContainer = styled(Flex)`
   align-items: center;
   justify-content: space-between;
-  padding: 24px;
+  padding: 0 12px;
+  margin-top: 12px;
   width: 100%;
 `
 
-const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
-  const [expertMode] = useExpertModeManager()
+export const Wrapper = styled(Flex)`
+  position: relative;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+`
 
+const AppHeader: React.FC<Props> = ({
+  title,
+  subtitle,
+  helper,
+  backTo,
+  noConfig = false,
+  noSettings = false,
+  children,
+}) => {
+  const [expertMode] = useExpertModeManager()
   return (
-    <AppHeaderContainer>
-      <Flex alignItems="center" mr={noConfig ? 0 : '16px'}>
-        {backTo && (
-          <Link passHref href={backTo}>
-            <IconButton as="a">
-              <ArrowBackIcon width="32px" />
-            </IconButton>
-          </Link>
-        )}
-        <Flex flexDirection="column">
-          <Heading as="h2" mb="8px">
-            {title}
-          </Heading>
-          <Flex alignItems="center">
-            {helper && <QuestionHelper text={helper} mr="4px" placement="top-start" />}
-            <Text color="textSubtle" fontSize="14px">
-              {subtitle}
-            </Text>
+    <Wrapper>
+      {children}
+      <AppHeaderContainer>
+        <Flex alignItems="center" mr={noConfig ? 0 : '16px'} mt={'24px'}>
+          {backTo && (
+            <Link passHref href={backTo}>
+              <IconButton as="a">
+                <ArrowBackIcon width="32px" />
+              </IconButton>
+            </Link>
+          )}
+          <Flex flexDirection="column">
+            <Heading as="h2" mb="6px" color={'mainDark'}>
+              {title}
+            </Heading>
+            <Flex alignItems="center">
+              {helper && <QuestionHelper text={helper} mr="4px" placement="top-start" />}
+              <Text color="mainDark" fontSize="12px">
+                {subtitle}
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
-      {!noConfig && (
-        <Flex alignItems="center">
-          <NotificationDot show={expertMode}>
-            <GlobalSettings />
-          </NotificationDot>
-          <Transactions />
-        </Flex>
-      )}
-    </AppHeaderContainer>
+        {!noConfig && (
+          <Flex alignItems="center">
+            {!noSettings && (
+              <NotificationDot show={expertMode}>
+                <GlobalSettings />
+              </NotificationDot>
+            )}
+            <Transactions />
+          </Flex>
+        )}
+      </AppHeaderContainer>
+    </Wrapper>
   )
 }
 

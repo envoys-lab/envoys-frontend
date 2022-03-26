@@ -98,7 +98,7 @@ function TransactionSubmittedContent({
               </RowFixed>
             </Button>
           )}
-          <Button onClick={onDismiss} mt="20px">
+          <Button onClick={onDismiss} mt="20px" width={'100%'}>
             {t('Close')}
           </Button>
         </AutoColumn>
@@ -134,7 +134,9 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
       </AutoColumn>
 
       <Flex justifyContent="center" pt="24px">
-        <Button onClick={onDismiss}>{t('Dismiss')}</Button>
+        <Button width="100%" onClick={onDismiss}>
+          {t('Dismiss')}
+        </Button>
       </Flex>
     </Wrapper>
   )
@@ -142,6 +144,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
 
 interface ConfirmationModalProps {
   title: string
+  subtitle?: string
   customOnDismiss?: () => void
   hash: string | undefined
   content: () => React.ReactNode
@@ -152,6 +155,7 @@ interface ConfirmationModalProps {
 
 const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationModalProps> = ({
   title,
+  subtitle,
   onDismiss,
   customOnDismiss,
   attemptingTxn,
@@ -172,7 +176,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
   if (!chainId) return null
 
   return (
-    <Modal title={title} headerBackground="gradients.cardHeader" onDismiss={handleDismiss}>
+    <Modal title={title} subtitle={subtitle} onDismiss={handleDismiss} bodyPadding={'16px'}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
       ) : hash ? (
