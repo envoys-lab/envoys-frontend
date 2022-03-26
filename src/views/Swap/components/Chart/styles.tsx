@@ -1,7 +1,7 @@
 import { Box } from '@envoysvision/uikit'
 import styled from 'styled-components'
 
-export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boolean, $withBorder: boolean }>`
+export const StyledPriceChart = styled(Box)<{ $isDark: boolean, $isExpanded: boolean, $withBorder: boolean }>`
   border: none;
   border-radius: ${({ $withBorder }) => ($withBorder ? '32px' : '0' )};
   //width: 100%;
@@ -22,4 +22,6 @@ export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded: boo
 
 StyledPriceChart.defaultProps = {
   height: '70%',
+  $isExpanded: false,
+  $withBorder: false
 }
