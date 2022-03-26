@@ -39,7 +39,7 @@ const PriceChart = ({
   token0Address,
   token1Address,
   currentSwapPrice,
-  withBorder
+  withBorder,
 }) => {
   const { isDesktop } = useMatchBreakpoints()
   const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
@@ -60,54 +60,54 @@ const PriceChart = ({
       $withBorder={withBorder}
     >
       {withBorder && (
-          <Flex justifyContent="space-between" px="24px">
-            <Flex alignItems="center">
-              {outputCurrency ? (
-                  <DoubleCurrencyLogo currency0={inputCurrency} currency1={outputCurrency} size={24} margin />
-              ) : (
-                  inputCurrency && <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '8px' }} />
-              )}
-              {inputCurrency && (
-                  <Text color="text" bold>
-                    {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
-                  </Text>
-              )}
-              <IconButton variant="text" onClick={onSwitchTokens}>
-                <SyncAltIcon ml="6px" color="primary" />
-              </IconButton>
-              <Flex>
-                <ChartButton
-                    aria-label={t('Basic')}
-                    title={t('Basic')}
-                    $active={chartView === ChartViewMode.BASIC}
-                    scale="sm"
-                    variant="text"
-                    color="primary"
-                    onClick={() => setChartView(ChartViewMode.BASIC)}
-                    mr="8px"
-                >
-                  {isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}
-                </ChartButton>
-                <ChartButton
-                    aria-label="TradingView"
-                    title="TradingView"
-                    $active={chartView === ChartViewMode.TRADING_VIEW}
-                    scale="sm"
-                    variant="text"
-                    onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
-                >
-                  {isDesktop ? 'TradingView' : <TradingViewIcon color="primary" />}
-                </ChartButton>
-              </Flex>
-            </Flex>
-            {!isMobile && (
-                <Flex>
-                  <IconButton variant="text" onClick={toggleExpanded}>
-                    {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
-                  </IconButton>
-                </Flex>
+        <Flex justifyContent="space-between" px="24px">
+          <Flex alignItems="center">
+            {outputCurrency ? (
+              <DoubleCurrencyLogo currency0={inputCurrency} currency1={outputCurrency} size={24} margin />
+            ) : (
+              inputCurrency && <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '8px' }} />
             )}
+            {inputCurrency && (
+              <Text color="text" bold>
+                {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
+              </Text>
+            )}
+            <IconButton variant="text" onClick={onSwitchTokens}>
+              <SyncAltIcon ml="6px" color="primary" />
+            </IconButton>
+            <Flex>
+              <ChartButton
+                aria-label={t('Basic')}
+                title={t('Basic')}
+                $active={chartView === ChartViewMode.BASIC}
+                scale="sm"
+                variant="text"
+                color="primary"
+                onClick={() => setChartView(ChartViewMode.BASIC)}
+                mr="8px"
+              >
+                {isDesktop ? t('Basic') : <LineGraphIcon color="primary" />}
+              </ChartButton>
+              <ChartButton
+                aria-label="TradingView"
+                title="TradingView"
+                $active={chartView === ChartViewMode.TRADING_VIEW}
+                scale="sm"
+                variant="text"
+                onClick={() => setChartView(ChartViewMode.TRADING_VIEW)}
+              >
+                {isDesktop ? 'TradingView' : <TradingViewIcon color="primary" />}
+              </ChartButton>
+            </Flex>
           </Flex>
+          {!isMobile && (
+            <Flex>
+              <IconButton variant="text" onClick={toggleExpanded}>
+                {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
+              </IconButton>
+            </Flex>
+          )}
+        </Flex>
       )}
 
       {chartView === ChartViewMode.BASIC && (

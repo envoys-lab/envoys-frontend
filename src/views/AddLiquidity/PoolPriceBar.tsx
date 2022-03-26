@@ -6,12 +6,12 @@ import { AutoColumn } from '../../components/Layout/Column'
 import { AutoRow } from '../../components/Layout/Row'
 import { ONE_BIPS } from '../../config/constants'
 import { Field } from '../../state/mint/actions'
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const ThinText = styled(Text).attrs({
   thin: true,
-  color: "primary",
-  small: true
+  color: 'primary',
+  small: true,
 })`
   font-weight: 700;
 `
@@ -50,15 +50,13 @@ function PoolPriceBar({
           </ThinText>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text thin small bold color={"success"}>
+          <Text thin small bold color={'success'}>
             {noLiquidity && price
               ? '100'
               : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
             %
           </Text>
-          <ThinText pt={1}>
-            {t('Share of Pool')}
-          </ThinText>
+          <ThinText pt={1}>{t('Share of Pool')}</ThinText>
         </AutoColumn>
       </AutoRow>
     </AutoColumn>

@@ -46,7 +46,7 @@ interface CurrencySearchModalProps extends InjectedModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean;
+  showCommonBases?: boolean
 }
 
 export default function CurrencySearchModal({
@@ -96,9 +96,9 @@ export default function CurrencySearchModal({
           <Heading>{config[modalView].title}</Heading>
         </ModalTitle>
         {config[modalView].onBack ? (
-            <ModalBackButton onBack={config[modalView].onBack} />
+          <ModalBackButton onBack={config[modalView].onBack} />
         ) : (
-            <ModalCloseButton onDismiss={onDismiss} />
+          <ModalCloseButton onDismiss={onDismiss} />
         )}
       </ModalHeader>
       <StyledModalBody>

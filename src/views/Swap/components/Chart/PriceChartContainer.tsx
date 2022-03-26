@@ -18,7 +18,7 @@ type PriceChartContainerProps = {
     [key: string]: number
   }
   isMobile?: boolean
-  withBorder?: boolean,
+  withBorder?: boolean
 }
 
 const PriceChartContainer: React.FC<PriceChartContainerProps> = ({

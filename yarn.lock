@@ -649,10 +649,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@envoysvision/uikit@^0.63.4":
-  version "0.63.4"
-  resolved "https://registry.yarnpkg.com/@envoysvision/uikit/-/uikit-0.63.4.tgz#8db36afc79eb10887e2e513c6bed6ba0a66f668e"
-  integrity sha512-Y0t/JOnCvrhBpOqPX91Ij4zkebZCzQYcr1O+Am9SkyOwzmrmWHJI6eqrr376fuG+Nl4E1j9BPEfjLAtsn+HhoQ==
+"@envoysvision/uikit@^0.63.5":
+  version "0.63.5"
+  resolved "https://registry.yarnpkg.com/@envoysvision/uikit/-/uikit-0.63.5.tgz#f0960fd33951d38a9ced69eaeba281f88027d1fa"
+  integrity sha512-NjCpikhsViKk/bBQ1lhSIokf1abKIvk4BR+pH7AD5k0H7ZWok641pbXSow8uXKDi/ihLVMxezcryBJO5BXnolA==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/styled-system" "^5.1.10"
@@ -6818,10 +6818,10 @@ eslint-config-airbnb@^19.0.4:
     object.assign "^4.1.2"
     object.entries "^1.1.5"
 
-eslint-config-prettier@^8.3.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.4.0.tgz#8e6d17c7436649e98c4c2189868562921ef563de"
-  integrity sha512-CFotdUcMY18nGRo5KGsnNxpznzhkopOcOo0InID+sgQssPrzjvsyKZPvOgymTFeHrFuC3Tzdf2YndhXtULK9Iw==
+eslint-config-prettier@^8.5.0:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz#5a81680ec934beca02c7b1a61cf8ca34b66feab1"
+  integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
 
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"

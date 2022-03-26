@@ -7,10 +7,10 @@ const Card = styled(Box)<{
   border?: string
   borderRadius?: string | number
 }>`
-  width: ${({ width }) => width ? (typeof width === 'number' ? `${width}px` : width) : '100%'};
-  padding: ${({ padding }) => padding ? (typeof padding === 'number' ? `${padding}px` : padding) : '1.25rem'};
+  width: ${({ width }) => (width ? (typeof width === 'number' ? `${width}px` : width) : '100%')};
+  padding: ${({ padding }) => (padding ? (typeof padding === 'number' ? `${padding}px` : padding) : '1.25rem')};
   border: ${({ border }) => border};
-  border-radius: ${({ borderRadius: br }) => br ? (typeof br === 'number' ? `${br}px` : br) : br ?? '16px'};
+  border-radius: ${({ borderRadius: br }) => (br ? (typeof br === 'number' ? `${br}px` : br) : br ?? '16px')};
   background-color: ${({ theme }) => theme.colors.background};
 `
 export default Card

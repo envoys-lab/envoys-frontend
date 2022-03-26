@@ -1,11 +1,4 @@
-import {
-  ArrowSwitch,
-  Box,
-  ButtonMenu,
-  ButtonMenuItem,
-  Flex, Link,
-  Text
-} from '@envoysvision/uikit'
+import { ArrowSwitch, Box, ButtonMenu, ButtonMenuItem, Flex, Link, Text } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
 import { useFetchPairPrices } from 'state/swap/hooks'
@@ -79,37 +72,41 @@ const BasicChart = ({
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        alignItems={'stretch'}
-        p="20px"
-      >
+      <Flex flexDirection="column" alignItems={'stretch'} p="20px">
         <Flex flexDirection="row" alignItems={'flex-start'} justifyContent="space-between">
           <Flex flexDirection="column" justifyContent={'flex-start'}>
             <TokenDisplay
-                value={pairPrices?.length > 0 && valueToDisplay}
-                inputSymbol={inputCurrency?.symbol}
-                outputSymbol={outputCurrency?.symbol}
+              value={pairPrices?.length > 0 && valueToDisplay}
+              inputSymbol={inputCurrency?.symbol}
+              outputSymbol={outputCurrency?.symbol}
             >
               <Link onClick={onTokenSwitch}>
-                <ArrowSwitch color={'primary'} height={14} mx={"16px"}/>
+                <ArrowSwitch color={'primary'} height={14} mx={'16px'} />
               </Link>
               <Text color={isChangePositive ? 'success' : 'failure'} fontSize="14px">
                 {`${isChangePositive ? '+' : ''}${changeValue.toFixed(3)} (${changePercentage}%)`}
               </Text>
             </TokenDisplay>
             <Flex flexDirection="row">
-              <Text small style={{opacity: 0.7}}>
+              <Text small style={{ opacity: 0.7 }}>
                 {hoverDate || currentDate}
               </Text>
             </Flex>
           </Flex>
           <Box>
             <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm" slim>
-              <ButtonMenuItem mx={1} my={2}>{t('24H')}</ButtonMenuItem>
-              <ButtonMenuItem mx={1} my={2}>{t('1W')}</ButtonMenuItem>
-              <ButtonMenuItem mx={1} my={2}>{t('1M')}</ButtonMenuItem>
-              <ButtonMenuItem mx={1} my={2}>{t('1Y')}</ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>
+                {t('24H')}
+              </ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>
+                {t('1W')}
+              </ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>
+                {t('1M')}
+              </ButtonMenuItem>
+              <ButtonMenuItem mx={1} my={2}>
+                {t('1Y')}
+              </ButtonMenuItem>
             </ButtonMenu>
           </Box>
         </Flex>

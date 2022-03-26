@@ -8,12 +8,12 @@ import Transactions from './Transactions'
 import QuestionHelper from '../QuestionHelper'
 
 interface Props {
-  title: string;
-  subtitle: string;
-  helper?: string;
-  backTo?: string;
-  noConfig?: boolean;
-  noSettings?: boolean;
+  title: string
+  subtitle: string
+  helper?: string
+  backTo?: string
+  noConfig?: boolean
+  noSettings?: boolean
 }
 
 const AppHeaderContainer = styled(Flex)`
@@ -31,13 +31,21 @@ export const Wrapper = styled(Flex)`
   padding: 1rem;
 `
 
-const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig = false, noSettings = false, children }) => {
+const AppHeader: React.FC<Props> = ({
+  title,
+  subtitle,
+  helper,
+  backTo,
+  noConfig = false,
+  noSettings = false,
+  children,
+}) => {
   const [expertMode] = useExpertModeManager()
   return (
     <Wrapper>
       {children}
       <AppHeaderContainer>
-        <Flex alignItems="center" mr={noConfig ? 0 : '16px'} mt={"24px"}>
+        <Flex alignItems="center" mr={noConfig ? 0 : '16px'} mt={'24px'}>
           {backTo && (
             <Link passHref href={backTo}>
               <IconButton as="a">
@@ -46,7 +54,7 @@ const AppHeader: React.FC<Props> = ({ title, subtitle, helper, backTo, noConfig 
             </Link>
           )}
           <Flex flexDirection="column">
-            <Heading as="h2" mb="6px" color={"mainDark"}>
+            <Heading as="h2" mb="6px" color={'mainDark'}>
               {title}
             </Heading>
             <Flex alignItems="center">

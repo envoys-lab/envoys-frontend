@@ -1,14 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
-import {
-  Text,
-  Flex,
-  CardFooter,
-  Button,
-  AddIcon,
-  TabMenu, Tab, Card
-} from '@envoysvision/uikit'
+import { Text, Flex, CardFooter, Button, AddIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -19,10 +12,10 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks
 import Dots from '../../components/Loader/Dots'
 import { AppBody } from '../../components/App'
 import Page from '../Page'
-import { Wrapper} from "../Swap/components/styleds";
-import { useRouter } from "next/router";
-import AppHeader from "../../components/App/AppHeader";
-import {PageContainer} from "../../components/Layout/PageContainer";
+import { Wrapper } from '../Swap/components/styleds'
+import { useRouter } from 'next/router'
+import AppHeader from '../../components/App/AppHeader'
+import { PageContainer } from '../../components/Layout/PageContainer'
 
 export const Body = styled(Card)`
   padding: 30px 20px;
@@ -90,7 +83,7 @@ export default function Pool() {
           key={v2Pair.liquidityToken.address}
           pair={v2Pair}
           mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
-          background={"transparent"}
+          background={'transparent'}
         />
       ))
     }
@@ -103,16 +96,16 @@ export default function Pool() {
 
   const handleTabClick = (newTabIndex) => {
     if (newTabIndex === 0) {
-      return router.push('/swap');
+      return router.push('/swap')
     }
-  };
+  }
 
   return (
     <Page>
       <AppBody>
         <PageContainer>
           <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
-            <Flex position={'relative'} alignItems={"center"} width={"100%"}>
+            <Flex position={'relative'} alignItems={'center'} width={'100%'}>
               <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
                 <Tab>{t('Swap')}</Tab>
                 <Tab>{t('Liquidity')}</Tab>
@@ -120,7 +113,7 @@ export default function Pool() {
             </Flex>
           </AppHeader>
           <Wrapper id="liquidity-page" pb={'0 !important'}>
-            <Body background={"transparent"}>
+            <Body background={'transparent'}>
               {renderBody()}
               {account && !v2IsLoading && (
                 <Flex flexDirection="column" alignItems="center">

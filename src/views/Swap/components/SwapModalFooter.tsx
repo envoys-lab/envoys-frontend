@@ -14,7 +14,7 @@ import {
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
-import Card from "../../../components/Card";
+import Card from '../../../components/Card'
 
 const SwapModalFooterContainer = styled(Card)`
   margin-top: 24px;
@@ -73,13 +73,11 @@ export default function SwapModalFooter({
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>
           </BoldText>
-        </RowBetween >
+        </RowBetween>
 
-        <RowBetween mb={1} >
+        <RowBetween mb={1}>
           <RowFixed>
-            <ThinText>
-              {trade.tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}
-            </ThinText>
+            <ThinText>{trade.tradeType === TradeType.EXACT_INPUT ? t('Minimum received') : t('Maximum sold')}</ThinText>
             {/*<QuestionHelper
               text={t(
                 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
@@ -100,7 +98,7 @@ export default function SwapModalFooter({
             </BoldText>
           </RowFixed>
         </RowBetween>
-        <RowBetween mb={1} >
+        <RowBetween mb={1}>
           <RowFixed>
             <ThinText>{t('Price Impact')}</ThinText>
             {/*<QuestionHelper

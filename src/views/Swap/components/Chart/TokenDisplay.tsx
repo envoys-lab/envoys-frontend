@@ -1,7 +1,6 @@
-import {Flex, FlexProps, Skeleton, Text} from '@envoysvision/uikit'
+import { Flex, FlexProps, Skeleton, Text } from '@envoysvision/uikit'
 import React, { FC } from 'react'
 import { formatAmount, formatAmountNotation } from 'views/Info/utils/formatInfoNumbers'
-
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,
@@ -22,7 +21,7 @@ const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol,
         {formatAmount(value, formatOptions)}
       </Text>
       {inputSymbol && outputSymbol && (
-        <Text color="mainDark" fontSize="18px"  mr="8px" bold>
+        <Text color="mainDark" fontSize="18px" mr="8px" bold>
           {`${inputSymbol}/${outputSymbol}`}
         </Text>
       )}

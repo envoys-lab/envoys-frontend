@@ -98,7 +98,7 @@ function TransactionSubmittedContent({
               </RowFixed>
             </Button>
           )}
-          <Button onClick={onDismiss} mt="20px" width={"100%"}>
+          <Button onClick={onDismiss} mt="20px" width={'100%'}>
             {t('Close')}
           </Button>
         </AutoColumn>
@@ -134,7 +134,9 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
       </AutoColumn>
 
       <Flex justifyContent="center" pt="24px">
-        <Button width="100%" onClick={onDismiss}>{t('Dismiss')}</Button>
+        <Button width="100%" onClick={onDismiss}>
+          {t('Dismiss')}
+        </Button>
       </Flex>
     </Wrapper>
   )

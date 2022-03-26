@@ -1,6 +1,6 @@
 import React from 'react'
-import {Flex} from '@envoysvision/uikit'
-import styled from "styled-components";
+import { Flex } from '@envoysvision/uikit'
+import styled from 'styled-components'
 
 export const PageContainer = styled(Flex)`
   flex-shrink: 0;

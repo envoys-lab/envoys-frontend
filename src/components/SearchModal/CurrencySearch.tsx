@@ -1,5 +1,5 @@
 import React, { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
-import styled from "styled-components";
+import styled from 'styled-components'
 import { Currency, ETHER, Token } from '@envoysvision/sdk'
 import { Text, Input, InputGroup, Box, SearchIcon } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
@@ -128,15 +128,15 @@ function CurrencySearch({
       <div>
         <AutoColumn gap="16px">
           <Row>
-            <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={"darkClear"}/>} scale={'lg'}>
+            <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'}>
               <RoundInput
-                  id="token-search-input"
-                  placeholder={t('Search name or paste address')}
-                  autoComplete="off"
-                  value={searchQuery}
-                  ref={inputRef as RefObject<HTMLInputElement>}
-                  onChange={handleInput}
-                  onKeyDown={handleEnter}
+                id="token-search-input"
+                placeholder={t('Search name or paste address')}
+                autoComplete="off"
+                value={searchQuery}
+                ref={inputRef as RefObject<HTMLInputElement>}
+                onChange={handleInput}
+                onKeyDown={handleEnter}
               />
             </InputGroup>
           </Row>
