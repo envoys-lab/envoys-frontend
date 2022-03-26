@@ -1,11 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@envoysvision/sdk'
+import { Currency, ETHER, TokenAmount } from '@envoysvision/sdk'
 import { Button, Text, Flex, Box, Message, useModal, TabMenu, Tab, CardFooter } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
-// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
@@ -16,7 +15,6 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { DoubleCurrencyLogo } from '../../components/Logo'
 import { AppHeader, AppBody } from '../../components/App'
-// import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
@@ -40,7 +38,6 @@ import PoolPriceBar from './PoolPriceBar'
 import Page from '../Page'
 import { PageContainer } from '../../components/Layout/PageContainer'
 import { Wrapper } from '../Swap/components/styleds'
-// import Link from 'next/link'
 
 export default function AddLiquidity() {
   const router = useRouter()
@@ -331,8 +328,8 @@ export default function AddLiquidity() {
         <PageContainer>
           <AppHeader title={t('Add Liquidity')} subtitle={t('Add liquidity to receive LP tokens')} noSettings>
             {/* helper={t(
-            'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
-          )} */}
+              'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
+            )}*/}
             <Flex position={'relative'} alignItems={'center'} width={'100%'}>
               <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
                 <Tab>{t('Swap')}</Tab>
@@ -364,7 +361,7 @@ export default function AddLiquidity() {
                 }}
                 onCurrencySelect={handleCurrencyASelect}
                 hideBalance={true}
-                showMaxButton={false/*!atMaxAmounts[Field.CURRENCY_A]*/}
+                showMaxButton={false /*!atMaxAmounts[Field.CURRENCY_A]*/}
                 currency={currencies[Field.CURRENCY_A]}
                 id="add-liquidity-input-tokena"
                 showCommonBases={false}
@@ -378,7 +375,7 @@ export default function AddLiquidity() {
                   onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                 }}
                 hideBalance={true}
-                showMaxButton={false/*!atMaxAmounts[Field.CURRENCY_B]*/}
+                showMaxButton={false /*!atMaxAmounts[Field.CURRENCY_B]*/}
                 currency={currencies[Field.CURRENCY_B]}
                 id="add-liquidity-input-tokenb"
                 showCommonBases={false}
