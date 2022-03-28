@@ -1,12 +1,28 @@
 import { getCompaniesSearch } from './api'
 
 const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, query }) => {
+  if (!query) return null
   const { items: companies } = await getCompanies(query)
 
   const compiledSearchResults = compileSearchResults({ companies, tokens, farms, poolsLiquidity, poolsSyrup })
+  const appliedSearchResults = getSearchResultsByQuery(compiledSearchResults, query)
+
   return {
-    ...compiledSearchResults,
+    ...appliedSearchResults,
   }
+}
+
+const getSearchResultsByQuery = (compiledSearchResults, query) => {
+  const { companies, ...rest } = compiledSearchResults
+  const result = {}
+
+  Object.keys(rest).map((key) => {
+    const category = rest[key]
+    const output = category.filter((item) => item.search.includes(query))
+    result[key] = output
+  })
+
+  return result
 }
 const compileSearchResults = ({ companies, tokens, farms, poolsLiquidity, poolsSyrup }) => {
   const compiledSearchResults = {
