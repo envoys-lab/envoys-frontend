@@ -93,10 +93,13 @@ export default function CurrencySearchModal({
     <StyledModalContainer minWidth="320px">
       <ModalHeader>
         <ModalTitle>
-          {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
           <Heading>{config[modalView].title}</Heading>
         </ModalTitle>
-        <ModalCloseButton onDismiss={onDismiss} />
+        {config[modalView].onBack ? (
+          <ModalBackButton onBack={config[modalView].onBack} />
+        ) : (
+          <ModalCloseButton onDismiss={onDismiss} />
+        )}
       </ModalHeader>
       <StyledModalBody>
         {modalView === CurrencyModalView.search ? (

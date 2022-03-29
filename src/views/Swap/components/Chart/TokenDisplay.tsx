@@ -16,12 +16,12 @@ interface TokenDisplayProps extends FlexProps {
 
 const TokenDisplay: FC<TokenDisplayProps> = ({ value, inputSymbol, outputSymbol, children, ...props }) => {
   return value ? (
-    <Flex alignItems="flex-end" flexWrap="wrap" {...props}>
-      <Text fontSize="40px" mr="8px" bold>
+    <Flex alignItems="center" flexWrap="wrap" {...props}>
+      <Text fontSize="18px" mr="8px" bold>
         {formatAmount(value, formatOptions)}
       </Text>
       {inputSymbol && outputSymbol && (
-        <Text color="textSubtle" fontSize="20px" mb="8px" mr="8px" bold>
+        <Text color="mainDark" fontSize="18px" mr="8px" bold>
           {`${inputSymbol}/${outputSymbol}`}
         </Text>
       )}

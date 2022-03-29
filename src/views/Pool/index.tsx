@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
-import { Text, Flex, CardBody, CardFooter, Button, AddIcon } from '@envoysvision/uikit'
+import { Text, Flex, CardFooter, Button, AddIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
 import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,14 +10,25 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
-import { AppHeader, AppBody } from '../../components/App'
+import { AppBody } from '../../components/App'
 import Page from '../Page'
+import { Wrapper } from '../Swap/components/styleds'
+import { useRouter } from 'next/router'
+import AppHeader from '../../components/App/AppHeader'
+import { PageContainer } from '../../components/Layout/PageContainer'
 
-const Body = styled(CardBody)`
-  background-color: ${({ theme }) => theme.colors.dropdownDeep};
+export const Body = styled(Card)`
+  padding: 30px 20px;
+  border-radius: 16px;
+`
+
+const ThinText = styled(Text)`
+  opacity: 0.7;
+  font-weight: 700;
 `
 
 export default function Pool() {
+  const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
 
@@ -72,42 +83,60 @@ export default function Pool() {
           key={v2Pair.liquidityToken.address}
           pair={v2Pair}
           mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
+          background={'transparent'}
         />
       ))
     }
     return (
-      <Text color="textSubtle" textAlign="center">
+      <ThinText color="primary" textAlign="center">
         {t('No liquidity found.')}
-      </Text>
+      </ThinText>
     )
+  }
+
+  const handleTabClick = (newTabIndex) => {
+    if (newTabIndex === 0) {
+      return router.push('/swap')
+    }
   }
 
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
-        <Body>
-          {renderBody()}
-          {account && !v2IsLoading && (
-            <Flex flexDirection="column" alignItems="center" mt="24px">
-              <Text color="textSubtle" mb="8px">
-                {t("Don't see a pool you joined?")}
-              </Text>
-              <Link href="/find">
-                <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
-                  {t('Find other LP tokens')}
-                </Button>
-              </Link>
+        <PageContainer>
+          <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
+            <Flex position={'relative'} alignItems={'center'} width={'100%'}>
+              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
+                <Tab>{t('Swap')}</Tab>
+                <Tab>{t('Liquidity')}</Tab>
+              </TabMenu>
             </Flex>
-          )}
-        </Body>
-        <CardFooter style={{ textAlign: 'center' }}>
-          <Link href="/add">
-            <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="white" />}>
-              {t('Add Liquidity')}
-            </Button>
-          </Link>
-        </CardFooter>
+          </AppHeader>
+          <Wrapper id="liquidity-page" pb={'0 !important'}>
+            <Body background={'transparent'}>
+              {renderBody()}
+              {account && !v2IsLoading && (
+                <Flex flexDirection="column" alignItems="center">
+                  <ThinText color="primary" my="16px">
+                    {t("Don't see a pool you joined?")}
+                  </ThinText>
+                  <Link href="/find">
+                    <Button id="import-pool-link" variant="tertiary" as="a">
+                      <b>{t('Find other LP tokens')}</b>
+                    </Button>
+                  </Link>
+                </Flex>
+              )}
+            </Body>
+          </Wrapper>
+          <CardFooter style={{ textAlign: 'center' }}>
+            <Link href="/add">
+              <Button id="join-pool-button" width="100%" scale="lg" startIcon={<AddIcon color="white" />}>
+                {t('Add Liquidity')}
+              </Button>
+            </Link>
+          </CardFooter>
+        </PageContainer>
       </AppBody>
     </Page>
   )
