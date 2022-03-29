@@ -4,29 +4,28 @@ const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, que
   if (!query) return null
   const { items: companies } = await getCompanies(query)
 
-  const compiledSearchResults = compileSearchResults({ companies, tokens, farms, poolsLiquidity, poolsSyrup })
+  const compiledSearchResults = compileSearchResults({ tokens, farms, poolsLiquidity, poolsSyrup })
   const appliedSearchResults = getSearchResultsByQuery(compiledSearchResults, query)
 
   return {
+    companies,
     ...appliedSearchResults,
   }
 }
 
 const getSearchResultsByQuery = (compiledSearchResults, query) => {
-  const { companies, ...rest } = compiledSearchResults
   const result = {}
 
-  Object.keys(rest).map((key) => {
-    const category = rest[key]
+  Object.keys(compiledSearchResults).map((key) => {
+    const category = compiledSearchResults[key]
     const output = category.filter((item) => item.search.includes(query))
     result[key] = output
   })
 
   return result
 }
-const compileSearchResults = ({ companies, tokens, farms, poolsLiquidity, poolsSyrup }) => {
+const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => {
   const compiledSearchResults = {
-    companies: getCompaniesSearchString(companies),
     tokens: getTokensSearchString(tokens),
     farms: getFarmsSearchString(farms),
     poolsLiquidity: getPoolsLiquiditySearchString(poolsLiquidity),
@@ -34,13 +33,6 @@ const compileSearchResults = ({ companies, tokens, farms, poolsLiquidity, poolsS
   }
 
   return compiledSearchResults
-}
-
-const getCompaniesSearchString = (companies) => {
-  return companies.map((item) => ({
-    ...item,
-    search: `${item.name} ${JSON.stringify(item.sellType)} ${item.status} ${item.homePageUrl}`,
-  }))
 }
 
 const getTokensSearchString = (tokens) => {
@@ -83,4 +75,11 @@ const getCompanies = async (query) => {
   return companies
 }
 
-export { getSearchResults }
+const getObjectsArraysLength = (obj) => {
+  return Object.keys(obj).reduce((accum, key) => {
+    const arr = obj[key]
+    return accum + arr.length
+  }, 0)
+}
+
+export { getSearchResults, getObjectsArraysLength }
