@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { State } from '../../state/types'
 
 const getTokens = () => {
-  const tokens = useSelector((state: State) => state.lists)
+  const tokens: any = useSelector((state: State) => state.lists)
 
   const arr = tokens.byUrl['https://tokens.pancakeswap.finance/pancakeswap-extended.json'].current
   if (!arr) return
