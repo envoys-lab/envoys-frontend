@@ -9,7 +9,6 @@ const getTokens = () => {
   if (!arr) return
 
   const out = arr.tokens
-  //   const filtered = out.filter(({ name }) => name.includes())
 
   return out
 }
