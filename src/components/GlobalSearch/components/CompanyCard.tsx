@@ -10,14 +10,18 @@ interface ResultGroupProps {
 }
 
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
+    const realLogoUrl = item.logoUrl !== 'https://cloud.example/logo' ? item.logoUrl : '/images/company.png';
+    const stage = item.stages.find( stage => stage?.status === item.status);
     return (
         <SearchResultBox p={"10px"} background={"white"}>
-            <Flex mr={"16px"}>
-                <Image src={item.logoUrl} width={20} height={20}/>
+            <Flex mr={"4px"}>
+                <Image src={realLogoUrl} width={20} height={20} mt={"4px"} />
                 <Flex mx={"16px"} width={"100%"}>
                     <AutoColumn gap={"sm"}>
                         <Text thin fontSize={"18px"}>{item.name}</Text>
-                        <Text thin small>Mar 1, 2022 - Apr 30, 2022</Text>
+                        {stage && (
+                            <Text thin small>{stage?.startDate} - {stage?.endDate}</Text>
+                        )}
                         <Link external href={item.homePageUrl}>
                             <Text thin small>{item.homePageUrl}</Text>
                         </Link>

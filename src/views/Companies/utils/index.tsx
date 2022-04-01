@@ -1,6 +1,19 @@
 import { useState } from 'react'
 import { getCompanies } from '../api'
 
+export interface CompanyStage {
+  type: string,
+  startDate: string
+  endDate: string
+  progress: number,
+  goal: number,
+  raisedFunds: number,
+  cap: number,
+  hardcap: number,
+  status: string
+  price: string
+}
+
 export interface Item {
   about: object
   active: boolean
@@ -15,7 +28,7 @@ export interface Item {
   roadmap: object[]
   sellType: string[]
   social: object
-  stages: object[]
+  stages: CompanyStage[]
   status: string
   videoUrl: string
   _id: string

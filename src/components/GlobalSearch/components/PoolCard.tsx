@@ -1,8 +1,9 @@
 import React from "react";
 import {Pool} from "../types";
-import {Flex, Image, Text} from '@envoysvision/uikit'
-import {AutoColumn} from "../../Layout/Column";
-import { SearchResultBox } from './styles';
+import {Flex, Text} from '@envoysvision/uikit'
+import {CenterFlex, SearchResultBox} from './styles';
+import {TokenImage} from "../../TokenImage";
+import { Token } from '@envoysvision/sdk'
 
 
 interface ResultGroupProps {
@@ -12,20 +13,12 @@ interface ResultGroupProps {
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
     return (
         <SearchResultBox p={"10px"} background={"white"}>
-            <Flex mr={"16px"}>
-                <Image src={item.logoURI} width={20} height={20}/>
+            <CenterFlex>
+                <TokenImage token={item.earningToken as Token} width={20} height={20}/>
                 <Flex mx={"16px"} width={"100%"}>
-                    <AutoColumn gap={"sm"}>
-                        <Flex>
-                            <Text thin fontSize={"18px"}>{item.name} ({item.symbol})</Text>
-                            {/*<BadgeButton scale={"xs"} variant={"secondary"}>
-                                <Text color={"secondary"} small m={"4px"} bold>{item.chainId}</Text>
-                            </BadgeButton>*/}
-                        </Flex>
-                        <Text thin small>{item.address}</Text>
-                    </AutoColumn>
+                    <Text thin fontSize={"18px"}>{item.earningToken.symbol}</Text>
                 </Flex>
-            </Flex>
+            </CenterFlex>
         </SearchResultBox>
     )
 }

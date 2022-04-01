@@ -14,11 +14,11 @@ import { useTranslation } from "../../contexts/Localization";
 import DropdownItem from "./components/DropdownItem";
 import {SearchResults} from "./types";
 import ResultGroup from "./components/ResultGroup";
-import {CompanyCard, FarmCard, LiquidityCard, TokenCard} from "./components";
+import {CompanyCard, FarmCard, LiquidityCard, PoolCard, TokenCard} from "./components";
 import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput} from './components/styles';
 
 const GlobalSearch = () => {
-  const [query, setQuery] = useState('as')
+  const [query, setQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResults>({})
   const [poolsLiquidity, setPoolsLiquidity] = useState({})
   const tokens = getTokens()
@@ -29,10 +29,13 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
+  const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null);
+  const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isGasOpen, setIsGasOpen] = useState(false);
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+  const [isResultsPanelShown, setIsResultsPanelShown] = useState(false);
 
   const { t } = useTranslation()
 
@@ -46,6 +49,29 @@ const GlobalSearch = () => {
     setHasNextPage(getObjectsArraysLength(searchResults) > getObjectsArraysLength(paginatedSearchResults))
   }, [searchResults, paginatedSearchResults])
 
+  useEffect(() => {
+    console.log('handleClickOutside effect');
+    const handleClickOutside = ({ target }: Event) => {
+      console.log('clickOutside!')
+      if (target instanceof Node) {
+        if (
+            resultsPanelElement !== null &&
+            inputPanelElement !== null &&
+            !resultsPanelElement.contains(target) &&
+            !inputPanelElement.contains(target)
+        ) {
+          setIsResultsPanelShown(false);
+        }
+      }
+    };
+    if (resultsPanelElement !== null) {
+      document.addEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [resultsPanelElement, inputPanelElement]);
+
   const [infiniteRef] = useInfiniteScroll({
     loading: false,
     hasNextPage,
@@ -57,6 +83,7 @@ const GlobalSearch = () => {
   useEffect(() => {
     const { show, page } = pagination
     const result = {}
+    let hasResults = false;
     let itemsCounter = show * page
 
     if (searchResults) {
@@ -66,6 +93,7 @@ const GlobalSearch = () => {
         const group = searchResults[item]
 
         if (group.length) {
+          hasResults = true
           const res = group.slice(0, itemsCounter)
           itemsCounter = itemsCounter - res.length
           result[item] = res
@@ -79,6 +107,7 @@ const GlobalSearch = () => {
 
     // console.log({ result })
     setPaginatedSearchResults(result)
+    setIsResultsPanelShown(hasResults)
   }, [searchResults, debouncedSearchTerm, pagination])
 
   const allPoolData = useAllPoolData()
@@ -105,6 +134,10 @@ const GlobalSearch = () => {
   }, [debouncedSearchTerm, poolsLiquidity])
 
   const updateSearchResults = async () => {
+    if (debouncedSearchTerm.length < 2) {
+        setIsResultsPanelShown(false);
+        return;
+    }
     const searchResults = await getSearchResults({
       tokens,
       farms: farms.data,
@@ -116,6 +149,12 @@ const GlobalSearch = () => {
   }
   const handleChange = (e) => {
     setQuery(e.target.value || '')
+  }
+
+  const showResultsOnFocus = (e) => {
+    if (query.length > 1) {
+      setIsResultsPanelShown(true);
+    }
   }
 
   const renderResults = () => {
@@ -137,9 +176,12 @@ const GlobalSearch = () => {
           if (type === 'poolsLiquidity') {
             renderedGroupItems.push(<LiquidityCard key={`search-item-${type}-${itemKey}`} item={item}/>)
           }
-          /*if (type === 'farms') {
+          if (type === 'poolsSyrup') {
+            renderedGroupItems.push(<PoolCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+          }
+          if (type === 'farms') {
             renderedGroupItems.push(<FarmCard key={`search-item-${type}-${itemKey}`} item={item}/>)
-          }*/
+          }
         })
       }
       if (renderedGroupItems.length > 0) {
@@ -152,57 +194,64 @@ const GlobalSearch = () => {
 
   const DropdownStab = () => {
     return (
-      <Box p="24px" width="320px">
-        TODO
+      <Box p="24px" width="320px" style={{ position: "relative", zIndex: 3 }}>
+        WIP
       </Box>
     )
   }
 
   return (
     <BodyWrapper>
-      <SearchWrapper>
-        <PoolUpdater />
-        <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'} mr={"16px"}>
-          <StyledInput id="global-search-input"
-                 placeholder={t('Search by account, token,ENS...')}
-                 autoComplete="off"
-                 value={query}
-                 onChange={handleChange}
-          />
-        </InputGroup>
-        {query && (
-            <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={'All Filters'}>
-              <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
-                <Box p="24px" width="320px">
-                  TODO
-                </Box>
-              </InlineMenu>
-            </DropdownItem>
-        )}
-        <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={'USD'}>
-          <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
-            <DropdownStab />
-          </InlineMenu>
-        </DropdownItem>
-        <DropdownItem onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
-          <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
-            <DropdownStab />
-          </InlineMenu>
-        </DropdownItem>
-        <DropdownItem onClick={() => setIsSettingsOpen(true)} isOpen={isSettingsOpen} component={<CogIcon />}>
-          <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
-            <DropdownStab />
-          </InlineMenu>
-        </DropdownItem>
-      </SearchWrapper>
-      <ResultsWrapper>
-        {renderResults()}
-        {hasNextPage && (
-            <div ref={infiniteRef}>
-              <div><Text m={"12px"}>Loading...</Text></div>
-            </div>
-        )}
-      </ResultsWrapper>
+      <div ref={setInputPanelElement}>
+        <SearchWrapper>
+          <PoolUpdater />
+          <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'} mr={"16px"}>
+            <StyledInput id="global-search-input"
+                         placeholder={t('Search by account, token,ENS...')}
+                         autoComplete="off"
+                         value={query}
+                         onChange={handleChange}
+                         onFocus={showResultsOnFocus}
+            />
+          </InputGroup>
+          {query?.length > 1 && (
+              <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={'All Filters'}>
+                <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
+                  <Box p="24px" width="320px">
+                    TODO
+                  </Box>
+                </InlineMenu>
+              </DropdownItem>
+          )}
+          <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={'USD'}>
+            <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
+              <DropdownStab />
+            </InlineMenu>
+          </DropdownItem>
+          <DropdownItem onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
+            <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
+              <DropdownStab />
+            </InlineMenu>
+          </DropdownItem>
+          <DropdownItem onClick={() => setIsSettingsOpen(true)} isOpen={isSettingsOpen} component={<CogIcon />}>
+            <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
+              <DropdownStab />
+            </InlineMenu>
+          </DropdownItem>
+        </SearchWrapper>
+      </div>
+      <div ref={setResultsPanelElement}>
+        <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none'}}>
+          <div>
+            {renderResults()}
+            {hasNextPage && (
+                <div ref={infiniteRef}>
+                  <div><Text m={"12px"}>Loading...</Text></div>
+                </div>
+            )}
+          </div>
+        </ResultsWrapper>
+      </div>
     </BodyWrapper>
   )
 }

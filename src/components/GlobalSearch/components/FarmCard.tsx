@@ -1,8 +1,9 @@
 import React from "react";
 import {Farm} from "../types";
-import {Flex, Image, Text} from '@envoysvision/uikit'
-import {AutoColumn} from "../../Layout/Column";
-import { SearchResultBox } from './styles';
+import { Flex, Text } from '@envoysvision/uikit'
+import { CenterFlex, SearchResultBox} from './styles';
+import { AutoRow } from "../../Layout/Row";
+import { TokenPairImage } from "../../TokenImage";
 
 
 interface ResultGroupProps {
@@ -12,19 +13,17 @@ interface ResultGroupProps {
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
     return (
         <SearchResultBox p={"10px"} background={"white"}>
-            <Flex mr={"16px"}>
+            <CenterFlex>
+                <TokenPairImage primaryToken={item.token} secondaryToken={item.quoteToken} height={20} width={20} />
                 <Flex mx={"16px"} width={"100%"}>
-                    <AutoColumn gap={"sm"}>
-                        <Flex>
-                            <Text thin fontSize={"18px"}>{item.name} ({item.symbol})</Text>
-                            {/*<BadgeButton scale={"xs"} variant={"secondary"}>
-                                <Text color={"secondary"} small m={"4px"} bold>{item.chainId}</Text>
-                            </BadgeButton>*/}
-                        </Flex>
-                        <Text thin small>{item.address}</Text>
-                    </AutoColumn>
+                    <AutoRow>
+                        <Text thin fontSize={"18px"}>{item.token.symbol}/{item.quoteToken.symbol}</Text>
+                        {/*<BadgeButton scale={"xs"} variant={"secondary"}>
+                            <Text color={"darkClear"} thin small m={"4px"} bold>???</Text>
+                        </BadgeButton>*/}
+                    </AutoRow>
                 </Flex>
-            </Flex>
+            </CenterFlex>
         </SearchResultBox>
     )
 }
