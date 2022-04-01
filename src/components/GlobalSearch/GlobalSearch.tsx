@@ -102,24 +102,23 @@ const GlobalSearch = () => {
   }
 
   const renderResults = () => {
-    console.log(searchResults)
-    console.log(paginatedSearchResults)
     return <div>asd</div>
   }
 
-  return (
-    <div>
-      <PoolUpdater />
-      <input onChange={handleChange} value={query} type="text" />
-      {renderResults()}
-      {JSON.stringify(paginatedSearchResults)}
-      {hasNextPage && (
-        <div ref={infiniteRef}>
-          <div>Loading</div>
-        </div>
-      )}
-    </div>
-  )
+  return null
+  // return (
+  //   <div>
+  //     <PoolUpdater />
+  //     <input onChange={handleChange} value={query} type="text" />
+  //     {renderResults()}
+  //     {JSON.stringify(paginatedSearchResults)}
+  //     {hasNextPage && (
+  //       <div ref={infiniteRef}>
+  //         <div>Loading</div>
+  //       </div>
+  //     )}
+  //   </div>
+  // )
 }
 
 export default GlobalSearch
