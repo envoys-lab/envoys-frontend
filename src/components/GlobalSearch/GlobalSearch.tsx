@@ -29,7 +29,7 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
-  const groupTypes = ['allFilters', 'companies', 'tokens', 'poolsLiquidity', 'farms','poolsSyrup'];
+  const groupTypes = ['allFilters', 'tokens', 'companies', 'poolsLiquidity', 'farms', 'poolsSyrup'];
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0]);
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null);
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null);
