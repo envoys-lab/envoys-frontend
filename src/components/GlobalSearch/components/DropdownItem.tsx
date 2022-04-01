@@ -9,6 +9,7 @@ const StyledDiv = styled.div`
 
 const StyledBox = styled(Flex)`
   border-left: 1px solid ${({theme}) => theme.colors.disabled};
+  font-size: 14px;
   &:hover {
     color: ${({theme}) => theme.colors.primary};
     cursor: pointer;

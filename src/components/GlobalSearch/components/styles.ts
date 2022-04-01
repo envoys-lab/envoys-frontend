@@ -64,6 +64,22 @@ export const SearchResultBox = styled(Box)`
   }
 `
 
+export const FilterItem = styled(Box)`
+  border-radius: 4px;
+  margin-top: 4px;
+  font-weight: 400;
+  opacity: 0.8;
+  padding: 6px 10px;
+  text-transform: capitalize;
+  font-size: 14px;
+  &:hover, &.active {
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.darkClear};
+    font-weight: 500;
+    background: ${({ theme }) => theme.colors.background};
+  }
+`
+
 export const BadgeButton = styled(Button)`
   box-shadow: ${({ theme }) => theme.shadows.badge};
   text-transform: capitalize;

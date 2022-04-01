@@ -9,13 +9,13 @@ import { PoolUpdater } from 'state/info/updaters'
 
 import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
-import {InputGroup, SearchIcon, Input, InlineMenu, Box, CogIcon, GasIcon, Text} from '@envoysvision/uikit'
+import {InputGroup, SearchIcon, InlineMenu, Box, CogIcon, GasIcon, Text} from '@envoysvision/uikit'
 import { useTranslation } from "../../contexts/Localization";
 import DropdownItem from "./components/DropdownItem";
 import {SearchResults} from "./types";
 import ResultGroup from "./components/ResultGroup";
 import {CompanyCard, FarmCard, LiquidityCard, PoolCard, TokenCard} from "./components";
-import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput} from './components/styles';
+import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput, FilterItem} from './components/styles';
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState('')
@@ -29,6 +29,8 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
+  const groupTypes = ['allFilters', 'companies', 'tokens', 'poolsLiquidity', 'farms','poolsSyrup'];
+  const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0]);
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null);
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -36,6 +38,7 @@ const GlobalSearch = () => {
   const [isGasOpen, setIsGasOpen] = useState(false);
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const [isResultsPanelShown, setIsResultsPanelShown] = useState(false);
+
 
   const { t } = useTranslation()
 
@@ -50,9 +53,7 @@ const GlobalSearch = () => {
   }, [searchResults, paginatedSearchResults])
 
   useEffect(() => {
-    console.log('handleClickOutside effect');
     const handleClickOutside = ({ target }: Event) => {
-      console.log('clickOutside!')
       if (target instanceof Node) {
         if (
             resultsPanelElement !== null &&
@@ -151,7 +152,7 @@ const GlobalSearch = () => {
     setQuery(e.target.value || '')
   }
 
-  const showResultsOnFocus = (e) => {
+  const showResultsOnFocus = () => {
     if (query.length > 1) {
       setIsResultsPanelShown(true);
     }
@@ -159,34 +160,36 @@ const GlobalSearch = () => {
 
   const renderResults = () => {
     const renderedGroups = [];
-     console.log('searchResults', searchResults)
-    // console.log('paginatedSearchResults', paginatedSearchResults)
-    // const groupsByDisplayOrder = ['companies', 'farms', 'poolsLiquidity', 'poolsSyrup', 'tokens'];
-    Object.keys(paginatedSearchResults).map((type, groupKey) => {
+    groupTypes.map((type) => {
       const groupItems = paginatedSearchResults[type];
       const renderedGroupItems = [];
       if (groupItems) {
         groupItems.map((item, itemKey) => {
+          const props = {
+            key: `search-item-${type}-${itemKey}`,
+            item
+          }
           if (type === 'companies') {
-            renderedGroupItems.push(<CompanyCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+            renderedGroupItems.push(<CompanyCard {...props} />)
           }
           if (type === 'tokens') {
-            renderedGroupItems.push(<TokenCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+            renderedGroupItems.push(<TokenCard {...props} />)
           }
           if (type === 'poolsLiquidity') {
-            renderedGroupItems.push(<LiquidityCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+            renderedGroupItems.push(<LiquidityCard {...props} />)
           }
           if (type === 'poolsSyrup') {
-            renderedGroupItems.push(<PoolCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+            renderedGroupItems.push(<PoolCard {...props} />)
           }
           if (type === 'farms') {
-            renderedGroupItems.push(<FarmCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+            renderedGroupItems.push(<FarmCard {...props} />)
           }
         })
       }
-      if (renderedGroupItems.length > 0) {
-        const renderedGroup = <ResultGroup title={type} key={`search-group-${type}`}>{renderedGroupItems}</ResultGroup>;
-        renderedGroups.push(renderedGroup);
+      if (renderedGroupItems.length > 0 && (type.toString() === typeFilter || typeFilter === groupTypes[0])) {
+        renderedGroups.push(<ResultGroup title={type} key={`search-group-${type}`}>{renderedGroupItems}</ResultGroup>);
+      } else if(renderedGroupItems.length === 0 && (type.toString() === typeFilter && typeFilter !== groupTypes[0])) {
+        renderedGroups.push(<ResultGroup title={type} key={`search-group-${type}`}>{t('No matching results')}</ResultGroup>);
       }
     })
     return renderedGroups
@@ -198,6 +201,14 @@ const GlobalSearch = () => {
         WIP
       </Box>
     )
+  }
+
+  const setFilter = (type: string) => {
+    setTypeFilter(type);
+    setIsFilterOpen(false);
+    setTimeout(() => {
+      setIsResultsPanelShown(true);
+    })
   }
 
   return (
@@ -215,10 +226,14 @@ const GlobalSearch = () => {
             />
           </InputGroup>
           {query?.length > 1 && (
-              <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={'All Filters'}>
+              <DropdownItem onClick={() => setIsFilterOpen(true) } isOpen={isFilterOpen} component={t(typeFilter)}>
                 <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
-                  <Box p="24px" width="320px">
-                    TODO
+                  <Box p="10px" minWidth={"200px"}>
+                    {groupTypes.map((type, key) =>
+                      <FilterItem key={`filter-${key}`}
+                                  className={{active: typeFilter.toString() === type.toString()}}
+                                  onClick={() => setFilter(type)}>{t(type)}</FilterItem>
+                    )}
                   </Box>
                 </InlineMenu>
               </DropdownItem>
@@ -246,7 +261,7 @@ const GlobalSearch = () => {
             {renderResults()}
             {hasNextPage && (
                 <div ref={infiniteRef}>
-                  <div><Text m={"12px"}>Loading...</Text></div>
+                  <div><Text m={"12px"}>{t('Loading...')}</Text></div>
                 </div>
             )}
           </div>
