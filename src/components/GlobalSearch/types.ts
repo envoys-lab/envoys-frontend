@@ -38,12 +38,3 @@ export interface Token extends SearchResultItem, SerializedToken {
 }
 
 export type SearchItem = Company | Farm | Liquidity | Pool | Token;
-
-export enum SearchItemType {
-    company,
-    token,
-    pool,
-    farm,
-    address,
-    liquidity
-}

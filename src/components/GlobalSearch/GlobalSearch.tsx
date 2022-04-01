@@ -9,12 +9,12 @@ import { PoolUpdater } from 'state/info/updaters'
 
 import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
-import { InputGroup, SearchIcon, Input, InlineMenu, Box, CogIcon, GasIcon } from '@envoysvision/uikit'
+import {InputGroup, SearchIcon, Input, InlineMenu, Box, CogIcon, GasIcon, Text} from '@envoysvision/uikit'
 import { useTranslation } from "../../contexts/Localization";
 import DropdownItem from "./components/DropdownItem";
-import {SearchItemType, SearchResults} from "./types";
+import {SearchResults} from "./types";
 import ResultGroup from "./components/ResultGroup";
-import {CompanyCard, TokenCard} from "./components";
+import {CompanyCard, FarmCard, LiquidityCard, TokenCard} from "./components";
 import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput} from './components/styles';
 
 const GlobalSearch = () => {
@@ -120,7 +120,7 @@ const GlobalSearch = () => {
 
   const renderResults = () => {
     const renderedGroups = [];
-    // console.log('searchResults', searchResults)
+     console.log('searchResults', searchResults)
     // console.log('paginatedSearchResults', paginatedSearchResults)
     // const groupsByDisplayOrder = ['companies', 'farms', 'poolsLiquidity', 'poolsSyrup', 'tokens'];
     Object.keys(paginatedSearchResults).map((type, groupKey) => {
@@ -134,10 +134,18 @@ const GlobalSearch = () => {
           if (type === 'tokens') {
             renderedGroupItems.push(<TokenCard key={`search-item-${type}-${itemKey}`} item={item}/>)
           }
+          if (type === 'poolsLiquidity') {
+            renderedGroupItems.push(<LiquidityCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+          }
+          /*if (type === 'farms') {
+            renderedGroupItems.push(<FarmCard key={`search-item-${type}-${itemKey}`} item={item}/>)
+          }*/
         })
       }
-      const renderedGroup = <ResultGroup title={type} key={`search-group-${type}`}>{renderedGroupItems}</ResultGroup>;
-      renderedGroups.push(renderedGroup);
+      if (renderedGroupItems.length > 0) {
+        const renderedGroup = <ResultGroup title={type} key={`search-group-${type}`}>{renderedGroupItems}</ResultGroup>;
+        renderedGroups.push(renderedGroup);
+      }
     })
     return renderedGroups
   }
@@ -189,10 +197,9 @@ const GlobalSearch = () => {
       </SearchWrapper>
       <ResultsWrapper>
         {renderResults()}
-        {JSON.stringify(paginatedSearchResults)}
         {hasNextPage && (
             <div ref={infiniteRef}>
-              <div>Loading</div>
+              <div><Text m={"12px"}>Loading...</Text></div>
             </div>
         )}
       </ResultsWrapper>
