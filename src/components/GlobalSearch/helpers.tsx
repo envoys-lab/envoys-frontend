@@ -76,6 +76,9 @@ const getCompanies = async (query) => {
 }
 
 const getObjectsArraysLength = (obj) => {
+  if (!obj) {
+    return 0;
+  }
   return Object.keys(obj).reduce((accum, key) => {
     const arr = obj[key]
     return accum + arr.length

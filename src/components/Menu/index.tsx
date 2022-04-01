@@ -4,14 +4,16 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Menu as UikitMenu } from '@envoysvision/uikit'
 import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
-import PhishingWarningBanner from 'components/PhishingWarningBanner'
+// import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
 import { usePhishingBannerManager } from 'state/user/hooks'
 import config from './config/config'
 import UserMenu from './UserMenu'
-import GlobalSettings from './GlobalSettings'
+// import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
+// import SearchInput from "../SearchInput";
+import GlobalSearch from "../GlobalSearch/GlobalSearch";
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
@@ -25,6 +27,7 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
+      searchBar={<GlobalSearch />}
       linkComponent={(linkProps) => {
         return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
       }}

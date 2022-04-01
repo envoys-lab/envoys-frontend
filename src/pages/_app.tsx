@@ -23,7 +23,6 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import GlobalSearch from '../components/GlobalSearch/GlobalSearch'
 
 // This config is required for number formatting
 BigNumber.config({
@@ -69,7 +68,6 @@ function MyApp(props: AppProps) {
       </Head>
       <Providers store={store}>
         <Blocklist>
-          <GlobalSearch />
           <GlobalHooks />
           <Updaters />
           <ResetCSS />
@@ -110,7 +108,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   return (
     <ErrorBoundary>
-      <Menu>
+      <Menu >
         <Layout>
           <Component {...pageProps} />
         </Layout>
