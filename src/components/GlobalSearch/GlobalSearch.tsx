@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
@@ -9,13 +9,13 @@ import { PoolUpdater } from 'state/info/updaters'
 
 import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
-import {InputGroup, SearchIcon, InlineMenu, Box, CogIcon, GasIcon, Text} from '@envoysvision/uikit'
-import { useTranslation } from "../../contexts/Localization";
-import DropdownItem from "./components/DropdownItem";
-import {SearchResults} from "./types";
-import ResultGroup from "./components/ResultGroup";
-import {CompanyCard, FarmCard, LiquidityCard, PoolCard, TokenCard} from "./components";
-import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput, FilterItem} from './components/styles';
+import { InputGroup, SearchIcon, InlineMenu, Box, CogIcon, GasIcon, Text } from '@envoysvision/uikit'
+import { useTranslation } from '../../contexts/Localization'
+import DropdownItem from './components/DropdownItem'
+import { SearchResults } from './types'
+import ResultGroup from './components/ResultGroup'
+import { CompanyCard, FarmCard, LiquidityCard, PoolCard, TokenCard } from './components'
+import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput, FilterItem } from './components/styles'
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState('')
@@ -29,16 +29,15 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
-  const groupTypes = ['allFilters', 'tokens', 'companies', 'poolsLiquidity', 'farms', 'poolsSyrup'];
-  const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0]);
-  const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null);
-  const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isGasOpen, setIsGasOpen] = useState(false);
-  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
-  const [isResultsPanelShown, setIsResultsPanelShown] = useState(false);
-
+  const groupTypes = ['allFilters', 'tokens', 'companies', 'poolsLiquidity', 'farms', 'poolsSyrup']
+  const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
+  const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
+  const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [isGasOpen, setIsGasOpen] = useState(false)
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
+  const [isResultsPanelShown, setIsResultsPanelShown] = useState(false)
 
   const { t } = useTranslation()
 
@@ -56,22 +55,22 @@ const GlobalSearch = () => {
     const handleClickOutside = ({ target }: Event) => {
       if (target instanceof Node) {
         if (
-            resultsPanelElement !== null &&
-            inputPanelElement !== null &&
-            !resultsPanelElement.contains(target) &&
-            !inputPanelElement.contains(target)
+          resultsPanelElement !== null &&
+          inputPanelElement !== null &&
+          !resultsPanelElement.contains(target) &&
+          !inputPanelElement.contains(target)
         ) {
-          setIsResultsPanelShown(false);
+          setIsResultsPanelShown(false)
         }
       }
-    };
+    }
     if (resultsPanelElement !== null) {
-      document.addEventListener("click", handleClickOutside);
+      document.addEventListener('click', handleClickOutside)
     }
     return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [resultsPanelElement, inputPanelElement]);
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [resultsPanelElement, inputPanelElement])
 
   const [infiniteRef] = useInfiniteScroll({
     loading: false,
@@ -84,7 +83,7 @@ const GlobalSearch = () => {
   useEffect(() => {
     const { show, page } = pagination
     const result = {}
-    let hasResults = false;
+    let hasResults = false
     let itemsCounter = show * page
 
     if (searchResults) {
@@ -136,8 +135,8 @@ const GlobalSearch = () => {
 
   const updateSearchResults = async () => {
     if (debouncedSearchTerm.length < 2) {
-        setIsResultsPanelShown(false);
-        return;
+      setIsResultsPanelShown(false)
+      return
     }
     const searchResults = await getSearchResults({
       tokens,
@@ -154,20 +153,20 @@ const GlobalSearch = () => {
 
   const showResultsOnFocus = () => {
     if (query.length > 1) {
-      setIsResultsPanelShown(true);
+      setIsResultsPanelShown(true)
     }
   }
 
   const renderResults = () => {
-    const renderedGroups = [];
+    const renderedGroups = []
     groupTypes.map((type) => {
-      const groupItems = paginatedSearchResults[type];
-      const renderedGroupItems = [];
+      const groupItems = paginatedSearchResults[type]
+      const renderedGroupItems = []
       if (groupItems) {
         groupItems.map((item, itemKey) => {
           const props = {
             key: `search-item-${type}-${itemKey}`,
-            item
+            item,
           }
           if (type === 'companies') {
             renderedGroupItems.push(<CompanyCard {...props} />)
@@ -187,9 +186,17 @@ const GlobalSearch = () => {
         })
       }
       if (renderedGroupItems.length > 0 && (type.toString() === typeFilter || typeFilter === groupTypes[0])) {
-        renderedGroups.push(<ResultGroup title={type} key={`search-group-${type}`}>{renderedGroupItems}</ResultGroup>);
-      } else if(renderedGroupItems.length === 0 && (type.toString() === typeFilter && typeFilter !== groupTypes[0])) {
-        renderedGroups.push(<ResultGroup title={type} key={`search-group-${type}`}>{t('No matching results')}</ResultGroup>);
+        renderedGroups.push(
+          <ResultGroup title={type} key={`search-group-${type}`}>
+            {renderedGroupItems}
+          </ResultGroup>,
+        )
+      } else if (renderedGroupItems.length === 0 && type.toString() === typeFilter && typeFilter !== groupTypes[0]) {
+        renderedGroups.push(
+          <ResultGroup title={type} key={`search-group-${type}`}>
+            {t('No matching results')}
+          </ResultGroup>,
+        )
       }
     })
     return renderedGroups
@@ -197,17 +204,17 @@ const GlobalSearch = () => {
 
   const DropdownStab = () => {
     return (
-      <Box p="24px" width="320px" style={{ position: "relative", zIndex: 3 }}>
+      <Box p="24px" width="320px" style={{ position: 'relative', zIndex: 3 }}>
         WIP
       </Box>
     )
   }
 
   const setFilter = (type: string) => {
-    setTypeFilter(type);
-    setIsFilterOpen(false);
+    setTypeFilter(type)
+    setIsFilterOpen(false)
     setTimeout(() => {
-      setIsResultsPanelShown(true);
+      setIsResultsPanelShown(true)
     })
   }
 
@@ -216,27 +223,36 @@ const GlobalSearch = () => {
       <div ref={setInputPanelElement}>
         <SearchWrapper>
           <PoolUpdater />
-          <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'} mr={"16px"}>
-            <StyledInput id="global-search-input"
-                         placeholder={t('Search by account, token,ENS...')}
-                         autoComplete="off"
-                         value={query}
-                         onChange={handleChange}
-                         onFocus={showResultsOnFocus}
+          <InputGroup
+            startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />}
+            scale={'lg'}
+            mr={'16px'}
+          >
+            <StyledInput
+              id="global-search-input"
+              placeholder={t('Search by account, token,ENS...')}
+              autoComplete="off"
+              value={query}
+              onChange={handleChange}
+              onFocus={showResultsOnFocus}
             />
           </InputGroup>
           {query?.length > 1 && (
-              <DropdownItem onClick={() => setIsFilterOpen(true) } isOpen={isFilterOpen} component={t(typeFilter)}>
-                <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
-                  <Box p="10px" minWidth={"200px"}>
-                    {groupTypes.map((type, key) =>
-                      <FilterItem key={`filter-${key}`}
-                                  className={{active: typeFilter.toString() === type.toString()}}
-                                  onClick={() => setFilter(type)}>{t(type)}</FilterItem>
-                    )}
-                  </Box>
-                </InlineMenu>
-              </DropdownItem>
+            <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={t(typeFilter)}>
+              <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
+                <Box p="10px" minWidth={'200px'}>
+                  {groupTypes.map((type, key) => (
+                    <FilterItem
+                      key={`filter-${key}`}
+                      className={{ active: typeFilter.toString() === type.toString() }}
+                      onClick={() => setFilter(type)}
+                    >
+                      {t(type)}
+                    </FilterItem>
+                  ))}
+                </Box>
+              </InlineMenu>
+            </DropdownItem>
           )}
           <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={'USD'}>
             <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
@@ -256,13 +272,15 @@ const GlobalSearch = () => {
         </SearchWrapper>
       </div>
       <div ref={setResultsPanelElement}>
-        <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none'}}>
+        <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none' }}>
           <div>
             {renderResults()}
             {hasNextPage && (
-                <div ref={infiniteRef}>
-                  <div><Text m={"12px"}>{t('Loading...')}</Text></div>
+              <div ref={infiniteRef}>
+                <div>
+                  <Text m={'12px'}>{t('Loading...')}</Text>
                 </div>
+              </div>
             )}
           </div>
         </ResultsWrapper>

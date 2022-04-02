@@ -108,7 +108,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   return (
     <ErrorBoundary>
-      <Menu >
+      <Menu>
         <Layout>
           <Component {...pageProps} />
         </Layout>

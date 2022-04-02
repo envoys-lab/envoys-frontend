@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {Box, Button, Card, Input, Flex} from '@envoysvision/uikit'
+import styled from 'styled-components'
+import { Box, Button, Card, Input, Flex } from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
   width: 100%;
@@ -9,7 +9,7 @@ export const BodyWrapper = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: relative;
   overflow: visible;
-  
+
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
   }
@@ -29,7 +29,7 @@ export const ResultsWrapper = styled(BodyWrapper)`
   position: absolute;
   z-index: 1;
   padding: 8px;
-  >div {
+  > div {
     max-height: 70vh;
     overflow-y: auto;
   }
@@ -72,7 +72,8 @@ export const FilterItem = styled(Box)`
   padding: 6px 10px;
   text-transform: capitalize;
   font-size: 14px;
-  &:hover, &.active {
+  &:hover,
+  &.active {
     cursor: pointer;
     color: ${({ theme }) => theme.colors.darkClear};
     font-weight: 500;

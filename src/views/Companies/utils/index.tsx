@@ -2,14 +2,14 @@ import { useState } from 'react'
 import { getCompanies } from '../api'
 
 export interface CompanyStage {
-  type: string,
+  type: string
   startDate: string
   endDate: string
-  progress: number,
-  goal: number,
-  raisedFunds: number,
-  cap: number,
-  hardcap: number,
+  progress: number
+  goal: number
+  raisedFunds: number
+  cap: number
+  hardcap: number
   status: string
   price: string
 }

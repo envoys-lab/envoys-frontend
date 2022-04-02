@@ -13,7 +13,7 @@ import UserMenu from './UserMenu'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { footerLinks } from './config/footerConfig'
 // import SearchInput from "../SearchInput";
-import GlobalSearch from "../GlobalSearch/GlobalSearch";
+import GlobalSearch from '../GlobalSearch/GlobalSearch'
 
 const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
