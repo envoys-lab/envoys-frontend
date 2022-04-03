@@ -14,7 +14,7 @@ import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
 import { SearchResults } from './types'
 import ResultGroup from './components/ResultGroup'
-import { CompanyCard, FarmCard, LiquidityCard, PoolCard, TokenCard } from './components'
+import { CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard } from './components'
 import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput, FilterItem } from './components/styles'
 
 const GlobalSearch = () => {
@@ -29,7 +29,7 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
-  const groupTypes = ['allFilters', 'tokens', 'companies', 'poolsLiquidity', 'farms', 'poolsSyrup']
+  const groupTypes = ['allFilters', 'tokens', 'companies', 'farms', 'poolsLiquidity', 'poolsSyrup']
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
@@ -175,10 +175,10 @@ const GlobalSearch = () => {
             renderedGroupItems.push(<TokenCard {...props} />)
           }
           if (type === 'poolsLiquidity') {
-            renderedGroupItems.push(<LiquidityCard {...props} />)
+            renderedGroupItems.push(<PoolLiquidityCard {...props} />)
           }
           if (type === 'poolsSyrup') {
-            renderedGroupItems.push(<PoolCard {...props} />)
+            renderedGroupItems.push(<PoolSyrupCard {...props} />)
           }
           if (type === 'farms') {
             renderedGroupItems.push(<FarmCard {...props} />)

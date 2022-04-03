@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Button, Card, Input, Flex } from '@envoysvision/uikit'
+import { Box, Button, Card, Input, Flex, Link } from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
   width: 100%;
@@ -86,7 +86,17 @@ export const BadgeButton = styled(Button)`
   text-transform: capitalize;
 `
 
-export const CenterFlex = styled(Flex)`
+export const FlexLink = styled(Link)`
+  align-items: flex-start;
+  color: inherit;
+  display: flex;
+  width: 100%;
+  &:hover {
+    text-decoration: none;
+  }
+`
+
+export const CenterFlexLink = styled(FlexLink)`
   align-items: center;
   margin-right: 16px;
 `

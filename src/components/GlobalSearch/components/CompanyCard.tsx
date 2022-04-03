@@ -2,7 +2,7 @@ import React from 'react'
 import { Company } from '../types'
 import { Flex, Image, Link, Text } from '@envoysvision/uikit'
 import { AutoColumn } from '../../Layout/Column'
-import { SearchResultBox, BadgeButton } from './styles'
+import { SearchResultBox, BadgeButton, FlexLink } from './styles'
 
 interface ResultGroupProps {
   item: Company
@@ -13,7 +13,7 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   const stage = item.stages.find((stage) => stage?.status === item.status)
   return (
     <SearchResultBox p={'10px'} background={'white'}>
-      <Flex mr={'4px'}>
+      <FlexLink mr={'4px'} href={`/companies/${item._id}`}>
         <Image src={realLogoUrl} width={20} height={20} mt={'4px'} />
         <Flex mx={'16px'} width={'100%'}>
           <AutoColumn gap={'sm'}>
@@ -37,7 +37,7 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
             {item.status}
           </Text>
         </BadgeButton>
-      </Flex>
+      </FlexLink>
     </SearchResultBox>
   )
 }
