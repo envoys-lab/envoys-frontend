@@ -1,20 +1,20 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
-import {usePoolsWithVault} from 'views/Home/hooks/useGetTopPoolsByApr'
-import {useAllPoolData} from 'state/info/hooks'
-import {useFarms} from 'state/farms/hooks'
+import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
+import { useAllPoolData } from 'state/info/hooks'
+import { useFarms } from 'state/farms/hooks'
 import usePoolDatas from 'state/info/queries/pools/poolData'
-import {PoolUpdater} from 'state/info/updaters'
+import { PoolUpdater } from 'state/info/updaters'
 
-import {getObjectsArraysLength, getSearchResults} from './helpers'
-import {getTokens, useDebounce} from './hooks'
-import {Box, CogIcon, GasIcon, InlineMenu, InputGroup, SearchIcon, Text} from '@envoysvision/uikit'
-import {useTranslation} from '../../contexts/Localization'
+import { getObjectsArraysLength, getSearchResults } from './helpers'
+import { getTokens, useDebounce } from './hooks'
+import { Box, CogIcon, GasIcon, InlineMenu, InputGroup, SearchIcon, Text } from '@envoysvision/uikit'
+import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
-import {SearchResults} from './types'
+import { SearchResults } from './types'
 import ResultGroup from './components/ResultGroup'
-import {CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard} from './components'
+import { CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard } from './components'
 import {
   BodyWrapper,
   FilterItem,
@@ -22,8 +22,11 @@ import {
   SearchWrapper,
   StyledInput,
   CardsLayout,
-  SettingsOptionButton
+  SettingsOptionButton,
+  SettingsBox,
 } from './components/styles'
+import GasSettings from '../GlobalSettings/GasSettings'
+import SlippageSettings from '../GlobalSettings/SlippageSettings'
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState('')
@@ -58,7 +61,8 @@ const GlobalSearch = () => {
     'AUD',
     'NOK',
     'SGD',
-    'BTC',]
+    'BTC',
+  ]
   const [globalCurrency, setGlobalCurrency] = useState<string>(currencies[0])
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
@@ -237,14 +241,6 @@ const GlobalSearch = () => {
     return renderedGroups
   }
 
-  const DropdownStab = () => {
-    return (
-      <Box p="24px" width="320px" style={{ position: 'relative', zIndex: 3 }}>
-        WIP
-      </Box>
-    )
-  }
-
   const setFilter = (type: string) => {
     setTypeFilter(type)
     setIsFilterOpen(false)
@@ -291,26 +287,33 @@ const GlobalSearch = () => {
           )}
           <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={globalCurrency}>
             <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
-              <Box p="10px" minWidth={'300px'}>
+              <SettingsBox>
                 <CardsLayout>
-                  {currencies.map(currency => (
+                  {currencies.map((currency) => (
                     <SettingsOptionButton
-                        onClick={() => setCurrency(currency)}
-                        $active={currency === globalCurrency}
-                        key={`settings-item-${currency}`}>{currency}</SettingsOptionButton>
+                      onClick={() => setCurrency(currency)}
+                      $active={currency === globalCurrency}
+                      key={`settings-item-${currency}`}
+                    >
+                      {currency}
+                    </SettingsOptionButton>
                   ))}
                 </CardsLayout>
-              </Box>
+              </SettingsBox>
             </InlineMenu>
           </DropdownItem>
           <DropdownItem onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
             <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
-              <DropdownStab />
+              <SettingsBox>
+                <GasSettings />
+              </SettingsBox>
             </InlineMenu>
           </DropdownItem>
           <DropdownItem onClick={() => setIsSettingsOpen(true)} isOpen={isSettingsOpen} component={<CogIcon />}>
             <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
-              <DropdownStab />
+              <SettingsBox>
+                <SlippageSettings />
+              </SettingsBox>
             </InlineMenu>
           </DropdownItem>
         </SearchWrapper>

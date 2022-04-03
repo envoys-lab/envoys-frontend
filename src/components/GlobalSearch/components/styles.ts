@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Box, Button, Card, Input, Link, Grid} from '@envoysvision/uikit'
+import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
   width: 100%;
@@ -64,6 +64,10 @@ export const SearchResultBox = styled(Box)`
   }
 `
 
+export const SettingsBox = styled(Box)`
+  padding: 16px;
+`
+
 export const FilterItem = styled(Box)`
   border-radius: 4px;
   margin-top: 4px;
@@ -101,22 +105,32 @@ export const CenterFlexLink = styled(FlexLink)`
   margin-right: 16px;
 `
 
-export const SettingsOptionButton = styled(Button)<{ $active: boolean, variant: string }>`
+export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: string; disabled: boolean }>`
   font-size: 14px;
   font-weight: 400;
   color: ${({ theme }) => theme.colors.darkClear};
   border-color: transparent;
-  
-  ${({ $active, theme }) => $active && `
+  flex-direction: column;
+  height: auto;
+  padding: 4px 18px;
+  box-sizing: content-box;
+  ${({ $active, theme }) =>
+    $active &&
+    `
     font-weight: 500;
     color: ${theme.colors.basicOrange};
     border-color: ${theme.colors.basicOrange};
   `}
+  &.envoys-button--disabled {
+    color: ${({ theme }) => theme.colors.disabledMenuItem};
+    border-color: ${({ theme }) => theme.colors.disabledMenuItem};
+    background: transparent;
+  }
 `
 
 SettingsOptionButton.defaultProps = {
-  scale: "sm",
-  variant: "tertiary",
+  scale: 'sm',
+  variant: 'tertiary',
 }
 
 export const CardsLayout = styled(Grid)`

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Image, Text } from '@envoysvision/uikit'
-import styled from "styled-components";
+import styled from 'styled-components'
 import { Company } from '../types'
 
 import { AutoColumn } from '../../Layout/Column'
@@ -14,7 +14,7 @@ const FakeLink = styled(Text)`
   &:hover {
     cursor: pointer;
     text-decoration: underline;
-    color: ${({ theme }) => theme.colors.primary };
+    color: ${({ theme }) => theme.colors.primary};
   }
 `
 
@@ -22,9 +22,9 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   const realLogoUrl = item.logoUrl !== 'https://cloud.example/logo' ? item.logoUrl : '/images/company.png'
   const stage = item.stages.find((stage) => stage?.status === item.status)
   const openCompanyLink = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    window.open(item.homePageUrl, '_blank');
+    e.preventDefault()
+    e.stopPropagation()
+    window.open(item.homePageUrl, '_blank')
   }
   return (
     <SearchResultBox p={'10px'} background={'white'}>
