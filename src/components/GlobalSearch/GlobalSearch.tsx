@@ -1,21 +1,29 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 
-import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
-import { useAllPoolData } from 'state/info/hooks'
-import { useFarms } from 'state/farms/hooks'
+import {usePoolsWithVault} from 'views/Home/hooks/useGetTopPoolsByApr'
+import {useAllPoolData} from 'state/info/hooks'
+import {useFarms} from 'state/farms/hooks'
 import usePoolDatas from 'state/info/queries/pools/poolData'
-import { PoolUpdater } from 'state/info/updaters'
+import {PoolUpdater} from 'state/info/updaters'
 
-import { getObjectsArraysLength, getSearchResults } from './helpers'
-import { getTokens, useDebounce } from './hooks'
-import { InputGroup, SearchIcon, InlineMenu, Box, CogIcon, GasIcon, Text } from '@envoysvision/uikit'
-import { useTranslation } from '../../contexts/Localization'
+import {getObjectsArraysLength, getSearchResults} from './helpers'
+import {getTokens, useDebounce} from './hooks'
+import {Box, CogIcon, GasIcon, InlineMenu, InputGroup, SearchIcon, Text} from '@envoysvision/uikit'
+import {useTranslation} from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
-import { SearchResults } from './types'
+import {SearchResults} from './types'
 import ResultGroup from './components/ResultGroup'
-import { CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard } from './components'
-import { ResultsWrapper, SearchWrapper, BodyWrapper, StyledInput, FilterItem } from './components/styles'
+import {CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard} from './components'
+import {
+  BodyWrapper,
+  FilterItem,
+  ResultsWrapper,
+  SearchWrapper,
+  StyledInput,
+  CardsLayout,
+  SettingsOptionButton
+} from './components/styles'
 
 const GlobalSearch = () => {
   const [query, setQuery] = useState('')
@@ -30,6 +38,28 @@ const GlobalSearch = () => {
   const [hasNextPage, setHasNextPage] = useState(false)
 
   const groupTypes = ['allFilters', 'tokens', 'companies', 'farms', 'poolsLiquidity', 'poolsSyrup']
+  const currencies = [
+    'USD',
+    'EUR',
+    'CNY',
+    'INR',
+    'CAD',
+    'GBP',
+    'JPY',
+    'RUB',
+    'MXN',
+    'CHF',
+    'KRW',
+    'TRY',
+    'BRL',
+    'SEK',
+    'HKD',
+    'ETH',
+    'AUD',
+    'NOK',
+    'SGD',
+    'BTC',]
+  const [globalCurrency, setGlobalCurrency] = useState<string>(currencies[0])
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
@@ -40,6 +70,11 @@ const GlobalSearch = () => {
   const [isResultsPanelShown, setIsResultsPanelShown] = useState(false)
 
   const { t } = useTranslation()
+
+  const setCurrency = (newCurrency: string) => {
+    setGlobalCurrency(newCurrency)
+    setIsCurrencyOpen(false)
+  }
 
   const updatePagination = () => {
     const { show, page } = pagination
@@ -254,9 +289,18 @@ const GlobalSearch = () => {
               </InlineMenu>
             </DropdownItem>
           )}
-          <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={'USD'}>
+          <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={globalCurrency}>
             <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
-              <DropdownStab />
+              <Box p="10px" minWidth={'300px'}>
+                <CardsLayout>
+                  {currencies.map(currency => (
+                    <SettingsOptionButton
+                        onClick={() => setCurrency(currency)}
+                        $active={currency === globalCurrency}
+                        key={`settings-item-${currency}`}>{currency}</SettingsOptionButton>
+                  ))}
+                </CardsLayout>
+              </Box>
             </InlineMenu>
           </DropdownItem>
           <DropdownItem onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>

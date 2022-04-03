@@ -1,6 +1,8 @@
 import React from 'react'
+import { Flex, Image, Text } from '@envoysvision/uikit'
+import styled from "styled-components";
 import { Company } from '../types'
-import { Flex, Image, Link, Text } from '@envoysvision/uikit'
+
 import { AutoColumn } from '../../Layout/Column'
 import { SearchResultBox, BadgeButton, FlexLink } from './styles'
 
@@ -8,9 +10,22 @@ interface ResultGroupProps {
   item: Company
 }
 
+const FakeLink = styled(Text)`
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: ${({ theme }) => theme.colors.primary };
+  }
+`
+
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   const realLogoUrl = item.logoUrl !== 'https://cloud.example/logo' ? item.logoUrl : '/images/company.png'
   const stage = item.stages.find((stage) => stage?.status === item.status)
+  const openCompanyLink = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(item.homePageUrl, '_blank');
+  }
   return (
     <SearchResultBox p={'10px'} background={'white'}>
       <FlexLink mr={'4px'} href={`/companies/${item._id}`}>
@@ -25,11 +40,9 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
                 {stage?.startDate} - {stage?.endDate}
               </Text>
             )}
-            <Link external href={item.homePageUrl}>
-              <Text thin small>
-                {item.homePageUrl}
-              </Text>
-            </Link>
+            <FakeLink thin small onClick={openCompanyLink}>
+              {item.homePageUrl}
+            </FakeLink>
           </AutoColumn>
         </Flex>
         <BadgeButton scale={'xs'} variant={'secondary'}>

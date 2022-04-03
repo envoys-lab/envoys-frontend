@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Button, Card, Input, Flex, Link } from '@envoysvision/uikit'
+import {Box, Button, Card, Input, Link, Grid} from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
   width: 100%;
@@ -99,4 +99,27 @@ export const FlexLink = styled(Link)`
 export const CenterFlexLink = styled(FlexLink)`
   align-items: center;
   margin-right: 16px;
+`
+
+export const SettingsOptionButton = styled(Button)<{ $active: boolean, variant: string }>`
+  font-size: 14px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.darkClear};
+  border-color: transparent;
+  
+  ${({ $active, theme }) => $active && `
+    font-weight: 500;
+    color: ${theme.colors.basicOrange};
+    border-color: ${theme.colors.basicOrange};
+  `}
+`
+
+SettingsOptionButton.defaultProps = {
+  scale: "sm",
+  variant: "tertiary",
+}
+
+export const CardsLayout = styled(Grid)`
+  grid-gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
 `
