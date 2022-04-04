@@ -4,6 +4,7 @@ import { Flex, Text } from '@envoysvision/uikit'
 import { CenterFlexLink, SearchResultBox } from './styles'
 import { AutoRow } from '../../Layout/Row'
 import { TokenPairImage } from '../../TokenImage'
+import {getAddress} from "../../../utils/addressHelpers";
 
 interface ResultGroupProps {
   item: Farm
@@ -12,7 +13,7 @@ interface ResultGroupProps {
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   return (
     <SearchResultBox p={'10px'} background={'white'}>
-      <CenterFlexLink href={`/info/pool/${item.lpAddresses['56']}`}>
+      <CenterFlexLink href={`/info/pool/${getAddress(item.lpAddresses)}`}>
         <TokenPairImage primaryToken={item.token} secondaryToken={item.quoteToken} height={20} width={20} />
         <Flex mx={'16px'} width={'100%'}>
           <AutoRow>
