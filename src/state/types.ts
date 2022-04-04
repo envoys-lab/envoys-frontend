@@ -566,4 +566,6 @@ export interface State {
   voting: VotingState
   lottery: LotteryState
   nftMarket: NftMarketState
+  tokens: object
+  lists: object
 }

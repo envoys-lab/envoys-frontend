@@ -19,6 +19,12 @@ const GlobalStyle = createGlobalStyle`
       max-width: 100%;
     }
   }
+
+  #portal-root {
+    >div {
+      z-index: ${({ theme }) => theme.zIndices.modal};
+    }
+  }
 `
 
 export default GlobalStyle

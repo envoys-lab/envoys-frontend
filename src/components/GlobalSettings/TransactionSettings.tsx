@@ -3,7 +3,7 @@ import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
-import QuestionHelper from '../../QuestionHelper'
+import QuestionHelper from '../QuestionHelper'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',

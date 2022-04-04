@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import useTheme from 'hooks/useTheme'
-import QuestionHelper from '../../QuestionHelper'
+import QuestionHelper from '../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
