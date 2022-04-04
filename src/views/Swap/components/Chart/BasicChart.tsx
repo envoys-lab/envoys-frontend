@@ -111,7 +111,7 @@ const BasicChart = ({
           </Box>
         </Flex>
       </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} width="100%">
+      <Box height={isMobile ? '100%' : chartHeight} width="100%" style={{ overflowX: 'hidden' }}>
         <SwapLineChart
           data={pairPrices}
           setHoverValue={setHoverValue}

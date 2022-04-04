@@ -4,6 +4,7 @@ import { Flex, Text } from '@envoysvision/uikit'
 import { CenterFlexLink, SearchResultBox } from './styles'
 import { TokenImage } from '../../TokenImage'
 import { Token } from '@envoysvision/sdk'
+import { getAddress } from '../../../utils/addressHelpers'
 
 interface ResultGroupProps {
   item: Pool
@@ -12,7 +13,7 @@ interface ResultGroupProps {
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   return (
     <SearchResultBox p={'10px'} background={'white'}>
-      <CenterFlexLink href={`/info/pool/${item.contractAddress['56']}`}>
+      <CenterFlexLink href={`/info/pool/${getAddress(item.contractAddress)}`}>
         <TokenImage token={item.earningToken as Token} width={20} height={20} />
         <Flex mx={'16px'} width={'100%'}>
           <Text thin fontSize={'18px'}>

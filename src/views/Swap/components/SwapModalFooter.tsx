@@ -134,7 +134,7 @@ export default function SwapModalFooter({
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
           disabled={disabledConfirm}
-          mt="12px"
+          my="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
