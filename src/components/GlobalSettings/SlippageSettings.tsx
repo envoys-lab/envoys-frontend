@@ -25,10 +25,10 @@ const SlippageSettings: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isSlippageEnabled) {
+    if (isSlippageEnabled && userSlippageTolerance === 0) {
       setUserSlippageTolerance(10)
     }
-  }, [isSlippageEnabled])
+  }, [isSlippageEnabled, userSlippageTolerance])
 
   return (
     <Flex flexDirection="column">
