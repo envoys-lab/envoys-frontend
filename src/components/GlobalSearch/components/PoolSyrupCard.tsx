@@ -4,7 +4,7 @@ import { Flex, Text } from '@envoysvision/uikit'
 import { CenterFlexLink, SearchResultBox } from './styles'
 import { TokenImage } from '../../TokenImage'
 import { Token } from '@envoysvision/sdk'
-import {getAddress} from "../../../utils/addressHelpers";
+import { getAddress } from '../../../utils/addressHelpers'
 
 interface ResultGroupProps {
   item: Pool

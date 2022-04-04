@@ -4,7 +4,7 @@ import { Flex, Text } from '@envoysvision/uikit'
 import { CenterFlexLink, SearchResultBox } from './styles'
 import { AutoRow } from '../../Layout/Row'
 import { TokenPairImage } from '../../TokenImage'
-import {getAddress} from "../../../utils/addressHelpers";
+import { getAddress } from '../../../utils/addressHelpers'
 
 interface ResultGroupProps {
   item: Farm
