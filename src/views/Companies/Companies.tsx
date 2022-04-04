@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { getCompanies } from './api'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { useLoadItems } from './utils'
+import CompanyCard from './components/CompanyCard'
 
 const Companies = () => {
   const { t } = useTranslation()
@@ -23,11 +24,7 @@ const Companies = () => {
   })
 
   const renderCompany = (item) => {
-    return (
-      <div key={item._id}>
-        {item.name} {item.status}
-      </div>
-    )
+    return <CompanyCard company={item} key={item._id} />
   }
 
   return (
