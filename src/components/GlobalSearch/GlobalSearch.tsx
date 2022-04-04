@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
+import classNames from 'classnames'
 
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { useAllPoolData } from 'state/info/hooks'
@@ -275,7 +276,7 @@ const GlobalSearch = () => {
                   {groupTypes.map((type, key) => (
                     <FilterItem
                       key={`filter-${key}`}
-                      className={{ active: typeFilter.toString() === type.toString() }}
+                      className={classNames({ active: typeFilter.toString() === type.toString() })}
                       onClick={() => setFilter(type)}
                     >
                       {t(type)}
