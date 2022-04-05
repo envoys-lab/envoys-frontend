@@ -33,13 +33,17 @@ const Company = ({ companyId }: { companyId: string }) => {
     <CompanyWrapper>
       <HeadText />
       <div className={styles['company__head']}>
-        {company && <CompanyShortInfo name={company.name} description={company.description} logoUrl={company.logoUrl} className={styles['company__head']} />}
+        {company && (
+          <CompanyShortInfo
+            name={company.name}
+            description={company.description}
+            logoUrl={company.logoUrl}
+            className={styles['company__head']}
+          />
+        )}
         {company && <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />}
         {!company && 'Trying to load data, if this text stays 5 seconds, reload page'}
       </div>
-{/*       
-      <div>{companyId}</div>
-      <div>{JSON.stringify(company)}</div> */}
     </CompanyWrapper>
   )
 }

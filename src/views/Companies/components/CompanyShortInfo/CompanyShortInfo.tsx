@@ -2,13 +2,13 @@ import React from 'react'
 import styles from './CompanyShortInfo.module.scss'
 
 interface CompanyShortInfo {
-  name: string,
-  description: string,
-  logoUrl: string,
+  name: string
+  description: string
+  logoUrl: string
   className?: string
 }
 
-const CompanyShortInfo = ({name, description, logoUrl, className} : CompanyShortInfo) => {
+const CompanyShortInfo = ({ name, description, logoUrl, className }: CompanyShortInfo) => {
   return (
     <div className={`${styles['company-short']} ${className}`}>
       <div className={styles['company-short__logo']}>
