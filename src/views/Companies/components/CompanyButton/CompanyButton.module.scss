@@ -1,0 +1,103 @@
+.сompany-button {
+  margin-left: 12px;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+
+  &__button {
+    box-shadow: 0px 15px 20px -18px #f48020;
+    border-radius: 14px;
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    /* Basic Orange */
+
+    background: #f48020;
+    border-radius: 14px;
+
+    text-align: center;
+
+    color: #ffffff;
+    padding: 15.5px 76px 15.5px 76px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__holders {
+    font-weight: 400;
+
+    /* second blue */
+
+    color: #045599;
+    margin-left: 22px;
+    margin-top: 27px;
+
+    svg {
+      position: absolute;
+    }
+
+    .account-icon {
+      margin-top: -2px;
+    }
+
+    .link-icon {
+      margin-left: -6px;
+    }
+
+    span {
+      margin-left: 20px;
+    }
+  }
+
+  &__home-page-button {
+    box-shadow: 0px 15px 20px -18px #133d65;
+    border-radius: 14px;
+    /* Auto layout */
+
+    display: block;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    text-overflow: ellipsis;
+
+    width: 10vw;
+    white-space: nowrap;
+    overflow: hidden;
+
+    /* Basic Orange */
+
+    border: 2px solid #133d65;
+    border-radius: 14px;
+
+    text-align: center;
+
+    color: #133d65;
+
+    padding: 15px 30px 15px 30px;
+
+    margin-top: 20px;
+    margin-left: -5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.logo {
+  margin-left: 50px;
+  margin-top: 15px;
+  margin-right: 35px;
+}
