@@ -10,7 +10,6 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
-import { AppBody } from '../../components/App'
 import Page from '../../components/Layout/Page'
 import { Wrapper } from '../Swap/components/styleds'
 import { useRouter } from 'next/router'
@@ -102,7 +101,7 @@ export default function Pool() {
   }
 
   return (
-    <Page>
+    <Page autoWidth={true}>
       <PageContainer>
         <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
           <Flex position={'relative'} alignItems={'center'} width={'100%'}>
