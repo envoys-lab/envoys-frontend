@@ -22,7 +22,7 @@ const CompanyCard = ({ company }) => {
       <div className={styles['company-card__logo']}>
         <img src={company.logoUrl} />
       </div>
-      <div>
+      <div className={styles['company-card__content']}>
         <div className={styles['company-card__name']}>{company.name}</div>
         <div className={styles['company-card__status']}>{company.status}</div>
         <div className={styles['company-card__expiration']}>{getFormattedEndDate(company.stages[0].endDate)}</div>

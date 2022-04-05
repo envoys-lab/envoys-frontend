@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
@@ -5,6 +6,12 @@ import { getCompanies } from './api'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { useLoadItems } from './utils'
 import CompanyCard from './components/CompanyCard'
+import { BodyWrapper } from 'components/App/AppBody'
+import styles from './Companies.module.scss'
+
+const CompanyWrapper = styled(BodyWrapper)`
+  margin: 20px auto;
+`
 
 const Companies = () => {
   const { t } = useTranslation()
@@ -28,23 +35,14 @@ const Companies = () => {
   }
 
   return (
-    <div>
-      {companies.map((item) => renderCompany(item))}
-      {/* 
-              As long as we have a "next page", we show "Loading" right under the list.
-              When it becomes visible on the screen, or it comes near, it triggers 'onLoadMore'.
-              This is our "sentry".
-              We can also use another "sentry" which is separated from the "Loading" component like:
-                <div ref={infiniteRef} />
-                {loading && <ListItem>Loading...</ListItem>}
-              and leave "Loading" without this ref.
-          */}
+    <CompanyWrapper>
+      <div className={styles['company__list-container']}>{companies.map((item) => renderCompany(item))}</div>
       {hasNextPage && (
         <div ref={infiniteRef}>
           <div>Loading</div>
         </div>
       )}
-    </div>
+    </CompanyWrapper>
   )
 }
 
