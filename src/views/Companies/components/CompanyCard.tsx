@@ -1,5 +1,5 @@
 import { useTranslation } from 'contexts/Localization'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import styles from './CompanyCard.module.scss'
 import StarIcon from '../assets/Star'
@@ -17,8 +17,15 @@ const getDaysRange = (startDate, endDate) => {
 }
 
 const CompanyCard = ({ company }) => {
+  const router = useRouter()
+
+  const handleClick = () => {
+    const { _id } = company
+    router.push(`/companies/${_id}`)
+  }
+
   return (
-    <div className={styles['company-card']} key={company._id}>
+    <div className={styles['company-card']} onClick={handleClick} key={company._id}>
       <div className={styles['company-card__logo']}>
         <img src={company.logoUrl} />
       </div>
