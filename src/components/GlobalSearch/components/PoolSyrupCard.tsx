@@ -12,7 +12,7 @@ interface ResultGroupProps {
 
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   return (
-    <SearchResultBox p={'10px'} background={'white'}>
+    <SearchResultBox>
       <CenterFlexLink href={`/info/pool/${getAddress(item.contractAddress)}`}>
         <TokenImage token={item.earningToken as Token} width={20} height={20} />
         <Flex mx={'16px'} width={'100%'}>
