@@ -58,9 +58,16 @@ export const SearchResultBox = styled(Box)`
   border-radius: ${({ theme }) => theme.radii.icon};
   border: 1px solid transparent;
   margin-top: 8px;
+  margin-bottom: 12px;
+  padding: 4px;
+  background: white;
   &:hover {
     border-color: ${({ theme }) => theme.colors.cardBorder};
     background: ${({ theme }) => theme.colors.background};
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 0;
+    padding: 10px;
   }
 `
 

@@ -25,7 +25,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: t('Companies'),
     icon: 'Companies',
-    active: false,
+    active: true,
     href: '/companies',
     items: [],
     iconComponent: MenuCompanies,

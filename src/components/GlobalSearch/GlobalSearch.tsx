@@ -10,7 +10,17 @@ import { PoolUpdater } from 'state/info/updaters'
 
 import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
-import { Box, CogIcon, GasIcon, InlineMenu, InputGroup, SearchIcon, Text } from '@envoysvision/uikit'
+import {
+  Box,
+  Flex,
+  CogIcon,
+  GasIcon,
+  InlineMenu,
+  InputGroup,
+  SearchIcon,
+  Text,
+  useMatchBreakpoints,
+} from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
 import { SearchResults } from './types'
@@ -33,6 +43,7 @@ const GlobalSearch = () => {
   const [query, setQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResults>({})
   const [poolsLiquidity, setPoolsLiquidity] = useState({})
+  const { isMobile } = useMatchBreakpoints()
   const tokens = getTokens()
   const farms = useFarms()
   const poolsSyrup = usePoolsWithVault()
@@ -73,6 +84,7 @@ const GlobalSearch = () => {
   const [isGasOpen, setIsGasOpen] = useState(false)
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
   const [isResultsPanelShown, setIsResultsPanelShown] = useState(false)
+  const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
 
   const { t } = useTranslation()
 
@@ -250,6 +262,80 @@ const GlobalSearch = () => {
     })
   }
 
+  useEffect(() => {
+    if (isCurrencyOpen) {
+      setIsGasOpen(false)
+      setIsSettingsOpen(false)
+    }
+  }, [isCurrencyOpen, setIsGasOpen, setIsSettingsOpen])
+  useEffect(() => {
+    if (isGasOpen) {
+      setIsCurrencyOpen(false)
+      setIsSettingsOpen(false)
+    }
+  }, [isGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
+  useEffect(() => {
+    if (isSettingsOpen) {
+      setIsGasOpen(false)
+      setIsCurrencyOpen(false)
+    }
+  }, [isSettingsOpen, setIsGasOpen, setIsCurrencyOpen])
+  useEffect(() => {
+    if (isMobileSettingsOpen) {
+      setIsGasOpen(false)
+      setIsCurrencyOpen(false)
+      setIsSettingsOpen(false)
+    }
+  }, [isMobileSettingsOpen, setIsGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
+  const renderSettings = (isMobile = false) => {
+    return (
+      <>
+        <DropdownItem
+          noBorder={isMobile}
+          isMobile={isMobile}
+          onClick={() => setIsCurrencyOpen(true)}
+          isOpen={isCurrencyOpen}
+          component={globalCurrency}
+        >
+          <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
+            <SettingsBox>
+              <CardsLayout>
+                {currencies.map((currency) => (
+                  <SettingsOptionButton
+                    onClick={() => setCurrency(currency)}
+                    $active={currency === globalCurrency}
+                    key={`settings-item-${currency}`}
+                  >
+                    {currency}
+                  </SettingsOptionButton>
+                ))}
+              </CardsLayout>
+            </SettingsBox>
+          </InlineMenu>
+        </DropdownItem>
+        <DropdownItem isMobile={isMobile} onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
+          <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
+            <SettingsBox>
+              <GasSettings />
+            </SettingsBox>
+          </InlineMenu>
+        </DropdownItem>
+        <DropdownItem
+          isMobile={isMobile}
+          onClick={() => setIsSettingsOpen(true)}
+          isOpen={isSettingsOpen}
+          component={<CogIcon />}
+        >
+          <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
+            <SettingsBox>
+              <SlippageSettings />
+            </SettingsBox>
+          </InlineMenu>
+        </DropdownItem>
+      </>
+    )
+  }
+
   return (
     <BodyWrapper>
       <div ref={setInputPanelElement}>
@@ -286,37 +372,24 @@ const GlobalSearch = () => {
               </InlineMenu>
             </DropdownItem>
           )}
-          <DropdownItem onClick={() => setIsCurrencyOpen(true)} isOpen={isCurrencyOpen} component={globalCurrency}>
-            <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
-              <SettingsBox>
-                <CardsLayout>
-                  {currencies.map((currency) => (
-                    <SettingsOptionButton
-                      onClick={() => setCurrency(currency)}
-                      $active={currency === globalCurrency}
-                      key={`settings-item-${currency}`}
-                    >
-                      {currency}
-                    </SettingsOptionButton>
-                  ))}
-                </CardsLayout>
-              </SettingsBox>
-            </InlineMenu>
-          </DropdownItem>
-          <DropdownItem onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
-            <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
-              <SettingsBox>
-                <GasSettings />
-              </SettingsBox>
-            </InlineMenu>
-          </DropdownItem>
-          <DropdownItem onClick={() => setIsSettingsOpen(true)} isOpen={isSettingsOpen} component={<CogIcon />}>
-            <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
-              <SettingsBox>
-                <SlippageSettings />
-              </SettingsBox>
-            </InlineMenu>
-          </DropdownItem>
+          {isMobile && (
+            <DropdownItem
+              onClick={() => setIsMobileSettingsOpen(true)}
+              isOpen={isMobileSettingsOpen}
+              component={<CogIcon />}
+            >
+              <InlineMenu
+                isOpen={isMobileSettingsOpen}
+                component={<></>}
+                onClose={() => setIsMobileSettingsOpen(false)}
+              >
+                <Box p="10px" minWidth={'200px'}>
+                  <Flex>{renderSettings()}</Flex>
+                </Box>
+              </InlineMenu>
+            </DropdownItem>
+          )}
+          {!isMobile && renderSettings()}
         </SearchWrapper>
       </div>
       <div ref={setResultsPanelElement}>
