@@ -24,12 +24,14 @@ StyledBox.defaultProps = {
 interface DropdownProps extends FlexProps, HTMLAttributes<HTMLDivElement> {
   component: ReactNode
   isOpen?: boolean
+  isMobile?: boolean
+  noBorder?: boolean
 }
 
-const DropdownItem: React.FC<DropdownProps> = ({ component, isOpen, children, ...props }) => {
+const DropdownItem: React.FC<DropdownProps> = ({ component, isOpen, isMobile, noBorder, children, ...props }) => {
   return (
     <StyledDiv>
-      <StyledBox {...props} px={'16px'}>
+      <StyledBox {...props} px={isMobile ? '4px' : '16px'} style={{ borderLeft: noBorder ? 'none' : 'inherit' }}>
         {component}
         <SwapVertIcon color={'mainDark'} ml={'4px'} style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </StyledBox>

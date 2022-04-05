@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
 import { Text, Flex, CardFooter, Button, AddIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
@@ -31,6 +31,7 @@ export default function Pool() {
   const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -131,8 +132,15 @@ export default function Pool() {
           </Wrapper>
           <CardFooter style={{ textAlign: 'center' }}>
             <Link href="/add">
-              <Button id="join-pool-button" width="100%" scale="lg" startIcon={<AddIcon color="white" />}>
-                {t('Add Liquidity')}
+              <Button
+                id="join-pool-button"
+                width="100%"
+                scale="lg"
+                startIcon={<AddIcon color="white" />}
+                disabled={isLoading}
+                onClick={() => setIsLoading(true)}
+              >
+                {isLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
               </Button>
             </Link>
           </CardFooter>

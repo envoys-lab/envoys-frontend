@@ -100,9 +100,9 @@ export default function Swap() {
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const [isChartExpanded, setIsChartExpanded] = useState(true)
-  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile || isTablet)
+  const [userChartPreference, setUserChartPreference] = useExchangeChartManager(!isDesktop)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
 
   useEffect(() => {
@@ -380,7 +380,7 @@ export default function Swap() {
     <Page hideFooterOnDesktop={isChartExpanded}>
       <AppBody>
         <Flex justifyContent="space-between" position="relative">
-          {!(isMobile || isTablet) && (
+          {isDesktop && (
             <PriceChartContainer
               withBorder={false}
               inputCurrencyId={inputCurrencyId}
@@ -409,6 +409,7 @@ export default function Swap() {
             }
             isOpen={isChartDisplayed}
             setIsOpen={setIsChartDisplayed}
+            isForTablet={true}
           />
 
           <StyledSwapContainer $isChartDisplayed={isChartDisplayed}>
