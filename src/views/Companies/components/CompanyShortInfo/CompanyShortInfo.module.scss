@@ -1,40 +1,40 @@
-.container {
+.company-short {
   max-width: 728px;
   margin-top: 0;
-}
 
-.logo {
-  margin-left: 50px;
-  margin-top: 15px;
-  margin-right: 35px;
-}
-
-.mainInfo {
-  padding-right: 36px;
-
-  .name {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 21px;
-    line-height: 25px;
-
-    /* Dark clear */
-
-    color: #0F2B46;
+  &__logo {
+    margin-left: 50px;
+    margin-top: 15px;
+    margin-right: 35px;
   }
 
-  .description {
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
+  &-main{
+    padding-right: 36px;
 
-    /* Main_Dark */
+    &__name {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 21px;
+      line-height: 25px;
 
-    color: #133D65;
+      /* Dark clear */
 
-    margin-top: 10px;
+      color: #0F2B46;
+    }
+
+    &__description {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+
+      /* Main_Dark */
+
+      color: #133D65;
+
+      margin-top: 10px;
+    }
   }
 }

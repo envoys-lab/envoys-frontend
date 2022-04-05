@@ -3,7 +3,7 @@ import styles from './CompanyContainer.module.scss'
 
 const CompanyContainer = ({ children }) => {
   return (
-    <div className={styles.container}>
+    <div className={styles['container']}>
         {children}
     </div>
   )
