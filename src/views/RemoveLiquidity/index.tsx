@@ -36,7 +36,7 @@ import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../s
 
 import { Field } from '../../state/burn/actions'
 import { useGasPrice, useUserSlippageTolerance } from '../../state/user/hooks'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};

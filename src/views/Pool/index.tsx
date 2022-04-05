@@ -11,7 +11,7 @@ import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
 import { AppBody } from '../../components/App'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 import { Wrapper } from '../Swap/components/styleds'
 import { useRouter } from 'next/router'
 import AppHeader from '../../components/App/AppHeader'
@@ -103,49 +103,47 @@ export default function Pool() {
 
   return (
     <Page>
-      <AppBody>
-        <PageContainer>
-          <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
-            <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
-                <Tab>{t('Swap')}</Tab>
-                <Tab>{t('Liquidity')}</Tab>
-              </TabMenu>
-            </Flex>
-          </AppHeader>
-          <Wrapper id="liquidity-page" pb={'0 !important'}>
-            <Body background={'transparent'}>
-              {renderBody()}
-              {account && !v2IsLoading && (
-                <Flex flexDirection="column" alignItems="center">
-                  <ThinText color="primary" my="16px">
-                    {t("Don't see a pool you joined?")}
-                  </ThinText>
-                  <Link href="/find">
-                    <Button id="import-pool-link" variant="tertiary" as="a">
-                      <b>{t('Find other LP tokens')}</b>
-                    </Button>
-                  </Link>
-                </Flex>
-              )}
-            </Body>
-          </Wrapper>
-          <CardFooter style={{ textAlign: 'center' }}>
-            <Link href="/add">
-              <Button
-                id="join-pool-button"
-                width="100%"
-                scale="lg"
-                startIcon={<AddIcon color="white" />}
-                disabled={isLoading}
-                onClick={() => setIsLoading(true)}
-              >
-                {isLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
-              </Button>
-            </Link>
-          </CardFooter>
-        </PageContainer>
-      </AppBody>
+      <PageContainer>
+        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
+          <Flex position={'relative'} alignItems={'center'} width={'100%'}>
+            <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
+              <Tab>{t('Swap')}</Tab>
+              <Tab>{t('Liquidity')}</Tab>
+            </TabMenu>
+          </Flex>
+        </AppHeader>
+        <Wrapper id="liquidity-page" pb={'0 !important'}>
+          <Body background={'transparent'}>
+            {renderBody()}
+            {account && !v2IsLoading && (
+              <Flex flexDirection="column" alignItems="center">
+                <ThinText color="primary" my="16px">
+                  {t("Don't see a pool you joined?")}
+                </ThinText>
+                <Link href="/find">
+                  <Button id="import-pool-link" variant="tertiary" as="a">
+                    <b>{t('Find other LP tokens')}</b>
+                  </Button>
+                </Link>
+              </Flex>
+            )}
+          </Body>
+        </Wrapper>
+        <CardFooter style={{ textAlign: 'center' }}>
+          <Link href="/add">
+            <Button
+              id="join-pool-button"
+              width="100%"
+              scale="lg"
+              startIcon={<AddIcon color="white" />}
+              disabled={isLoading}
+              onClick={() => setIsLoading(true)}
+            >
+              {isLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
+            </Button>
+          </Link>
+        </CardFooter>
+      </PageContainer>
     </Page>
   )
 }
