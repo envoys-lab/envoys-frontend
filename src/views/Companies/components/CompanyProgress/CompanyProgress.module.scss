@@ -1,0 +1,90 @@
+.company-progress {
+  font-family: Roboto, sans-serif;
+  color: #34495e;
+
+  max-width: 728px;
+  margin-top: 0;
+  margin-bottom: 10px;
+  background-color: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  box-shadow: 0 4px 25px rgb(210 224 233 / 45%);
+  border-radius: 5px;
+
+  min-height: 111px;
+  padding: 10px 5px 10px 15px;
+  display: block;
+
+  width: 100%;
+
+  &-header {
+    width: 100%;
+    display: inline-flex;
+    position: relative;
+
+    &__type {
+      margin: auto;
+
+      font-size: 15px;
+      font-weight: 300;
+    }
+
+    &__status {
+      position: absolute;
+      top: 0px;
+      right: 3px;
+
+      font-weight: 300;
+      border-radius: 10px;
+      font-size: 12px;
+      padding: 3px 7px;
+      text-align: center;
+      color: #fff;
+
+      &--ongoing {
+        background-color: #007bff;
+      }
+
+      &--past {
+        background-color: #ffc107;
+      }
+
+      &--upcoming {
+        background-color: #00b96e;
+      }
+    }
+  }
+
+  &-main-content {
+    width: 100%;
+    display: inline-flex;
+    padding-top: 11px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    color: #9fa7b3;
+    font-size: 12px;
+    font-weight: 300;
+
+    .main-content-left {
+      width: 50%;
+      padding-right: 10px;
+
+      .left-header {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .left-progress-bar {
+        margin-top: 15px;
+      }
+    }
+
+    .main-content-right {
+      width: 50%;
+      padding-left: 10px;
+    }
+  }
+}
