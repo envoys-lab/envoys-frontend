@@ -18,7 +18,7 @@ const getSearchResultsByQuery = (compiledSearchResults, query) => {
 
   Object.keys(compiledSearchResults).map((key) => {
     const category = compiledSearchResults[key]
-    const output = category.filter((item) => item.search.includes(query))
+    const output = category.filter((item) => item.search.includes(getSearchStr(query)))
     result[key] = output
   })
 
@@ -35,6 +35,8 @@ const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => 
   return compiledSearchResults
 }
 
+const getSearchStr = (str) => str.toLowerCase()
+
 const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
     ...item,
@@ -45,7 +47,7 @@ const getTokensSearchString = (tokens) => {
 const getFarmsSearchString = (farms) => {
   return farms.map((item) => ({
     ...item,
-    search: `${item.lpSymbol} ${item.quoteToken.address} ${item.token.address}`.toLowerCase(),
+    search: getSearchStr(`${item.lpSymbol} ${item.quoteToken.address} ${item.token.address}`),
   }))
 }
 
@@ -54,8 +56,8 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
     const pool = poolsLiquidity[item]
     return {
       ...pool,
-      search: `${pool.address} ${pool.token0.address} ${pool.token0.name} 
-      ${pool.token0.symbol} ${pool.token1.address} ${pool.token1.name}  ${pool.token1.symbol}`.toLowerCase(),
+      search: getSearchStr(`${pool.address} ${pool.token0.address} ${pool.token0.name} 
+      ${pool.token0.symbol} ${pool.token1.address} ${pool.token1.name}  ${pool.token1.symbol}`),
     }
   })
 }
@@ -63,7 +65,7 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
 const getPoolsSyrupSearchString = (poolsSyrup) => {
   return poolsSyrup.map((item) => ({
     ...item,
-    search: `${item.earningToken.address} ${item.earningToken.name}`.toLowerCase(),
+    search: getSearchStr(`${item.earningToken.address} ${item.earningToken.name}`),
   }))
 }
 
