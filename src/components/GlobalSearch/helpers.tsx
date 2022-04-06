@@ -38,14 +38,14 @@ const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => 
 const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
     ...item,
-    search: `${item.name} ${item.address}`,
+    search: `${item.name} ${item.address}`.toLowerCase(),
   }))
 }
 
 const getFarmsSearchString = (farms) => {
   return farms.map((item) => ({
     ...item,
-    search: `${item.lpSymbol} ${item.quoteToken.address} ${item.token.address}`,
+    search: `${item.lpSymbol} ${item.quoteToken.address} ${item.token.address}`.toLowerCase(),
   }))
 }
 
@@ -55,7 +55,7 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
     return {
       ...pool,
       search: `${pool.address} ${pool.token0.address} ${pool.token0.name} 
-      ${pool.token0.symbol} ${pool.token1.address} ${pool.token1.name}  ${pool.token1.symbol}`,
+      ${pool.token0.symbol} ${pool.token1.address} ${pool.token1.name}  ${pool.token1.symbol}`.toLowerCase(),
     }
   })
 }
@@ -63,7 +63,7 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
 const getPoolsSyrupSearchString = (poolsSyrup) => {
   return poolsSyrup.map((item) => ({
     ...item,
-    search: `${item.earningToken.address} ${item.earningToken.name}`,
+    search: `${item.earningToken.address} ${item.earningToken.name}`.toLowerCase(),
   }))
 }
 

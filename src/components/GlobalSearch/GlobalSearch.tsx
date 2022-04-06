@@ -195,7 +195,7 @@ const GlobalSearch = () => {
       farms: farms.data,
       poolsLiquidity,
       poolsSyrup,
-      query: debouncedSearchTerm,
+      query: debouncedSearchTerm.toLowerCase(),
     })
     setSearchResults(searchResults)
   }
