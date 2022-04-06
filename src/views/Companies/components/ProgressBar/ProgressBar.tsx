@@ -3,7 +3,7 @@ import styles from './ProgressBar.module.scss'
 
 type ProgressBarProps = {
   value: number
-  progressText: string
+  progressText?: string
   className?: string
 }
 
