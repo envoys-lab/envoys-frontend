@@ -40,7 +40,7 @@ const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => 
 const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
     ...item,
-    search: `${item.name} ${item.address}`.toLowerCase(),
+    search: getSearchStr(`${item.name} ${item.address}`),
   }))
 }
 
