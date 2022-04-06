@@ -1,5 +1,7 @@
 import { getCompaniesSearch } from './api'
 
+const getSearchStr = (str) => str.toLowerCase()
+
 const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, query }) => {
   if (!query) return null
   const { items: companies } = await getCompanies(query)
@@ -34,8 +36,6 @@ const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => 
 
   return compiledSearchResults
 }
-
-const getSearchStr = (str) => str.toLowerCase()
 
 const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
