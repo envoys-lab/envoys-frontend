@@ -1,20 +1,11 @@
-import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { getCompanies } from './api'
+import React from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { useLoadItems } from './utils'
 import CompanyCard from './components/CompanyCard'
-import { BodyWrapper } from 'components/App/AppBody'
 import styles from './Companies.module.scss'
-
-const CompanyWrapper = styled(BodyWrapper)`
-  margin: 20px auto;
-`
+import Page from '../../components/Layout/Page'
 
 const Companies = () => {
-  const { t } = useTranslation()
   const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
 
   const [infiniteRef] = useInfiniteScroll({
@@ -35,14 +26,14 @@ const Companies = () => {
   }
 
   return (
-    <CompanyWrapper>
+    <Page>
       <div className={styles['company__list-container']}>{companies.map((item) => renderCompany(item))}</div>
       {hasNextPage && (
         <div ref={infiniteRef}>
           <div>Loading</div>
         </div>
       )}
-    </CompanyWrapper>
+    </Page>
   )
 }
 

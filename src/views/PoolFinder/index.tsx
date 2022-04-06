@@ -17,7 +17,7 @@ import StyledInternalLink from '../../components/Links'
 import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 import { PageContainer } from '../../components/Layout/PageContainer'
 
 enum Fields {

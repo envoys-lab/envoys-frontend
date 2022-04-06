@@ -4,16 +4,13 @@ import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
-import Search from 'views/Info/components/InfoSearch'
+// import Search from 'views/Info/components/InfoSearch'
 
 const NavWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.gradients.cardHeader};
   justify-content: space-between;
-  padding: 20px 16px;
   flex-direction: column;
   gap: 8px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 20px 40px;
     flex-direction: row;
   }
 `
@@ -31,24 +28,26 @@ const InfoNav = () => {
     activeIndex = 2
   }
   return (
-    <NavWrapper>
-      <Box>
-        <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info">
-            {t('Overview')}
-          </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/pools">
-            {t('Pools')}
-          </ButtonMenuItem>
-          <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/tokens">
-            {t('Tokens')}
-          </ButtonMenuItem>
-        </ButtonMenu>
-      </Box>
-      <Box width={['100%', '100%', '250px']}>
+    <Flex mx={'auto'} mt={'20px'} alignItems={'center'} flexDirection={'column'}>
+      <NavWrapper>
+        <Box>
+          <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
+            <ButtonMenuItem as={NextLinkFromReactRouter} to="/info">
+              {t('Overview')}
+            </ButtonMenuItem>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/pools">
+              {t('Pools')}
+            </ButtonMenuItem>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to="/info/tokens">
+              {t('Tokens')}
+            </ButtonMenuItem>
+          </ButtonMenu>
+        </Box>
+        {/*<Box width={['100%', '100%', '250px']}>
         <Search />
-      </Box>
-    </NavWrapper>
+      </Box>*/}
+      </NavWrapper>
+    </Flex>
   )
 }
 

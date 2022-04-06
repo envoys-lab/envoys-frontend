@@ -1,34 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Tab, TabMenu, useWalletModal, Flex, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints } from '@envoysvision/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 
-import { AppBody } from '../../components/App'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 import { documentNormalize, isVerificationPassed } from './heplers'
 import { User, VerificationStatus } from './types'
 
-const COLOR_ERROR = '#f15555'
-
-const Body = styled(Flex)`
-  flex-direction: column;
-  padding: 30px;
-  justify-content: space-between;
-  width: 90vw;
-  max-width: 670px;
-`
-
 const Space = styled.div`
   height: 20px;
-`
-
-const SpaceSmall = styled.div`
-  height: 10px;
 `
 
 const TitleContainer = styled.div`
@@ -52,7 +37,7 @@ const PersonalInfoContainer = styled.div<{ singleColumn: boolean }>`
   grid-row-gap: 10px;
 
   padding-top: 20px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 `
 
 const TipContainer = styled.div`
@@ -80,7 +65,7 @@ const BottomContainer = styled.div`
 `
 
 const VerificationErrorContainer = styled.ul`
-  color: ${COLOR_ERROR};
+  color: ${({ theme }) => theme.colors.error};
   padding-top: 20px;
 `
 
@@ -343,9 +328,7 @@ const Settings = () => {
   return (
     <Page>
       <Space />
-      <AppBody>
-        <Body>{renderContent()}</Body>
-      </AppBody>
+      {renderContent()}
     </Page>
   )
 }

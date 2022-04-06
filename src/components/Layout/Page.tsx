@@ -1,24 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useTranslation } from 'contexts/Localization'
-import Head from 'next/head'
+import { Box, Flex } from '@envoysvision/uikit'
+import Footer from 'components/Menu/Footer'
+import { useTranslation } from '../../contexts/Localization'
 import { useRouter } from 'next/router'
-import { DEFAULT_META, getCustomMeta } from 'config/constants/meta'
-import Container from './Container'
+import { DEFAULT_META, getCustomMeta } from '../../config/constants/meta'
+import Head from 'next/head'
+import { AppBody } from '../App'
 
-const StyledPage = styled(Container)`
-  min-height: calc(100vh - 64px);
-  padding-top: 16px;
-  padding-bottom: 16px;
+const StyledPage = styled.div<{ $removePadding: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: ${({ $removePadding }) => ($removePadding ? '0' : '16px')};
+  padding-bottom: 0;
+
+  background: ${({ theme }) => theme.colors.background};
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    background-size: auto;
+  }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-top: 24px;
-    padding-bottom: 24px;
+    padding: ${({ $removePadding }) => ($removePadding ? '0' : '24px')};
+    padding-bottom: 0;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding: ${({ $removePadding }) => ($removePadding ? '0' : '32px')};
+    padding-bottom: 0;
+    min-height: calc(100vh - 100px);
   }
 `
 
@@ -44,14 +56,30 @@ export const PageMeta: React.FC<{ symbol?: string }> = ({ symbol }) => {
 }
 
 interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
+  autoWidth?: boolean
+  removePadding?: boolean
+  hideFooterOnDesktop?: boolean
   symbol?: string
 }
 
-const Page: React.FC<PageProps> = ({ children, symbol, ...props }) => {
+const Page: React.FC<PageProps> = ({
+  children,
+  autoWidth,
+  removePadding = false,
+  hideFooterOnDesktop = false,
+  symbol,
+  ...props
+}) => {
   return (
     <>
       <PageMeta symbol={symbol} />
-      <StyledPage {...props}>{children}</StyledPage>
+      <StyledPage $removePadding={removePadding} {...props}>
+        <AppBody autoWidth={autoWidth}>{children}</AppBody>
+        <Flex flexGrow={1} />
+        <Box display={['block', null, null, hideFooterOnDesktop ? 'none' : 'block']} width="100%">
+          <Footer />
+        </Box>
+      </StyledPage>
     </>
   )
 }
