@@ -9,6 +9,7 @@ import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
 import ProgressBar from './components/ProgressBar/ProgressBar'
 import CompanyProgress from './components/CompanyProgress/CompanyProgress'
+import CompanyDetails from './components/CompanyDetails/CompanyDetails'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
@@ -75,11 +76,12 @@ const Company = ({ companyId }: { companyId: string }) => {
       <div id="ico" className={styles['company__tab-info']}>
         <div className={styles['company-ico']}>
           <div className={styles['company-ico__video']}>
-            <iframe src="https://www.youtube.com/embed/Bm6GLWUNXpA"></iframe>
+            {company?.videoUrl && <iframe src={company.videoUrl}></iframe>}
           </div>
           <div className={styles['company-ico__stages']}>
-            {company && <CompanyProgress stage={company.stages[0]} />}
+            {company && company.stages && company.stages.map((stage) => <CompanyProgress stage={stage} />)}
           </div>
+          <div>{company && <CompanyDetails company={company} />}</div>
         </div>
       </div>
       <div id="about" className={styles['company__tab-info']}>

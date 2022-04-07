@@ -22,6 +22,7 @@
     width: 100%;
     display: inline-flex;
     position: relative;
+    font-weight: 300;
 
     &__type {
       margin: auto;
@@ -51,7 +52,7 @@
       }
 
       &--upcoming {
-        background-color: #00b96e;
+        background-color: #17a2b8;
       }
     }
   }
@@ -85,6 +86,51 @@
     .main-content-right {
       width: 50%;
       padding-left: 10px;
+
+      .right-header {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .right-progress-bar {
+        margin-top: 15px;
+      }
+
+      .right-goals {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-top: 5px;
+
+        &-item {
+          display: inline-block;
+          padding: 0 5px;
+
+          &-header {
+            color: #2e9db2;
+            display: block;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            letter-spacing: 0.25px;
+            line-height: normal;
+            padding-bottom: 2px;
+            text-align: center;
+            text-transform: lowercase;
+          }
+        }
+      }
     }
+  }
+
+  &-footer {
+    text-align: center;
+    width: 100%;
+    padding-bottom: 5px;
+
+    color: #9fa7b3;
+    font-size: 12px;
+    font-weight: 300;
   }
 }

@@ -5,9 +5,10 @@ type ProgressBarProps = {
   value: number
   progressText?: string
   className?: string
+  hideProgressText?: boolean
 }
 
-const ProgressBar = ({ value, progressText, className }: ProgressBarProps) => {
+const ProgressBar = ({ value, progressText, hideProgressText, className }: ProgressBarProps) => {
   const fillerRelativePercentage = (100 / value) * 100
 
   return (
@@ -17,7 +18,7 @@ const ProgressBar = ({ value, progressText, className }: ProgressBarProps) => {
           <div className={styles['fillerBackground']} style={{ width: `${fillerRelativePercentage}%` }} />
         </div>
       </div>
-      <div className={styles['textValue']}>{`${value}% ${progressText || 'completed'}`}</div>
+      {!hideProgressText && <div className={styles['textValue']}>{`${value}% ${progressText || 'completed'}`}</div>}
     </div>
   )
 }
