@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { getCompany } from './api'
-import HeadText from './components/HeadText/HeadText'
-import styles from './Company.module.scss'
-import CompanyShortInfo from './components/CompanyShortInfo/CompanyShortInfo'
-import CompanyButton from './components/CompanyButton/CompanyButton'
+
 import Page from '../../components/Layout/Page'
+import { HeadText, CompanyShortInfo, CompanyButton, About } from './components'
+
+import { getCompany } from './api'
+
+import styles from './Company.module.scss'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { useLoadItems } from './utils'
-import CompanyCard from './components/CompanyCard'
+import { CompanyCard } from './components'
 import styles from './Companies.module.scss'
 import Page from '../../components/Layout/Page'
 
