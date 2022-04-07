@@ -1,0 +1,6 @@
+export { default as About } from './About/About'
+export { default as CompanyButton } from './CompanyButton/CompanyButton'
+export { default as CompanyCard } from './CompanyCard/CompanyCard'
+export { default as CompanyContainer } from './CompanyContainer/CompanyContainer'
+export { default as CompanyShortInfo } from './CompanyShortInfo/CompanyShortInfo'
+export { default as HeadText } from './HeadText/HeadText'

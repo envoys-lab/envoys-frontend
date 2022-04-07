@@ -2,7 +2,7 @@ import { useTranslation } from 'contexts/Localization'
 import { Router, useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import styles from './CompanyCard.module.scss'
-import StarIcon from '../assets/Star'
+import StarIcon from '../../assets/Star'
 
 const getFormattedEndDate = (endDate) => {
   return `Will end in ${getDaysRange(new Date(), endDate)} days`

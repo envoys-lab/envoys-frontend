@@ -5,6 +5,7 @@ import styles from './Company.module.scss'
 import CompanyShortInfo from './components/CompanyShortInfo/CompanyShortInfo'
 import CompanyButton from './components/CompanyButton/CompanyButton'
 import Page from '../../components/Layout/Page'
+import { About } from './components'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
@@ -26,12 +27,15 @@ const Company = ({ companyId }: { companyId: string }) => {
       <HeadText />
       <div className={styles['company__head']}>
         {company && (
-          <CompanyShortInfo
-            name={company.name}
-            description={company.description}
-            logoUrl={company.logoUrl}
-            className={styles['company__head']}
-          />
+          <>
+            <CompanyShortInfo
+              name={company.name}
+              description={company.description}
+              logoUrl={company.logoUrl}
+              className={styles['company__head']}
+            />
+            <About markdown={'# asd'} />
+          </>
         )}
         {company && <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />}
         {!company && 'Trying to load data, if this text stays 5 seconds, reload page'}
