@@ -19,32 +19,10 @@ const Documents = ({ documents }) => {
 
   const renderDocument = ({ url, name }) => {
     return (
-      <>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-        <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
-          <DocIcon />
-          <div className={styles['document__name']}>{name}</div>
-        </div>
-      </>
+      <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
+        <DocIcon />
+        <div className={styles['document__name']}>{name}</div>
+      </div>
     )
   }
 
