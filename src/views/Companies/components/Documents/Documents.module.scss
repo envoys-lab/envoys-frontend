@@ -1,0 +1,39 @@
+.documents {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  grid-gap: 25px;
+  gap: 25px;
+  grid-auto-rows: 120px;
+
+  .document {
+    cursor: pointer;
+    width: 100px;
+    height: 120px;
+
+    padding-top: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background: #f9f9f9;
+    border: 1px solid #f6f6f6;
+    box-sizing: border-box;
+
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.06);
+    border-radius: 14px;
+
+    &__name {
+      padding-top: 15px;
+
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+
+      color: #133d65;
+
+      opacity: 0.7;
+    }
+  }
+}

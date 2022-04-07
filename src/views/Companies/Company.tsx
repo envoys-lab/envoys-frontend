@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Page from '../../components/Layout/Page'
-import { HeadText, CompanyShortInfo, CompanyButton, About } from './components'
+import { HeadText, CompanyShortInfo, CompanyButton, About, Documents } from './components'
 
 import { getCompany } from './api'
 
@@ -35,6 +35,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           />
         )}
         {company && <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />}
+        {company && <Documents documents={company.documents} />}
         {!company && 'Trying to load data, if this text stays 5 seconds, reload page'}
       </div>
     </Page>
