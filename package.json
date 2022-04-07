@@ -79,6 +79,7 @@
     "next": "^12.0.7",
     "numeral": "^2.0.6",
     "react": "^17.0.1",
+    "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-countup": "^4.3.3",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.1",
