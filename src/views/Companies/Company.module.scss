@@ -19,6 +19,8 @@
 
   position: sticky;
   top: 0;
+
+  z-index: 1;
 }
 
 .company__tab-info {
@@ -27,6 +29,18 @@
   padding-top: 25px;
 
   max-width: 728px;
+
+  &-header {
+    color: #34495e;
+    font-family: Roboto, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 1.9rem;
+    padding: 5px 0;
+    margin-bottom: 0.9rem;
+  }
 }
 
 .company-ico {

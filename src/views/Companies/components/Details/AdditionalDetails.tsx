@@ -3,11 +3,11 @@ import LinkIcon from 'views/Companies/assets/LinkIcon'
 import styles from './Details.module.scss'
 
 type AdditionalDetailsProps = {
-  additionalDetails: AdditionalDetails
+  additionalDetails: AdditionalDetail
   className?: string
 }
 
-type AdditionalDetails = {
+type AdditionalDetail = {
   MVP: string
   platform: string
   whitelist?: WhiteListObj

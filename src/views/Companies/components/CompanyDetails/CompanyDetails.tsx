@@ -1,8 +1,5 @@
 import React from 'react'
-import AdditionalDetails from '../Details/AdditionalDetails'
-import BonusStructureDetails from '../Details/BonusStructureDetails'
-import CompanyDetailsInner from '../Details/CompanyDetails'
-import TokenDetails from '../Details/TokenDetails'
+import { AdditionalDetails, BonusStructureDetails, CompanyDetailsInner, TokenDetails } from '../'
 import styles from './CompanyDetails.module.scss'
 
 type CompanyDetailsProps = {

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { getCompany } from './api'
-import HeadText from './components/HeadText/HeadText'
-import styles from './Company.module.scss'
-import CompanyShortInfo from './components/CompanyShortInfo/CompanyShortInfo'
-import CompanyButton from './components/CompanyButton/CompanyButton'
+
 import Page from '../../components/Layout/Page'
+import { HeadText, CompanyShortInfo, CompanyButton, About, CompanyDetails, CompanyProgress } from './components'
+
+import { getCompany } from './api'
+
+import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import ProgressBar from './components/ProgressBar/ProgressBar'
-import CompanyProgress from './components/CompanyProgress/CompanyProgress'
-import CompanyDetails from './components/CompanyDetails/CompanyDetails'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
@@ -85,7 +83,8 @@ const Company = ({ companyId }: { companyId: string }) => {
         </div>
       </div>
       <div id="about" className={styles['company__tab-info']}>
-        About
+        <div className={styles['company__tab-info-header']}>About {company.name}</div>
+        {company && <About markdown={company.about.text} />}
       </div>
       <div id="roadmap" className={styles['company__tab-info']}>
         Roadmap Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
