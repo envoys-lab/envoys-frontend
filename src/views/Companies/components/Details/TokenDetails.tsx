@@ -21,8 +21,10 @@ const TokenDetails = ({ token, className }: TokenDetailsProps) => {
       </div>
       <div className={`${styles['details-data']}`}>
         Token Distribution
-        {token.distribution.map((dist) => (
-          <div className={`${styles['details-data-inner']}`}>{dist}</div>
+        {token.distribution.map((dist, index) => (
+          <div key={index} className={`${styles['details-data-inner']}`}>
+            {dist}
+          </div>
         ))}
       </div>
       <div className={`${styles['details-data']}`}>

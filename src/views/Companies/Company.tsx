@@ -11,6 +11,8 @@ import {
   CompanyProgress,
   Documents,
   Roadmap,
+  CompanyMembers,
+  CompanyInterviews,
 } from './components'
 
 import { getCompany } from './api'
@@ -18,6 +20,7 @@ import { getCompany } from './api'
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
+import { BaseCompany } from './utils'
 import { useTranslation } from '../../contexts/Localization'
 
 const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
@@ -50,7 +53,7 @@ const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
-  const [company, setCompany] = useState<any>()
+  const [company, setCompany] = useState<BaseCompany>()
   const [activeTab, setActiveTab] = useState(0)
 
   const { t } = useTranslation()
@@ -112,16 +115,15 @@ const Company = ({ companyId }: { companyId: string }) => {
           </TabMenu>
         </Flex>
       </div>
-
       <div id="ico" className={styles['company__tab-info']}>
         <div className={styles['company-ico']}>
           <div className={styles['company-ico__video']}>{company?.videoUrl && <iframe src={company.videoUrl} />}</div>
           <div className={styles['company-ico__stages']}>
-            {company.stages && company?.stages.map((stage) => <CompanyProgress stage={stage} />)}
+            {company &&
+              company.stages &&
+              company?.stages.map((stage, index) => <CompanyProgress key={index} stage={stage} />)}
           </div>
-          <div>
-            <CompanyDetails details={company.details} />
-          </div>
+          <div>{company && <CompanyDetails details={company.details} />}</div>
         </div>
       </div>
       <div id="about" className={styles['company__tab-info']}>
@@ -133,8 +135,12 @@ const Company = ({ companyId }: { companyId: string }) => {
         <Roadmap company={company} />
       </div>
       <div id="team" className={styles['company__tab-info']}>
-        <div className={styles['company__tab-info-header']}>{t('Team')}</div>
-        {loremIpsum}
+        <div className={styles['company__tab-info-header']}>{company?.name} Team</div>
+        <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
+        <div className={styles['company__tab-info-header']}>Advisors</div>
+        <CompanyMembers members={company.members.filter((member) => member.advisor)} />
+        <div className={styles['company__tab-info-header']}>{company?.name} Interviews</div>
+        <CompanyInterviews members={company.members} />
       </div>
       <div id="docs" className={styles['company__tab-info']}>
         <div className={styles['company__tab-info-header']}>{t('Docs')}</div>
