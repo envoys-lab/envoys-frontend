@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import PageLoader from 'components/Loader/PageLoader'
 import Page from '../../components/Layout/Page'
 import {
   HeadText,
@@ -8,6 +9,7 @@ import {
   About,
   CompanyDetails,
   CompanyProgress,
+  Documents,
   Roadmap,
   CompanyMembers,
   CompanyInterviews,
@@ -67,20 +69,19 @@ const Company = ({ companyId }: { companyId: string }) => {
     setCompany(company)
   }
 
+  if (!company) return <PageLoader />
+
   return (
     <Page>
       <HeadText />
       <div className={styles['company__head']}>
-        {company && (
-          <CompanyShortInfo
-            name={company.name}
-            description={company.description}
-            logoUrl={company.logoUrl}
-            className={styles['company__head']}
-          />
-        )}
-        {company && <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />}
-        {!company && t('Trying to load data, if this text stays 5 seconds, reload page')}
+        <CompanyShortInfo
+          name={company.name}
+          description={company.description}
+          logoUrl={company.logoUrl}
+          className={styles['company__head']}
+        />
+        <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />
       </div>
 
       <div id="tabs" className={`${styles['company__tabs']}`}>
@@ -114,43 +115,37 @@ const Company = ({ companyId }: { companyId: string }) => {
           </TabMenu>
         </Flex>
       </div>
-      {company && (
-        <>
-          <div id="ico" className={styles['company__tab-info']}>
-            <div className={styles['company-ico']}>
-              <div className={styles['company-ico__video']}>
-                {company?.videoUrl && <iframe src={company.videoUrl} />}
-              </div>
-              <div className={styles['company-ico__stages']}>
-                {company &&
-                  company.stages &&
-                  company?.stages.map((stage, index) => <CompanyProgress key={index} stage={stage} />)}
-              </div>
-              <div>{company && <CompanyDetails details={company.details} />}</div>
-            </div>
+      <div id="ico" className={styles['company__tab-info']}>
+        <div className={styles['company-ico']}>
+          <div className={styles['company-ico__video']}>{company?.videoUrl && <iframe src={company.videoUrl} />}</div>
+          <div className={styles['company-ico__stages']}>
+            {company &&
+              company.stages &&
+              company?.stages.map((stage, index) => <CompanyProgress key={index} stage={stage} />)}
           </div>
-          <div id="about" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>{t('About %company%', { company: company?.name })}</div>
-            <About markdown={company.about.text} />
-          </div>
-          <div id="roadmap" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>{t('Roadmap')}</div>
-            <Roadmap company={company} />
-          </div>
-          <div id="team" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>{company?.name} Team</div>
-            <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
-            <div className={styles['company__tab-info-header']}>Advisors</div>
-            <CompanyMembers members={company.members.filter((member) => member.advisor)} />
-            <div className={styles['company__tab-info-header']}>{company?.name} Interviews</div>
-            <CompanyInterviews members={company.members} />
-          </div>
-          <div id="docs" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>{t('Docs')}</div>
-            {loremIpsum}
-          </div>
-        </>
-      )}
+          <div>{company && <CompanyDetails details={company.details} />}</div>
+        </div>
+      </div>
+      <div id="about" className={styles['company__tab-info']}>
+        <div className={styles['company__tab-info-header']}>{t('About %company%', { company: company?.name })}</div>
+        <About markdown={company.about.text} />
+      </div>
+      <div id="roadmap" className={styles['company__tab-info']}>
+        <div className={styles['company__tab-info-header']}>{t('Roadmap')}</div>
+        <Roadmap company={company} />
+      </div>
+      <div id="team" className={styles['company__tab-info']}>
+        <div className={styles['company__tab-info-header']}>{company?.name} Team</div>
+        <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
+        <div className={styles['company__tab-info-header']}>Advisors</div>
+        <CompanyMembers members={company.members.filter((member) => member.advisor)} />
+        <div className={styles['company__tab-info-header']}>{company?.name} Interviews</div>
+        <CompanyInterviews members={company.members} />
+      </div>
+      <div id="docs" className={styles['company__tab-info']}>
+        <div className={styles['company__tab-info-header']}>{t('Docs')}</div>
+        {company.documents && company.documents.length && <Documents documents={company.documents} />}
+      </div>
     </Page>
   )
 }
