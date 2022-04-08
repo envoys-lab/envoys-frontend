@@ -19,7 +19,7 @@ export interface BaseCompany {
   active: boolean
   activity: object
   description: string
-  details: object
+  details: BaseCompanyDetails
   documents: object[]
   homePageUrl: string
   logoUrl: string
@@ -32,6 +32,40 @@ export interface BaseCompany {
   status: string
   videoUrl: string
   _id: string
+}
+
+export interface BaseCompanyDetails {
+  token: CompanyToken
+  company: CompanyFoundation
+  bonus: string[]
+  additional: AdditionalDetails
+}
+
+export interface CompanyToken {
+  ticker: string
+  supply: string
+  distribution: string[]
+  currencies: string[]
+  minContribution: string
+}
+
+export interface CompanyFoundation {
+  foundedDate: string
+  registredCountry: string
+  registredName: string
+}
+
+export interface AdditionalDetails {
+  MVP: string
+  platform: string
+  whitelist?: WhiteListObj
+}
+
+export interface WhiteListObj {
+  categories: string
+  fromDate: string
+  tillDate: string
+  url: string
 }
 
 export const useLoadItems = () => {

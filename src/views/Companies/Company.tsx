@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
 import Page from '../../components/Layout/Page'
-import {HeadText, CompanyShortInfo, CompanyButton, About, CompanyDetails, CompanyProgress, Roadmap} from './components'
+import {
+  HeadText,
+  CompanyShortInfo,
+  CompanyButton,
+  About,
+  CompanyDetails,
+  CompanyProgress,
+  Roadmap,
+} from './components'
 
 import { getCompany } from './api'
 
@@ -110,7 +118,7 @@ const Company = ({ companyId }: { companyId: string }) => {
               <div className={styles['company-ico__stages']}>
                 {company && company.stages && company?.stages.map((stage) => <CompanyProgress stage={stage} />)}
               </div>
-              <div>{company && <CompanyDetails company={company} />}</div>
+              <div>{company && <CompanyDetails details={company.details} />}</div>
             </div>
           </div>
           <div id="about" className={styles['company__tab-info']}>

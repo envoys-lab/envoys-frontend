@@ -1,17 +1,10 @@
 import React from 'react'
+import { CompanyToken } from '../../utils'
 import styles from './Details.module.scss'
 
-type TokenDetailsProps = {
-  token: Token
+interface TokenDetailsProps {
+  token: CompanyToken
   className?: string
-}
-
-type Token = {
-  ticker: string
-  supply: string
-  distribution: string[]
-  currencies: string[]
-  minContribution: string
 }
 
 const TokenDetails = ({ token, className }: TokenDetailsProps) => {

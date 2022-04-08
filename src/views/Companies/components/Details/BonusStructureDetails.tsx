@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Details.module.scss'
 
-type BonusStructureDetailsProps = {
+interface BonusStructureDetailsProps {
   bonus: string[]
   className?: string
 }
