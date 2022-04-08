@@ -3,10 +3,7 @@ import React from 'react'
 import { BaseCompany } from '../../utils'
 import styles from './CompanyCard.module.scss'
 import StarIcon from '../../assets/Star'
-
-const getFormattedEndDate = (endDate) => {
-  return `Will end in ${getDaysRange(new Date(), endDate)} days`
-}
+import { useTranslation } from '../../../../contexts/Localization'
 
 const getDaysRange = (startDate, endDate) => {
   const start = new Date(startDate).getTime()
@@ -17,7 +14,7 @@ const getDaysRange = (startDate, endDate) => {
 
 const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
   const router = useRouter()
-
+  const { t } = useTranslation()
   const handleClick = () => {
     const { _id } = company
     router.push(`/companies/${_id}`)
@@ -33,8 +30,9 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
       <div className={styles['company-card__content']}>
         <div className={styles['company-card__name']}>{company.name}</div>
         <div className={styles['company-card__status']}>{company.status}</div>
-        <div className={styles['company-card__expiration']}>{getFormattedEndDate(company.stages[0].endDate)}</div>
-        <div>{company.roadmap.length}</div>
+        <div className={styles['company-card__expiration']}>
+          {t('Will end in %days% days', { days: getDaysRange(new Date(), company.stages[0].endDate) })}
+        </div>
       </div>
       <div className={styles['company-card__star']}>
         <StarIcon />
