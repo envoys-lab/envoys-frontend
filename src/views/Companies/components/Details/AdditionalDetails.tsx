@@ -1,23 +1,11 @@
 import React from 'react'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
 import styles from './Details.module.scss'
+import { AdditionalDetails } from '../../utils'
 
 type AdditionalDetailsProps = {
-  additionalDetails: AdditionalDetail
+  additionalDetails: AdditionalDetails
   className?: string
-}
-
-type AdditionalDetail = {
-  MVP: string
-  platform: string
-  whitelist?: WhiteListObj
-}
-
-type WhiteListObj = {
-  categories: string
-  fromDate: string
-  tillDate: string
-  url: string
 }
 
 const AdditionalDetails = ({ additionalDetails, className }: AdditionalDetailsProps) => {

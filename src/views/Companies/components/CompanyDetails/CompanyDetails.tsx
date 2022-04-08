@@ -1,22 +1,23 @@
 import React from 'react'
 import { AdditionalDetails, BonusStructureDetails, CompanyDetailsInner, TokenDetails } from '../'
 import styles from './CompanyDetails.module.scss'
+import { BaseCompanyDetails } from '../../utils'
 
 type CompanyDetailsProps = {
-  company: any
+  details: BaseCompanyDetails
   className?: string
 }
 
-const CompanyDetails = ({ company, className }: CompanyDetailsProps) => {
+const CompanyDetails = ({ details, className }: CompanyDetailsProps) => {
   return (
     <div className={`${styles['company-details']} ${className}`}>
       <div className={`${styles['company-details-left']}`}>
-        {company.details.token && <TokenDetails token={company.details.token} />}
-        {company.details.company && <CompanyDetailsInner company={company.details.company} />}
+        {details.token && <TokenDetails token={details.token} />}
+        {details.company && <CompanyDetailsInner company={details.company} />}
       </div>
       <div className={`${styles['company-details-right']}`}>
-        {company.details?.bonus && <BonusStructureDetails bonus={company.details.bonus} />}
-        {company.details.additional && <AdditionalDetails additionalDetails={company.details.additional} />}
+        {details?.bonus && <BonusStructureDetails bonus={details.bonus} />}
+        {details.additional && <AdditionalDetails additionalDetails={details.additional} />}
       </div>
     </div>
   )
