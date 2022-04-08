@@ -9,6 +9,8 @@ import {
   CompanyDetails,
   CompanyProgress,
   Roadmap,
+  CompanyMembers,
+  CompanyInterviews,
 } from './components'
 
 import { getCompany } from './api'
@@ -16,6 +18,7 @@ import { getCompany } from './api'
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
+import { BaseCompany } from './utils'
 
 const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
           imperdiet, nisi sapien iaculis neque, quis imperdiet sapien ipsum eget purus. Aliquam erat volutpat. Suspendisse
@@ -47,7 +50,7 @@ const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
-  const [company, setCompany] = useState<any>()
+  const [company, setCompany] = useState<BaseCompany>()
   const [activeTab, setActiveTab] = useState(0)
 
   useEffect(() => {
@@ -116,7 +119,9 @@ const Company = ({ companyId }: { companyId: string }) => {
                 {company?.videoUrl && <iframe src={company.videoUrl}></iframe>}
               </div>
               <div className={styles['company-ico__stages']}>
-                {company && company.stages && company?.stages.map((stage) => <CompanyProgress stage={stage} />)}
+                {company &&
+                  company.stages &&
+                  company?.stages.map((stage, index) => <CompanyProgress key={index} stage={stage} />)}
               </div>
               <div>{company && <CompanyDetails details={company.details} />}</div>
             </div>
@@ -129,7 +134,12 @@ const Company = ({ companyId }: { companyId: string }) => {
             <Roadmap company={company} />
           </div>
           <div id="team" className={styles['company__tab-info']}>
-            {loremIpsum}
+            <div className={styles['company__tab-info-header']}>{company?.name} Team</div>
+            <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
+            <div className={styles['company__tab-info-header']}>Advisors</div>
+            <CompanyMembers members={company.members.filter((member) => member.advisor)} />
+            <div className={styles['company__tab-info-header']}>{company?.name} Interviews</div>
+            <CompanyInterviews members={company.members} />
           </div>
           <div id="docs" className={styles['company__tab-info']}>
             {loremIpsum}

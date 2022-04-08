@@ -15,7 +15,7 @@ export interface CompanyStage {
 }
 
 export interface BaseCompany {
-  about: object
+  about: any
   active: boolean
   activity: object
   description: string
@@ -23,7 +23,7 @@ export interface BaseCompany {
   documents: object[]
   homePageUrl: string
   logoUrl: string
-  members: object[]
+  members: Member[]
   name: string
   roadmap: object[]
   sellType: string[]
@@ -32,6 +32,24 @@ export interface BaseCompany {
   status: string
   videoUrl: string
   _id: string
+  holders: any
+}
+
+export interface Member {
+  advisor: boolean
+  avatarUrl: string
+  name: string
+  position: string
+  interview: Interview
+}
+
+export interface Interview {
+  questions: Question[]
+}
+
+export interface Question {
+  question: string
+  answear: string
 }
 
 export interface BaseCompanyDetails {

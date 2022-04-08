@@ -29,10 +29,10 @@
   padding-top: 25px;
 
   max-width: 728px;
+  font-family: Roboto, sans-serif;
+  color: #34495e;
 
   &-header {
-    color: #34495e;
-    font-family: Roboto, sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
@@ -40,6 +40,13 @@
     margin-top: 1.9rem;
     padding: 5px 0;
     margin-bottom: 0.9rem;
+  }
+
+  &-subtitle {
+    padding-bottom: 10px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.5rem;
   }
 }
 
