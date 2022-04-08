@@ -1,8 +1,8 @@
-import { createReducer, createAsyncThunk } from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 import { defineState } from 'redux-localstore'
 
 import { setCurrency, fetchPricesAction } from './actions'
-import { currenciesList, coinCurrencies, currenciesArray } from './helpers'
+import { currenciesList } from './helpers'
 
 export interface CurrenciesState {
   readonly currency: string
