@@ -1,6 +1,6 @@
-import { useTranslation } from 'contexts/Localization'
-import { Router, useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import React from 'react'
+import {BaseCompany} from "../../utils";
 import styles from './CompanyCard.module.scss'
 import StarIcon from '../../assets/Star'
 
@@ -16,7 +16,7 @@ const getDaysRange = (startDate, endDate) => {
   return diffDays
 }
 
-const CompanyCard = ({ company }) => {
+const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
   const router = useRouter()
 
   const handleClick = () => {

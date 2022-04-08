@@ -14,7 +14,7 @@ export interface CompanyStage {
   price: string
 }
 
-export interface Item {
+export interface BaseCompany {
   about: object
   active: boolean
   activity: object
@@ -36,7 +36,7 @@ export interface Item {
 
 export const useLoadItems = () => {
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState<Item[]>([])
+  const [items, setItems] = useState<BaseCompany[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const [nextPage, setNextPage] = useState(1)

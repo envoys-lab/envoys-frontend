@@ -1,9 +1,10 @@
 import React from 'react'
 import { AdditionalDetails, BonusStructureDetails, CompanyDetailsInner, TokenDetails } from '../'
 import styles from './CompanyDetails.module.scss'
+import {BaseCompany} from "../../utils";
 
 type CompanyDetailsProps = {
-  company: any
+  company: BaseCompany
   className?: string
 }
 

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import Page from '../../components/Layout/Page'
-import { HeadText, CompanyShortInfo, CompanyButton, About, CompanyDetails, CompanyProgress } from './components'
+import {HeadText, CompanyShortInfo, CompanyButton, About, CompanyDetails, CompanyProgress, Roadmap} from './components'
 
 import { getCompany } from './api'
 
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import Roadmap from './components/Roadmap/About'
 
 const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
           imperdiet, nisi sapien iaculis neque, quis imperdiet sapien ipsum eget purus. Aliquam erat volutpat. Suspendisse
