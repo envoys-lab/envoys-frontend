@@ -19,7 +19,7 @@ const Documents = ({ documents }) => {
 
   const renderDocument = ({ url, name }) => {
     return (
-      <div className={styles['document']} onClick={() => handleDownload({ url, name })}>
+      <div key={url} className={styles['document']} onClick={() => handleDownload({ url, name })}>
         <DocIcon />
         <div className={styles['document__name']}>{name}</div>
       </div>
