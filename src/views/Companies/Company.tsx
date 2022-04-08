@@ -16,6 +16,7 @@ import { getCompany } from './api'
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
+import {useTranslation} from "../../contexts/Localization";
 
 const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
           imperdiet, nisi sapien iaculis neque, quis imperdiet sapien ipsum eget purus. Aliquam erat volutpat. Suspendisse
@@ -50,6 +51,8 @@ const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<any>()
   const [activeTab, setActiveTab] = useState(0)
 
+  const {t} = useTranslation();
+
   useEffect(() => {
     handleGetCompany()
   }, [])
@@ -74,7 +77,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           />
         )}
         {company && <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />}
-        {!company && 'Trying to load data, if this text stays 5 seconds, reload page'}
+        {!company && t('Trying to load data, if this text stays 5 seconds, reload page')}
       </div>
 
       <div id="tabs" className={`${styles['company__tabs']}`}>
@@ -82,27 +85,27 @@ const Company = ({ companyId }: { companyId: string }) => {
           <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={5}>
             <Tab>
               <AnchorLink offset="58" href="#ico">
-                ICO Details
+                {t('ICO Details')}
               </AnchorLink>
             </Tab>
             <Tab>
               <AnchorLink offset="58" href="#about">
-                About
+                {t('About')}
               </AnchorLink>
             </Tab>
             <Tab>
               <AnchorLink offset="58" href="#roadmap">
-                Roadmap
+                {t('Roadmap')}
               </AnchorLink>
             </Tab>
             <Tab>
               <AnchorLink offset="58" href="#team">
-                Team
+                {t('Team')}
               </AnchorLink>
             </Tab>
             <Tab>
               <AnchorLink offset="58" href="#docs">
-                Docs
+                {t('Docs')}
               </AnchorLink>
             </Tab>
           </TabMenu>
@@ -122,16 +125,19 @@ const Company = ({ companyId }: { companyId: string }) => {
             </div>
           </div>
           <div id="about" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>About {company?.name}</div>
+            <div className={styles['company__tab-info-header']}>{t('About %company%', {company: company?.name})}</div>
             <About markdown={company.about.text} />
           </div>
           <div id="roadmap" className={styles['company__tab-info']}>
+            <div className={styles['company__tab-info-header']}>{t('Roadmap')}</div>
             <Roadmap company={company} />
           </div>
           <div id="team" className={styles['company__tab-info']}>
+            <div className={styles['company__tab-info-header']}>{t('Team')}</div>
             {loremIpsum}
           </div>
           <div id="docs" className={styles['company__tab-info']}>
+            <div className={styles['company__tab-info-header']}>{t('Docs')}</div>
             {loremIpsum}
           </div>
         </>
