@@ -21,8 +21,6 @@ export const currenciesList = {
   BTC: 'BTC',
 }
 
-export const coinCurrencies = [currenciesList.ETH, currenciesList.BTC]
-
 export const currenciesArray = Object.values(currenciesList)
 
 export const getPrice = (price, amount) => {
