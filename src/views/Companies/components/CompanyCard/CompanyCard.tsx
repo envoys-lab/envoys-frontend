@@ -24,15 +24,18 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
     router.push(`/companies/${_id}`)
   }
 
+    const realLogoUrl =
+    !company.logoUrl || company.logoUrl !== 'https://cloud.example/logo' ? company.logoUrl : '/images/company.png'
   return (
     <div className={styles['company-card']} onClick={handleClick} key={company._id}>
       <div className={styles['company-card__logo']}>
-        <img src={company.logoUrl} />
+        <img src={realLogoUrl} alt={company.name}/>
       </div>
       <div className={styles['company-card__content']}>
         <div className={styles['company-card__name']}>{company.name}</div>
         <div className={styles['company-card__status']}>{company.status}</div>
         <div className={styles['company-card__expiration']}>{getFormattedEndDate(company.stages[0].endDate)}</div>
+        <div>{company.roadmap.length}</div>
       </div>
       <div className={styles['company-card__star']}>
         <StarIcon />
