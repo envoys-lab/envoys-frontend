@@ -155,7 +155,7 @@ const Company = ({ companyId }: { companyId: string }) => {
         pellentesque.
       </div>
       <div id="docs" className={styles['company__tab-info']}>
-        {company.documents.length && (
+        {company.documents && company.documents.length && (
           <div>
             <div className={styles['company__tab-info-header']}>Documents</div>
             <Documents documents={company.documents} />
