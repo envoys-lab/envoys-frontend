@@ -4,13 +4,13 @@ import { useRouter } from 'next/router'
 import AccountIcon from 'views/Companies/assets/AccountIcon'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
 
-interface CompanyButton {
+interface CompanyButtonProps {
   holders: string
   homePageUrl: string
   className?: string
 }
 
-const CompanyButton = ({ holders, homePageUrl, className }: CompanyButton) => {
+const CompanyButton = ({ holders, homePageUrl, className }: CompanyButtonProps) => {
   const router = useRouter()
 
   const handleTrade = () => {

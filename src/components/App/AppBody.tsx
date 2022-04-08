@@ -9,6 +9,7 @@ export const BodyWrapper = styled(Card)<{ $autoWidth: boolean }>`
   background: white;
   width: 100%;
   max-width: 90vw;
+  overflow: unset;
 
   ${({ theme, $autoWidth }) =>
     $autoWidth &&
