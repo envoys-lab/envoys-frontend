@@ -40,8 +40,10 @@ const CompanyButton = ({ holders, homePageUrl, className }: CompanyButtonProps) 
         <AccountIcon className={styles['account-icon']} color="#F48020" />
         <span>Holders: {holders}</span>
         <div className={styles['сompany-button__home-page-button']} onClick={handleCompanyUrlClick}>
-          {getClearDomian(homePageUrl)}
-          <LinkIcon className={styles['link-icon']} color="#133D65" />
+          <div className={styles['сompany-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
+          <div>
+            <LinkIcon className={styles['link-icon']} color="#133D65" />
+          </div>
         </div>
       </div>
     </div>
