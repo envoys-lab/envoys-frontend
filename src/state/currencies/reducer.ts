@@ -6,12 +6,12 @@ import { currenciesList, coinCurrencies, currenciesArray } from './helpers'
 
 export interface CurrenciesState {
   readonly currency: string
-  readonly data: any
+  readonly data: object
 }
 
 const defaultState: CurrenciesState = {
   currency: currenciesList.USD,
-  data: [],
+  data: {},
 }
 
 const initialState = defineState(defaultState)('currencies')
