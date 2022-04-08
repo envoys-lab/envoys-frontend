@@ -25,6 +25,7 @@ const mergeArraysOfStrings = (arr1: string[], arr2: string[]) => {
   const unique = [...new Set(out)]
   return unique
 }
+
 export const useCurrency = () => {
   const dispatch = useAppDispatch()
   const vs_currencies = getCurrency()
@@ -40,7 +41,9 @@ export const useCurrency = () => {
     dispatch(fetchPricesAction({ ids, vs_currencies }))
   }, [vs_currencies])
 
-  useInterval(() => {
-    dispatch(fetchPricesAction({ ids, vs_currencies }))
+  setTimeout(() => {
+    useInterval(() => {
+      dispatch(fetchPricesAction({ ids, vs_currencies }))
+    }, 1000 * 60 * 10)
   }, 1000 * 60 * 10)
 }
