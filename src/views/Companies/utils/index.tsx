@@ -14,6 +14,11 @@ export interface CompanyStage {
   price: string
 }
 
+interface CompanyRoadMapItem {
+  title: string
+  description: string
+}
+
 export interface BaseCompany {
   about: object
   active: boolean
@@ -25,7 +30,7 @@ export interface BaseCompany {
   logoUrl: string
   members: object[]
   name: string
-  roadmap: object[]
+  roadmap: CompanyRoadMapItem[]
   sellType: string[]
   social: object
   stages: CompanyStage[]

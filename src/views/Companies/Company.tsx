@@ -16,7 +16,7 @@ import { getCompany } from './api'
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import {useTranslation} from "../../contexts/Localization";
+import { useTranslation } from '../../contexts/Localization'
 
 const loremIpsum = `Docs Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus mollis, nunc sit amet volutpat
           imperdiet, nisi sapien iaculis neque, quis imperdiet sapien ipsum eget purus. Aliquam erat volutpat. Suspendisse
@@ -51,16 +51,16 @@ const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<any>()
   const [activeTab, setActiveTab] = useState(0)
 
-  const {t} = useTranslation();
+  const { t } = useTranslation()
 
   useEffect(() => {
     handleGetCompany()
   }, [])
 
   const handleGetCompany = async () => {
-    console.log(companyId)
+    // console.log(companyId)
     const company = await getCompany(companyId)
-    console.log(company)
+    // console.log(company)
     setCompany(company)
   }
 
@@ -116,7 +116,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           <div id="ico" className={styles['company__tab-info']}>
             <div className={styles['company-ico']}>
               <div className={styles['company-ico__video']}>
-                {company?.videoUrl && <iframe src={company.videoUrl}></iframe>}
+                {company?.videoUrl && <iframe src={company.videoUrl} />}
               </div>
               <div className={styles['company-ico__stages']}>
                 {company && company.stages && company?.stages.map((stage) => <CompanyProgress stage={stage} />)}
@@ -125,7 +125,7 @@ const Company = ({ companyId }: { companyId: string }) => {
             </div>
           </div>
           <div id="about" className={styles['company__tab-info']}>
-            <div className={styles['company__tab-info-header']}>{t('About %company%', {company: company?.name})}</div>
+            <div className={styles['company__tab-info-header']}>{t('About %company%', { company: company?.name })}</div>
             <About markdown={company.about.text} />
           </div>
           <div id="roadmap" className={styles['company__tab-info']}>
