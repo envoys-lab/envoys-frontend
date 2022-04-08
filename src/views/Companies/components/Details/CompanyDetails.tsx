@@ -1,15 +1,10 @@
 import React from 'react'
+import { CompanyFoundation } from '../../utils'
 import styles from './Details.module.scss'
 
-type CompanyDetailsProps = {
-  company: Company
+interface CompanyDetailsProps {
+  company: CompanyFoundation
   className?: string
-}
-
-type Company = {
-  foundedDate: string
-  registredCountry: string
-  registredName: string
 }
 
 const CompanyDetailsInner = ({ company, className }: CompanyDetailsProps) => {

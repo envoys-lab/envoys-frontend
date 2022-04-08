@@ -243,7 +243,12 @@ const GlobalSearch = () => {
             {renderedGroupItems}
           </ResultGroup>,
         )
-      } else if (renderedGroupItems.length === 0 && type.toString() === typeFilter && typeFilter !== groupTypes[0]) {
+      } else if (
+        !hasNextPage &&
+        renderedGroupItems.length === 0 &&
+        type.toString() === typeFilter &&
+        typeFilter !== groupTypes[0]
+      ) {
         renderedGroups.push(
           <ResultGroup title={type} key={`search-group-${type}`}>
             {t('No matching results')}

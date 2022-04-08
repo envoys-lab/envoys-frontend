@@ -1,6 +1,6 @@
 import { SerializedPoolConfig, SerializedToken } from '../../config/constants/types'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Item as BaseCompany } from '../../views/Companies/utils'
+import { BaseCompany } from '../../views/Companies/utils'
 import { DeserializedFarm } from '../../state/types'
 import { PoolData } from '../../state/info/types'
 
