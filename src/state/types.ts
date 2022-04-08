@@ -554,6 +554,10 @@ export interface UserRound {
   tickets?: LotteryTicket[]
 }
 
+export interface Currencies {
+  currency: string
+}
+
 // Global state
 
 export interface State {
@@ -568,4 +572,5 @@ export interface State {
   nftMarket: NftMarketState
   tokens: object
   lists: object
+  currencies: Currencies
 }

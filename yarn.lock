@@ -14100,6 +14100,11 @@ reduce-flatten@^2.0.0:
   resolved "https://registry.yarnpkg.com/reduce-flatten/-/reduce-flatten-2.0.0.tgz#734fd84e65f375d7ca4465c69798c25c9d10ae27"
   integrity sha512-EJ4UNY/U1t2P/2k6oqotuX2Cc3T6nxJwsM0N0asT7dhrtH1ltUxDn4NalSYmPE2rCkVpcf/X6R0wDwcFpzhd4w==
 
+redux-localstore@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/redux-localstore/-/redux-localstore-1.0.0.tgz#be5fd332066460852c941e72ec4780eb275264d9"
+  integrity sha512-x5kWx0fusy5PSvnLkfnfXZ53eEz4Bh8SYZJQaLMlYYdFojGyuLi5PIov4jwO6HDvDORtbdoM19fmNlX+lWooDg==
+
 redux-persist@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"

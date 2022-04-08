@@ -16,6 +16,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { useStore, persistor } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
+import { useCurrency } from 'state/currencies/hooks'
 import { NextPage } from 'next'
 import { useFetchProfile } from 'state/profile/hooks'
 import { Blocklist, Updaters } from '..'
@@ -31,6 +32,7 @@ BigNumber.config({
 })
 
 function GlobalHooks() {
+  useCurrency()
   usePollBlockNumber()
   useEagerConnect()
   useFetchProfile()
