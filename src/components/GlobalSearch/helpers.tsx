@@ -9,8 +9,6 @@ const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, que
   const compiledSearchResults = compileSearchResults({ tokens, farms, poolsLiquidity, poolsSyrup })
   const appliedSearchResults = getSearchResultsByQuery(compiledSearchResults, query)
 
-  console.log({ tokens, farms, poolsLiquidity, poolsSyrup })
-
   return {
     companies,
     ...appliedSearchResults,
