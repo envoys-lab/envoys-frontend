@@ -244,10 +244,11 @@ const GlobalSearch = () => {
   }
 
   const setFilter = (type: string) => {
+    const isPanelShown = isResultsPanelShown
     setTypeFilter(type)
     setIsFilterOpen(false)
     setTimeout(() => {
-      setIsResultsPanelShown(true)
+      setIsResultsPanelShown(isPanelShown)
     })
   }
 
@@ -344,23 +345,21 @@ const GlobalSearch = () => {
               onFocus={showResultsOnFocus}
             />
           </InputGroup>
-          {query?.length > 1 && (
-            <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={t(typeFilter)}>
-              <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
-                <Box p="10px" minWidth={'200px'}>
-                  {groupTypes.map((type, key) => (
-                    <FilterItem
-                      key={`filter-${key}`}
-                      className={classNames({ active: typeFilter.toString() === type.toString() })}
-                      onClick={() => setFilter(type)}
-                    >
-                      {t(type)}
-                    </FilterItem>
-                  ))}
-                </Box>
-              </InlineMenu>
-            </DropdownItem>
-          )}
+          <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={t(typeFilter)}>
+            <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
+              <Box p="10px" minWidth={'200px'}>
+                {groupTypes.map((type, key) => (
+                  <FilterItem
+                    key={`filter-${key}`}
+                    className={classNames({ active: typeFilter.toString() === type.toString() })}
+                    onClick={() => setFilter(type)}
+                  >
+                    {t(type)}
+                  </FilterItem>
+                ))}
+              </Box>
+            </InlineMenu>
+          </DropdownItem>
           {isMobile && (
             <DropdownItem
               onClick={() => setIsMobileSettingsOpen(true)}
