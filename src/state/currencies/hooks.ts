@@ -39,9 +39,11 @@ export const useCurrency = () => {
 
   useEffect(() => {
     dispatch(fetchPricesAction({ ids, vs_currencies }))
-  }, [vs_currencies])
 
-  useInterval(() => {
-    dispatch(fetchPricesAction({ ids, vs_currencies }))
-  }, 1000 * 60 * 10)
+    const intervalId = setInterval(() => {
+      dispatch(fetchPricesAction({ ids, vs_currencies }))
+    }, 1000 * 60 * 10)
+
+    return () => clearInterval(intervalId)
+  }, [vs_currencies])
 }
