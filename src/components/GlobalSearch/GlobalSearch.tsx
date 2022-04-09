@@ -1,12 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import classNames from 'classnames'
+import { useDispatch } from 'react-redux'
 
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { useAllPoolData } from 'state/info/hooks'
 import { useFarms } from 'state/farms/hooks'
 import usePoolDatas from 'state/info/queries/pools/poolData'
 import { PoolUpdater } from 'state/info/updaters'
+import { currenciesArray as currencies } from 'state/currencies/helpers'
+import { setCurrency } from 'state/currencies/actions'
+import { getCurrency } from 'state/currencies/selectors'
 
 import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
@@ -40,6 +44,7 @@ import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
 
 const GlobalSearch = () => {
+  const dispatch = useDispatch()
   const [query, setQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResults>({})
   const [poolsLiquidity, setPoolsLiquidity] = useState({})
@@ -53,29 +58,6 @@ const GlobalSearch = () => {
   const [hasNextPage, setHasNextPage] = useState(false)
 
   const groupTypes = ['allFilters', 'tokens', 'companies', 'farms', 'poolsLiquidity', 'poolsSyrup']
-  const currencies = [
-    'USD',
-    'EUR',
-    'CNY',
-    'INR',
-    'CAD',
-    'GBP',
-    'JPY',
-    'RUB',
-    'MXN',
-    'CHF',
-    'KRW',
-    'TRY',
-    'BRL',
-    'SEK',
-    'HKD',
-    'ETH',
-    'AUD',
-    'NOK',
-    'SGD',
-    'BTC',
-  ]
-  const [globalCurrency, setGlobalCurrency] = useState<string>(currencies[0])
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
@@ -86,10 +68,12 @@ const GlobalSearch = () => {
   const [isResultsPanelShown, setIsResultsPanelShown] = useState(false)
   const [isMobileSettingsOpen, setIsMobileSettingsOpen] = useState(false)
 
+  const globalCurrency = getCurrency()
+
   const { t } = useTranslation()
 
-  const setCurrency = (newCurrency: string) => {
-    setGlobalCurrency(newCurrency)
+  const handleSetCurrency = (newCurrency) => {
+    dispatch(setCurrency(newCurrency))
     setIsCurrencyOpen(false)
   }
 
@@ -307,7 +291,7 @@ const GlobalSearch = () => {
               <CardsLayout>
                 {currencies.map((currency) => (
                   <SettingsOptionButton
-                    onClick={() => setCurrency(currency)}
+                    onClick={() => handleSetCurrency(currency)}
                     $active={currency === globalCurrency}
                     key={`settings-item-${currency}`}
                   >

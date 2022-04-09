@@ -15,6 +15,7 @@ import {
   FetchStatus,
 } from 'config/constants/types'
 import { NftToken, State as NftMarketState } from './nftMarket/types'
+import { CurrenciesState } from './currencies/reducer'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -568,4 +569,5 @@ export interface State {
   nftMarket: NftMarketState
   tokens: object
   lists: object
+  currencies: CurrenciesState
 }
