@@ -41,9 +41,7 @@ export const useCurrency = () => {
     dispatch(fetchPricesAction({ ids, vs_currencies }))
   }, [vs_currencies])
 
-  setTimeout(() => {
-    useInterval(() => {
-      dispatch(fetchPricesAction({ ids, vs_currencies }))
-    }, 1000 * 60 * 10)
+  useInterval(() => {
+    dispatch(fetchPricesAction({ ids, vs_currencies }))
   }, 1000 * 60 * 10)
 }
