@@ -30,7 +30,8 @@ export default function Pool() {
   const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isAddLoading, setIsAddLoading] = useState<boolean>(false)
+  const [isFindLoading, setIsFindLoading] = useState<boolean>(false)
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -100,6 +101,17 @@ export default function Pool() {
     }
   }
 
+  const handleFindLp = () => {
+    router.push('/find')
+  }
+
+  const handleAdd = () => {
+    setIsAddLoading(true)
+    router.push('/add')
+  }
+
+  const findLabel = <b>{t('Find other LP tokens')}</b>
+
   return (
     <Page autoWidth={true}>
       <PageContainer>
@@ -119,28 +131,24 @@ export default function Pool() {
                 <ThinText color="primary" my="16px">
                   {t("Don't see a pool you joined?")}
                 </ThinText>
-                <Link href="/find">
-                  <Button id="import-pool-link" variant="tertiary" as="a">
-                    <b>{t('Find other LP tokens')}</b>
-                  </Button>
-                </Link>
+                <Button id="import-pool-link" variant="tertiary" as="a" onClick={handleFindLp} disabled={isFindLoading}>
+                  {isFindLoading ? <Dots>{findLabel}</Dots> : findLabel}
+                </Button>
               </Flex>
             )}
           </Body>
         </Wrapper>
         <CardFooter style={{ textAlign: 'center' }}>
-          <Link href="/add">
-            <Button
-              id="join-pool-button"
-              width="100%"
-              scale="lg"
-              startIcon={<AddIcon color="white" />}
-              disabled={isLoading}
-              onClick={() => setIsLoading(true)}
-            >
-              {isLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
-            </Button>
-          </Link>
+          <Button
+            id="join-pool-button"
+            width="100%"
+            scale="lg"
+            startIcon={<AddIcon color="white" />}
+            disabled={isAddLoading}
+            onClick={handleAdd}
+          >
+            {isAddLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
+          </Button>
         </CardFooter>
       </PageContainer>
     </Page>

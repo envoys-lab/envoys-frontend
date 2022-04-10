@@ -323,9 +323,14 @@ export default function AddLiquidity() {
   }
 
   return (
-    <Page>
+    <Page autoWidth={true}>
       <PageContainer>
-        <AppHeader title={t('Add Liquidity')} subtitle={t('Add liquidity to receive LP tokens')} noSettings>
+        <AppHeader
+          title={t('Add Liquidity')}
+          subtitle={t('Add liquidity to receive LP tokens')}
+          backTo={'/liquidity'}
+          noSettings
+        >
           {/* helper={t(
               'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
             )}*/}

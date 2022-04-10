@@ -4,9 +4,12 @@ import { useLoadItems } from './utils'
 import { CompanyCard } from './components'
 import styles from './Companies.module.scss'
 import Page from '../../components/Layout/Page'
+import { Spinner } from '@envoysvision/uikit'
+import { useTranslation } from '../../contexts/Localization'
 
 const Companies = () => {
   const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
+  const { t } = useTranslation()
 
   const [infiniteRef] = useInfiniteScroll({
     loading,
@@ -27,10 +30,11 @@ const Companies = () => {
 
   return (
     <Page>
+      {companies?.length === 0 && <Spinner />}
       <div className={styles['company__list-container']}>{companies.map((item) => renderCompany(item))}</div>
       {hasNextPage && (
         <div ref={infiniteRef}>
-          <div>Loading</div>
+          <div>{companies?.length > 0 && t('Loading')}</div>
         </div>
       )}
     </Page>

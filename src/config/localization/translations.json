@@ -1838,7 +1838,7 @@
   "allFilters": "All filters",
   "tokens": "Tokens",
   "companies": "Companies",
-  "poolsLiquidity": "Pools",
+  "poolsLiquidity": "Pools liquidity",
   "farms": "Farms",
-  "poolsSyrup": "Syrup pools"
+  "poolsSyrup": "Pools syrup"
 }

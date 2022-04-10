@@ -17,8 +17,8 @@ const Icon: React.FC<SvgProps> = (props) => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(8 7) rotate(133.025) scale(10.2591 10.2594)"
         >
-          <stop stop-color="#FFF171" />
-          <stop offset="1" stop-color="#FFBF1C" />
+          <stop stopColor="#FFF171" />
+          <stop offset="1" stopColor="#FFBF1C" />
         </radialGradient>
       </defs>
     </Svg>

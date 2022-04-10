@@ -17,6 +17,7 @@ import {
   SwapVertIcon,
   TabMenu,
   Tab,
+  Spinner,
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
