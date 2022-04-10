@@ -27,7 +27,7 @@ import {
 } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
-import { SearchResults } from './types'
+import { groupTypes, SearchResults } from './types'
 import ResultGroup from './components/ResultGroup'
 import { CompanyCard, FarmCard, PoolLiquidityCard, PoolSyrupCard, TokenCard } from './components'
 import {
@@ -57,7 +57,6 @@ const GlobalSearch = () => {
   const [paginatedSearchResults, setPaginatedSearchResults] = useState<SearchResults>({})
   const [hasNextPage, setHasNextPage] = useState(false)
 
-  const groupTypes = ['allFilters', 'tokens', 'companies', 'farms', 'poolsLiquidity', 'poolsSyrup']
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
@@ -283,6 +282,28 @@ const GlobalSearch = () => {
         <DropdownItem
           noBorder={isMobile}
           isMobile={isMobile}
+          isFullWidth={isMobile}
+          onClick={() => setIsFilterOpen(true)}
+          isOpen={isFilterOpen}
+          component={t(typeFilter)}
+        >
+          <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
+            <Box p="10px" minWidth={'200px'}>
+              {groupTypes.map((type, key) => (
+                <FilterItem
+                  key={`filter-${key}`}
+                  className={classNames({ active: typeFilter.toString() === type.toString() })}
+                  onClick={() => setFilter(type)}
+                >
+                  {t(type)}
+                </FilterItem>
+              ))}
+            </Box>
+          </InlineMenu>
+        </DropdownItem>
+        <DropdownItem
+          noBorder={isMobile}
+          isMobile={isMobile}
           onClick={() => setIsCurrencyOpen(true)}
           isOpen={isCurrencyOpen}
           component={globalCurrency}
@@ -331,11 +352,7 @@ const GlobalSearch = () => {
       <div ref={setInputPanelElement}>
         <SearchWrapper>
           <PoolUpdater />
-          <InputGroup
-            startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />}
-            scale={'lg'}
-            mr={'16px'}
-          >
+          <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'}>
             <StyledInput
               id="global-search-input"
               placeholder={t('Search by account, token,ENS...')}
@@ -345,34 +362,15 @@ const GlobalSearch = () => {
               onFocus={showResultsOnFocus}
             />
           </InputGroup>
-          <DropdownItem onClick={() => setIsFilterOpen(true)} isOpen={isFilterOpen} component={t(typeFilter)}>
-            <InlineMenu isOpen={isFilterOpen} component={<></>} onClose={() => setIsFilterOpen(false)}>
-              <Box p="10px" minWidth={'200px'}>
-                {groupTypes.map((type, key) => (
-                  <FilterItem
-                    key={`filter-${key}`}
-                    className={classNames({ active: typeFilter.toString() === type.toString() })}
-                    onClick={() => setFilter(type)}
-                  >
-                    {t(type)}
-                  </FilterItem>
-                ))}
-              </Box>
-            </InlineMenu>
-          </DropdownItem>
           {isMobile && (
-            <DropdownItem
-              onClick={() => setIsMobileSettingsOpen(true)}
-              isOpen={isMobileSettingsOpen}
-              component={<CogIcon />}
-            >
+            <DropdownItem onClick={() => setIsMobileSettingsOpen(true)} isOpen={isMobileSettingsOpen} component={<></>}>
               <InlineMenu
                 isOpen={isMobileSettingsOpen}
                 component={<></>}
                 onClose={() => setIsMobileSettingsOpen(false)}
               >
-                <Box p="10px" minWidth={'200px'}>
-                  <Flex>{renderSettings()}</Flex>
+                <Box p="10px" minWidth={'90vw'}>
+                  <Flex>{renderSettings(true)}</Flex>
                 </Box>
               </InlineMenu>
             </DropdownItem>

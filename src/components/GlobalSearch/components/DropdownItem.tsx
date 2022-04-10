@@ -25,13 +25,22 @@ interface DropdownProps extends FlexProps, HTMLAttributes<HTMLDivElement> {
   component: ReactNode
   isOpen?: boolean
   isMobile?: boolean
+  isFullWidth?: boolean
   noBorder?: boolean
 }
 
-const DropdownItem: React.FC<DropdownProps> = ({ component, isOpen, isMobile, noBorder, children, ...props }) => {
+const DropdownItem: React.FC<DropdownProps> = ({
+  component,
+  isFullWidth,
+  isOpen,
+  isMobile,
+  noBorder,
+  children,
+  ...props
+}) => {
   return (
-    <StyledDiv>
-      <StyledBox {...props} px={isMobile ? '4px' : '16px'} style={{ borderLeft: noBorder ? 'none' : 'inherit' }}>
+    <StyledDiv style={isFullWidth ? { flexGrow: 1, justifyContent: 'flex-end' } : {}}>
+      <StyledBox {...props} px={isMobile ? '8px' : '16px'} style={{ borderLeft: noBorder ? 'none' : 'inherit' }}>
         {component}
         <SwapVertIcon color={'mainDark'} ml={'4px'} style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </StyledBox>

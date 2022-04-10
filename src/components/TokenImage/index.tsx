@@ -35,7 +35,14 @@ const getImageUrlFromToken = (token: Token) => {
     '0x728fc32c0d2f61ffe21b6a4a7df987deae0e0888',
     '0x6b670d593d10207cb59b1a88ae4b8b8ba18e52b4',
     '0xba96731324de188ebc1ed87ca74544ddebc07d7f',
-    '',
+    '0x4803ac6b79f9582f69c4fa23c72cb76dd1e46d8d',
+    '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
+    '0x6067490d05f3cf2fdffc0e353b1f5fd6e5ccdf70',
+    '0x81cad0ab645a1792f585ce93c5f955ff3ecc3951',
+    '0x200c234721b5e549c3693ccc93cf191f90dc2af9',
+    '0x26619fa1d4c957c58096bbbeca6588dcfb12e109',
+    '0x4eaf5492838f34aaf6a5e1c603872da94baedc7d',
+    '0x4f5f7a7dca8ba0a7983381d23dfc5eaf4be9c79a',
     '',
   ]
   if (tokensWithoutImage.includes(address)) {

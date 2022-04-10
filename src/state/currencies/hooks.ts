@@ -32,8 +32,8 @@ export const useCurrency = () => {
   const tokens = getTokens()
   const poolsSyrup = usePoolsWithVault()
 
-  const poolIds = poolsSyrup.map((item) => item.earningToken.name.split(' ').join('-'))
-  const tokenIds = tokens.map((item) => item.name.split(' ').join('-'))
+  const poolIds = poolsSyrup.map((item) => item.earningToken.symbol)
+  const tokenIds = tokens.map((item) => item.symbol)
 
   const ids = mergeArraysOfStrings(poolIds, tokenIds).join(',')
 
