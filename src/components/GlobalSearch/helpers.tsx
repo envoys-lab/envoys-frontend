@@ -6,13 +6,8 @@ const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, que
   if (!query) return null
   const { items: companies } = await getCompanies(query)
 
-  const compiledSearchResults = compileSearchResults({ tokens, farms, poolsLiquidity, poolsSyrup })
-  const appliedSearchResults = getSearchResultsByQuery(compiledSearchResults, query)
-
-  return {
-    companies,
-    ...appliedSearchResults,
-  }
+  const compiledSearchResults = compileSearchResults({ tokens, companies, farms, poolsLiquidity, poolsSyrup })
+  return getSearchResultsByQuery(compiledSearchResults, query)
 }
 
 const getSearchResultsByQuery = (compiledSearchResults, query) => {
@@ -20,15 +15,16 @@ const getSearchResultsByQuery = (compiledSearchResults, query) => {
 
   Object.keys(compiledSearchResults).map((key) => {
     const category = compiledSearchResults[key]
-    const output = category.filter((item) => item.search.includes(getSearchStr(query)))
+    const output = category.filter((item) => item.search === undefined || item.search?.includes(getSearchStr(query)))
     result[key] = output
   })
 
   return result
 }
-const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => {
+const compileSearchResults = ({ tokens, companies, farms, poolsLiquidity, poolsSyrup }) => {
   const compiledSearchResults = {
     tokens: getTokensSearchString(tokens),
+    companies: companies,
     farms: getFarmsSearchString(farms),
     poolsLiquidity: getPoolsLiquiditySearchString(poolsLiquidity),
     poolsSyrup: getPoolsSyrupSearchString(poolsSyrup),

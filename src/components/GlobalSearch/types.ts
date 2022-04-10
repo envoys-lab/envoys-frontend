@@ -32,3 +32,5 @@ export interface Token extends SearchResultItem, SerializedToken {
 }
 
 export type SearchItem = Company | Farm | Liquidity | Pool | Token
+
+export const groupTypes = ['allFilters', 'tokens', 'companies', 'farms', 'poolsLiquidity', 'poolsSyrup']

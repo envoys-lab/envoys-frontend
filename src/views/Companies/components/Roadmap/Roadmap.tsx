@@ -95,7 +95,7 @@ const RoadmapDescription = styled(Flex)`
 
 const ShowHideButton = styled(Button)`
   position: relative;
-  z-index: 2;
+  z-index: 1;
   margin: 0 auto;
 `
 
