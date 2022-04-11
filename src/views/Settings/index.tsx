@@ -12,6 +12,16 @@ import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificat
 import { documentNormalize, isVerificationPassed } from './heplers'
 import { User, VerificationStatus } from './types'
 
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 670px;
+    padding: 0 32px 32px;
+  }
+`
+
 const Space = styled.div`
   height: 20px;
 `
@@ -192,10 +202,10 @@ const Settings = () => {
 
   const renderContent = () => {
     return (
-      <>
+      <Container>
         {renderTabs()}
         {isMetaMaskConnected ? renderTabContent() : renderNoMetamask()}
-      </>
+      </Container>
     )
   }
 
@@ -326,7 +336,7 @@ const Settings = () => {
   }
 
   return (
-    <Page>
+    <Page autoWidth={true}>
       <Space />
       {renderContent()}
     </Page>
