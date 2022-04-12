@@ -101,7 +101,7 @@ export default function Pool() {
   }
 
   const handleFindLp = () => {
-    setIsFindLoading(true);
+    setIsFindLoading(true)
     router.push('/find')
   }
 
