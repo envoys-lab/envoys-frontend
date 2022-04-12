@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './CompanyInterviews.module.scss'
 import { Member } from '../../utils'
+import classNames from 'classnames'
 
 interface CompanyInterviewsProps {
   members: Member[]
@@ -8,22 +9,32 @@ interface CompanyInterviewsProps {
 }
 
 const CompanyInterviews = ({ members, className }: CompanyInterviewsProps) => {
+  const getAvatarBlock = (person, smallScreen = false) => (
+    <div
+      className={classNames(styles['company-members-card-avatar'], {
+        [styles['showBeforeSm']]: smallScreen,
+        [styles['showAfterSm']]: !smallScreen,
+      })}
+    >
+      <div className={styles['company-members-card-avatar-image']}>
+        <img src={person.avatarUrl}></img>
+      </div>
+      <div className={styles['company-members-card-avatar-title']}>{person.name}</div>
+    </div>
+  )
+
   return (
     <div className={`${styles['company-members']} ${className}`}>
       {members.map((member, index) => (
         <div key={index} className={styles['company-members-card']}>
-          <div className={styles['company-members-card-avatar']}>
-            <div className={styles['company-members-card-avatar-image']}>
-              <img src={member.avatarUrl}></img>
-            </div>
-            <div className={styles['company-members-card-avatar-title']}>{member.name}</div>
-          </div>
+          {getAvatarBlock(member, false)}
           <div className={styles['company-members-card-interview']}>
             {member.interview.questions.map((question, index) => (
-              <div key={index}>
+              <React.Fragment key={index}>
+                {!index && getAvatarBlock(member, true)}
                 <div className={styles['company-members-card-interview-question']}>{question.question}</div>
                 <div className={styles['company-members-card-interview-answer']}>{question.answear}</div>
-              </div>
+              </React.Fragment>
             ))}
           </div>
         </div>
