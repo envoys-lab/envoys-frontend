@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { getCompanies } from '../api'
 
+export const companyStatusPast = 'past'
+export const companyStatusOngoing = 'ongoing'
+export const companyStatusUpcoming = 'upcoming'
+export type CompanyStatus = typeof companyStatusPast | typeof companyStatusOngoing | typeof companyStatusUpcoming
+
 export interface CompanyStage {
   type: string
   startDate: string
@@ -10,7 +15,7 @@ export interface CompanyStage {
   raisedFunds: number
   cap: number
   hardcap: number
-  status: string
+  status: CompanyStatus
   price: string
 }
 
@@ -34,7 +39,7 @@ export interface BaseCompany {
   sellType: string[]
   social: object
   stages: CompanyStage[]
-  status: string
+  status: CompanyStatus
   videoUrl: string
   _id: string
   holders: any
