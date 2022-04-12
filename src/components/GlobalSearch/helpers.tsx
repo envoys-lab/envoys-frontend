@@ -65,10 +65,10 @@ const getPoolsSyrupSearchString = (poolsSyrup) => {
   }))
 }
 
-const getCompanies = async (query) => {
-  if (!query) return null
+const getCompanies = async (search) => {
+  if (!search) return null
 
-  const companies = await getCompaniesSearch({ query })
+  const companies = await getCompaniesSearch({ search })
 
   return companies
 }
