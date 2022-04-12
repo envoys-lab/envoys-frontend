@@ -1,3 +1,5 @@
+@import "../../styles";
+
 .company-members {
   width: 100%;
   display: flex;
@@ -9,10 +11,16 @@
     display: flex;
     padding: 20px 0;
     margin-bottom: 10px;
-
+    flex-direction: column;
+    @include screenMinSize('sm') {
+      flex-direction: row;
+    }
     &-avatar {
       padding: 0 15px;
-
+      float: left;
+      @include screenMinSize('sm') {
+        float: none;
+      }
       &-image {
         width: 90px;
         height: 90px;
@@ -54,6 +62,11 @@
       font-size: 15px;
       font-weight: 300;
       font-family: Roboto, sans-serif;
+      &-question, &-answer {
+        @include screenMaxSize('sm') {
+          display: flex;
+        }
+      }
 
       &-question {
         border-left: 1px solid #999;

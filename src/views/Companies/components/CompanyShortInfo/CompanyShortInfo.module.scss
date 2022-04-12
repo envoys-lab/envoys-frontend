@@ -1,11 +1,10 @@
+@import "../../styles";
+
 .company-short {
   max-width: 728px;
   margin-top: 0;
-
   &__logo {
-    margin-left: 50px;
-    margin-top: 15px;
-    margin-right: 35px;
+    min-width: 70px;
   }
 
   &-main{
