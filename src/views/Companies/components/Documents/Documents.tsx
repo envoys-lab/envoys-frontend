@@ -7,22 +7,22 @@ import DocIcon from '../../assets/DocIcon'
 import styles from './Documents.module.scss'
 
 const Documents = ({ documents }) => {
-  const handleDownload = ({ url, name }) => {
-    axios
-      .get(url, {
-        responseType: 'blob',
-      })
-      .then((res) => {
-        fileDownload(res.data, name)
-      })
-  }
+  // const handleDownload = ({ url, name }) => {
+  //   axios
+  //     .get(url, {
+  //       responseType: 'blob',
+  //     })
+  //     .then((res) => {
+  //       fileDownload(res.data, name)
+  //     })
+  // }
 
   const renderDocument = ({ url, name }) => {
     return (
-      <div key={url} className={styles['document']} onClick={() => handleDownload({ url, name })}>
+      <a href={url} target="_blank" key={url} className={styles['document']}>
         <DocIcon />
         <div className={styles['document__name']}>{name}</div>
-      </div>
+      </a>
     )
   }
 
