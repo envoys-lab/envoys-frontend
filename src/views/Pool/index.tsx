@@ -101,6 +101,7 @@ export default function Pool() {
   }
 
   const handleFindLp = () => {
+    setIsFindLoading(true);
     router.push('/find')
   }
 
@@ -130,7 +131,15 @@ export default function Pool() {
                 <ThinText color="primary" my="16px">
                   {t("Don't see a pool you joined?")}
                 </ThinText>
-                <Button id="import-pool-link" variant="tertiary" as="a" onClick={handleFindLp} disabled={isFindLoading}>
+                <Button
+                  id="import-pool-link"
+                  variant="tertiary"
+                  as="a"
+                  scale="sm"
+                  onClick={handleFindLp}
+                  disabled={isFindLoading}
+                  height={'40px'}
+                >
                   {isFindLoading ? <Dots>{findLabel}</Dots> : findLabel}
                 </Button>
               </Flex>
