@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
@@ -165,14 +165,14 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${address}`}>
-                  <Button mr="8px" variant="secondary" scale={'sm'}>
+                <NextLinkFromReactRouterSlim to={`/add/${address}`}>
+                  <Button mr="8px" variant="tertiary">
                     {t('Add Liquidity')}
                   </Button>
-                </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/swap?inputCurrency=${address}`}>
-                  <Button scale={'sm'}>{t('Trade')}</Button>
-                </NextLinkFromReactRouter>
+                </NextLinkFromReactRouterSlim>
+                <NextLinkFromReactRouterSlim to={`/swap?inputCurrency=${address}`}>
+                  <Button>{t('Trade')}</Button>
+                </NextLinkFromReactRouterSlim>
               </Flex>
             </Flex>
 
