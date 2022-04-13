@@ -2,13 +2,15 @@
   border: 1px solid rgba(52, 73, 94, 0.05);
   color: #34495e;
   font-size: 12px;
-  margin-bottom: 15px;
   font-weight: 300;
   padding: 15px;
   text-align: justify;
   word-break: break-all;
   width: 100%;
   display: block;
+  &:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
 
   &-header {
     font-size: 18px;

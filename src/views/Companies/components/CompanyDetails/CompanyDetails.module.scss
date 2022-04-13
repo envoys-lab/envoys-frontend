@@ -6,14 +6,12 @@
   align-content: flex-start;
   margin-top: 30px;
   flex-direction: column;
+  grid-gap: 15px;
   @include screenMinSize('sm') {
     flex-direction: row;
   }
   &-left,
   &-right {
-    @include screenMinSize('sm') {
-      padding: 0 15px;
-    }
     display: flex;
     flex-direction: column;
     width: 100%;
