@@ -1,8 +1,12 @@
 import { ChainId, Token } from '@envoysvision/sdk'
 import { serializeToken } from 'state/user/hooks/helpers'
 import { SerializedToken } from './types'
+import coinGeckoTokenList from './tokenLists/coin-gecko.tokenlist.json'
 
 const { MAINNET, TESTNET } = ChainId
+
+// const allowedPlatforms = ["binance-smart-chain", "ethereum", "polygon-pos", "solana", "avalanche", "fantom"]
+const allowedPlatforms = ['binance-smart-chain']
 
 interface TokenList {
   [symbol: string]: Token
@@ -2036,5 +2040,33 @@ export const serializeTokens = () => {
 
   return serializedTokens
 }
+
+const coinGeckoAddressToIdMap = {}
+const coinGeckoIdToAddressMap = {}
+const doubledSymbols = []
+coinGeckoTokenList.map((item) => {
+  let allowToken = false
+  let platformAddress
+  Object.keys(item.platforms)?.map((key) => {
+    if (!key) {
+      return
+    }
+    if (allowedPlatforms.includes(key)) {
+      platformAddress = item.platforms[key].toLowerCase()
+      allowToken = true
+    }
+  })
+  if (!allowToken || !platformAddress) {
+    return
+  }
+  if (!coinGeckoAddressToIdMap[platformAddress]) {
+    coinGeckoAddressToIdMap[platformAddress] = item.id
+    coinGeckoIdToAddressMap[item.id] = platformAddress
+  } else {
+    doubledSymbols.push(platformAddress)
+  }
+})
+
+export { coinGeckoAddressToIdMap, coinGeckoIdToAddressMap }
 
 export default unserializedTokens

@@ -2,7 +2,7 @@ import React from 'react'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { getCurrency, getCurrencyData } from '../../state/currencies/selectors'
 import { Text } from '@envoysvision/uikit'
-import { Currency } from '@envoysvision/sdk'
+import { Currency, Token } from '@envoysvision/sdk'
 
 interface CurrencyEquivalentProps {
   amount?: string
@@ -14,7 +14,8 @@ const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', c
   const vsCurrency = getCurrency()
   const vsSymbol = getSymbolFromCurrency(vsCurrency)
   const vsCurrenciesData = getCurrencyData()
-  const modifier = vsCurrenciesData[currency?.symbol.toLowerCase()]
+  const address = (currency as Token).address.toLowerCase()
+  let modifier = vsCurrenciesData[address]
   let content = '-'
   if (modifier) {
     const floatValue = Math.round((isNaN(parsedAmount) ? 0 : parsedAmount) * modifier)
