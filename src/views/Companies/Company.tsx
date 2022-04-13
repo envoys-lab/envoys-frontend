@@ -18,7 +18,7 @@ import {
 import { getCompany } from './api'
 
 import styles from './Company.module.scss'
-import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
+import { Flex, Tab, TabMenu, useMatchBreakpoints } from '@envoysvision/uikit'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
 import { BaseCompany } from './utils'
 import { useTranslation } from '../../contexts/Localization'
@@ -29,6 +29,7 @@ const Company = ({ companyId }: { companyId: string }) => {
   const [activeTab, setActiveTab] = useState(0)
 
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
 
   useEffect(() => {
     handleGetCompany()
@@ -68,11 +69,11 @@ const Company = ({ companyId }: { companyId: string }) => {
 
       <div id="tabs" className={`${styles['company__tabs']}`}>
         <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-          <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={showTabs}>
+          <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={isMobile ? 0 : showTabs}>
             {visibleTabs.ico && (
               <Tab>
                 <AnchorLink offset="58" href="#ico">
-                  {t('ICO Details')}
+                  <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
                 </AnchorLink>
               </Tab>
             )}
