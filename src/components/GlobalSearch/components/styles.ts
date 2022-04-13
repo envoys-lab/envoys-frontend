@@ -9,6 +9,8 @@ export const BodyWrapper = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: relative;
   overflow: visible;
+  box-sizing: border-box;
+  padding: 1px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;

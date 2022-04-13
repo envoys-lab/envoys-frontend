@@ -33,9 +33,11 @@ export const useCurrency = () => {
   const poolsSyrup = usePoolsWithVault()
 
   const poolAddresses = poolsSyrup.map((item) => item.earningToken.address.toLowerCase())
-  const tokenAddresses = tokens.map((item) => item.address.toLowerCase())
+  const tokenAddresses = tokens.map((item) => {
+    return item.address.toLowerCase()
+  })
   const ids = mergeArraysOfStrings(poolAddresses, tokenAddresses)
-    .map((address) => coinGeckoAddressToIdMap[address])
+    .map((address) => coinGeckoAddressToIdMap[address.toLowerCase()])
     .filter((a) => a)
     .join(',')
 

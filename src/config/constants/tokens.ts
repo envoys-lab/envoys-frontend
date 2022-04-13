@@ -1,12 +1,96 @@
 import { ChainId, Token } from '@envoysvision/sdk'
 import { serializeToken } from 'state/user/hooks/helpers'
 import { SerializedToken } from './types'
-import coinGeckoTokenList from './tokenLists/coin-gecko.tokenlist.json'
+import coinGeckoTokenListShort from './tokenLists/coin-gecko-short.tokenlist.json'
 
 const { MAINNET, TESTNET } = ChainId
+/*
+const allowedPlatforms = [
+  "ethereum",
+  "polygon-pos",
+  "avalanche",
+  "harmony-shard-0",
+  "fantom",
+  "binance-smart-chain",
+  "xdai",
+  "solana",
+  "smartbch",
+  "moonbeam",
+  "moonriver",
+  "tron",
+  "sora",
+  "huobi-token",
+  "arbitrum-one",
+  "optimistic-ethereum",
+  "polkadot",
+  "chiliz",
+  "komodo",
+  "cardano",
+  "metis-andromeda",
+  "elrond",
+  "ardor",
+  "qtum",
+  "stellar",
+  "cronos",
+  "osmosis",
+  "algorand",
+  "aurora",
+  "celo",
+  "eos",
+  "neo",
+  "kusama",
+  "secret",
+  "terra",
+  "Bitcichain",
+  "waves",
+  "klay-token",
+  "kardiachain",
+  "okex-chain",
+  "velas",
+  "defi-kingdoms-blockchain",
+  "milkomeda-cardano",
+  "oasis",
+  "ronin",
+  "icon",
+  "zilliqa",
+  "fuse",
+  "nem",
+  "bitshares",
+  "binancecoin",
+  "theta",
+  "meter",
+  "iotex",
+  "hoo",
+  "kucoin-community-chain",
+  "boba",
+  "cosmos",
+  "tezos",
+  "fusion-network",
+  "xrp",
+  "syscoin",
+  "vechain",
+  "telos",
+  "bitcoin-cash",
+  "tomochain",
+  "stratis",
+  "shiden network",
+  "kava",
+  "omni",
+  "metaverse-etp",
+  "nxt",
+  "enq-enecuum",
+  "ontology",
+  "factom",
+  "wanchain",
+  "hoo-smart-chain",
+  "rootstock",
+  "openledger",
+  "vite",
+  "polis-chain"
+];
+*/
 
-// const allowedPlatforms = ["binance-smart-chain", "ethereum", "polygon-pos", "solana", "avalanche", "fantom"]
-const allowedPlatforms = ['binance-smart-chain']
+const allowedPlatforms = ['binance-smart-chain', 'binancecoin']
 
 interface TokenList {
   [symbol: string]: Token
@@ -2041,10 +2125,45 @@ export const serializeTokens = () => {
   return serializedTokens
 }
 
+// tool to prepare short list of supported tokens, so we won't parse it all the time
+// requires this line
+// import coinGeckoTokenList from './tokenLists/coin-gecko.tokenlist.json'
+// add this function call somewhere, run app and check console
+// copy-paste output to short tokens list file.
+const prepareShortTokensList = (coinGeckoTokenList) => {
+  const newShortList = coinGeckoTokenList
+    .map((item) => {
+      let allowToken = false
+      let platformAddress
+      const platformsSupported = {}
+      Object.keys(item.platforms)?.map((key) => {
+        if (!key) {
+          return null
+        }
+        if (allowedPlatforms.includes(key)) {
+          platformAddress = item.platforms[key].toLowerCase()
+          platformsSupported[key] = platformAddress
+          allowToken = true
+        }
+      })
+      if (!allowToken || !platformAddress) {
+        return null
+      }
+
+      return {
+        ...item,
+        platforms: platformsSupported,
+      }
+    })
+    .filter((a) => a)
+  console.log(JSON.stringify(newShortList))
+}
+
 const coinGeckoAddressToIdMap = {}
 const coinGeckoIdToAddressMap = {}
-const doubledSymbols = []
-coinGeckoTokenList.map((item) => {
+
+coinGeckoTokenListShort.map((item) => {
+  // we still double checking all tokens
   let allowToken = false
   let platformAddress
   Object.keys(item.platforms)?.map((key) => {
@@ -2062,8 +2181,6 @@ coinGeckoTokenList.map((item) => {
   if (!coinGeckoAddressToIdMap[platformAddress]) {
     coinGeckoAddressToIdMap[platformAddress] = item.id
     coinGeckoIdToAddressMap[item.id] = platformAddress
-  } else {
-    doubledSymbols.push(platformAddress)
   }
 })
 
