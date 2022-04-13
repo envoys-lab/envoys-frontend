@@ -16,7 +16,7 @@ import {
   useTooltip,
 } from '@envoysvision/uikit'
 import Page from 'components/Layout/Page'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
 import React, { useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
@@ -42,7 +42,7 @@ const ContentLayout = styled.div`
 `
 
 const TokenButton = styled(Flex)`
-  padding: 8px 0px;
+  padding: 8px 0;
   margin-right: 16px;
   :hover {
     cursor: pointer;
@@ -59,6 +59,16 @@ const LockedTokensContainer = styled(Flex)`
   margin-top: 8px;
   border-radius: 16px;
   max-width: 280px;
+`
+
+const ButtonsWrapper = styled(Flex)`
+  align-self: flex-start;
+  grid-gap: 8px;
+  margin-bottom: 12px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-bottom: 0;
+    align-self: center;
+  }
 `
 
 const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
@@ -113,8 +123,8 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
               >{`${poolData.token0.symbol} / ${poolData.token1.symbol}`}</Text>
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
-              <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
-                <NextLinkFromReactRouter to={`/info/token/${poolData.token0.address}`}>
+              <ButtonsWrapper flexDirection={['column', 'column', 'row']}>
+                <NextLinkFromReactRouterSlim to={`/info/token/${poolData.token0.address}`}>
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -125,9 +135,9 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
                       })} ${poolData.token1.symbol}`}
                     </Text>
                   </TokenButton>
-                </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/info/token/${poolData.token1.address}`}>
-                  <TokenButton ml={[null, null, '10px']}>
+                </NextLinkFromReactRouterSlim>
+                <NextLinkFromReactRouterSlim to={`/info/token/${poolData.token1.address}`}>
+                  <TokenButton>
                     <CurrencyLogo address={poolData.token1.address} size="24px" />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
                       {`1 ${poolData.token1.symbol} =  ${formatAmount(poolData.token0Price, {
@@ -137,19 +147,19 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
                       })} ${poolData.token0.symbol}`}
                     </Text>
                   </TokenButton>
-                </NextLinkFromReactRouter>
-              </Flex>
+                </NextLinkFromReactRouterSlim>
+              </ButtonsWrapper>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${poolData.token0.address}/${poolData.token1.address}`}>
+                <NextLinkFromReactRouterSlim to={`/add/${poolData.token0.address}/${poolData.token1.address}`}>
                   <Button mr="8px" variant="tertiary">
                     {t('Add Liquidity')}
                   </Button>
-                </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter
+                </NextLinkFromReactRouterSlim>
+                <NextLinkFromReactRouterSlim
                   to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`}
                 >
                   <Button>{t('Trade')}</Button>
-                </NextLinkFromReactRouter>
+                </NextLinkFromReactRouterSlim>
               </Flex>
             </Flex>
           </Flex>
