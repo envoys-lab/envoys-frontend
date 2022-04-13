@@ -14,7 +14,7 @@ const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', c
   const vsCurrency = getCurrency()
   const vsSymbol = getSymbolFromCurrency(vsCurrency)
   const vsCurrenciesData = getCurrencyData()
-  const address = (currency as Token).address.toLowerCase()
+  const address = (currency as Token)?.address?.toLowerCase()
   let modifier = vsCurrenciesData[address]
   let content = '-'
   if (modifier) {
