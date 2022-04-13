@@ -65,7 +65,7 @@ import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../../components/Layout/Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-import { StyledSwapContainer } from './styles'
+import { StyledChartContainer, StyledSwapContainer } from './styles'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -378,20 +378,22 @@ export default function Swap() {
   }, [onUserInput, window.location.hostname])
 
   return (
-    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={true}>
+    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed}>
       <Flex justifyContent="space-between" position="relative">
         {isDesktop && (
-          <PriceChartContainer
-            withBorder={false}
-            inputCurrencyId={inputCurrencyId}
-            inputCurrency={currencies[Field.INPUT]}
-            outputCurrencyId={outputCurrencyId}
-            outputCurrency={currencies[Field.OUTPUT]}
-            isChartExpanded={isChartExpanded}
-            setIsChartExpanded={setIsChartExpanded}
-            isChartDisplayed={isChartDisplayed}
-            currentSwapPrice={singleTokenPrice}
-          />
+          <StyledChartContainer $isChartDisplayed={isChartDisplayed}>
+            <PriceChartContainer
+              withBorder={false}
+              inputCurrencyId={inputCurrencyId}
+              inputCurrency={currencies[Field.INPUT]}
+              outputCurrencyId={outputCurrencyId}
+              outputCurrency={currencies[Field.OUTPUT]}
+              isChartExpanded={isChartExpanded}
+              setIsChartExpanded={setIsChartExpanded}
+              isChartDisplayed={isChartDisplayed}
+              currentSwapPrice={singleTokenPrice}
+            />
+          </StyledChartContainer>
         )}
         <BottomDrawer
           content={

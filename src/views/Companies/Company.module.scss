@@ -1,12 +1,19 @@
+@import './styles.scss';
+
 .text {
   color: red;
 }
 
 .company__head {
-  margin-top: 40px;
-
+  margin: 20px 0;
   display: inline-flex;
   justify-content: space-between;
+  flex-direction: column;
+  @include screenMinSize('sm') {
+    align-items: center;
+    flex-direction: row;
+    margin: 40px 0 0;
+  }
 }
 
 .company__tabs {
@@ -24,10 +31,10 @@
 }
 
 .company__tab-info {
-  padding-left: 35px;
-
+  @include screenMinSize('sm') {
+    padding-left: 35px;
+  }
   padding-top: 25px;
-
   max-width: 728px;
   font-family: Roboto, sans-serif;
   color: #34495e;
