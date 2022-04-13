@@ -22,8 +22,9 @@ export default createReducer<CurrenciesState>(initialState, (builder) =>
     .addCase(setCurrency, (state, { payload: currency }) => {
       return { ...state, currency }
     })
-    .addCase(fetchPricesAction.fulfilled, (state, { payload: data }) => {
-      const reducedObject = Object.keys(data || {}).reduce((acc, key) => {
+    .addCase(fetchPricesAction.fulfilled, (state, { payload: rawData }) => {
+      const data = rawData ? rawData : {};
+      const reducedObject = Object.keys(data).reduce((acc, key) => {
         if (Object.values(data[key])[0]) {
           const addressKey = coinGeckoIdToAddressMap[key]
           if (addressKey) {
