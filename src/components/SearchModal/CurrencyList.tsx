@@ -12,7 +12,7 @@ import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
 import Column from '../Layout/Column'
-import { RowFixed, RowBetween } from '../Layout/Row'
+import { RowBetween } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
 import CircleLoader from '../Loader/CircleLoader'
 import { isTokenOnList } from '../../utils'
@@ -75,7 +75,6 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
-
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem

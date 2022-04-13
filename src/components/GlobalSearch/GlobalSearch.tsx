@@ -252,23 +252,33 @@ const GlobalSearch = () => {
   }
 
   useEffect(() => {
+    if (isFilterOpen) {
+      setIsGasOpen(false)
+      setIsSettingsOpen(false)
+      setIsCurrencyOpen(false)
+    }
+  }, [isFilterOpen, setIsGasOpen, setIsSettingsOpen, setIsCurrencyOpen])
+  useEffect(() => {
     if (isCurrencyOpen) {
       setIsGasOpen(false)
       setIsSettingsOpen(false)
+      setIsFilterOpen(false)
     }
-  }, [isCurrencyOpen, setIsGasOpen, setIsSettingsOpen])
+  }, [isCurrencyOpen, setIsGasOpen, setIsSettingsOpen, setIsFilterOpen])
   useEffect(() => {
     if (isGasOpen) {
       setIsCurrencyOpen(false)
       setIsSettingsOpen(false)
+      setIsFilterOpen(false)
     }
-  }, [isGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
+  }, [isGasOpen, setIsCurrencyOpen, setIsSettingsOpen, setIsFilterOpen])
   useEffect(() => {
     if (isSettingsOpen) {
       setIsGasOpen(false)
       setIsCurrencyOpen(false)
+      setIsFilterOpen(false)
     }
-  }, [isSettingsOpen, setIsGasOpen, setIsCurrencyOpen])
+  }, [isSettingsOpen, setIsGasOpen, setIsCurrencyOpen, setIsFilterOpen])
   useEffect(() => {
     if (isMobileSettingsOpen) {
       setIsGasOpen(false)

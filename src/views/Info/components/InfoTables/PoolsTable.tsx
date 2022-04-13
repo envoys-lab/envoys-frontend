@@ -49,6 +49,7 @@ const ResponsiveGrid = styled.div`
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
+  width: 100%;
   :hover {
     cursor: pointer;
     opacity: 0.7;

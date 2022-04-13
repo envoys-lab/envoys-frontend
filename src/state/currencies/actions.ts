@@ -1,5 +1,5 @@
 import { createAsyncThunk, createAction } from '@reduxjs/toolkit'
-import { fetchPrices } from './api'
+import { fetchPrices, fetchTokens } from './api'
 
 export const setCurrency = createAction<string>('currencies/setCurrency')
 
@@ -11,3 +11,9 @@ export const fetchPricesAction = createAsyncThunk<object, { ids: string; vs_curr
     return response
   },
 )
+
+/* @ts-ignore */
+export const fetchTokensAction = createAsyncThunk<object>('currencies/getPrices', async () => {
+  const response = await fetchTokens()
+  return response
+})

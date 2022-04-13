@@ -15,4 +15,13 @@ const fetchPrices = async ({ ids, vs_currencies }) => {
   }
 }
 
-export { fetchPrices }
+const fetchTokens = async () => {
+  try {
+    const response = await axiosInstance.get(`${COINGECKO_API}/coins/list`)
+    return response.data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export { fetchPrices, fetchTokens }
