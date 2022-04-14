@@ -8,6 +8,7 @@ const StyledPage = styled.div<{ $removePadding: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 1022px;
   width: 100%;
   padding: ${({ $removePadding }) => ($removePadding ? '0' : '16px')};
   padding-bottom: 0;

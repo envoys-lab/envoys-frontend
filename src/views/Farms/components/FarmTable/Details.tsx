@@ -9,7 +9,7 @@ interface DetailsProps {
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
+  width: 30px;
   justify-content: flex-end;
   padding-right: 8px;
   color: ${({ theme }) => theme.colors.primary};
@@ -30,8 +30,8 @@ const Details: React.FC<DetailsProps> = ({ actionPanelToggled }) => {
 
   return (
     <Container>
-      {!isDesktop && t('Details')}
-      <ArrowIcon color="primary" toggled={actionPanelToggled} />
+      {/* {!isDesktop && t('Details')} */}
+      <ArrowIcon color="text" toggled={actionPanelToggled} />
     </Container>
   )
 }

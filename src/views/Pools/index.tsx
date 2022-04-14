@@ -247,7 +247,7 @@ const Pools: React.FC = () => {
 
   return (
     <>
-      <PageHeader>
+      {/* <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
@@ -265,8 +265,8 @@ const Pools: React.FC = () => {
             <BountyCard />
           </Flex>
         </Flex>
-      </PageHeader>
-      <Page>
+      </PageHeader> */}
+      {/* <Page> */}
         <PoolControls>
           <PoolTabButtons
             stakedOnly={stakedOnly}
@@ -332,7 +332,7 @@ const Pools: React.FC = () => {
           width={192}
           height={184.5}
         />
-      </Page>
+      {/* </Page> */}
     </>
   )
 }

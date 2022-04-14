@@ -13,7 +13,7 @@ export interface ITableProps {
 }
 
 const Container = styled.div`
-  filter: ${({ theme }) => theme.card.dropShadow};
+  /* filter: ${({ theme }) => theme.card.dropShadow}; */
   width: 100%;
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;

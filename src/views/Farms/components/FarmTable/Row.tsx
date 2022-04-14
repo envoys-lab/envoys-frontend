@@ -39,7 +39,7 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 24px 0px;
+  padding: 14px 0px;
   display: flex;
   width: 100%;
   align-items: center;
@@ -50,9 +50,15 @@ const CellInner = styled.div`
   }
 `
 
+const RowContainer = styled.td`
+  width: 30px;
+`
+
 const StyledTr = styled.tr`
   cursor: pointer;
-  border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+  padding-left: 33px;
+  padding-right: 33px;
 `
 
 const EarnedMobileCell = styled.td`
@@ -102,13 +108,13 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             switch (key) {
               case 'details':
                 return (
-                  <td key={key}>
-                    <CellInner>
+                  <RowContainer key={key}>
+                    {/* <CellInner> */}
                       <CellLayout>
                         <Details actionPanelToggled={actionPanelExpanded} />
                       </CellLayout>
-                    </CellInner>
-                  </td>
+                    {/* </CellInner> */}
+                  </RowContainer>
                 )
               case 'apr':
                 return (

@@ -15,28 +15,63 @@ export interface FarmProps {
 }
 
 const Container = styled.div`
-  padding-left: 16px;
+  padding-left: 0px;
   display: flex;
   align-items: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 32px;
+    padding-left: 4px;
   }
 `
 
 const TokenWrapper = styled.div`
-  padding-right: 8px;
-  width: 24px;
+  width: 40px;
+  margin-right: 10px;
+`
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 40px;
-  }
+const TitleContainer = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+
+  /* Main_Dark */
+
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const RaiseContainer = styled.div`
+  width: 38px;
+  height: 22px;
+
+  margin-left: 10px;
+
+  border: 1px solid ${({ theme }) => theme.colors.raiseBorder};
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  /* Main_Dark */
+
+  color: ${({ theme }) => theme.colors.text};
 `
 
 const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pid }) => {
   const { stakedBalance } = useFarmUser(pid)
   const { t } = useTranslation()
   const rawStakedBalance = getBalanceNumber(stakedBalance)
+
+  const title = label.replace('-', '/')
 
   const handleRenderFarming = (): JSX.Element => {
     if (rawStakedBalance) {
@@ -53,12 +88,15 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
   return (
     <Container>
       <TokenWrapper>
-        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={40} height={40} />
+        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={40} height={22} />
       </TokenWrapper>
       <div>
         {handleRenderFarming()}
-        <Text bold>{label}</Text>
+        <TitleContainer>{title}</TitleContainer>
       </div>
+      <RaiseContainer>
+        <div>0.3%</div>
+      </RaiseContainer>
     </Container>
   )
 }

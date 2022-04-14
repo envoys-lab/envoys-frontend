@@ -5,6 +5,8 @@ import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
+// const ButtonMenuItem = st
+
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
 }
@@ -31,7 +33,8 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
 
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
+
+      <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tev" slim={true}>
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
           {t('Live')}
         </ButtonMenuItem>
@@ -40,24 +43,28 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
             {t('Finished')}
           </ButtonMenuItem>
         </NotificationDot>
-      </ButtonMenu>
+        
+      </ButtonMenu> 
+
     </Wrapper>
   )
 }
 
 export default FarmTabButtons
 
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 
   a {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: auto;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 16px;
-  }
 `
