@@ -1,13 +1,18 @@
 import { getCompaniesSearch } from './api'
 
-const getSearchStr = (str) => str.toLowerCase()
+const getSearchStr = (str) => str.toLowerCase().trim()
 
 const getSearchResults = async ({ tokens, farms, poolsLiquidity, poolsSyrup, query }) => {
   if (!query) return null
   const { items: companies } = await getCompanies(query)
 
-  const compiledSearchResults = compileSearchResults({ tokens, companies, farms, poolsLiquidity, poolsSyrup })
-  return getSearchResultsByQuery(compiledSearchResults, query)
+  const compiledSearchResults = compileSearchResults({ tokens, farms, poolsLiquidity, poolsSyrup })
+  const appliedSearchResults = getSearchResultsByQuery(compiledSearchResults, query)
+
+  return {
+    companies,
+    ...appliedSearchResults,
+  }
 }
 
 const getSearchResultsByQuery = (compiledSearchResults, query) => {
@@ -15,16 +20,25 @@ const getSearchResultsByQuery = (compiledSearchResults, query) => {
 
   Object.keys(compiledSearchResults).map((key) => {
     const category = compiledSearchResults[key]
-    const output = category.filter((item) => item.search === undefined || item.search?.includes(getSearchStr(query)))
+    const output = category.filter((item) => {
+      if (!item.search || (!item.search.exact.length && !item.search.partial)) {
+        return false
+      }
+
+      if (item.search.exact.some((seatchItem) => getSearchStr(seatchItem) === getSearchStr(query))) {
+        return true
+      }
+
+      return item.search.partial?.includes(getSearchStr(query))
+    })
     result[key] = output
   })
 
   return result
 }
-const compileSearchResults = ({ tokens, companies, farms, poolsLiquidity, poolsSyrup }) => {
+const compileSearchResults = ({ tokens, farms, poolsLiquidity, poolsSyrup }) => {
   const compiledSearchResults = {
     tokens: getTokensSearchString(tokens),
-    companies: companies,
     farms: getFarmsSearchString(farms),
     poolsLiquidity: getPoolsLiquiditySearchString(poolsLiquidity),
     poolsSyrup: getPoolsSyrupSearchString(poolsSyrup),
@@ -36,14 +50,20 @@ const compileSearchResults = ({ tokens, companies, farms, poolsLiquidity, poolsS
 const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
     ...item,
-    search: getSearchStr(`${item.name} ${item.address}`),
+    search: {
+      partial: getSearchStr(item.name),
+      exact: [getSearchStr(item.address)],
+    },
   }))
 }
 
 const getFarmsSearchString = (farms) => {
   return farms.map((item) => ({
     ...item,
-    search: getSearchStr(`${item.lpSymbol} ${item.quoteToken.address} ${item.token.address}`),
+    search: {
+      partial: getSearchStr(item.lpSymbol),
+      exact: [getSearchStr(item.token.address), getSearchStr(item.quoteToken.address)],
+    },
   }))
 }
 
@@ -52,8 +72,10 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
     const pool = poolsLiquidity[item]
     return {
       ...pool,
-      search: getSearchStr(`${pool.address} ${pool.token0.address} ${pool.token0.name} 
-      ${pool.token0.symbol} ${pool.token1.address} ${pool.token1.name}  ${pool.token1.symbol}`),
+      search: {
+        partial: getSearchStr(`${pool.token0.name} ${pool.token0.symbol} ${pool.token1.name} ${pool.token1.symbol}`),
+        exact: [getSearchStr(pool.address), getSearchStr(pool.token0.address), getSearchStr(pool.token1.address)],
+      },
     }
   })
 }
@@ -61,7 +83,10 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
 const getPoolsSyrupSearchString = (poolsSyrup) => {
   return poolsSyrup.map((item) => ({
     ...item,
-    search: getSearchStr(`${item.earningToken.address} ${item.earningToken.name}`),
+    search: {
+      partial: getSearchStr(item.earningToken.name),
+      exact: [getSearchStr(item.earningToken.address)],
+    },
   }))
 }
 
