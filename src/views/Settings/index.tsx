@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints, Flex } from '@envoysvision/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -216,7 +216,9 @@ const Settings = () => {
         <Space />
         <TipContainer>{t('You need to connect your Wallet first')}</TipContainer>
         <Space />
-        <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
+        <Flex justifyContent={'center'}>
+          <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
+        </Flex>
       </>
     )
   }
@@ -286,7 +288,7 @@ const Settings = () => {
         {isPending && (
           <>
             <Space />
-            <TipContainer>{t('KYC Verification process may take from 2 minutes and up to 6 hours.')}</TipContainer>
+            <TipContainer>{t('KYC Verification process may take from 2 minutes and up to 24 hours.')}</TipContainer>
           </>
         )}
 

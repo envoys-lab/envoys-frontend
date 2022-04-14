@@ -19,6 +19,7 @@ import Dots from '../../components/Loader/Dots'
 import { AppHeader } from '../../components/App'
 import Page from '../../components/Layout/Page'
 import { PageContainer } from '../../components/Layout/PageContainer'
+import { NextLinkFromReactRouter } from '../../components/NextLink'
 
 enum Fields {
   TOKEN0 = 0,
@@ -111,7 +112,7 @@ export default function PoolFinder() {
               </Row>
             ) : (
               <Text small ml="8px">
-                {t('Select a Token')}
+                {t('Select Token')}
               </Text>
             )}
           </StyledButton>
@@ -131,7 +132,7 @@ export default function PoolFinder() {
               </Row>
             ) : (
               <Text small as={Row}>
-                {t('Select a Token')}
+                {t('Select Token')}
               </Text>
             )}
           </StyledButton>
@@ -155,9 +156,15 @@ export default function PoolFinder() {
                 <LightCard padding="45px 10px">
                   <AutoColumn gap="sm" justify="center">
                     <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                    <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                      <Text textAlign="center">{t('Add Liquidity')}</Text>
-                    </StyledInternalLink>
+                    <Button
+                      variant="tertiary"
+                      as={NextLinkFromReactRouter}
+                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      scale="md"
+                      mt={'16px'}
+                    >
+                      {t('Add Liquidity')}
+                    </Button>
                   </AutoColumn>
                 </LightCard>
               )

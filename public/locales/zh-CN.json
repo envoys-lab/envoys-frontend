@@ -1080,7 +1080,7 @@
   "Find other LP tokens": "查找其他 LP 代币",
   "Import Pool": "导入流动性池",
   "Import an existing pool": "导入现有流动性池",
-  "Select a Token": "选择代币",
+  "Select Token": "选择代币",
   "Pool Found!": "找到流动性池！",
   "No pool found.": "未找到流动性池。",
   "Create pool.": "创建流动性池。",

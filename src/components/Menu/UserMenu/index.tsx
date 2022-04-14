@@ -43,7 +43,7 @@ const UserMenu = () => {
 
   return (
     <UIKitUserMenu account={account} leftIcon={MenuOptions}>
-      <UserMenuDivider />
+      {/*<UserMenuDivider />*/}
       <UserMenuItem as="button" onClick={logout}>
         <Flex alignItems="center" justifyContent="space-between" width="100%">
           {t('Disconnect')}
