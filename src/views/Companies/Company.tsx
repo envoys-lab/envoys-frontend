@@ -15,7 +15,7 @@ import {
   CompanyInterviews,
 } from './components'
 
-import { getCompany } from './api'
+import { getCompany, getHolders } from './api'
 
 import styles from './Company.module.scss'
 import { Flex, Tab, TabMenu, useMatchBreakpoints } from '@envoysvision/uikit'
@@ -26,6 +26,7 @@ import { useTranslation } from '../../contexts/Localization'
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<BaseCompany>()
+  const [holders, setHolders] = useState<number>(0)
   const [activeTab, setActiveTab] = useState(0)
 
   const { t } = useTranslation()
@@ -34,6 +35,18 @@ const Company = ({ companyId }: { companyId: string }) => {
   useEffect(() => {
     handleGetCompany()
   }, [])
+
+  useEffect(() => {
+    if (company) {
+      handleGetHolders()
+    }
+  }, [company])
+
+  const handleGetHolders = async () => {
+    const holders = await getHolders('0x20E13f784A97E3AA4D615C9fC2e02819A3C08eE4')
+    console.log(holders)
+    setHolders(holders)
+  }
 
   const handleGetCompany = async () => {
     // console.log(companyId)
@@ -64,7 +77,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           logoUrl={company.logoUrl}
           className={styles['company__head']}
         />
-        <CompanyButton holders={company.holders} homePageUrl={company.homePageUrl} />
+        <CompanyButton holders={holders} homePageUrl={company.homePageUrl} />
       </div>
 
       <div id="tabs" className={`${styles['company__tabs']}`}>

@@ -5,7 +5,7 @@ import AccountIcon from 'views/Companies/assets/AccountIcon'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
 
 interface CompanyButtonProps {
-  holders: string
+  holders: number
   homePageUrl: string
   className?: string
 }

@@ -1,14 +1,33 @@
 const axios = require('axios')
 
-const ENVOYS_PUBLIC_API = 'https://api.beta.envoys.vision'
+import { ENVOYS_API, COVALENTHQ_API_KEY, COVALENTHQ_API } from 'config/constants/endpoints'
 
-const axiosInstance = axios.create({
-  baseURL: ENVOYS_PUBLIC_API,
+const envoysAxiosInstance = axios.create({
+  baseURL: ENVOYS_API,
 })
 
+const covalenthqAxiosInstance = axios.create({
+  baseURL: COVALENTHQ_API,
+})
+
+const getHolders = async (tokenId) => {
+  try {
+    const response = await covalenthqAxiosInstance.get(`/tokens/${tokenId}/token_holders/`, {
+      params: {
+        ['quote-currency']: 'USD',
+        format: 'JSON',
+        key: COVALENTHQ_API_KEY,
+      },
+    })
+
+    return response?.data?.data?.pagination?.total_count
+  } catch (e) {
+    console.error(e)
+  }
+}
 const getCompanies = async (page = 1, size = 50) => {
   try {
-    const response = await axiosInstance.get(`${ENVOYS_PUBLIC_API}/companies`, { params: { page, size } })
+    const response = await envoysAxiosInstance.get(`/companies`, { params: { page, size } })
     return response.data
   } catch (e) {
     console.error(e)
@@ -17,11 +36,11 @@ const getCompanies = async (page = 1, size = 50) => {
 
 const getCompany = async (companyId: string) => {
   try {
-    const response = await axiosInstance.get(`${ENVOYS_PUBLIC_API}/companies/${companyId}`)
+    const response = await envoysAxiosInstance.get(`/companies/${companyId}`)
     return response.data
   } catch (e) {
     console.error(e)
   }
 }
 
-export { getCompanies, getCompany }
+export { getCompanies, getCompany, getHolders }
