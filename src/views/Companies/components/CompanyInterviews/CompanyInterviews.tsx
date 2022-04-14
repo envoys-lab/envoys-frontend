@@ -9,6 +9,12 @@ interface CompanyInterviewsProps {
 }
 
 const CompanyInterviews = ({ members, className }: CompanyInterviewsProps) => {
+  const getPersonUrl = (person) => {
+    if (person.avatarUrl && person.avatarUrl !== 'https://cloud.example/profile-picture') {
+      return person.avatarUrl
+    }
+    return '/images/avatar.svg'
+  }
   const getAvatarBlock = (person, smallScreen = false) => (
     <div
       className={classNames(styles['company-members-card-avatar'], {
@@ -17,7 +23,7 @@ const CompanyInterviews = ({ members, className }: CompanyInterviewsProps) => {
       })}
     >
       <div className={styles['company-members-card-avatar-image']}>
-        <img src={person.avatarUrl}></img>
+        <img src={getPersonUrl(person)} alt={person.name} />
       </div>
       <div className={styles['company-members-card-avatar-title']}>{person.name}</div>
     </div>

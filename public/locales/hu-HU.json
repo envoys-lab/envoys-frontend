@@ -1080,7 +1080,7 @@
   "Find other LP tokens": "Más LP zsetonok keresése",
   "Import Pool": "Összevont alap importálása",
   "Import an existing pool": "Létező összevont alap importálása",
-  "Select a Token": "Válasszon egy zsetont",
+  "Select Token": "Válasszon egy zsetont",
   "Pool Found!": "Összevont alapot talált!",
   "No pool found.": "Összevont alap nem található.",
   "Create pool.": "Összevont alap létrehozása.",

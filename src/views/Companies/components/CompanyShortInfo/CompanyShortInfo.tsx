@@ -10,14 +10,15 @@ interface CompanyShortInfoProps {
 }
 
 const CompanyShortInfo = ({ name, description, logoUrl, className }: CompanyShortInfoProps) => {
+  const realLogoUrl = !logoUrl || logoUrl !== 'https://cloud.example/logo' ? logoUrl : '/images/company.png'
   return (
     <div className={`${styles['company-short']} ${className}`}>
       <div style={{ margin: '15px' }} className={classNames([styles['company-short__logo'], styles['showAfterXxl']])}>
-        <img src={logoUrl}></img>
+        <img src={realLogoUrl}></img>
       </div>
       <div className={styles['company-short-main']}>
         <div className={classNames([styles['company-short__logo'], styles['showBeforeXxl']])}>
-          <img src={logoUrl}></img>
+          <img src={realLogoUrl}></img>
         </div>
         <div className={styles['company-short-main__name']}>{name}</div>
         <div className={styles['company-short-main__description']}>{description}</div>
