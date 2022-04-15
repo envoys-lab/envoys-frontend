@@ -5,7 +5,7 @@ import numeral from 'numeral'
 // Intended to be used for tokens whose value is less than $1
 // https://stackoverflow.com/a/23887837
 export const getFirstThreeNonZeroDecimals = (value: number) => {
-  return value.toFixed(9).match(/^-?\d*\.?0*\d{0,2}/)[0]
+  return value.toFixed(9).match(/^-?\d*\.?0*\d{0,1}/)[0]
 }
 
 export type formatAmountNotation = 'compact' | 'standard'
@@ -13,10 +13,11 @@ export type formatAmountNotation = 'compact' | 'standard'
 /**
  * This function is used to format token prices, liquidity, amount of tokens in TX, and in general any numbers on info section
  * @param amount - amount to be formatted
- * @param notation - whether to show 1M or 1,000,000
- * @param displayThreshold - threshold below which it will return simply <displayThreshold instead of actual value, e.g. if 0.001 -> returns <0.001 for 0.0005
- * @param tokenPrecision - set to true when you want precision to be 3 decimals for values < 1 and 2 decimals for values > 1
- * @param isInteger - if true the values will contain decimal part only if the amount is > 1000
+ * @param options - format options
+ * @param options.notation - whether to show 1M or 1,000,000
+ * @param options.displayThreshold - threshold below which it will return simply <displayThreshold instead of actual value, e.g. if 0.001 -> returns <0.001 for 0.0005
+ * @param options.tokenPrecision - set to true when you want precision to be 3 decimals for values < 1 and 2 decimals for values > 1
+ * @param options.isInteger - if true the values will contain decimal part only if the amount is > 1000
  * @returns formatted string ready to be displayed
  */
 export const formatAmount = (

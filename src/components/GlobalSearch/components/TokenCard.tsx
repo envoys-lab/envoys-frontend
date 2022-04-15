@@ -4,7 +4,8 @@ import { Flex, Image, SunCheckIcon, Text } from '@envoysvision/uikit'
 
 import { Token } from '../types'
 import { AutoColumn } from '../../Layout/Column'
-import { FlexLink, SearchResultBox } from './styles'
+import { BadgeButton, FlexLink, SearchResultBox } from './styles'
+import CurrencyEquivalent, { getTokenCurrencyEquivalent } from '../../CurrencyInputPanel/CurrencyEquivalent'
 
 const StyledSunIcon = styled(SunCheckIcon)`
   color: ${({ theme }) => theme.colors.primary};
@@ -15,6 +16,7 @@ interface ResultGroupProps {
 }
 
 const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
+  const hasEquivalent = getTokenCurrencyEquivalent(item)
   return (
     <SearchResultBox>
       <FlexLink href={`/info/token/${item.address}`}>
@@ -27,9 +29,13 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
               <Text thin fontSize={'18px'}>
                 {item.name} ({item.symbol})
               </Text>
-              {/*<BadgeButton scale={"xs"} variant={"secondary"}>
-                                <Text color={"secondary"} small m={"4px"} bold>{item.chainId}</Text>
-                            </BadgeButton>*/}
+              {hasEquivalent && (
+                <BadgeButton scale={'xs'} variant={'secondary'}>
+                  <Text color={'secondary'} small m={'4px'} bold>
+                    <CurrencyEquivalent currency={item} decimals={3} notation={'standard'} />
+                  </Text>
+                </BadgeButton>
+              )}
             </Flex>
             <Text thin small overflow={'hidden'} style={{ textOverflow: 'ellipsis' }}>
               {item.address}
