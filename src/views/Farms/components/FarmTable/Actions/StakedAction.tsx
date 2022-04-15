@@ -30,6 +30,12 @@ const IconButtonWrapper = styled.div`
   display: flex;
 `
 
+const FarmsConnectWalletButton = styled(ConnectWalletButton)`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+`
+
 interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   lpLabel?: string
@@ -58,6 +64,10 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   const router = useRouter()
   const lpPrice = useLpTokenPrice(lpSymbol)
   const cakePrice = usePriceCakeBusd()
+
+  const EnvoysSkeleton = styled(Skeleton)`
+    border-radius: 14px;
+  `
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
@@ -184,13 +194,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   if (!account) {
     return (
       <ActionContainer>
-        <ActionTitles>
+        {/* <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
           </Text>
-        </ActionTitles>
+        </ActionTitles> */}
         <ActionContent>
-          <ConnectWalletButton width="100%" />
+          <FarmsConnectWalletButton width="100%" height="42px" minWidth="132px" />
         </ActionContent>
       </ActionContainer>
     )
@@ -266,13 +276,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
   if (!userDataReady) {
     return (
       <ActionContainer>
-        <ActionTitles>
+        {/* <ActionTitles>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
             {t('Start Farming')}
           </Text>
-        </ActionTitles>
+        </ActionTitles> */}
         <ActionContent>
-          <Skeleton width={180} marginBottom={28} marginTop={14} />
+          <EnvoysSkeleton width={132} height={42} marginBottom={0} marginTop={0} />
         </ActionContent>
       </ActionContainer>
     )

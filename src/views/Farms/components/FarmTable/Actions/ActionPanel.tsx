@@ -51,20 +51,27 @@ const Container = styled.div<{ expanded }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.background};
+  ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
   width: 100%;
-  flex-direction: column-reverse;
+  flex-direction: row;
   padding: 24px;
+
+  border-radius: 0px 0px 18px 18px;
+  margin-bottom: 20px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px 0px;
   }
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.primary};
+  max-height: 16px;
+  margin-bottom: 7px;
 `
 
 const StakeContainer = styled.div`
@@ -102,6 +109,7 @@ const TagsContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -112,22 +120,18 @@ const ActionContainer = styled.div`
 `
 
 const InfoContainer = styled.div`
-  min-width: 200px;
-`
+  min-width: 120px;
+  width: 43%;
+  
+  padding-left: 0;
 
-const ValueContainer = styled.div`
-  display: block;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-left: 6%;
   }
 `
 
-const ValueWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 4px 0px;
+const LeftSideContainer = styled.div`
+  padding-left: 6%;
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
@@ -164,12 +168,13 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         )}
         <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
+        {/* <TagsContainer>
           {farm.isCommunity ? <CommunityTag /> : <CoreTag />}
           {dual ? <DualTag /> : null}
-        </TagsContainer>
+        </TagsContainer> */}
       </InfoContainer>
-      <ValueContainer>
+
+      {/* <ValueContainer>
         <ValueWrapper>
           <Text>{t('APR')}</Text>
           <Apr {...apr} />
@@ -182,7 +187,8 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
           <Text>{t('Liquidity')}</Text>
           <Liquidity {...liquidity} />
         </ValueWrapper>
-      </ValueContainer>
+      </ValueContainer> */}
+
       <ActionContainer>
         <HarvestAction {...farm} userDataReady={userDataReady} />
         <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />

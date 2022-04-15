@@ -58,8 +58,8 @@ const TopContaiener = styled.div`
   padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 33px;
-    padding-right: 33px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `
 

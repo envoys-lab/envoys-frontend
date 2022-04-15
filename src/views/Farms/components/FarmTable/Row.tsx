@@ -50,15 +50,28 @@ const CellInner = styled.div`
   }
 `
 
-const RowContainer = styled.td`
+const DetailsContainer = styled.td`
   width: 30px;
 `
 
 const StyledTr = styled.tr`
   cursor: pointer;
+`
+
+const ExpandContainer = styled.div<{ showBackground: boolean }>`
+  ${({ showBackground }) => (showBackground ? 'background: #f9f9f9;' : '')}
+
+  border-radius: 18px 18px 0 0;
+  padding-left: 18px;
+  padding-right: 18px;
+`
+
+const BorderContainer = styled.div`
+  width: 100%;
   border-bottom: 1px solid rgba(230, 230, 230, 0.5);
-  padding-left: 33px;
-  padding-right: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const EarnedMobileCell = styled.td`
@@ -99,51 +112,58 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     if (!isMobile) {
       return (
         <StyledTr onClick={toggleActionPanel}>
-          {Object.keys(props).map((key) => {
-            const columnIndex = columnNames.indexOf(key)
-            if (columnIndex === -1) {
-              return null
-            }
+          <ExpandContainer showBackground={actionPanelExpanded}>
+            <BorderContainer>
+              {Object.keys(props).map((key) => {
+                const columnIndex = columnNames.indexOf(key)
+                if (columnIndex === -1) {
+                  return null
+                }
 
-            switch (key) {
-              case 'details':
-                return (
-                  <RowContainer key={key}>
-                    {/* <CellInner> */}
-                      <CellLayout>
-                        <Details actionPanelToggled={actionPanelExpanded} />
-                      </CellLayout>
-                    {/* </CellInner> */}
-                  </RowContainer>
-                )
-              case 'apr':
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout label={t('APR')}>
-                        <Apr {...props.apr} hideButton={isSmallerScreen} />
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                )
-              default:
-                return (
-                  <td key={key}>
-                    <CellInner>
-                      <CellLayout label={t(tableSchema[columnIndex].label)}>
-                        {React.createElement(cells[key], { ...props[key], userDataReady })}
-                      </CellLayout>
-                    </CellInner>
-                  </td>
-                )
-            }
-          })}
+                switch (key) {
+                  case 'details':
+                    return (
+                      <DetailsContainer key={key}>
+                        {/* <CellInner> */}
+
+                        <CellLayout>
+                          <Details actionPanelToggled={actionPanelExpanded} />
+                        </CellLayout>
+
+                        {/* </CellInner> */}
+                      </DetailsContainer>
+                    )
+                  case 'apr':
+                    return (
+                      <td key={key}>
+                        <CellInner>
+                          <CellLayout label={t('APR')}>
+                            <Apr {...props.apr} hideButton={isSmallerScreen} />
+                          </CellLayout>
+                        </CellInner>
+                      </td>
+                    )
+                  default:
+                    return (
+                      <td key={key}>
+                        <CellInner>
+                          <CellLayout label={t(tableSchema[columnIndex].label)}>
+                            {React.createElement(cells[key], { ...props[key], userDataReady })}
+                          </CellLayout>
+                        </CellInner>
+                      </td>
+                    )
+                }
+              })}
+            </BorderContainer>
+          </ExpandContainer>
         </StyledTr>
       )
     }
 
     return (
       <StyledTr onClick={toggleActionPanel}>
+        <ExpandContainer showBackground={actionPanelExpanded}>
         <td>
           <tr>
             <FarmMobileCell>
@@ -172,6 +192,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
             </CellLayout>
           </CellInner>
         </td>
+        </ExpandContainer>
       </StyledTr>
     )
   }

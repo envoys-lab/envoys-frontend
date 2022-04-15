@@ -47,26 +47,9 @@ export const FinanceTab: FC = ({ children }) => {
     return router.push(tabs[newTabIndex].path)
   }
 
-  // const renderTabContent = () => {
-  //   if (activeTab === 0) {
-  //     return (
-  //       <>
-  //         <Farms></Farms>
-  //       </>
-  //     )
-  //   }
-  //   if (activeTab === 1) {
-  //     return (
-  //       <>
-  //         <Pools></Pools>
-  //       </>
-  //     )
-  //   }
-  // }
-
   const renderTabs = () => {
     return (
-      <TabMenu activeIndex={activeTab} onItemClick={handleTabClick}>
+      <TabMenu verticalMargin="71.5" activeIndex={activeTab} onItemClick={handleTabClick}>
         {tabs.map((item) => (
           <Tab key={item.title}>{item.title}</Tab>
         ))}
