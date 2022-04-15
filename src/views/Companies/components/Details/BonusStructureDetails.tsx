@@ -11,8 +11,10 @@ const BonusStructureDetails = ({ bonus, className }: BonusStructureDetailsProps)
     <div className={`${styles['details']} ${className}`}>
       <div className={`${styles['details-header']}`}>Bonus Structure</div>
       <div className={`${styles['details-data']}`}>
-        {bonus.map((b) => (
-          <div className={`${styles['details-data-inner']}`}>{b}</div>
+        {bonus.map((item, index) => (
+          <div key={index} className={`${styles['details-data-inner']}`}>
+            {item}
+          </div>
         ))}
       </div>
     </div>
