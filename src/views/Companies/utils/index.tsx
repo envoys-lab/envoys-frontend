@@ -41,6 +41,7 @@ export interface BaseCompany {
   stages: CompanyStage[]
   status: CompanyStatus
   videoUrl: string
+  token: string
   _id: string
   holders: any
 }
