@@ -43,8 +43,10 @@ const Company = ({ companyId }: { companyId: string }) => {
   }, [company])
 
   const handleGetHolders = async () => {
-    const holders = await getHolders('0x20E13f784A97E3AA4D615C9fC2e02819A3C08eE4')
-    console.log(holders)
+    if (!company.token) {
+      return
+    }
+    const holders = await getHolders(company?.token)
     setHolders(holders)
   }
 
@@ -77,7 +79,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           logoUrl={company.logoUrl}
           className={styles['company__head']}
         />
-        <CompanyButton holders={holders} homePageUrl={company.homePageUrl} />
+        <CompanyButton token={company.token} holders={holders} homePageUrl={company.homePageUrl} />
       </div>
 
       <div id="tabs" className={`${styles['company__tabs']}`}>

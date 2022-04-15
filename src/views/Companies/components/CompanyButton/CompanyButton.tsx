@@ -8,14 +8,15 @@ interface CompanyButtonProps {
   holders: number
   homePageUrl: string
   className?: string
+  token?: string
 }
 
-const CompanyButton = ({ holders, homePageUrl, className }: CompanyButtonProps) => {
+const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const router = useRouter()
 
   const handleTrade = () => {
-    const defaultToken = '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82' // TODO: not a real token, needs to be replaced
-    const companyToken = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' // TODO: not a real token, needs to be replaced
+    const defaultToken = 'BNB'
+    const companyToken = token
 
     router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${companyToken}`)
   }
