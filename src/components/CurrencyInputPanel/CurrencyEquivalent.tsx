@@ -14,7 +14,11 @@ const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', c
   const vsCurrency = getCurrency()
   const vsSymbol = getSymbolFromCurrency(vsCurrency)
   const vsCurrenciesData = getCurrencyData()
-  const address = (currency as Token)?.address?.toLowerCase()
+  let address = (currency as Token)?.address?.toLowerCase()
+  if (!address && currency?.symbol === 'BNB') {
+    // use WBNB address
+    address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'.toLowerCase()
+  }
   let modifier = vsCurrenciesData[address]
   let content = '-'
   if (modifier) {

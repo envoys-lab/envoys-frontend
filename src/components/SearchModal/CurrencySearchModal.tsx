@@ -79,7 +79,7 @@ export default function CurrencySearchModal({
   const { t } = useTranslation()
 
   const config = {
-    [CurrencyModalView.search]: { title: t('Select a Token'), onBack: undefined },
+    [CurrencyModalView.search]: { title: t('Select Token'), onBack: undefined },
     [CurrencyModalView.manage]: { title: t('Manage'), onBack: () => setModalView(CurrencyModalView.search) },
     [CurrencyModalView.importToken]: {
       title: t('Import Tokens'),

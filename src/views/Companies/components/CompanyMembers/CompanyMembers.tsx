@@ -8,13 +8,19 @@ interface CompanyMembersProps {
 }
 
 const CompanyMembers = ({ members, className }: CompanyMembersProps) => {
+  const getAvatarUrl = (member) => {
+    if (member.avatarUrl && member.avatarUrl !== 'https://cloud.example/profile-picture') {
+      return member.avatarUrl
+    }
+    return '/images/avatar.svg'
+  }
   return (
     <div className={`${styles['company-members']} ${className}`}>
       {members.map((member, index) => (
         <div key={index} className={styles['company-members-card']}>
           <div>
             <div className={styles['company-members-card-avatar']}>
-              <img src={member.avatarUrl}></img>
+              <img src={getAvatarUrl(member)} alt={member.name} />
             </div>
             <div className={styles['company-members-card-title']}>{member.name}</div>
             <div className={styles['company-members-card-position']}>{member.position}</div>
