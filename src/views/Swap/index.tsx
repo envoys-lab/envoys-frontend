@@ -378,7 +378,7 @@ export default function Swap() {
   }, [onUserInput, window.location.hostname])
 
   return (
-    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed}>
+    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed} removeInnerPadding>
       <Flex justifyContent="space-between" position="relative">
         {isDesktop && (
           <StyledChartContainer $isChartDisplayed={isChartDisplayed}>
@@ -514,7 +514,7 @@ export default function Swap() {
                   </AutoColumn>
                 )*/}
             </AutoColumn>
-            <Box mt="0.25rem">
+            <Box mt="1rem">
               {swapIsUnsupported ? (
                 <Button width="100%" disabled>
                   {t('Unsupported Asset')}

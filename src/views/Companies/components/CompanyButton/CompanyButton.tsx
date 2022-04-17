@@ -1,8 +1,14 @@
-import React from 'react'
-import styles from './CompanyButton.module.scss'
+import React, {useState} from 'react'
+import {Button, Flex} from "@envoysvision/uikit";
 import { useRouter } from 'next/router'
+import styles from './CompanyButton.module.scss'
 import AccountIcon from 'views/Companies/assets/AccountIcon'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
+import {User, VerificationStatus} from "../../../Settings/types";
+import {isVerificationPassed} from "../../../Settings/heplers";
+import {useTranslation} from "../../../../contexts/Localization";
+import classNames from "classnames";
+import {NextLinkFromReactRouter} from "../../../../components/NextLink";
 
 interface CompanyButtonProps {
   holders: number
@@ -12,13 +18,21 @@ interface CompanyButtonProps {
 }
 
 const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
+  const {t} = useTranslation();
+  const [user] = useState<User>()
+  const application = user?.person?.verification;
+  const isCompleted = application?.status === VerificationStatus.completed
+  const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
+
   const router = useRouter()
 
   const handleTrade = () => {
+    if (!isVerificationAccepted) {
+      router.push(`/settings`);
+      return;
+    }
     const defaultToken = 'BNB'
-    const companyToken = token
-
-    router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${companyToken}`)
+    router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${token}`)
   }
 
   const handleCompanyUrlClick = () => {
@@ -34,9 +48,12 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
 
   return (
     <div className={`${styles['сompany-button']} ${className}`}>
-      <div className={styles['сompany-button__button']} onClick={handleTrade}>
-        TRADE
-      </div>
+      <Flex style={{ gridGap: "8px" }} flexDirection={"column"}>
+        <div>{t('You have to complete KYC verification to trade')}</div>
+        <div className={styles['сompany-button__button']} onClick={handleTrade}>
+          {t(isVerificationAccepted ? 'TRADE' : 'Verify')}
+        </div>
+      </Flex>
       <div className={styles['сompany-button__holders']}>
         <AccountIcon className={styles['account-icon']} color="#F48020" />
         <span>Holders: {holders}</span>

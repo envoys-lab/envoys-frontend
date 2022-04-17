@@ -11,5 +11,4 @@ export const StyledSwapContainer = styled(PageContainer)<{ $isChartDisplayed: bo
 
 export const StyledChartContainer = styled(Flex)<{ $isChartDisplayed: boolean }>`
   flex-grow: 1;
-  ${({ $isChartDisplayed }) => $isChartDisplayed && `margin-left: -24px;`};
 `

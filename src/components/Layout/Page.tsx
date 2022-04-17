@@ -58,6 +58,7 @@ export const PageMeta: React.FC<{ symbol?: string }> = ({ symbol }) => {
 interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
   autoWidth?: boolean
   removePadding?: boolean
+  removeInnerPadding?: boolean
   hideFooterOnDesktop?: boolean
   symbol?: string
 }
@@ -66,6 +67,7 @@ const Page: React.FC<PageProps> = ({
   children,
   autoWidth,
   removePadding = false,
+  removeInnerPadding = false,
   hideFooterOnDesktop = false,
   symbol,
   ...props
@@ -74,7 +76,7 @@ const Page: React.FC<PageProps> = ({
     <>
       <PageMeta symbol={symbol} />
       <StyledPage $removePadding={removePadding} {...props}>
-        <AppBody autoWidth={autoWidth}>{children}</AppBody>
+        <AppBody autoWidth={autoWidth} removePadding={removeInnerPadding}>{children}</AppBody>
         <Flex flexGrow={1} />
         <Box display={['block', null, null, hideFooterOnDesktop ? 'none' : 'block']} width="100%">
           <Footer />

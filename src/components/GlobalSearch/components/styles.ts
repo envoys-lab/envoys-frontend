@@ -4,7 +4,7 @@ import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
 export const BodyWrapper = styled(Card)`
   width: 100%;
   max-width: 90vw;
-  background: ${({ theme }) => theme.colors.background};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
   margin: 16px auto 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: relative;

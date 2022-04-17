@@ -72,7 +72,7 @@ const BasicChart = ({
 
   return (
     <>
-      <Flex flexDirection="column" alignItems={'stretch'} p="20px">
+      <Flex flexDirection="column" alignItems={'stretch'} p="0 20px 20px">
         <Flex flexDirection="row" alignItems={'flex-start'} justifyContent="space-between">
           <Flex flexDirection="column" justifyContent={'flex-start'}>
             <TokenDisplay
