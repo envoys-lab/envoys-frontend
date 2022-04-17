@@ -9,12 +9,10 @@ const idsToRemove = [0, 78]
 const poolsToTest = pools.filter((pool) => !idsToRemove.includes(pool.sousId)).slice(0, 10)
 
 describe('Config pools', () => {
-
   test.skip('it is not snowing', () => {
     const l = poolsToTest.length > 0
     expect(l).toEqual(true)
-  });
-
+  })
 
   // it.each(pools.map((pool) => pool.sousId))('Pool #%d has an unique sousId', (sousId) => {
   //   const duplicates = pools.filter((p) => sousId === p.sousId)
