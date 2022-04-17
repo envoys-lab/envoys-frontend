@@ -1,4 +1,5 @@
 import { getCompaniesSearch } from './api'
+import { DefaultFarmIdentifier } from 'config/constants/farms'
 
 const getSearchStr = (str) => str.toLowerCase().trim()
 
@@ -43,12 +44,16 @@ const compileSearchResults = ({ tokens, companies, farms, poolsLiquidity, poolsS
   const compiledSearchResults = {
     tokens: getTokensSearchString(tokens),
     companies: companies,
-    farms: getFarmsSearchString(farms),
+    farms: getFilteredFarms(getFarmsSearchString(farms)),
     poolsLiquidity: getPoolsLiquiditySearchString(poolsLiquidity),
     poolsSyrup: getPoolsSyrupSearchString(poolsSyrup),
   }
 
   return compiledSearchResults
+}
+
+const getFilteredFarms = (farms) => {
+  return farms.filter(({ pid }) => pid !== DefaultFarmIdentifier.EVT)
 }
 
 const getTokensSearchString = (tokens) => {
