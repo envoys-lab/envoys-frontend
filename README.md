@@ -25,3 +25,16 @@
 
 - [Info](doc/Info.md)
 - [Cypress tests](doc/Cypress.md)
+
+
+## MAINNET / TESTNET - Setting Up
+
+1. First you need to add liquidity using Add Liquidity functionality for the following pairs:
+   - EVT - BNB  
+   - BUSD - BNB
+
+2. Create Farms using 'add' function in MasterChef smart contract (You can use bscscan for this) using folowing sequence
+   - EVT/BNB Farm must hame index in arrat - 1
+   - BUSD/BNB Farm must hame index in arrat - 2
+
+3. Copy 

@@ -3,6 +3,7 @@ import { BIG_ONE, BIG_ZERO } from 'utils/bigNumber'
 import { filterFarmsByQuoteToken } from 'utils/farmsPriceHelpers'
 import { SerializedFarm } from 'state/types'
 import tokens from 'config/constants/tokens'
+import { DefaultFarmIdentifier } from 'config/constants/farms'
 
 const getFarmFromTokenSymbol = (
   farms: SerializedFarm[],
@@ -86,7 +87,7 @@ const getFarmQuoteTokenPrice = (
 }
 
 const getFarmsPrices = (farms: SerializedFarm[]) => {
-  const bnbBusdFarm = farms.find((farm) => farm.pid === 252)
+  const bnbBusdFarm = farms.find((farm) => farm.pid === DefaultFarmIdentifier.BUSD_BNB)
   const bnbPriceBusd = bnbBusdFarm.tokenPriceVsQuote ? BIG_ONE.div(bnbBusdFarm.tokenPriceVsQuote) : BIG_ZERO
 
   const farmsWithPrices = farms.map((farm) => {

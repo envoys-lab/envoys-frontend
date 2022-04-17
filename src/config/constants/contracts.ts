@@ -1,10 +1,10 @@
 export default {
   masterChef: {
-    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+    97: '0x2061037E588b66Ef8379E1E5216D10bb26e07106', // TESTNET - Envoys - Master Chef 
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
   sousChef: {
-    97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
+    97: '0x4d6cE83D8de9Ebb79160329D7dCBCE763dd580d9', // TESTNET - Envoys - Sous Chef
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
   },
   lotteryV2: {
@@ -52,12 +52,12 @@ export default {
     97: '0x24ec6962dbe874F6B67B5C50857565667fA0854F',
   },
   cakeVault: {
+    97: '0xf199d61ff4e53b948480e5be31545ee05368f310', // TESTNET - Envoys - Vault Contract
     56: '0xa80240Eb5d7E05d3F250cF000eEc0891d00b51CC',
-    97: '',
   },
   ifoPool: {
     56: '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8',
-    97: '',
+    97: '',                                           // TESTNET - NEED ifo POOL ADRESS
   },
   predictions: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',

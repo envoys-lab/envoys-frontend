@@ -1,7 +1,7 @@
 import tokens from 'config/constants/tokens'
 import { getCakeVaultAddress, getIfoPoolAddress, getMasterChefAddress } from 'utils/addressHelpers'
 
-const cakeLpAddress = '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0'
+const cakeLpAddress = '0x11636e5a6526eCeA7F46522d5b3ae82593E8410F'
 
 const CakeBalanceStrategy = {
   name: 'erc20-balance-of',
@@ -40,7 +40,7 @@ const CakeVaultSharesStrategy = {
         },
         {
           internalType: 'uint256',
-          name: 'cakeAtLastUserAction',
+          name: 'evtAtLastUserAction',
           type: 'uint256',
         },
         {
@@ -105,7 +105,7 @@ const IFOPoolSharesStrategy = {
         },
         {
           internalType: 'uint256',
-          name: 'cakeAtLastUserAction',
+          name: 'evtAtLastUserAction',
           type: 'uint256',
         },
         {
@@ -245,7 +245,7 @@ const CakeBnbLpCakeBnbBalanceStrategy = {
   params: {
     address: getMasterChefAddress(),
     decimals: 0,
-    args: [251, '%{address}'],
+    args: [1, '%{address}'],
     output: 'amount',
     methodABI: {
       inputs: [

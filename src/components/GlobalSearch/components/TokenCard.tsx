@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Image, SunCheckIcon, Text } from '@envoysvision/uikit'
+import { Flex, Image, SunIcon, Text } from '@envoysvision/uikit'
 
 import { Token } from '../types'
 import { AutoColumn } from '../../Layout/Column'
 import { BadgeButton, FlexLink, SearchResultBox } from './styles'
 import CurrencyEquivalent, { getTokenCurrencyEquivalent } from '../../CurrencyInputPanel/CurrencyEquivalent'
 
-const StyledSunIcon = styled(SunCheckIcon)`
+const StyledSunIcon = styled(SunIcon)`
   color: ${({ theme }) => theme.colors.primary};
 `
 

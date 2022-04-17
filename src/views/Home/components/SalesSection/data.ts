@@ -1,3 +1,4 @@
+import { DEFAULT_OUTPUT_CURRENCY } from 'state/swap/constants'
 import { SalesSectionProps } from '.'
 
 export const swapSectionData: SalesSectionProps = {
@@ -19,7 +20,7 @@ export const swapSectionData: SalesSectionProps = {
     attributes: [
       { src: 'BNB', alt: 'BNB token' },
       { src: 'BTC', alt: 'BTC token' },
-      { src: 'CAKE', alt: 'CAKE token' },
+      { src: 'CAKE', alt: 'EVT token' },
     ],
   },
 }
@@ -43,19 +44,19 @@ export const earnSectionData: SalesSectionProps = {
     attributes: [
       { src: 'pie', alt: 'Pie chart' },
       { src: 'stonks', alt: 'Stocks chart' },
-      { src: 'folder', alt: 'Folder with cake token' },
+      { src: 'folder', alt: 'Folder with EVT token' },
     ],
   },
 }
 
 export const cakeSectionData: SalesSectionProps = {
-  headingText: 'CAKE makes our world go round.',
+  headingText: 'EVT makes our world go round.',
   bodyText:
-    'CAKE token is at the heart of the Envoys ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
+    'EVT token is at the heart of the Envoys ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
   reverse: false,
   primaryButton: {
-    to: '/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
-    text: 'Buy CAKE',
+    to: '/swap?outputCurrency=' + DEFAULT_OUTPUT_CURRENCY,
+    text: 'Buy EVT',
     external: false,
   },
   secondaryButton: {
@@ -69,7 +70,7 @@ export const cakeSectionData: SalesSectionProps = {
     attributes: [
       { src: 'bottom-right', alt: 'Small 3d pancake' },
       { src: 'top-right', alt: 'Small 3d pancake' },
-      { src: 'coin', alt: 'CAKE token' },
+      { src: 'coin', alt: 'EVT token' },
       { src: 'top-left', alt: 'Small 3d pancake' },
     ],
   },

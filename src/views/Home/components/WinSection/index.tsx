@@ -72,10 +72,10 @@ const LotteryCardData: IconCardData = {
 const bottomLeftImage = {
   path: '/images/home/prediction-cards/',
   attributes: [
-    { src: 'bottom-left', alt: 'CAKE card' },
-    { src: 'green', alt: 'Green CAKE card with up arrow' },
-    { src: 'red', alt: 'Red Cake card with down arrow' },
-    { src: 'top-right', alt: 'CAKE card' },
+    { src: 'bottom-left', alt: 'EVT card' },
+    { src: 'green', alt: 'Green EVT card with up arrow' },
+    { src: 'red', alt: 'Red EVT card with down arrow' },
+    { src: 'top-right', alt: 'EVT card' },
   ],
 }
 

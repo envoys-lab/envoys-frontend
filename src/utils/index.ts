@@ -9,7 +9,7 @@ import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@envoysvision/sdk'
 import { ROUTER_ADDRESS } from '../config/constants'
-import { BASE_BSC_SCAN_URLS } from '../config'
+import { BASE_BSC_SCAN_URLS, CURRENT_CHAIN_ID } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { simpleRpcProvider } from './providers'
 
@@ -25,8 +25,11 @@ export function isAddress(value: any): string | false {
 export function getBscScanLink(
   data: string | number,
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
-  chainId: ChainId = ChainId.MAINNET,
+  chainId?: ChainId,
 ): string {
+  if (!chainId) {
+    chainId = CURRENT_CHAIN_ID
+  }
   switch (type) {
     case 'transaction': {
       return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`
