@@ -31,7 +31,7 @@ export enum GAS_PRICE {
   testnet = '10',
 }
 
-export const GAS_PRICE_GWEI = {
+export const GAS_PRICE_GWEI: { [key in keyof typeof GAS_PRICE]: string } = {
   default: parseUnits(GAS_PRICE.default, 'gwei').toString(),
   fast: parseUnits(GAS_PRICE.fast, 'gwei').toString(),
   instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),

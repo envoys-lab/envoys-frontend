@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
@@ -17,7 +17,7 @@ import {
   Image,
   useMatchBreakpoints,
 } from '@envoysvision/uikit'
-import Page from 'components/Layout/Page'
+import Page from '../../../components/Layout/Page'
 import { getBscScanLink } from 'utils'
 import truncateHash from 'utils/truncateHash'
 import useCMCLink from 'views/Info/hooks/useCMCLink'
@@ -43,7 +43,7 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 const ContentLayout = styled.div`
   margin-top: 16px;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 200px 1fr;
   grid-gap: 1em;
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
@@ -102,7 +102,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
     <Page symbol={tokenData?.symbol}>
       {tokenData ? (
         !tokenData.exists ? (
-          <Card>
+          <Card style={{ maxWidth: '100% !important' }}>
             <Box p="16px">
               <Text>
                 {t('No pool has been created with this token yet. Create one')}
@@ -148,7 +148,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                     ml="12px"
                     bold
                     lineHeight="0.7"
-                    fontSize={isXs || isSm ? '24px' : '40px'}
+                    fontSize={isXs || isSm ? '24px' : '32px'}
                     id="info-token-name-title"
                   >
                     {tokenData.name}
@@ -158,21 +158,21 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                   </Text>
                 </Flex>
                 <Flex mt="8px" ml="46px" alignItems="center">
-                  <Text mr="16px" bold fontSize="24px">
+                  <Text mr="16px" bold fontSize="18px">
                     ${formatAmount(tokenData.priceUSD, { notation: 'standard' })}
                   </Text>
                   <Percent value={tokenData.priceUSDChange} fontWeight={600} />
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${address}`}>
-                  <Button mr="8px" variant="secondary">
+                <NextLinkFromReactRouterSlim to={`/add/${address}`}>
+                  <Button mr="8px" variant="tertiary">
                     {t('Add Liquidity')}
                   </Button>
-                </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/swap?inputCurrency=${address}`}>
+                </NextLinkFromReactRouterSlim>
+                <NextLinkFromReactRouterSlim to={`/swap?inputCurrency=${address}`}>
                   <Button>{t('Trade')}</Button>
-                </NextLinkFromReactRouter>
+                </NextLinkFromReactRouterSlim>
               </Flex>
             </Flex>
 
@@ -183,7 +183,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                   <Text bold small color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Liquidity')}
                   </Text>
-                  <Text bold fontSize="24px">
+                  <Text bold fontSize="18px">
                     ${formatAmount(tokenData.liquidityUSD)}
                   </Text>
                   <Percent value={tokenData.liquidityUSDChange} />
@@ -191,7 +191,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Volume 24H')}
                   </Text>
-                  <Text bold fontSize="24px" textTransform="uppercase">
+                  <Text bold fontSize="18px" textTransform="uppercase">
                     ${formatAmount(tokenData.volumeUSD)}
                   </Text>
                   <Percent value={tokenData.volumeUSDChange} />
@@ -199,14 +199,14 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Volume 7D')}
                   </Text>
-                  <Text bold fontSize="24px">
+                  <Text bold fontSize="18px">
                     ${formatAmount(tokenData.volumeUSDWeek)}
                   </Text>
 
                   <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Transactions 24H')}
                   </Text>
-                  <Text bold fontSize="24px">
+                  <Text bold fontSize="18px">
                     {formatAmount(tokenData.txCount, { isInteger: true })}
                   </Text>
                 </Box>

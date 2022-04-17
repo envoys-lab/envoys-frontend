@@ -16,8 +16,10 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import StyledInternalLink from '../../components/Links'
 import { currencyId } from '../../utils/currencyId'
 import Dots from '../../components/Loader/Dots'
-import { AppHeader, AppBody } from '../../components/App'
-import Page from '../Page'
+import { AppHeader } from '../../components/App'
+import Page from '../../components/Layout/Page'
+import { PageContainer } from '../../components/Layout/PageContainer'
+import { NextLinkFromReactRouter } from '../../components/NextLink'
 
 enum Fields {
   TOKEN0 = 0,
@@ -90,9 +92,9 @@ export default function PoolFinder() {
   )
 
   return (
-    <Page>
-      <AppBody>
-        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity" />
+    <Page autoWidth={true}>
+      <PageContainer>
+        <AppHeader title={t('Import Pool')} subtitle={t('Import an existing pool')} backTo="/liquidity" noSettings />
         <AutoColumn style={{ padding: '1rem' }} gap="md">
           <StyledButton
             endIcon={<ChevronDownIcon />}
@@ -103,18 +105,17 @@ export default function PoolFinder() {
           >
             {currency0 ? (
               <Row>
-                <CurrencyLogo currency={currency0} />
-                <Text ml="8px">{currency0.symbol}</Text>
+                <CurrencyLogo currency={currency0} size="24px" />
+                <Text small ml={'8px'}>
+                  {currency0.symbol}
+                </Text>
               </Row>
             ) : (
-              <Text ml="8px">{t('Select a Token')}</Text>
+              <Text small ml="8px">
+                {t('Select Token')}
+              </Text>
             )}
           </StyledButton>
-
-          <ColumnCenter>
-            <AddIcon />
-          </ColumnCenter>
-
           <StyledButton
             endIcon={<ChevronDownIcon />}
             onClick={() => {
@@ -124,11 +125,15 @@ export default function PoolFinder() {
           >
             {currency1 ? (
               <Row>
-                <CurrencyLogo currency={currency1} />
-                <Text ml="8px">{currency1.symbol}</Text>
+                <CurrencyLogo currency={currency1} size="24px" />
+                <Text small ml={'8px'}>
+                  {currency1.symbol}
+                </Text>
               </Row>
             ) : (
-              <Text as={Row}>{t('Select a Token')}</Text>
+              <Text small as={Row}>
+                {t('Select Token')}
+              </Text>
             )}
           </StyledButton>
 
@@ -151,9 +156,15 @@ export default function PoolFinder() {
                 <LightCard padding="45px 10px">
                   <AutoColumn gap="sm" justify="center">
                     <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
-                    <StyledInternalLink href={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}>
-                      <Text textAlign="center">{t('Add Liquidity')}</Text>
-                    </StyledInternalLink>
+                    <Button
+                      variant="tertiary"
+                      as={NextLinkFromReactRouter}
+                      to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                      scale="md"
+                      mt={'16px'}
+                    >
+                      {t('Add Liquidity')}
+                    </Button>
                   </AutoColumn>
                 </LightCard>
               )
@@ -190,13 +201,13 @@ export default function PoolFinder() {
         </AutoColumn>
 
         {/* <CurrencySearchModal
-          isOpen={showSearch}
-          onCurrencySelect={handleCurrencySelect}
-          onDismiss={handleSearchDismiss}
-          showCommonBases
-          selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
-        /> */}
-      </AppBody>
+        isOpen={showSearch}
+        onCurrencySelect={handleCurrencySelect}
+        onDismiss={handleSearchDismiss}
+        showCommonBases
+        selectedCurrency={(activeField === Fields.TOKEN0 ? currency1 : currency0) ?? undefined}
+      /> */}
+      </PageContainer>
     </Page>
   )
 }

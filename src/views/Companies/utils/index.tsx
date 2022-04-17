@@ -1,29 +1,105 @@
 import { useState } from 'react'
 import { getCompanies } from '../api'
 
-export interface Item {
-  about: object
+export const companyStatusPast = 'past'
+export const companyStatusOngoing = 'ongoing'
+export const companyStatusUpcoming = 'upcoming'
+export type CompanyStatus = typeof companyStatusPast | typeof companyStatusOngoing | typeof companyStatusUpcoming
+
+export interface CompanyStage {
+  type: string
+  startDate: string
+  endDate: string
+  progress: number
+  goal: number
+  raisedFunds: number
+  cap: number
+  hardcap: number
+  status: CompanyStatus
+  price: string
+}
+
+interface CompanyRoadMapItem {
+  title: string
+  description: string
+}
+
+export interface BaseCompany {
+  about: any
   active: boolean
   activity: object
   description: string
-  details: object
+  details: BaseCompanyDetails
   documents: object[]
   homePageUrl: string
   logoUrl: string
-  members: object[]
+  members: Member[]
   name: string
-  roadmap: object[]
+  roadmap: CompanyRoadMapItem[]
   sellType: string[]
   social: object
-  stages: object[]
-  status: string
+  stages: CompanyStage[]
+  status: CompanyStatus
   videoUrl: string
+  token: string
   _id: string
+  holders: any
+}
+
+export interface Member {
+  advisor: boolean
+  avatarUrl: string
+  name: string
+  position: string
+  interview: Interview
+}
+
+export interface Interview {
+  questions: Question[]
+}
+
+export interface Question {
+  question: string
+  answear: string
+}
+
+export interface BaseCompanyDetails {
+  token: CompanyToken
+  company: CompanyFoundation
+  bonus: string[]
+  additional: AdditionalDetails
+}
+
+export interface CompanyToken {
+  ticker: string
+  supply: string
+  distribution: string[]
+  currencies: string[]
+  minContribution: string
+}
+
+export interface CompanyFoundation {
+  foundedDate: string
+  registredCountry: string
+  registredName: string
+}
+
+export interface AdditionalDetails {
+  MVP: string
+  platform: string
+  whitelist?: WhiteListObj
+}
+
+export interface WhiteListObj {
+  categories: string
+  fromDate: string
+  tillDate: string
+  url: string
 }
 
 export const useLoadItems = () => {
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState<Item[]>([])
+  const [items, setItems] = useState<BaseCompany[]>([])
   const [hasNextPage, setHasNextPage] = useState<boolean>(true)
   const [error, setError] = useState<Error>()
   const [nextPage, setNextPage] = useState(1)

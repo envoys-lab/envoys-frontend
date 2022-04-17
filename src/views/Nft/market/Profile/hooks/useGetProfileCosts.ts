@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
-import { useTranslation } from 'contexts/Localization'
-import { multicallv2 } from 'utils/multicall'
 import profileABI from 'config/abi/pancakeProfile.json'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
+import { useEffect, useState } from 'react'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { multicallv2 } from 'utils/multicall'
 
 const useGetProfileCosts = () => {
   const { t } = useTranslation()
@@ -34,7 +34,7 @@ const useGetProfileCosts = () => {
         })
         setIsLoading(false)
       } catch (error) {
-        toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))
+        toastError(t('Error'), t('Could not retrieve EVT costs for profile'))
       }
     }
 

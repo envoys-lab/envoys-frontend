@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
 import { Text, Flex, CardFooter, Button, AddIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
-import Link from 'next/link'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import FullPositionCard from '../../components/PositionCard'
@@ -10,8 +9,7 @@ import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
 import { usePairs } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
-import { AppBody } from '../../components/App'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 import { Wrapper } from '../Swap/components/styleds'
 import { useRouter } from 'next/router'
 import AppHeader from '../../components/App/AppHeader'
@@ -31,6 +29,8 @@ export default function Pool() {
   const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const [isAddLoading, setIsAddLoading] = useState<boolean>(false)
+  const [isFindLoading, setIsFindLoading] = useState<boolean>(false)
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -100,44 +100,65 @@ export default function Pool() {
     }
   }
 
+  const handleFindLp = () => {
+    setIsFindLoading(true)
+    router.push('/find')
+  }
+
+  const handleAdd = () => {
+    setIsAddLoading(true)
+    router.push('/add')
+  }
+
+  const findLabel = <b>{t('Find other LP tokens')}</b>
+
   return (
-    <Page>
-      <AppBody>
-        <PageContainer>
-          <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
-            <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-              <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
-                <Tab>{t('Swap')}</Tab>
-                <Tab>{t('Liquidity')}</Tab>
-              </TabMenu>
-            </Flex>
-          </AppHeader>
-          <Wrapper id="liquidity-page" pb={'0 !important'}>
-            <Body background={'transparent'}>
-              {renderBody()}
-              {account && !v2IsLoading && (
-                <Flex flexDirection="column" alignItems="center">
-                  <ThinText color="primary" my="16px">
-                    {t("Don't see a pool you joined?")}
-                  </ThinText>
-                  <Link href="/find">
-                    <Button id="import-pool-link" variant="tertiary" as="a">
-                      <b>{t('Find other LP tokens')}</b>
-                    </Button>
-                  </Link>
-                </Flex>
-              )}
-            </Body>
-          </Wrapper>
-          <CardFooter style={{ textAlign: 'center' }}>
-            <Link href="/add">
-              <Button id="join-pool-button" width="100%" scale="lg" startIcon={<AddIcon color="white" />}>
-                {t('Add Liquidity')}
-              </Button>
-            </Link>
-          </CardFooter>
-        </PageContainer>
-      </AppBody>
+    <Page autoWidth={true}>
+      <PageContainer>
+        <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
+          <Flex position={'relative'} alignItems={'center'} width={'100%'}>
+            <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
+              <Tab>{t('Swap')}</Tab>
+              <Tab>{t('Liquidity')}</Tab>
+            </TabMenu>
+          </Flex>
+        </AppHeader>
+        <Wrapper id="liquidity-page" pb={'0 !important'}>
+          <Body background={'transparent'}>
+            {renderBody()}
+            {account && !v2IsLoading && (
+              <Flex flexDirection="column" alignItems="center">
+                <ThinText color="primary" my="16px">
+                  {t("Don't see a pool you joined?")}
+                </ThinText>
+                <Button
+                  id="import-pool-link"
+                  variant="tertiary"
+                  as="a"
+                  scale="sm"
+                  onClick={handleFindLp}
+                  disabled={isFindLoading}
+                  height={'40px'}
+                >
+                  {isFindLoading ? <Dots>{findLabel}</Dots> : findLabel}
+                </Button>
+              </Flex>
+            )}
+          </Body>
+        </Wrapper>
+        <CardFooter style={{ textAlign: 'center' }}>
+          <Button
+            id="join-pool-button"
+            width="100%"
+            scale="lg"
+            startIcon={<AddIcon color="white" />}
+            disabled={isAddLoading}
+            onClick={handleAdd}
+          >
+            {isAddLoading ? <Dots>{t('Add Liquidity')}</Dots> : t('Add Liquidity')}
+          </Button>
+        </CardFooter>
+      </PageContainer>
     </Page>
   )
 }

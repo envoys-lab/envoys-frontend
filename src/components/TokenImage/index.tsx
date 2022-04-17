@@ -14,15 +14,27 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 }
 
 const getImageUrlFromToken = (token: Token) => {
-  const address = token.symbol === 'BNB' ? tokens.wbnb.address : token.address
+  let address = token.symbol === 'BNB' ? tokens.wbnb.address : token.address
+
   return `/images/tokens/${address}.svg`
 }
 
 export const TokenPairImage: React.FC<TokenPairImageProps> = ({ primaryToken, secondaryToken, ...props }) => {
+  const handleError = (event) => {
+    if (event.target.src !== '/images/tokens/default.svg') {
+      // eslint-disable-next-line no-param-reassign
+      event.target.src = '/images/tokens/default.svg'
+    }
+  }
+  /* @ts-ignore */
   return (
     <UIKitTokenPairImage
       primarySrc={getImageUrlFromToken(primaryToken)}
       secondarySrc={getImageUrlFromToken(secondaryToken)}
+      /* @ts-ignore */
+      primaryImageProps={{ onError: (event) => handleError(event) }}
+      /* @ts-ignore */
+      secondaryImageProps={{ onError: (event) => handleError(event) }}
       {...props}
     />
   )

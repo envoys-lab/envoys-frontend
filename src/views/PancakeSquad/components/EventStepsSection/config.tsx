@@ -8,6 +8,7 @@ import MintButton from '../Buttons/Mint'
 import ReadyText from '../Header/ReadyText'
 import { EventStepsType } from './types'
 import { getStepperStatus } from './utils'
+import { DEFAULT_OUTPUT_CURRENCY } from 'state/swap/constants'
 
 const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, theme, cakeBalance }: EventStepsType) => {
   const { maxPerAddress, maxPerTransaction, maxSupply, pricePerTicket } = eventInfos || {}
@@ -51,17 +52,17 @@ const stepsConfigBuilder = ({ t, userInfos, eventInfos, userStatus, account, the
         hasProfileActivated,
         eventStatus: [SaleStatusEnum.Pending, SaleStatusEnum.Premint],
       }),
-      title: t('Hold CAKE'),
-      bodyText: [t('Each NFT costs CAKE to mint. Remember you also need BNB to cover transaction fees too!')],
+      title: t('Hold EVT'),
+      bodyText: [t('Each NFT costs EVT to mint. Remember you also need BNB to cover transaction fees too!')],
       buttons: (
         <>
           <Button
             as="a"
-            href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82"
+            href={'https://pancakeswap.finance/swap?outputCurrency=' + DEFAULT_OUTPUT_CURRENCY}
             target="_blank"
             width="100%"
           >
-            {t('Buy CAKE')}
+            {t('Buy EVT')}
           </Button>
         </>
       ),

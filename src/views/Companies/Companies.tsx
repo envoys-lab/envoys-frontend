@@ -1,13 +1,15 @@
-import { useTranslation } from 'contexts/Localization'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { getCompanies } from './api'
+import React from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
 import { useLoadItems } from './utils'
+import { CompanyCard } from './components'
+import styles from './Companies.module.scss'
+import Page from '../../components/Layout/Page'
+import { Spinner } from '@envoysvision/uikit'
+import { useTranslation } from '../../contexts/Localization'
 
 const Companies = () => {
-  const { t } = useTranslation()
   const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
+  const { t } = useTranslation()
 
   const [infiniteRef] = useInfiniteScroll({
     loading,
@@ -23,31 +25,19 @@ const Companies = () => {
   })
 
   const renderCompany = (item) => {
-    return (
-      <div key={item._id}>
-        {item.name} {item.status}
-      </div>
-    )
+    return <CompanyCard company={item} key={item._id} />
   }
 
   return (
-    <div>
-      {companies.map((item) => renderCompany(item))}
-      {/* 
-              As long as we have a "next page", we show "Loading" right under the list.
-              When it becomes visible on the screen, or it comes near, it triggers 'onLoadMore'.
-              This is our "sentry".
-              We can also use another "sentry" which is separated from the "Loading" component like:
-                <div ref={infiniteRef} />
-                {loading && <ListItem>Loading...</ListItem>}
-              and leave "Loading" without this ref.
-          */}
+    <Page>
+      {companies?.length === 0 && <Spinner />}
+      <div className={styles['company__list-container']}>{companies.map((item) => renderCompany(item))}</div>
       {hasNextPage && (
         <div ref={infiniteRef}>
-          <div>Loading</div>
+          <div>{companies?.length > 0 && t('Loading')}</div>
         </div>
       )}
-    </div>
+    </Page>
   )
 }
 

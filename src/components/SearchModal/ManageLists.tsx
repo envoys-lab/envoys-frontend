@@ -29,10 +29,10 @@ const Wrapper = styled(Column)`
 `
 
 const RowWrapper = styled(Row)<{ active: boolean }>`
-  background-color: ${({ active, theme }) => (active ? `${theme.colors.success}19` : 'transparent')};
-  border: solid 1px;
-  border-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.tertiary)};
-  transition: 200ms;
+  // background-color: transparent;
+  // border: solid 1px;
+  // border-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.tertiary)};
+  // transition: 200ms;
   align-items: center;
   padding: 1rem;
   border-radius: 20px;
@@ -113,6 +113,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
         </RowFixed>
       </Column>
       <Toggle
+        scale="md"
         checked={isActive}
         onChange={() => {
           if (isActive) {

@@ -1,0 +1,123 @@
+@import "../../styles";
+
+.сompany-button {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  max-width: 232px;
+
+  @include screenMinSize('sm') {
+    margin-left: 12px;
+  }
+
+  &__button {
+    box-shadow: 0 15px 20px -18px #f48020;
+    border-radius: 14px;
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    /* Basic Orange */
+
+    background: #f48020;
+    text-align: center;
+
+    color: #ffffff;
+    padding: 15.5px 76px 15.5px 76px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__holders {
+    font-weight: 400;
+
+    /* second blue */
+
+    color: #045599;
+
+    margin: 36px 0;
+
+    @include screenMinSize('sm') {
+      margin: 24px 0 0;
+    }
+
+    svg {
+      position: absolute;
+    }
+
+    .account-icon {
+      margin-top: -2px;
+    }
+
+    .link-icon {
+      margin-left: -6px;
+      margin-top: -7px;
+    }
+
+    span {
+      margin-left: 20px;
+    }
+  }
+
+  &__home-page-button {
+    display: flex;
+    box-shadow: 0 15px 20px -18px #133d65;
+    border-radius: 14px;
+    /* Auto layout */
+
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    text-overflow: ellipsis;
+
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    /* Basic Orange */
+
+    border: 2px solid #133d65;
+
+    text-align: center;
+
+    color: #133d65;
+
+    padding: 15px 30px 15px 30px;
+
+    margin-top: 20px;
+    margin-right: auto;
+    @include screenMinSize('sm') {
+      width: 25vw;
+    }
+    @include screenMinSize('md') {
+      width: 20vw;
+    }
+    @include screenMinSize('lg') {
+      width: 100%
+    }
+    &-text {
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-right: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.logo {
+  margin-left: 50px;
+  margin-top: 15px;
+  margin-right: 35px;
+}

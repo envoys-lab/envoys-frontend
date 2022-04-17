@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Tab, TabMenu, useWalletModal, Flex, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints, Flex } from '@envoysvision/uikit'
 
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 
-import { AppBody } from '../../components/App'
-import Page from '../Page'
+import Page from '../../components/Layout/Page'
 import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 import { documentNormalize, isVerificationPassed } from './heplers'
 import { User, VerificationStatus } from './types'
 
-const COLOR_ERROR = '#f15555'
-
-const Body = styled(Flex)`
-  flex-direction: column;
-  padding: 30px;
-  justify-content: space-between;
-  width: 90vw;
-  max-width: 670px;
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 670px;
+    padding: 0 32px 32px;
+  }
 `
 
 const Space = styled.div`
   height: 20px;
-`
-
-const SpaceSmall = styled.div`
-  height: 10px;
 `
 
 const TitleContainer = styled.div`
@@ -52,7 +47,7 @@ const PersonalInfoContainer = styled.div<{ singleColumn: boolean }>`
   grid-row-gap: 10px;
 
   padding-top: 20px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 `
 
 const TipContainer = styled.div`
@@ -80,7 +75,7 @@ const BottomContainer = styled.div`
 `
 
 const VerificationErrorContainer = styled.ul`
-  color: ${COLOR_ERROR};
+  color: ${({ theme }) => theme.colors.error};
   padding-top: 20px;
 `
 
@@ -207,10 +202,10 @@ const Settings = () => {
 
   const renderContent = () => {
     return (
-      <>
+      <Container>
         {renderTabs()}
         {isMetaMaskConnected ? renderTabContent() : renderNoMetamask()}
-      </>
+      </Container>
     )
   }
 
@@ -221,7 +216,9 @@ const Settings = () => {
         <Space />
         <TipContainer>{t('You need to connect your Wallet first')}</TipContainer>
         <Space />
-        <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
+        <Flex justifyContent={'center'}>
+          <Button onClick={onPresentConnectModal}>{t('Connect Wallet')}</Button>
+        </Flex>
       </>
     )
   }
@@ -291,7 +288,7 @@ const Settings = () => {
         {isPending && (
           <>
             <Space />
-            <TipContainer>{t('KYC Verification process may take from 2 minutes and up to 6 hours.')}</TipContainer>
+            <TipContainer>{t('KYC Verification process may take from 2 minutes and up to 24 hours.')}</TipContainer>
           </>
         )}
 
@@ -341,11 +338,9 @@ const Settings = () => {
   }
 
   return (
-    <Page>
+    <Page autoWidth={true}>
       <Space />
-      <AppBody>
-        <Body>{renderContent()}</Body>
-      </AppBody>
+      {renderContent()}
     </Page>
   )
 }

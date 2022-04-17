@@ -17,12 +17,6 @@ import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import styled from 'styled-components'
 
-const HarvestText = styled(Text)`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-`
-
 const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -37,12 +31,16 @@ const InfoContainer = styled.div`
   ${({ theme }) => theme.mediaQueries.xl} {
     padding-right: 67px;
   }
-
-
 `
 
 const EnvoysBalance = styled(Balance)`
   opacity: 0.7;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+`
+
+const HarvestText = styled(Text)`
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
@@ -78,7 +76,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
       <InfoContainer>
         <ActionTitles>
           <HarvestText bold textTransform="uppercase" color="primary" fontSize="12px" pr="4px">
-            ETK
+            EVT
           </HarvestText>
           <HarvestText bold textTransform="uppercase" color="text" fontSize="12px">
             {t('Earned')}

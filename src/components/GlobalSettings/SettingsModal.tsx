@@ -11,7 +11,7 @@ import {
 import { useTranslation } from 'contexts/Localization'
 import { useSwapActionHandlers } from 'state/swap/hooks'
 import useTheme from 'hooks/useTheme'
-import QuestionHelper from '../../QuestionHelper'
+import QuestionHelper from '../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
@@ -59,12 +59,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   }
 
   return (
-    <Modal
-      title={t('Settings')}
-      headerBackground="gradients.cardHeader"
-      onDismiss={onDismiss}
-      style={{ maxWidth: '420px' }}
-    >
+    <Modal title={t('Settings')} onDismiss={onDismiss} style={{ maxWidth: '420px' }}>
       <ScrollableContainer>
         <Flex pb="24px" flexDirection="column">
           <Text bold textTransform="uppercase" fontSize="12px" color="secondary" mb="24px">

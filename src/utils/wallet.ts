@@ -1,6 +1,6 @@
 // Set of helper functions to facilitate wallet setup
 
-import { BASE_BSC_SCAN_URL, BASE_URL } from 'config'
+import { BASE_BSC_SCAN_URL, BASE_URL, CURRENT_CHAIN_ID } from 'config'
 import { nodes } from './getRpcUrl'
 
 /**
@@ -10,7 +10,7 @@ import { nodes } from './getRpcUrl'
 export const setupNetwork = async () => {
   const provider = window.ethereum
   if (provider) {
-    const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10)
+    const chainId = CURRENT_CHAIN_ID
     try {
       await provider.request({
         method: 'wallet_addEthereumChain',

@@ -10,8 +10,8 @@ export const fetchPublicIfoPoolData = async () => {
     const calls = [
       'getPricePerFullShare',
       'totalShares',
-      'calculateHarvestCakeRewards',
-      'calculateTotalPendingCakeRewards',
+      'calculateHarvestEvtRewards',
+      'calculateTotalPendingEvtRewards',
       'startBlock',
       'endBlock',
     ].map((method) => ({

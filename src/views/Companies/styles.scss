@@ -1,0 +1,79 @@
+$breakpoints: (
+  'xs': 370px,
+  'sm': 576px,
+  'md': 852px,
+  'lg': 968px,
+  'xl': 1080px,
+  'xxl': 1200px
+) !default;
+
+
+/// Mixin to manage responsive breakpoints
+@mixin screenMinSize($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+/// Mixin to manage responsive breakpoints
+@mixin screenMaxSize($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+    // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+.showAfterXxl {
+  @include screenMaxSize('xxl') {
+    display: none;
+  }
+  @include screenMinSize('xxl') {
+    display: block;
+  }
+}
+
+.showBeforeXxl {
+  @include screenMaxSize('xxl') {
+    display: block;
+  }
+  @include screenMinSize('xxl') {
+    display: none;
+  }
+}
+
+.showAfterSm {
+  @include screenMaxSize('sm') {
+    display: none;
+  }
+  @include screenMinSize('sm') {
+    display: block;
+  }
+}
+
+.showBeforeSm {
+  @include screenMaxSize('sm') {
+    display: block;
+  }
+  @include screenMinSize('sm') {
+    display: none;
+  }
+}

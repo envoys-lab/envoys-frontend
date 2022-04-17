@@ -1,0 +1,30 @@
+.barContainer {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 10px;
+  background: #dfdfe7;
+  border-radius: 12px;
+  overflow: hidden; /* Crucial part */
+}
+
+.textValue {
+  margin-top: 15px;
+  margin-left: 8px;
+  text-align: right;
+  display: flex;
+  justify-content: center;
+}
+
+.fillerBackground {
+  height: inherit;
+  transition: 'width 2s ease-i-out';
+  background: linear-gradient(90deg, #3299c4, #2cc197);
+}
+
+.filler {
+  transition: 'width 2s ease-i-out';
+  height: inherit;
+  border-radius: inherit;
+  overflow: hidden;
+}

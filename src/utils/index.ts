@@ -1,15 +1,15 @@
-import { Contract } from '@ethersproject/contracts'
+import { ChainId, Currency, CurrencyAmount, ETHER, JSBI, Percent, Token } from '@envoysvision/sdk'
 import type { Signer } from '@ethersproject/abstract-signer'
-import type { Provider } from '@ethersproject/providers'
 import { getAddress } from '@ethersproject/address'
-import { AddressZero } from '@ethersproject/constants'
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
+import { AddressZero } from '@ethersproject/constants'
+import { Contract } from '@ethersproject/contracts'
+import type { Provider } from '@ethersproject/providers'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
-import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@envoysvision/sdk'
+import { BASE_BSC_SCAN_URLS, CURRENT_CHAIN_ID } from '../config'
 import { ROUTER_ADDRESS } from '../config/constants'
-import { BASE_BSC_SCAN_URLS } from '../config'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { simpleRpcProvider } from './providers'
 
@@ -25,8 +25,12 @@ export function isAddress(value: any): string | false {
 export function getBscScanLink(
   data: string | number,
   type: 'transaction' | 'token' | 'address' | 'block' | 'countdown',
-  chainId: ChainId = ChainId.MAINNET,
+  network?: ChainId,
 ): string {
+  let chainId = network
+  if (!chainId) {
+    chainId = CURRENT_CHAIN_ID
+  }
   switch (type) {
     case 'transaction': {
       return `${BASE_BSC_SCAN_URLS[chainId]}/tx/${data}`

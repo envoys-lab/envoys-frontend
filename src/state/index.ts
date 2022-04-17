@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import storeSynchronize from 'redux-localstore'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+
 import blockReducer from './block'
 import burn from './burn/reducer'
 import farmsReducer from './farms'
@@ -21,6 +23,7 @@ import teamsReducer from './teams'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
 import votingReducer from './voting'
+import currenciesReducer from './currencies/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
@@ -43,6 +46,7 @@ const persistedReducer = persistReducer(
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,
+    currencies: currenciesReducer,
 
     // Exchange
     user,
@@ -100,6 +104,10 @@ export const initializeStore = (preloadedState = undefined) => {
 }
 
 store = initializeStore()
+
+storeSynchronize(store, {
+  whitelist: ['currencies'],
+})
 
 /**
  * @see https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type

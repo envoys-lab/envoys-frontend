@@ -1,0 +1,39 @@
+.details {
+  border: 1px solid rgba(52, 73, 94, 0.05);
+  color: #34495e;
+  font-size: 12px;
+  font-weight: 300;
+  padding: 15px;
+  text-align: justify;
+  word-break: break-all;
+  width: 100%;
+  display: block;
+  &:not(:last-of-type) {
+    margin-bottom: 15px;
+  }
+
+  &-header {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 15px;
+  }
+
+  &-data {
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: normal;
+    padding-bottom: 15px;
+
+    &-inner {
+      padding-top: 5px;
+      opacity: 0.8;
+
+      .link-icon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+  }
+}

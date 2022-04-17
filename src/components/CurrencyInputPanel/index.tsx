@@ -10,6 +10,7 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import { RowBetween } from '../Layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
+import CurrencyEquivalent from './CurrencyEquivalent'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -99,7 +100,6 @@ export default function CurrencyInputPanel({
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
-
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
       onCurrencySelect={onCurrencySelect}
@@ -170,6 +170,9 @@ export default function CurrencyInputPanel({
               />
             </RowBetween>
           </LabelRow>
+          <InputRow selected={false} style={{ paddingRight: '1rem' }}>
+            <CurrencyEquivalent amount={value} currency={currency} />
+          </InputRow>
           <InputRow selected={disableCurrencySelect}>
             {account && currency && showMaxButton && label !== 'To' && (
               <Button onClick={onMax} scale="xs" variant="secondary">

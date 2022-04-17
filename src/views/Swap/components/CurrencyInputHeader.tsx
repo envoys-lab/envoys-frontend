@@ -12,7 +12,7 @@ import {
   ChartDisableIcon,
 } from '@envoysvision/uikit'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import GlobalSettings from 'components/Menu/GlobalSettings'
+import GlobalSettings from 'components/GlobalSettings'
 import { useExpertModeManager } from 'state/user/hooks'
 
 interface Props {

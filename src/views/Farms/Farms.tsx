@@ -1,9 +1,8 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, Heading, RowType, Toggle, Text, Button, ArrowForwardIcon, Flex } from '@envoysvision/uikit'
+import { Image, RowType, Toggle, Text, Flex } from '@envoysvision/uikit'
 import { ChainId } from '@envoysvision/sdk'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
@@ -19,7 +18,6 @@ import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
@@ -29,6 +27,63 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
+import { CURRENT_CHAIN_ID } from 'config'
+
+const TextTitleContainer = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: flex-end;
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
+
+const SortContainer = styled.div`
+  background: ${({ theme }) => theme.colors.backgroundPage};
+  border: 1px solid ${({ theme }) => theme.colors.backgroundPage};
+  box-sizing: border-box;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  height: 30px;
+  /* padding: 0px 0px 0px 15px; */
+`
+
+const TopContaiener = styled.div`
+  padding-left: 8px;
+  padding-right: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+`
+
+const Space = styled.div<{ size: number }>`
+  min-width: ${({ size }) => size + 'px'};
+  height: 100%;
+`
+
+const TextContainer = styled.div<{ opacity?: number }>`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.text};
+  opacity: ${({ opacity }) => opacity ?? 1.0};
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  user-select: none;
+`
 
 const TextTitleContainer = styled.div`
   font-style: normal;
@@ -153,11 +208,6 @@ const ViewControls = styled.div`
   }
 `
 
-const StyledImage = styled(Image)`
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 58px;
-`
 const NUMBER_OF_FARMS_VISIBLE = 12
 
 export const getDisplayApr = (cakeRewardsApr?: number, lpRewardsApr?: number) => {
@@ -218,7 +268,7 @@ const Farms: React.FC = ({ children }) => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
+          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[CURRENT_CHAIN_ID])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
@@ -402,9 +452,9 @@ const Farms: React.FC = ({ children }) => {
             <Space size={8} />
             <TextContainer> {t('Staked only')}</TextContainer>
           </ToggleWrapper>
-          <Space size={20}/>
+          <Space size={20} />
           <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
-          <Space size={13}/>
+          <Space size={13} />
           <SortContainer>
             <Space size={15} />
             <TextContainer opacity={0.7}>{t('Sort by') + ':'}</TextContainer>
@@ -437,9 +487,7 @@ const Farms: React.FC = ({ children }) => {
           </SortContainer>
         </FilterContainer>
       </ControlContainer>
-      <TopContaiener>
-      {renderContent()}
-      </TopContaiener>
+      <TopContaiener>{renderContent()}</TopContaiener>
       {account && !userDataLoaded && stakedOnly && (
         <Flex justifyContent="center">
           <Loading />

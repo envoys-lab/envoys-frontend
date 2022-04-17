@@ -12,11 +12,12 @@ import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken, useAllInactiveTokens } from '../../hooks/Tokens'
 import Column from '../Layout/Column'
-import { RowFixed, RowBetween } from '../Layout/Row'
+import { RowBetween } from '../Layout/Row'
 import { CurrencyLogo } from '../Logo'
 import CircleLoader from '../Loader/CircleLoader'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
+import CurrencyEquivalent from '../CurrencyInputPanel/CurrencyEquivalent'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -25,7 +26,7 @@ function currencyKey(currency: Currency): string {
 const StyledBalanceText = styled(Text)`
   white-space: nowrap;
   overflow: hidden;
-  max-width: 5rem;
+  max-width: 8rem;
   text-overflow: ellipsis;
 `
 
@@ -74,7 +75,6 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
-
   // only show add or remove buttons if not on selected list
   return (
     <MenuItem
@@ -91,9 +91,15 @@ function CurrencyRow({
           {!isOnSelectedList && customAdded && 'Added by user •'} {currency.name}
         </Text>
       </Column>
-      <RowFixed style={{ justifySelf: 'flex-end' }}>
-        {balance ? <Balance balance={balance} /> : account ? <CircleLoader /> : null}
-      </RowFixed>
+      <Column style={{ justifySelf: 'flex-end', alignItems: 'flex-end', flexShrink: 0 }}>
+        {!balance && account && <CircleLoader size={'16px'} />}
+        {balance && balance.greaterThan(BigInt(0)) && (
+          <>
+            <Balance balance={balance} />
+            <CurrencyEquivalent currency={currency} amount={balance.toExact()} />
+          </>
+        )}
+      </Column>
     </MenuItem>
   )
 }
