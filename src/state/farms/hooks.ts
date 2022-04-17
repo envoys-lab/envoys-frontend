@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { farmsConfig } from 'config/constants'
+import { DefaultFarmIdentifier } from 'config/constants/farms'
 import { useFastRefreshEffect, useSlowRefreshEffect } from 'hooks/useRefreshEffect'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
@@ -72,14 +73,13 @@ export const usePollFarmsWithUserData = (includeArchive = false) => {
 
 /**
  * Fetches the "core" farm data used globally
- * 251 = CAKE-BNB LP
- * 252 = BUSD-BNB LP
+ * 1 = EVT-BNB LP
+ * 2 = BUSD-BNB LP
  */
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
-
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+    dispatch(fetchFarmsPublicDataAsync([DefaultFarmIdentifier.EVT_BNB, DefaultFarmIdentifier.BUSD_BNB]))
   }, [dispatch])
 }
 
@@ -143,13 +143,13 @@ export const useLpTokenPrice = (symbol: string) => {
  * @@deprecated use the BUSD hook in /hooks
  */
 export const usePriceCakeBusd = (): BigNumber => {
-  const cakeBnbFarm = useFarmFromPid(251)
+  const evtBnbFarm = useFarmFromPid(DefaultFarmIdentifier.EVT_BNB)
 
-  const cakePriceBusdAsString = cakeBnbFarm.tokenPriceBusd
+  const evtPriceBusdAsString = evtBnbFarm.tokenPriceBusd
 
-  const cakePriceBusd = useMemo(() => {
-    return new BigNumber(cakePriceBusdAsString)
-  }, [cakePriceBusdAsString])
+  const evtPriceBusd = useMemo(() => {
+    return new BigNumber(evtPriceBusdAsString)
+  }, [evtPriceBusdAsString])
 
-  return cakePriceBusd
+  return evtPriceBusd
 }

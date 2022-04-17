@@ -9,6 +9,7 @@ import { FetchStatus } from 'config/constants/types'
 import { Divider, RoundedImage } from '../shared/styles'
 import { BorderedBox, BnbAmountCell } from './styles'
 import { PaymentCurrency } from './types'
+import { BNB_ADDRESS } from 'views/Swap/components/Chart/constants'
 
 interface ReviewStageProps {
   nftToBuy: NftToken
@@ -112,7 +113,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
             height="16px"
             external
             variant="text"
-            href="/swap?inputCurrency=BNB&outputCurrency=0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+            href={'/swap?inputCurrency=BNB&outputCurrency=' + BNB_ADDRESS}
           >
             {t('Convert')}
           </Button>

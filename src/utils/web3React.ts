@@ -7,10 +7,11 @@ import { hexlify } from '@ethersproject/bytes'
 import { toUtf8Bytes } from '@ethersproject/strings'
 import { Web3Provider } from '@ethersproject/providers'
 import getNodeUrl from './getRpcUrl'
+import { CURRENT_CHAIN_ID } from 'config'
 
 const POLLING_INTERVAL = 12000
 const rpcUrl = getNodeUrl()
-const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID, 10)
+const chainId = CURRENT_CHAIN_ID
 
 const injected = new InjectedConnector({ supportedChainIds: [chainId] })
 

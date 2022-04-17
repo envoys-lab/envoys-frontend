@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract CakeToken",
-        "name": "_cake",
+        "internalType": "contract EvtToken",
+        "name": "_evt",
         "type": "address"
       }
     ],
@@ -241,19 +241,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "cake",
-    "outputs": [
-      {
-        "internalType": "contract CakeToken",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -382,6 +369,19 @@
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "evt",
+    "outputs": [
+      {
+        "internalType": "contract EvtToken",
         "name": "",
         "type": "address"
       }
@@ -590,7 +590,7 @@
         "type": "uint256"
       }
     ],
-    "name": "safeCakeTransfer",
+    "name": "safeEvtTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -1,26 +1,15 @@
 import styled from 'styled-components'
 
 export const ActionContainer = styled.div`
-  padding: 16px;
-  border: 2px solid ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
-  flex-grow: 1;
-  flex-basis: 0;
-  margin-bottom: 16px;
+  padding-left: 17px;
+  padding-right: 8px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 12px;
-    margin-right: 12px;
-    margin-bottom: 0;
-    max-height: 100px;
-  }
+  padding-top: 4px;
+  padding-bottom: 4px;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin-left: 48px;
-    margin-right: 0;
-    margin-bottom: 0;
-    max-height: 100px;
-  }
+  display: flex;
+  align-items: center;
+  flex-direction: row;
 `
 
 export const ActionTitles = styled.div`

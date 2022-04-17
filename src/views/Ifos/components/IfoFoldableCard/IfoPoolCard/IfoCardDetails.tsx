@@ -46,14 +46,14 @@ const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; 
   const tooltipContent =
     poolId === PoolIds.poolBasic
       ? t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the basic sale, Max EVT entry is capped by minimum between your average EVT balance in the IFO EVT pool, or the pool’s hard cap. To increase the max entry, Stake more EVT into the IFO EVT pool',
         )
       : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the unlimited sale, Max EVT entry is capped by your average EVT balance in the IFO EVT pool. To increase the max entry, Stake more EVT into the IFO EVT pool',
         )
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
-  const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = isCurrencyCake ? t('Max. EVT entry') : t('Max. token entry')
   const price = useBUSDPrice(ifo.currency)
 
   const dollarValueOfToken = multiplyPriceByAmount(price, maxToken, ifo.currency.decimals)
@@ -138,7 +138,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
         <>
           {tokenEntry}
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('EVT to burn:')} value={ifo[poolId].cakeToBurn} />}
           <FooterEntry
             label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}
             value={`$${ifo.tokenOfferingPrice}`}
@@ -174,7 +174,7 @@ const IfoCardDetails: React.FC<IfoCardDetailsProps> = ({ poolId, ifo, publicIfoD
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
           <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
-          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('CAKE to burn:')} value={ifo[poolId].cakeToBurn} />}
+          {ifo[poolId].cakeToBurn !== '$0' && <FooterEntry label={t('EVT to burn:')} value={ifo[poolId].cakeToBurn} />}
           {ifo.version > 1 && (
             <FooterEntry
               label={t('Price per %symbol%:', { symbol: ifo.token.symbol })}

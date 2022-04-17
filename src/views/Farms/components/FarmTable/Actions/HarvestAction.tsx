@@ -16,6 +16,37 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
+import styled from 'styled-components'
+
+const HarvestText = styled(Text)`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+`
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding-right: 16px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-right: 30px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 67px;
+  }
+`
+
+const EnvoysBalance = styled(Balance)`
+  opacity: 0.7;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+`
+
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
 }
@@ -43,15 +74,16 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
 
   return (
     <ActionContainer>
-      <ActionTitles>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
+      <InfoContainer>
+        <ActionTitles>
+          <HarvestText bold textTransform="uppercase" color="primary" fontSize="12px" pr="4px">
+            EVT
+          </HarvestText>
+          <HarvestText bold textTransform="uppercase" color="text" fontSize="12px">
+            {t('Earned')}
+          </HarvestText>
+        </ActionTitles>
+        <HarvestText>{displayBalance}</HarvestText>
         <div>
           <Heading>{displayBalance}</Heading>
           {earningsBusd > 0 && (
@@ -99,7 +131,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
         >
           {pendingTx ? t('Harvesting') : t('Harvest')}
         </Button>
-      </ActionContent>
+      </InfoContainer>
     </ActionContainer>
   )
 }

@@ -27,6 +27,63 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
+import { CURRENT_CHAIN_ID } from 'config'
+
+const TextTitleContainer = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: flex-end;
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
+
+const SortContainer = styled.div`
+  background: ${({ theme }) => theme.colors.backgroundPage};
+  border: 1px solid ${({ theme }) => theme.colors.backgroundPage};
+  box-sizing: border-box;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  height: 30px;
+  /* padding: 0px 0px 0px 15px; */
+`
+
+const TopContaiener = styled.div`
+  padding-left: 8px;
+  padding-right: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+`
+
+const Space = styled.div<{ size: number }>`
+  min-width: ${({ size }) => size + 'px'};
+  height: 100%;
+`
+
+const TextContainer = styled.div<{ opacity?: number }>`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.text};
+  opacity: ${({ opacity }) => opacity ?? 1.0};
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  user-select: none;
+`
 
 const ControlContainer = styled.div`
   display: flex;
@@ -155,7 +212,7 @@ const Farms: React.FC = ({ children }) => {
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[ChainId.MAINNET])
+          ? getFarmApr(new BigNumber(farm.poolWeight), cakePrice, totalLiquidity, farm.lpAddresses[CURRENT_CHAIN_ID])
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
@@ -323,80 +380,66 @@ const Farms: React.FC = ({ children }) => {
 
   return (
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
-      {/* <PageHeader>
-        <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-          {t('Farms')}
-        </Heading>
-        <Heading scale="lg" color="text">
-          {t('Stake LP tokens to earn.')}
-        </Heading>
-        <NextLinkFromReactRouter to="/farms/auction" id="lottery-pot-banner">
-          <Button p="0" variant="text">
-            <Text color="primary" bold fontSize="16px" mr="4px">
-              {t('Community Auctions')}
-            </Text>
-            <ArrowForwardIcon color="primary" />
-          </Button>
-        </NextLinkFromReactRouter>
-      </PageHeader> */}
-      <Page>
-        <ControlContainer>
-          <ViewControls>
-            <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
-            <ToggleWrapper>
-              <Toggle
-                id="staked-only-farms"
-                checked={stakedOnly}
-                onChange={() => setStakedOnly(!stakedOnly)}
-                scale="sm"
-              />
-              <Text> {t('Staked only')}</Text>
-            </ToggleWrapper>
-            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
-          </ViewControls>
-          <FilterContainer>
-            <LabelWrapper>
-              <Text textTransform="uppercase">{t('Sort by')}</Text>
-              <Select
-                options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
-                  {
-                    label: t('APR'),
-                    value: 'apr',
-                  },
-                  {
-                    label: t('Multiplier'),
-                    value: 'multiplier',
-                  },
-                  {
-                    label: t('Earned'),
-                    value: 'earned',
-                  },
-                  {
-                    label: t('Liquidity'),
-                    value: 'liquidity',
-                  },
-                ]}
-                onOptionChange={handleSortOptionChange}
-              />
-            </LabelWrapper>
-            <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text textTransform="uppercase">{t('Search')}</Text>
-              <SearchInput onChange={handleChangeQuery} placeholder="Search Farms" />
-            </LabelWrapper>
-          </FilterContainer>
-        </ControlContainer>
-        {renderContent()}
-        {account && !userDataLoaded && stakedOnly && (
-          <Flex justifyContent="center">
-            <Loading />
-          </Flex>
-        )}
-        <div ref={observerRef} />
-      </Page>
+      <ControlContainer>
+        <ViewControls>
+          <TextTitleContainer>{t('Stake LP tokens to earn')}</TextTitleContainer>
+        </ViewControls>
+        <FilterContainer>
+          {/* <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} /> */}
+          <ToggleWrapper>
+            <Toggle
+              id="staked-only-farms"
+              checked={stakedOnly}
+              onChange={() => setStakedOnly(!stakedOnly)}
+              scale="sm"
+            />
+            <Space size={8} />
+            <TextContainer> {t('Staked only')}</TextContainer>
+          </ToggleWrapper>
+          <Space size={20} />
+          <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+          <Space size={13} />
+          <SortContainer>
+            <Space size={15} />
+            <TextContainer opacity={0.7}>{t('Sort by') + ':'}</TextContainer>
+            <Space size={10} />
+            <Select
+              options={[
+                {
+                  label: t('Hot'),
+                  value: 'hot',
+                },
+                {
+                  label: t('APR'),
+                  value: 'apr',
+                },
+                {
+                  label: t('Multiplier'),
+                  value: 'multiplier',
+                },
+                {
+                  label: t('Earned'),
+                  value: 'earned',
+                },
+                {
+                  label: t('Liquidity'),
+                  value: 'liquidity',
+                },
+              ]}
+              onOptionChange={handleSortOptionChange}
+            />
+          </SortContainer>
+        </FilterContainer>
+      </ControlContainer>
+      <TopContaiener>{renderContent()}</TopContaiener>
+      {account && !userDataLoaded && stakedOnly && (
+        <Flex justifyContent="center">
+          <Loading />
+        </Flex>
+      )}
+      <div ref={observerRef} />
+      {/* <StyledImage src="/images/decorations/3dpan.png" alt="Envoys illustration" width={120} height={103} /> */}
+      {/* </Page> */}
     </FarmsContext.Provider>
   )
 }

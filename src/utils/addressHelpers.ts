@@ -1,10 +1,11 @@
 import { ChainId } from '@envoysvision/sdk'
+import { CURRENT_CHAIN_ID } from 'config'
 import addresses from 'config/constants/contracts'
 import { Address } from 'config/constants/types'
 import { VaultKey } from 'state/types'
 
 export const getAddress = (address: Address): string => {
-  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
+  const chainId = CURRENT_CHAIN_ID
   return address[chainId] ? address[chainId] : address[ChainId.MAINNET]
 }
 

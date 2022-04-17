@@ -303,7 +303,7 @@
   },
   {
     "inputs": [],
-    "name": "calculateHarvestCakeRewards",
+    "name": "calculateHarvestEvtRewards",
     "outputs": [
       {
         "internalType": "uint256",
@@ -316,7 +316,7 @@
   },
   {
     "inputs": [],
-    "name": "calculateTotalPendingCakeRewards",
+    "name": "calculateTotalPendingEvtRewards",
     "outputs": [
       {
         "internalType": "uint256",
@@ -766,7 +766,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "cakeAtLastUserAction",
+        "name": "evtAtLastUserAction",
         "type": "uint256"
       },
       {

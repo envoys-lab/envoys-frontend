@@ -30,7 +30,7 @@ const RecentCakeProfitCountdownRow = ({ vaultKey }: { vaultKey: VaultKey }) => {
 
   return (
     <Flex alignItems="center" justifyContent="space-between">
-      <Text fontSize="14px">{`${t('Recent CAKE profit')}:`}</Text>
+      <Text fontSize="14px">{`${t('RECENT EVT PROFIT')}:`}</Text>
       {hasAutoEarnings && (
         <RecentCakeProfitBalance
           cakeToDisplay={autoCakeToDisplay}

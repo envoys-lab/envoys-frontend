@@ -34,7 +34,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>
-        {t('You have contributed %amount% CAKE to this IFO!', {
+        {t('You have contributed %amount% EVT to this IFO!', {
           amount: getBalanceNumber(amount),
         })}
       </ToastDescriptionWithTx>,
@@ -68,7 +68,7 @@ const ContributeButton: React.FC<Props> = ({ poolId, ifo, publicIfoData, walletI
       width="100%"
       disabled={isDisabled}
     >
-      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit EVT')}
     </Button>
   )
 }

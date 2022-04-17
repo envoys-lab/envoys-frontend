@@ -1,7 +1,8 @@
 import { ChainId, Token } from '@envoysvision/sdk'
+import { CURRENT_CHAIN_ID } from 'config'
 import { serializeToken } from 'state/user/hooks/helpers'
-import { SerializedToken } from './types'
 import coinGeckoTokenListShort from './tokenLists/coin-gecko-short.tokenlist.json'
+import { SerializedToken } from './types'
 
 const { MAINNET, TESTNET } = ChainId
 /*
@@ -111,11 +112,27 @@ export const mainnetTokens = defineTokens({
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', // TODO: Replace with MAINNET EVT
     18,
-    'CAKE',
-    'PancakeSwap Token',
-    'https://pancakeswap.finance/',
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
+  ),
+  evt: new Token(
+    MAINNET,
+    '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79', // TODO: Replace with MAINNET EVT
+    18,
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
+  ),
+  evb: new Token(
+    MAINNET,
+    '0x12EcdD1a158AC9C942a890879C1b8D771B90EB37', // TODO: Replace with MAINNET EVB
+    18,
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
   ),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
@@ -318,7 +335,7 @@ export const mainnetTokens = defineTokens({
     '0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c',
     18,
     'BABYCAKE',
-    'Baby Cake Token',
+    'Baby EVT Token',
     'https://babycake.app/',
   ),
   bmon: new Token(
@@ -2060,19 +2077,36 @@ export const mainnetTokens = defineTokens({
 export const testnetTokens = defineTokens({
   wbnb: new Token(
     TESTNET,
-    '0x094616F0BdFB0b526bD735Bf66Eca0Ad254ca81F',
+    '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     18,
     'WBNB',
     'Wrapped BNB',
     'https://www.binance.com/',
   ),
+  // bnb: new Token(TESTNET, '0xae13d989dac2f0debff460ac112a837c89baa7cd', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     TESTNET,
-    '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
+    '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79',
     18,
-    'CAKE',
-    'PancakeSwap Token',
-    'https://pancakeswap.finance/',
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
+  ),
+  evt: new Token(
+    TESTNET,
+    '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79',
+    18,
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
+  ),
+  evb: new Token(
+    TESTNET,
+    '0x12EcdD1a158AC9C942a890879C1b8D771B90EB37',
+    18,
+    'EVT',
+    'Envoys Vision Token',
+    'https://beta.envoys.vision/',
   ),
   busd: new Token(
     TESTNET,
@@ -2084,27 +2118,17 @@ export const testnetTokens = defineTokens({
   ),
   syrup: new Token(
     TESTNET,
-    '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+    '0x12EcdD1a158AC9C942a890879C1b8D771B90EB37',
     18,
-    'SYRUP',
-    'SyrupBar Token',
-    'https://pancakeswap.finance/',
-  ),
-  bake: new Token(
-    TESTNET,
-    '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
-    18,
-    'BAKE',
-    'Bakeryswap Token',
-    'https://www.bakeryswap.org/',
+    'EVB',
+    'EnvoysBar Token',
+    'https://beta.envoys.vision/',
   ),
 } as const)
 
 const tokens = () => {
-  const chainId = process.env.NEXT_PUBLIC_CHAIN_ID
-
   // If testnet - return list comprised of testnetTokens wherever they exist, and mainnetTokens where they don't
-  if (parseInt(chainId, 10) === ChainId.TESTNET) {
+  if (CURRENT_CHAIN_ID === ChainId.TESTNET) {
     return Object.keys(mainnetTokens).reduce((accum, key) => {
       return { ...accum, [key]: testnetTokens[key] || mainnetTokens[key] }
     }, {} as typeof testnetTokens & typeof mainnetTokens)
@@ -2156,7 +2180,7 @@ const prepareShortTokensList = (coinGeckoTokenList) => {
       }
     })
     .filter((a) => a)
-  console.log(JSON.stringify(newShortList))
+  return newShortList
 }
 
 const coinGeckoAddressToIdMap = {}

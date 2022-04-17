@@ -1,13 +1,13 @@
-import poolsConfig from 'config/constants/pools'
-import sousChefABI from 'config/abi/sousChef.json'
-import erc20ABI from 'config/abi/erc20.json'
-import multicall from 'utils/multicall'
-import { getMasterchefContract } from 'utils/contractHelpers'
-import { getAddress } from 'utils/addressHelpers'
-import { simpleRpcProvider } from 'utils/providers'
 import BigNumber from 'bignumber.js'
+import erc20ABI from 'config/abi/erc20.json'
+import sousChefABI from 'config/abi/sousChef.json'
+import poolsConfig from 'config/constants/pools'
+import { getAddress } from 'utils/addressHelpers'
+import { getMasterchefContract } from 'utils/contractHelpers'
+import multicall from 'utils/multicall'
+import { simpleRpcProvider } from 'utils/providers'
 
-// Pool 0, Cake / Cake is a different kind of contract (master chef)
+// Pool 0, EVT / EVT is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'BNB')
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
@@ -66,7 +66,7 @@ export const fetchUserStakeBalances = async (account) => {
     {},
   )
 
-  // Cake / Cake pool
+  // EVT / EVT pool
   const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
 
   return { ...stakedBalances, 0: new BigNumber(masterPoolAmount.toString()).toJSON() }
@@ -87,8 +87,8 @@ export const fetchUserPendingRewards = async (account) => {
     {},
   )
 
-  // Cake / Cake pool
-  const pendingReward = await masterChefContract.pendingCake('0', account)
+  // EVT / EVT pool
+  const pendingReward = await masterChefContract.pendingEvt('0', account)
 
   return { ...pendingRewards, 0: new BigNumber(pendingReward.toString()).toJSON() }
 }

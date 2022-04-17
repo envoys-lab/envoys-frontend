@@ -86,7 +86,7 @@ const ContributeModal: React.FC<Props> = ({
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
-  const label = currency === tokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = currency === tokens.cake ? t('Max. EVT entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -151,10 +151,10 @@ const ContributeModal: React.FC<Props> = ({
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     poolId === PoolIds.poolBasic
       ? t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the IFO CAKE pool, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the basic sale, Max EVT entry is capped by minimum between your average EVT balance in the IFO EVT pool, or the pool’s hard cap. To increase the max entry, Stake more EVT into the IFO EVT pool',
         )
       : t(
-          'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the IFO CAKE pool. To increase the max entry, Stake more CAKE into the IFO CAKE pool',
+          'For the unlimited sale, Max EVT entry is capped by your average EVT balance in the IFO EVT pool. To increase the max entry, Stake more EVT into the IFO EVT pool',
         ),
     {},
   )
@@ -212,7 +212,7 @@ const ContributeModal: React.FC<Props> = ({
             >
               {valueWithTokenDecimals.isGreaterThan(userCurrencyBalance)
                 ? t('Insufficient Balance')
-                : t('Exceeded max CAKE entry')}
+                : t('Exceeded max EVT entry')}
             </Text>
           )}
           <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
@@ -235,7 +235,7 @@ const ContributeModal: React.FC<Props> = ({
           </Flex>
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive any IFO tokens at all and will only receive a full refund of your CAKE.',
+              'If you don’t commit enough EVT, you may not receive any IFO tokens at all and will only receive a full refund of your EVT.',
             )}
             <Link
               fontSize="12px"
