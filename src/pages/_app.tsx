@@ -24,6 +24,7 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+import {useFetchCompanyTokens} from "../state/companyTokens/hooks";
 
 // This config is required for number formatting
 BigNumber.config({
@@ -40,6 +41,7 @@ function GlobalHooks() {
   useUserAgent()
   useInactiveListener()
   useSentryUser()
+  useFetchCompanyTokens()
   return null
 }
 
