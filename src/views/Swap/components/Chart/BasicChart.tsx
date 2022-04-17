@@ -94,7 +94,13 @@ const BasicChart = ({
             </Flex>
           </Flex>
           <Box>
-            <ButtonMenu activeIndex={timeWindow} onItemClick={setTimeWindow} scale="sm" slim>
+            <ButtonMenu
+              activeIndex={timeWindow}
+              onItemClick={setTimeWindow}
+              scale="sm"
+              slim
+              style={{ boxShadow: 'none' }}
+            >
               <ButtonMenuItem mx={1} my={2}>
                 {t('24H')}
               </ButtonMenuItem>

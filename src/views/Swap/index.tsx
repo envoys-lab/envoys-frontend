@@ -20,8 +20,8 @@ import {
   Spinner,
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import Footer from 'components/Menu/Footer'
+// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+// import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'

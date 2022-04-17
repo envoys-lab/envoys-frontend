@@ -29,7 +29,15 @@ export const BodyWrapper = styled(Card)<{ $autoWidth: boolean }>`
 /**
  * The styled container element that wraps the content of most pages and the tabs.
  */
-export default function AppBody({ children, autoWidth, removePadding }: { children: React.ReactNode; autoWidth?: boolean, removePadding?: boolean }) {
+export default function AppBody({
+  children,
+  autoWidth,
+  removePadding,
+}: {
+  children: React.ReactNode
+  autoWidth?: boolean
+  removePadding?: boolean
+}) {
   return (
     <BodyWrapper $autoWidth={autoWidth} p={autoWidth || removePadding ? '0' : '24px'}>
       {children}

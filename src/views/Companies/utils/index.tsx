@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { getCompanies } from '../api'
+import { User, VerificationStatus } from '../../Settings/types'
+import { isVerificationPassed } from '../../Settings/heplers'
 
 export const companyStatusPast = 'past'
 export const companyStatusOngoing = 'ongoing'

@@ -11,7 +11,7 @@ import useIsWindowVisible from 'hooks/useIsWindowVisible'
 import { AppDispatch } from '../index'
 import { acceptListUpdate } from './actions'
 import { useActiveListUrls } from './hooks'
-import {fetchCompanyTokensAction} from "../companyTokens/actions";
+import { fetchCompanyTokensAction } from '../companyTokens/actions'
 
 export default function Updater(): null {
   const { library } = useWeb3Provider()
@@ -76,7 +76,7 @@ export default function Updater(): null {
     })
   }, [dispatch, lists, activeListUrls])
 
-  useEffect( () => {
+  useEffect(() => {
     dispatch(fetchCompanyTokensAction())
   }, [dispatch])
 

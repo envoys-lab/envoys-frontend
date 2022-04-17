@@ -60,12 +60,14 @@ function CurrencyRow({
   currency,
   onSelect,
   isSelected,
+  isDisabledCompanyToken,
   otherSelected,
   style,
 }: {
   currency: Currency
   onSelect: () => void
   isSelected: boolean
+  isDisabledCompanyToken: boolean
   otherSelected: boolean
   style: CSSProperties
 }) {
@@ -81,22 +83,33 @@ function CurrencyRow({
       style={style}
       className={`token-item-${key}`}
       onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
+      disabled={isSelected || isDisabledCompanyToken}
       selected={otherSelected}
     >
       <CurrencyLogo currency={currency} size="32px" />
       <Column>
         <Text bold>{currency.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {!isOnSelectedList && customAdded && 'Added by user •'} {currency.name}
+          {!isDisabledCompanyToken && !isOnSelectedList && customAdded && 'Added by user •'}
+          {currency.name}
         </Text>
       </Column>
       <Column style={{ justifySelf: 'flex-end', alignItems: 'flex-end', flexShrink: 0 }}>
-        {!balance && account && <CircleLoader size={'16px'} />}
-        {balance && balance.greaterThan(BigInt(0)) && (
+        {isDisabledCompanyToken ? (
           <>
-            <Balance balance={balance} />
-            <CurrencyEquivalent currency={currency} amount={balance.toExact()} />
+            <Text small color="danger" textAlign={'right'}>
+              KYC verification required
+            </Text>
+          </>
+        ) : (
+          <>
+            {!balance && account && <CircleLoader size={'16px'} />}
+            {balance && balance.greaterThan(BigInt(0)) && (
+              <>
+                <Balance balance={balance} />
+                <CurrencyEquivalent currency={currency} amount={balance.toExact()} />
+              </>
+            )}
           </>
         )}
       </Column>
@@ -107,6 +120,8 @@ function CurrencyRow({
 export default function CurrencyList({
   height,
   currencies,
+  isKYCVerified,
+  companyTokens,
   selectedCurrency,
   onCurrencySelect,
   otherCurrency,
@@ -118,6 +133,8 @@ export default function CurrencyList({
 }: {
   height: number
   currencies: Currency[]
+  isKYCVerified: boolean
+  companyTokens: string[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
@@ -177,11 +194,15 @@ export default function CurrencyList({
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         )
       }
+      const alpacaAddr = '0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F'
       return (
         <CurrencyRow
           style={style}
           currency={currency}
           isSelected={isSelected}
+          isDisabledCompanyToken={
+            (!isKYCVerified && companyTokens.includes(token.address)) || token.address === alpacaAddr
+          }
           onSelect={handleSelect}
           otherSelected={otherSelected}
         />
@@ -196,6 +217,7 @@ export default function CurrencyList({
       setImportToken,
       showImportView,
       breakIndex,
+      isKYCVerified,
       t,
     ],
   )

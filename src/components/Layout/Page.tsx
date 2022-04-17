@@ -76,7 +76,9 @@ const Page: React.FC<PageProps> = ({
     <>
       <PageMeta symbol={symbol} />
       <StyledPage $removePadding={removePadding} {...props}>
-        <AppBody autoWidth={autoWidth} removePadding={removeInnerPadding}>{children}</AppBody>
+        <AppBody autoWidth={autoWidth} removePadding={removeInnerPadding}>
+          {children}
+        </AppBody>
         <Flex flexGrow={1} />
         <Box display={['block', null, null, hideFooterOnDesktop ? 'none' : 'block']} width="100%">
           <Footer />
