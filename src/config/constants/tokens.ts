@@ -1,8 +1,8 @@
 import { ChainId, Token } from '@envoysvision/sdk'
 import { CURRENT_CHAIN_ID } from 'config'
 import { serializeToken } from 'state/user/hooks/helpers'
-import { SerializedToken } from './types'
 import coinGeckoTokenListShort from './tokenLists/coin-gecko-short.tokenlist.json'
+import { SerializedToken } from './types'
 
 const { MAINNET, TESTNET } = ChainId
 /*
@@ -2180,7 +2180,7 @@ const prepareShortTokensList = (coinGeckoTokenList) => {
       }
     })
     .filter((a) => a)
-  console.log(JSON.stringify(newShortList))
+  return newShortList
 }
 
 const coinGeckoAddressToIdMap = {}
