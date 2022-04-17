@@ -391,7 +391,7 @@ const Farms: React.FC = ({ children }) => {
               id="staked-only-farms"
               checked={stakedOnly}
               onChange={() => setStakedOnly(!stakedOnly)}
-              scale="ev"
+              scale="sm"
             />
             <Space size={8} />
             <TextContainer> {t('Staked only')}</TextContainer>

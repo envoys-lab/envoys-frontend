@@ -1,7 +1,7 @@
 import { Address } from '../types'
 
 export enum PancakeCollectionKey {
-  PANEVT = 'pancake',
+  EVT = 'pancake',
   SQUAD = 'pancakeSquad',
 }
 
