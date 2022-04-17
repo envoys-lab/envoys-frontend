@@ -60,7 +60,7 @@ const getTokensSearchString = (tokens) => {
   return tokens.map((item) => ({
     ...item,
     search: {
-      partial: getSearchStr(item.name),
+      partial: getSearchStr(`${item.name} ${item.symbol}`),
       exact: [getSearchStr(item.address)],
     },
   }))
@@ -82,7 +82,7 @@ const getPoolsLiquiditySearchString = (poolsLiquidity) => {
     return {
       ...pool,
       search: {
-        partial: getSearchStr(`${pool.token0.name} ${pool.token0.symbol} ${pool.token1.name} ${pool.token1.symbol}`),
+        partial: getSearchStr(`${pool.token0.symbol} ${pool.token1.symbol}`),
         exact: [getSearchStr(pool.address), getSearchStr(pool.token0.address), getSearchStr(pool.token1.address)],
       },
     }
@@ -93,7 +93,7 @@ const getPoolsSyrupSearchString = (poolsSyrup) => {
   return poolsSyrup.map((item) => ({
     ...item,
     search: {
-      partial: getSearchStr(item.earningToken.name),
+      partial: getSearchStr(item.earningToken.symbol),
       exact: [getSearchStr(item.earningToken.address)],
     },
   }))
