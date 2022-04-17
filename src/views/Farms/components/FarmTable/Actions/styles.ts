@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 export const ActionContainer = styled.div`
-
   padding-left: 17px;
   padding-right: 8px;
 

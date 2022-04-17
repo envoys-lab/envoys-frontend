@@ -143,7 +143,6 @@ export const useLpTokenPrice = (symbol: string) => {
  * @@deprecated use the BUSD hook in /hooks
  */
 export const usePriceCakeBusd = (): BigNumber => {
-
   const evtBnbFarm = useFarmFromPid(DefaultFarmIdentifier.EVT_BNB)
 
   const evtPriceBusdAsString = evtBnbFarm.tokenPriceBusd

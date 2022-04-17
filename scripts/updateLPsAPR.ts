@@ -100,7 +100,7 @@ const fetchAndUpdateLPsAPR = async () => {
   // pids before 250 are inactive farms from v1 and failed v2 migration
   const lowerCaseAddresses = farmsConfig
     .filter((farm) => farm.pid > 0)
-    .map((farm) => farm.lpAddresses[ChainId.TESTNET].toLowerCase())               // TODO: Replace with MAINNET when will be deplyed.
+    .map((farm) => farm.lpAddresses[ChainId.TESTNET].toLowerCase()) // TODO: Replace with MAINNET when will be deplyed.
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
   // Split it into chunks of 30 addresses to avoid gateway timeout
   const addressesInGroups = chunk(lowerCaseAddresses, 30)

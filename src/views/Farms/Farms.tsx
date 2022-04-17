@@ -29,7 +29,6 @@ import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
 import { CURRENT_CHAIN_ID } from 'config'
 
-
 const TextTitleContainer = styled.div`
   font-style: normal;
   font-weight: 500;

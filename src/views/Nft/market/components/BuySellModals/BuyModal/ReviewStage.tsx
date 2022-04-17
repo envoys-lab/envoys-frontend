@@ -113,7 +113,7 @@ const ReviewStage: React.FC<ReviewStageProps> = ({
             height="16px"
             external
             variant="text"
-            href={"/swap?inputCurrency=BNB&outputCurrency=" + BNB_ADDRESS}
+            href={'/swap?inputCurrency=BNB&outputCurrency=' + BNB_ADDRESS}
           >
             {t('Convert')}
           </Button>

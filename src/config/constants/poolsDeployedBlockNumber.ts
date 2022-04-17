@@ -12,7 +12,7 @@ const poolsDeployedBlockNumberTESTNET: PoolDeployedBlockNumber = {
 
 const BY_NET = {
   [ChainId.MAINNET]: poolsDeployedBlockNumberMAINNET,
-  [ChainId.TESTNET]: poolsDeployedBlockNumberTESTNET
+  [ChainId.TESTNET]: poolsDeployedBlockNumberTESTNET,
 }
 
 const poolsDeployedBlockNumber = BY_NET[CURRENT_CHAIN_ID]

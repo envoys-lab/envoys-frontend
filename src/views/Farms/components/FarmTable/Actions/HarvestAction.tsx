@@ -131,7 +131,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
         >
           {pendingTx ? t('Harvesting') : t('Harvest')}
         </Button>
-     </InfoContainer>
+      </InfoContainer>
     </ActionContainer>
   )
 }

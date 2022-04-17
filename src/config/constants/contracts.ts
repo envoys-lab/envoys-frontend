@@ -1,6 +1,6 @@
 export default {
   masterChef: {
-    97: '0x2061037E588b66Ef8379E1E5216D10bb26e07106', // TESTNET - Envoys - Master Chef 
+    97: '0x2061037E588b66Ef8379E1E5216D10bb26e07106', // TESTNET - Envoys - Master Chef
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
   },
   sousChef: {
@@ -57,7 +57,7 @@ export default {
   },
   ifoPool: {
     56: '0x1B2A2f6ed4A1401E8C73B4c2B6172455ce2f78E8',
-    97: '',                                           // TESTNET - NEED ifo POOL ADRESS
+    97: '', // TESTNET - NEED ifo POOL ADRESS
   },
   predictions: {
     56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
