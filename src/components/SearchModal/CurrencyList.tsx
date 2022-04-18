@@ -194,15 +194,12 @@ export default function CurrencyList({
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         )
       }
-      const alpacaAddr = '0x8F0528cE5eF7B51152A59745bEfDD91D97091d2F'
       return (
         <CurrencyRow
           style={style}
           currency={currency}
           isSelected={isSelected}
-          isDisabledCompanyToken={
-            (!isKYCVerified && companyTokens.includes(token.address)) || token.address === alpacaAddr
-          }
+          isDisabledCompanyToken={!isKYCVerified && companyTokens.includes(token.address)}
           onSelect={handleSelect}
           otherSelected={otherSelected}
         />
