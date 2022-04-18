@@ -48,4 +48,3 @@ export default createReducer<CompanyTokensState>(initialState, (builder) =>
       }
     }),
 )
-

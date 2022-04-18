@@ -69,4 +69,3 @@ const SlippageSettings: React.FC = () => {
 }
 
 export default SlippageSettings
-

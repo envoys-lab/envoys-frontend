@@ -492,4 +492,3 @@ export const useWatchlistPools = (): [string[], (address: string) => void] => {
   )
   return [savedPools, updateSavedPools]
 }
-
