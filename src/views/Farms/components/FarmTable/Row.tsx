@@ -141,6 +141,10 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
+  const instantiateComponent = (props, key, userDataReady) => {
+    return React.createElement(cells[key], { ...props[key], userDataReady })
+  }
+
   const handleRenderRow = () => {
     if (!lowResolution) {
       return (
@@ -155,11 +159,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 if (key === 'farm') {
                   return (
                     <FarmContainer key={key}>
-                      {/* <CellInner> */}
                       <CellLayout label={t(tableSchema[columnIndex].label)}>
-                        {React.createElement(cells[key], { ...props[key], userDataReady })}
+                        {instantiateComponent(props, key, userDataReady)}
                       </CellLayout>
-                      {/* </CellInner> */}
                     </FarmContainer>
                   )
                 }
@@ -198,7 +200,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                         <EarnedContainer key={key}>
                           <CellInner>
                             <CellLayout label={t(tableSchema[columnIndex].label)}>
-                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                              {instantiateComponent(props, key, userDataReady)}
                             </CellLayout>
                           </CellInner>
                         </EarnedContainer>
@@ -208,7 +210,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                         <LiquidityContainer key={key}>
                           <CellInner>
                             <CellLayout label={t(tableSchema[columnIndex].label)}>
-                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                              {instantiateComponent(props, key, userDataReady)}
                             </CellLayout>
                           </CellInner>
                         </LiquidityContainer>
@@ -219,7 +221,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                         <ItemContainer key={key}>
                           <CellInner>
                             <CellLayout label={t(tableSchema[columnIndex].label)}>
-                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                              {instantiateComponent(props, key, userDataReady)}
                             </CellLayout>
                           </CellInner>
                         </ItemContainer>
