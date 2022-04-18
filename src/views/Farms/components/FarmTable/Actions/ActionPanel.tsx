@@ -128,7 +128,6 @@ const InfoContainer = styled.div`
   justify-content: center;
 
   padding-left: 0;
-
 `
 
 const InfoInnerContainer = styled.div`

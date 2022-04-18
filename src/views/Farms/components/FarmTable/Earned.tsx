@@ -38,9 +38,7 @@ const Earned: React.FunctionComponent<EarnedPropsWithLoading> = ({ earnings, use
       </EarnContainer>
     )
   }
-  return (
-    <Amount earned={0}/>
-  )
+  return <Amount earned={0} />
 }
 
 export default Earned

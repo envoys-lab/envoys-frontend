@@ -15,7 +15,6 @@ export interface FarmProps {
 }
 
 const Container = styled.div`
-
   padding-left: 0px;
   display: flex;
   align-items: center;

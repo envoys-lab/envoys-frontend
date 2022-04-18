@@ -55,7 +55,7 @@ const DropDownListContainer = styled.div`
   background: rgba(255, 255, 255, 0.8);
   /* under layer */
 
-  border: 1px solid #F9F9F9;
+  border: 1px solid #f9f9f9;
   box-sizing: border-box;
   /* Popup_blured */
 
@@ -184,9 +184,8 @@ const Select: React.FunctionComponent<SelectProps> = ({
       </DropDownHeader>
 
       <ArrowContainer>
-      <ArrowDropDownIcon width="10px" height="8px" onClick={toggling} />
+        <ArrowDropDownIcon width="10px" height="8px" onClick={toggling} />
       </ArrowContainer>
-      
 
       <DropDownListContainer>
         <DropDownList ref={dropdownRef}>

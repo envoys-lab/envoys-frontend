@@ -46,8 +46,6 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
     displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
   }
 
-  
-
   // CurrencyEquivalent
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvestFarm(pid)
@@ -68,7 +66,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
         </ActionTitles>
         <HarvestText>{displayBalance}</HarvestText>
         <div>
-            <CurrencyEquivalent currency={unserializedTokens.evt} amount={earnings.toString()} />
+          <CurrencyEquivalent currency={unserializedTokens.evt} amount={earnings.toString()} />
         </div>
       </InfoContainer>
       <ActionContent>

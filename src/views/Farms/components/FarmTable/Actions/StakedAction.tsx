@@ -190,7 +190,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
             t('Error'),
             <ToastDescriptionWithTx txHash={receipt.transactionHash}>
               {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-            </ToastDescriptionWithTx>
+            </ToastDescriptionWithTx>,
           )
         },
       )

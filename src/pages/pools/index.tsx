@@ -4,7 +4,7 @@ import Pools from 'views/Pools'
 export default () => {
   return (
     <FinanceTab>
-      <Pools/>
+      <Pools />
     </FinanceTab>
   )
 }

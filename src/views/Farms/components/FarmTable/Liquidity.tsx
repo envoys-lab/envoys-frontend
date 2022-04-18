@@ -28,12 +28,11 @@ const Container = styled.div`
 
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   const lq = liquidity ?? 0
-  const displayLiquidity =
-  lq ? (
-      `$${Number(lq).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    ) : (
-      <Skeleton width={60} />
-    )
+  const displayLiquidity = lq ? (
+    `$${Number(lq).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+  ) : (
+    <Skeleton width={60} />
+  )
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Total value of the funds in this farm’s liquidity pool'),

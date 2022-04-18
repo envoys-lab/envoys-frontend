@@ -31,7 +31,6 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
 
   return (
     <Wrapper>
-
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tevd" slim={true}>
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
           {t('Live')}
@@ -41,15 +40,12 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
             {t('Finished')}
           </ButtonMenuItem>
         </NotificationDot>
-        
-      </ButtonMenu> 
-
+      </ButtonMenu>
     </Wrapper>
   )
 }
 
 export default FarmTabButtons
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,5 +60,4 @@ const Wrapper = styled.div`
     padding-right: 10px;
     height: auto;
   }
-
 `
