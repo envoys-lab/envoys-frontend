@@ -14,37 +14,18 @@ import { getBalanceAmount } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/FarmCard'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import {
+  ActionContainer,
+  ActionContent,
+  ActionTitles,
+  ActionButton,
+  InfoContainer,
+  EnvoysBalance,
+  HarvestText,
+} from './styles'
 import styled from 'styled-components'
-
-const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 30px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 67px;
-  }
-`
-
-const EnvoysBalance = styled(Balance)`
-  opacity: 0.7;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-`
-
-const HarvestText = styled(Text)`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-`
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from 'config/constants/tokens'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -53,18 +34,21 @@ interface HarvestActionProps extends FarmWithStakedValue {
 const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userData, userDataReady }) => {
   const { toastSuccess, toastError } = useToast()
   const earningsBigNumber = new BigNumber(userData.earnings)
-  const cakePrice = usePriceCakeBusd()
+  // const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
-  let earningsBusd = 0
+  // let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
     earnings = getBalanceAmount(earningsBigNumber)
-    earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
+    // earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
     displayBalance = earnings.toFixed(3, BigNumber.ROUND_DOWN)
   }
 
+  
+
+  // CurrencyEquivalent
   const [pendingTx, setPendingTx] = useState(false)
   const { onReward } = useHarvestFarm(pid)
   const { t } = useTranslation()
@@ -84,13 +68,11 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
         </ActionTitles>
         <HarvestText>{displayBalance}</HarvestText>
         <div>
-          {earningsBusd > 0 && (
-            <EnvoysBalance fontSize="12px" color="text" decimals={0} value={earningsBusd} prefix="~$" />
-          )}
+            <CurrencyEquivalent currency={unserializedTokens.evt} amount={earnings.toString()} />
         </div>
       </InfoContainer>
       <ActionContent>
-        <Button
+        <ActionButton
           height="42px"
           minWidth="134px"
           disabled={earnings.eq(0) || pendingTx || !userDataReady}
@@ -132,7 +114,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           ml="4px"
         >
           {pendingTx ? t('Harvesting') : t('Harvest')}
-        </Button>
+        </ActionButton>
       </ActionContent>
     </ActionContainer>
   )

@@ -18,7 +18,7 @@ const SectionsWithFoldableText: React.FC<Props> = ({ header, config, ...props })
         </CardHeader>
         <CardBody>
           {config.map(({ title, description }, i, { length }) => (
-            <FoldableText key={title} id={title} mb={i + 1 === length ? '' : '24px'} title={title}>
+            <FoldableText key={title} title={title}>
               {description.map((desc) => {
                 return (
                   <Text key={desc} color="textSubtle" as="p">

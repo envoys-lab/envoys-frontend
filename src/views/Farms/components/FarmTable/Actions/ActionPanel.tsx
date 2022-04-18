@@ -109,7 +109,7 @@ const TagsContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -121,13 +121,20 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 120px;
-  width: 43%;
-  
+  width: 27%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
   padding-left: 0;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding-left: 6%;
-  }
+`
+
+const InfoInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const LeftSideContainer = styled.div`
@@ -159,35 +166,18 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   return (
     <Container expanded={expanded}>
       <InfoContainer>
-        {isActive && (
-          <StakeContainer>
-            <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-              {t('Get %symbol%', { symbol: lpLabel })}
-            </StyledLinkExternal>
-          </StakeContainer>
-        )}
-        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
-        {/* <TagsContainer>
-          {farm.isCommunity ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer> */}
+        <InfoInnerContainer>
+          {isActive && (
+            <StakeContainer>
+              <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+                {t('Get %symbol%', { symbol: lpLabel })}
+              </StyledLinkExternal>
+            </StakeContainer>
+          )}
+          <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
+          <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
+        </InfoInnerContainer>
       </InfoContainer>
-
-      {/* <ValueContainer>
-        <ValueWrapper>
-          <Text>{t('APR')}</Text>
-          <Apr {...apr} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Multiplier')}</Text>
-          <Multiplier {...multiplier} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Liquidity')}</Text>
-          <Liquidity {...liquidity} />
-        </ValueWrapper>
-      </ValueContainer> */}
 
       <ActionContainer>
         <HarvestAction {...farm} userDataReady={userDataReady} />

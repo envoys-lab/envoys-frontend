@@ -13,14 +13,10 @@ export interface MultiplierProps {
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
-  width: 36px;
-  text-align: right;
-  margin-right: 14px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    text-align: left;
-    margin-right: 0;
-  }
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  width: 100%;
 `
 
 const Container = styled.div`
@@ -52,9 +48,9 @@ const Multiplier: React.FunctionComponent<MultiplierProps> = ({ multiplier }) =>
   return (
     <Container>
       <MultiplierWrapper>{displayMultiplier}</MultiplierWrapper>
-      <ReferenceElement ref={targetRef}>
+      {/* <ReferenceElement ref={targetRef}>
         <HelpIcon color="textSubtle" />
-      </ReferenceElement>
+      </ReferenceElement> */}
       {tooltipVisible && tooltip}
     </Container>
   )

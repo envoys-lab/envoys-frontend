@@ -27,6 +27,10 @@ const BulletList = styled.ul`
   }
 `
 
+const EnvoysExpandableLabel = styled(ExpandableLabel)`
+  font-size: 14px !important;
+`
+
 interface RoiCalculatorFooterProps {
   isFarm: boolean
   apr: number

@@ -17,7 +17,8 @@ const Container = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
-  margin: 16px 0px;
+  /* margin: 16px 0px; */
+  margin-top: 16px;
 `
 
 const TableWrapper = styled.div`
@@ -29,7 +30,7 @@ const TableWrapper = styled.div`
   }
 `
 
-const StyledTable = styled.table`
+const StyledTable = styled.div`
   border-collapse: collapse;
   font-size: 14px;
   border-radius: 4px;
@@ -38,7 +39,7 @@ const StyledTable = styled.table`
   width: 100%;
 `
 
-const TableBody = styled.tbody`
+const TableBody = styled.div`
   & tr {
     td {
       font-size: 16px;
@@ -54,8 +55,8 @@ const TableContainer = styled.div`
 const ScrollButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 `
 
 const FarmTable: React.FC<ITableProps> = (props) => {
@@ -84,7 +85,7 @@ const FarmTable: React.FC<ITableProps> = (props) => {
           </StyledTable>
         </TableWrapper>
         <ScrollButtonContainer>
-          <Button variant="text" onClick={scrollToTop}>
+          <Button variant="text" scale="xs" onClick={scrollToTop}>
             {t('To Top')}
             <ChevronUpIcon color="primary" />
           </Button>

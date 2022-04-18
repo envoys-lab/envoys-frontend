@@ -85,62 +85,6 @@ const TextContainer = styled.div<{ opacity?: number }>`
   user-select: none;
 `
 
-const TextTitleContainer = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  display: flex;
-  align-items: flex-end;
-  color: ${({ theme }) => theme.colors.textSubtle};
-`
-
-const SortContainer = styled.div`
-  background: ${({ theme }) => theme.colors.backgroundPage};
-  border: 1px solid ${({ theme }) => theme.colors.backgroundPage};
-  box-sizing: border-box;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-  height: 30px;
-  /* padding: 0px 0px 0px 15px; */
-`
-
-const TopContaiener = styled.div`
-  padding-left: 8px;
-  padding-right: 8px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-`
-
-const Space = styled.div<{size: number}>`
-  min-width: ${({ size }) => size + 'px'};
-  height: 100%;
-`
-
-const TextContainer = styled.div<{ opacity?: number }>`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.text};
-  opacity: ${({ opacity }) => opacity ?? 1.0};
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-  user-select: none;
-`
-
 const ControlContainer = styled.div`
   display: flex;
   width: 100%;
@@ -151,7 +95,7 @@ const ControlContainer = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.mdl} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 30px 30px;
@@ -195,7 +139,10 @@ const ViewControls = styled.div`
   width: 100%;
 
   > div {
-    padding: 8px 0px;
+    /* padding: 8px 8px; */
+    padding-top: 16px;
+    padding-right: 8px;
+    padding-left: 8px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -203,7 +150,7 @@ const ViewControls = styled.div`
     width: auto;
 
     > div {
-      padding: 0;
+      padding: 8px;
     }
   }
 `
@@ -447,6 +394,7 @@ const Farms: React.FC = ({ children }) => {
               id="staked-only-farms"
               checked={stakedOnly}
               onChange={() => setStakedOnly(!stakedOnly)}
+              checkedColor="secondary"
               scale="ev"
             />
             <Space size={8} />

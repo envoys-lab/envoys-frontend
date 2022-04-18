@@ -35,7 +35,15 @@ const TabContainer = styled(Flex)`
   margin-right: 28px;
   margin-bottom: 40px;
 
+  width: 100%;
   max-width: 962px;
+`
+
+const EntireContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `
 
 export const FinanceTab: FC = ({ children }) => {
@@ -58,9 +66,11 @@ export const FinanceTab: FC = ({ children }) => {
   }
 
   return (
-    <TabContainer>
-      {renderTabs()}
-      {children}
-    </TabContainer>
+    <EntireContainer>
+      <TabContainer>
+        {renderTabs()}
+        {children}
+      </TabContainer>
+    </EntireContainer>
   )
 }

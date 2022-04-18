@@ -39,22 +39,17 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  padding: 14px 0px;
+  margin: 14px 0px 13px 0px;
+  height: 42px;
   display: flex;
-  width: 100%;
-  align-items: center;
-  padding-right: 8px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 32px;
-  }
+  align-items: flex-start;
 `
 
-const DetailsContainer = styled.td`
-  width: 30px;
+const DetailsContainer = styled.div`
+  width: 83px;
 `
 
-const StyledTr = styled.tr`
+const StyledTr = styled.div`
   cursor: pointer;
 `
 
@@ -81,10 +76,46 @@ const EarnedMobileCell = styled.td`
 const AprMobileCell = styled.td`
   padding-top: 16px;
   padding-bottom: 24px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding-left: 8px;
+  }
 `
 
 const FarmMobileCell = styled.td`
   padding-top: 24px;
+`
+
+const ItemsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
+
+const FarmContainer = styled.div`
+  width: 190px;
+
+  display: flex;
+`
+
+const APRContainer = styled.div`
+  width: 110px;
+  display: flex;
+  justify-content: center;
+`
+
+const ItemContainer = styled.div`
+  width: 110px;
+  display: flex;
+  justify-content: flex-end;
+`
+
+const LiquidityContainer = styled(ItemContainer)`
+  width: 95px;
+`
+
+const EarnedContainer = styled.div`
+  margin-right: 38px;
 `
 
 const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
@@ -102,14 +133,16 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
 
-  const { isDesktop, isMobile } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isXlm, isXl, isMdl } = useMatchBreakpoints()
 
-  const isSmallerScreen = !isDesktop
+  let lowResolution = isMobile || isMdl
+
+  const isSmallerScreen = isXlm || isXl || !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
   const handleRenderRow = () => {
-    if (!isMobile) {
+    if (!lowResolution) {
       return (
         <StyledTr onClick={toggleActionPanel}>
           <ExpandContainer showBackground={actionPanelExpanded}>
@@ -119,42 +152,81 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
                 if (columnIndex === -1) {
                   return null
                 }
-
-                switch (key) {
-                  case 'details':
-                    return (
-                      <DetailsContainer key={key}>
-                        {/* <CellInner> */}
-
-                        <CellLayout>
-                          <Details actionPanelToggled={actionPanelExpanded} />
-                        </CellLayout>
-
-                        {/* </CellInner> */}
-                      </DetailsContainer>
-                    )
-                  case 'apr':
-                    return (
-                      <td key={key}>
-                        <CellInner>
-                          <CellLayout label={t('APR')}>
-                            <Apr {...props.apr} hideButton={isSmallerScreen} />
-                          </CellLayout>
-                        </CellInner>
-                      </td>
-                    )
-                  default:
-                    return (
-                      <td key={key}>
-                        <CellInner>
-                          <CellLayout label={t(tableSchema[columnIndex].label)}>
-                            {React.createElement(cells[key], { ...props[key], userDataReady })}
-                          </CellLayout>
-                        </CellInner>
-                      </td>
-                    )
+                if (key === 'farm') {
+                  return (
+                    <FarmContainer key={key}>
+                      {/* <CellInner> */}
+                      <CellLayout label={t(tableSchema[columnIndex].label)}>
+                        {React.createElement(cells[key], { ...props[key], userDataReady })}
+                      </CellLayout>
+                      {/* </CellInner> */}
+                    </FarmContainer>
+                  )
                 }
               })}
+
+              <ItemsContainer>
+                {Object.keys(props).map((key) => {
+                  const columnIndex = columnNames.indexOf(key)
+                  if (columnIndex === -1) {
+                    return null
+                  }
+
+                  switch (key) {
+                    case 'farm':
+                      return ''
+                    case 'details':
+                      return (
+                        <DetailsContainer key={key}>
+                          <CellLayout>
+                            <Details actionPanelToggled={actionPanelExpanded} />
+                          </CellLayout>
+                        </DetailsContainer>
+                      )
+                    case 'apr':
+                      return (
+                        <APRContainer key={key}>
+                          <CellInner>
+                            <CellLayout center={true} label={t('APR')}>
+                              <Apr {...props.apr} hideButton={isSmallerScreen} />
+                            </CellLayout>
+                          </CellInner>
+                        </APRContainer>
+                      )
+                    case 'earned':
+                      return (
+                        <EarnedContainer key={key}>
+                          <CellInner>
+                            <CellLayout label={t(tableSchema[columnIndex].label)}>
+                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                            </CellLayout>
+                          </CellInner>
+                        </EarnedContainer>
+                      )
+                    case 'liquidity':
+                      return (
+                        <LiquidityContainer key={key}>
+                          <CellInner>
+                            <CellLayout label={t(tableSchema[columnIndex].label)}>
+                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                            </CellLayout>
+                          </CellInner>
+                        </LiquidityContainer>
+                      )
+
+                    default:
+                      return (
+                        <ItemContainer key={key}>
+                          <CellInner>
+                            <CellLayout label={t(tableSchema[columnIndex].label)}>
+                              {React.createElement(cells[key], { ...props[key], userDataReady })}
+                            </CellLayout>
+                          </CellInner>
+                        </ItemContainer>
+                      )
+                  }
+                })}
+              </ItemsContainer>
             </BorderContainer>
           </ExpandContainer>
         </StyledTr>
@@ -164,34 +236,34 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     return (
       <StyledTr onClick={toggleActionPanel}>
         <ExpandContainer showBackground={actionPanelExpanded}>
-        <td>
-          <tr>
-            <FarmMobileCell>
+          <td>
+            <tr>
+              <FarmMobileCell>
+                <CellLayout>
+                  <Farm {...props.farm} />
+                </CellLayout>
+              </FarmMobileCell>
+            </tr>
+            <tr>
+              <EarnedMobileCell>
+                <CellLayout label={t('Earned')}>
+                  <Earned {...props.earned} userDataReady={userDataReady} />
+                </CellLayout>
+              </EarnedMobileCell>
+              <AprMobileCell>
+                <CellLayout label={t('APR')}>
+                  <Apr {...props.apr} hideButton />
+                </CellLayout>
+              </AprMobileCell>
+            </tr>
+          </td>
+          <td>
+            <CellInner>
               <CellLayout>
-                <Farm {...props.farm} />
+                <Details actionPanelToggled={actionPanelExpanded} />
               </CellLayout>
-            </FarmMobileCell>
-          </tr>
-          <tr>
-            <EarnedMobileCell>
-              <CellLayout label={t('Earned')}>
-                <Earned {...props.earned} userDataReady={userDataReady} />
-              </CellLayout>
-            </EarnedMobileCell>
-            <AprMobileCell>
-              <CellLayout label={t('APR')}>
-                <Apr {...props.apr} hideButton />
-              </CellLayout>
-            </AprMobileCell>
-          </tr>
-        </td>
-        <td>
-          <CellInner>
-            <CellLayout>
-              <Details actionPanelToggled={actionPanelExpanded} />
-            </CellLayout>
-          </CellInner>
-        </td>
+            </CellInner>
+          </td>
         </ExpandContainer>
       </StyledTr>
     )
@@ -201,11 +273,11 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     <>
       {handleRenderRow()}
       {shouldRenderChild && (
-        <tr>
-          <td colSpan={6}>
+        <div>
+          <div>
             <ActionPanel {...props} expanded={actionPanelExpanded} />
-          </td>
-        </tr>
+          </div>
+        </div>
       )}
     </>
   )

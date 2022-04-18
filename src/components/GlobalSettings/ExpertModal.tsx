@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (boolean) => void
   setShowExpertModeAcknowledgement: (boolean) => void
+  onDismiss: () => void
 }
 
 const ExpertModal: React.FC<ExpertModalProps> = ({ setShowConfirmExpertModal, setShowExpertModeAcknowledgement }) => {

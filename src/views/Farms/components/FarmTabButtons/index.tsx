@@ -5,8 +5,6 @@ import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 
-// const ButtonMenuItem = st
-
 interface FarmTabButtonsProps {
   hasStakeInFinishedFarms: boolean
 }
@@ -34,7 +32,7 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
   return (
     <Wrapper>
 
-      <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tev" slim={true}>
+      <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tevd" slim={true}>
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
           {t('Live')}
         </ButtonMenuItem>
