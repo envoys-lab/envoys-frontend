@@ -18,6 +18,7 @@ import CircleLoader from '../Loader/CircleLoader'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
 import CurrencyEquivalent from '../CurrencyInputPanel/CurrencyEquivalent'
+import { getCompanyTokensList } from 'state/companyTokens/selectors'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -74,10 +75,17 @@ function CurrencyRow({
   const { account } = useActiveWeb3React()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
+  const companyTokens = getCompanyTokensList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
   // only show add or remove buttons if not on selected list
+
+  const isTokenInCompanyList = (currency) => {
+    /* @ts-ignore */
+    return companyTokens.some((companyToken) => companyToken.address === currency.address)
+  }
+
   return (
     <MenuItem
       style={style}
@@ -90,7 +98,11 @@ function CurrencyRow({
       <Column>
         <Text bold>{currency.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {!isDisabledCompanyToken && !isOnSelectedList && customAdded && 'Added by user •'}
+          {!isDisabledCompanyToken &&
+            !isOnSelectedList &&
+            customAdded &&
+            !isTokenInCompanyList(currency) &&
+            'Added by user •'}
           {currency.name}
         </Text>
       </Column>
@@ -235,3 +247,4 @@ export default function CurrencyList({
     </FixedSizeList>
   )
 }
+

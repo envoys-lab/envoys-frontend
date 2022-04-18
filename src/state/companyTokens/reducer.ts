@@ -4,6 +4,7 @@ import { defineState } from 'redux-localstore'
 import { fetchCompanyTokensAction } from './actions'
 import { CompanyTokensState } from '../types'
 import { ChainId, Token } from '@envoysvision/sdk'
+import { CURRENT_CHAIN_ID } from 'config'
 
 export interface CurrenciesState {
   readonly currency: string
@@ -32,7 +33,7 @@ export default createReducer<CompanyTokensState>(initialState, (builder) =>
         const companyToken = company?.details?.token
         const token = {
           decimals: 18,
-          chainId: ChainId.MAINNET,
+          chainId: CURRENT_CHAIN_ID,
           address: company.token,
           symbol: companyToken?.ticker,
           name: companyToken?.ticker,
@@ -47,3 +48,4 @@ export default createReducer<CompanyTokensState>(initialState, (builder) =>
       }
     }),
 )
+

@@ -358,9 +358,8 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useGasPrice(): string {
-  const chainId = CURRENT_CHAIN_ID
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
-  return chainId === ChainId.MAINNET ? userGas : GAS_PRICE_GWEI.testnet
+  return userGas
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
@@ -493,3 +492,4 @@ export const useWatchlistPools = (): [string[], (address: string) => void] => {
   )
   return [savedPools, updateSavedPools]
 }
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Token, Currency } from '@envoysvision/sdk'
 import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from '@envoysvision/uikit'
 import { AutoColumn } from 'components/Layout/Column'
@@ -9,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
 import { useTranslation } from 'contexts/Localization'
-
+import { getCompanyTokensList } from 'state/companyTokens/selectors'
 interface ImportProps {
   tokens: Token[]
   handleCurrencySelect?: (currency: Currency) => void
@@ -22,10 +22,26 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   const [confirmed, setConfirmed] = useState(false)
 
+  const [isAllCompanyTokens, setIsAllCompanyTokens] = useState(true)
+
   const addToken = useAddUserToken()
+
+  const companyTokens = getCompanyTokensList()
 
   // use for showing import source on inactive tokens
   const inactiveTokenList = useCombinedInactiveList()
+
+  const isTokenInCompanyList = (token: Token) => {
+    /* @ts-ignore */
+    return companyTokens.some((companyToken) => companyToken.address === token.address)
+  }
+
+  useEffect(() => {
+    const arr = tokens.map((el) => isTokenInCompanyList(el))
+    const notAllCompanyTokens = arr.some((el) => el === false)
+
+    setIsAllCompanyTokens(!notAllCompanyTokens)
+  }, [companyTokens, tokens])
 
   return (
     <AutoColumn gap="lg">
@@ -42,10 +58,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
       {tokens.map((token) => {
         const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+        const companyToken = isTokenInCompanyList(token)
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
-            {list !== undefined ? (
+            {list !== undefined && (
               <Tag
                 variant="success"
                 outline
@@ -54,7 +71,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               >
                 {t('via')} {list.name}
               </Tag>
-            ) : (
+            )}
+            {list === undefined && !companyToken && (
               <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
                 {t('Unknown Source')}
               </Tag>
@@ -76,21 +94,23 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       })}
 
       <Flex justifyContent="space-between" alignItems="center">
-        <Flex alignItems="center" onClick={() => setConfirmed(!confirmed)}>
-          <Checkbox
-            scale="sm"
-            name="confirmed"
-            type="checkbox"
-            checked={confirmed}
-            onChange={() => setConfirmed(!confirmed)}
-          />
-          <Text ml="8px" style={{ userSelect: 'none' }}>
-            {t('I understand')}
-          </Text>
-        </Flex>
+        {!isAllCompanyTokens && (
+          <Flex alignItems="center" onClick={() => setConfirmed(!confirmed)}>
+            <Checkbox
+              scale="sm"
+              name="confirmed"
+              type="checkbox"
+              checked={confirmed}
+              onChange={() => setConfirmed(!confirmed)}
+            />
+            <Text ml="8px" style={{ userSelect: 'none' }}>
+              {t('I understand')}
+            </Text>
+          </Flex>
+        )}
         <Button
           variant="danger"
-          disabled={!confirmed}
+          disabled={!confirmed && !isAllCompanyTokens}
           onClick={() => {
             tokens.forEach((token) => addToken(token))
             if (handleCurrencySelect) {
@@ -107,3 +127,4 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 }
 
 export default ImportToken
+
