@@ -45,17 +45,18 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   return (
     <AutoColumn gap="lg">
-      <Message variant="warning">
-        <Text>
-          {t(
-            'Anyone can create a BEP20 token on BSC with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
-          )}
-          <br />
-          <br />
-          {t('If you purchase an arbitrary token, you may be unable to sell it back.')}
-        </Text>
-      </Message>
-
+      {!isAllCompanyTokens && (
+        <Message variant="warning">
+          <Text>
+            {t(
+              'Anyone can create a BEP20 token on BSC with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            )}
+            <br />
+            <br />
+            {t('If you purchase an arbitrary token, you may be unable to sell it back.')}
+          </Text>
+        </Message>
+      )}
       {tokens.map((token) => {
         const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
         const companyToken = isTokenInCompanyList(token)
@@ -93,8 +94,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         )
       })}
 
-      <Flex justifyContent="space-between" alignItems="center">
-        {!isAllCompanyTokens && (
+      {!isAllCompanyTokens ? (
+        <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center" onClick={() => setConfirmed(!confirmed)}>
             <Checkbox
               scale="sm"
@@ -107,9 +108,23 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               {t('I understand')}
             </Text>
           </Flex>
-        )}
+          <Button
+            variant="danger"
+            disabled={!confirmed && !isAllCompanyTokens}
+            onClick={() => {
+              tokens.forEach((token) => addToken(token))
+              if (handleCurrencySelect) {
+                handleCurrencySelect(tokens[0])
+              }
+            }}
+            className=".token-dismiss-button"
+          >
+            {t('Import')}
+          </Button>
+        </Flex>
+      ) : (
         <Button
-          variant="danger"
+          variant="primary"
           disabled={!confirmed && !isAllCompanyTokens}
           onClick={() => {
             tokens.forEach((token) => addToken(token))
@@ -121,7 +136,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         >
           {t('Import')}
         </Button>
-      </Flex>
+      )}
     </AutoColumn>
   )
 }
