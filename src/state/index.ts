@@ -24,8 +24,9 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import votingReducer from './voting'
 import currenciesReducer from './currencies/reducer'
+import companyTokensReducer from './companyTokens/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile', 'companyTokens']
 
 const persistConfig = {
   key: 'primary',
@@ -47,6 +48,7 @@ const persistedReducer = persistReducer(
     info: infoReducer,
     nftMarket: nftMarketReducer,
     currencies: currenciesReducer,
+    companyTokens: companyTokensReducer,
 
     // Exchange
     user,

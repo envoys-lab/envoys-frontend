@@ -116,6 +116,14 @@
   }
 }
 
+.disabled {
+  background: #E9EAEB;
+  box-shadow: none;
+  &:hover {
+    cursor: not-allowed;
+  }
+}
+
 .logo {
   margin-left: 50px;
   margin-top: 15px;
