@@ -12,10 +12,3 @@ export const FarmsPageLayout: FC = ({ children }) => {
 }
 
 export { FarmsContext }
-
-// <<<<<<< HEAD
-// =======
-//     <Page removeInnerPadding>
-//       <Farms>{children}</Farms>
-//     </Page>
-// >>>>>>> develop
