@@ -18,6 +18,7 @@ import CircleLoader from '../Loader/CircleLoader'
 import { isTokenOnList } from '../../utils'
 import ImportRow from './ImportRow'
 import CurrencyEquivalent from '../CurrencyInputPanel/CurrencyEquivalent'
+import { getCompanyTokensList } from 'state/companyTokens/selectors'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -60,43 +61,67 @@ function CurrencyRow({
   currency,
   onSelect,
   isSelected,
+  isDisabledCompanyToken,
   otherSelected,
   style,
 }: {
   currency: Currency
   onSelect: () => void
   isSelected: boolean
+  isDisabledCompanyToken: boolean
   otherSelected: boolean
   style: CSSProperties
 }) {
   const { account } = useActiveWeb3React()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()
+  const companyTokens = getCompanyTokensList()
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
   // only show add or remove buttons if not on selected list
+
+  const isTokenInCompanyList = (currency) => {
+    /* @ts-ignore */
+    return companyTokens.some((companyToken) => companyToken.address === currency.address)
+  }
+
   return (
     <MenuItem
       style={style}
       className={`token-item-${key}`}
       onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
+      disabled={isSelected || isDisabledCompanyToken}
       selected={otherSelected}
     >
       <CurrencyLogo currency={currency} size="32px" />
       <Column>
         <Text bold>{currency.symbol}</Text>
         <Text color="textSubtle" small ellipsis maxWidth="200px">
-          {!isOnSelectedList && customAdded && 'Added by user •'} {currency.name}
+          {!isDisabledCompanyToken &&
+            !isOnSelectedList &&
+            customAdded &&
+            !isTokenInCompanyList(currency) &&
+            'Added by user •'}
+          {currency.name}
         </Text>
       </Column>
       <Column style={{ justifySelf: 'flex-end', alignItems: 'flex-end', flexShrink: 0 }}>
-        {!balance && account && <CircleLoader size={'16px'} />}
-        {balance && balance.greaterThan(BigInt(0)) && (
+        {isDisabledCompanyToken ? (
           <>
-            <Balance balance={balance} />
-            <CurrencyEquivalent currency={currency} amount={balance.toExact()} />
+            <Text small color="danger" textAlign={'right'}>
+              KYC verification required
+            </Text>
+          </>
+        ) : (
+          <>
+            {!balance && account && <CircleLoader size={'16px'} />}
+            {balance && balance.greaterThan(BigInt(0)) && (
+              <>
+                <Balance balance={balance} />
+                <CurrencyEquivalent currency={currency} amount={balance.toExact()} />
+              </>
+            )}
           </>
         )}
       </Column>
@@ -107,6 +132,8 @@ function CurrencyRow({
 export default function CurrencyList({
   height,
   currencies,
+  isKYCVerified,
+  companyTokens,
   selectedCurrency,
   onCurrencySelect,
   otherCurrency,
@@ -118,6 +145,8 @@ export default function CurrencyList({
 }: {
   height: number
   currencies: Currency[]
+  isKYCVerified: boolean
+  companyTokens: string[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
@@ -182,6 +211,7 @@ export default function CurrencyList({
           style={style}
           currency={currency}
           isSelected={isSelected}
+          isDisabledCompanyToken={!isKYCVerified && companyTokens.includes(token.address)}
           onSelect={handleSelect}
           otherSelected={otherSelected}
         />
@@ -196,6 +226,7 @@ export default function CurrencyList({
       setImportToken,
       showImportView,
       breakIndex,
+      isKYCVerified,
       t,
     ],
   )

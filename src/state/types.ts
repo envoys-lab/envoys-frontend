@@ -16,6 +16,7 @@ import {
 } from 'config/constants/types'
 import { NftToken, State as NftMarketState } from './nftMarket/types'
 import { CurrenciesState } from './currencies/reducer'
+import { Token } from '@envoysvision/sdk'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 
@@ -555,6 +556,12 @@ export interface UserRound {
   tickets?: LotteryTicket[]
 }
 
+export interface CompanyTokensState {
+  isInitialized: boolean
+  isLoading: boolean
+  list: object[]
+}
+
 // Global state
 
 export interface State {
@@ -570,4 +577,5 @@ export interface State {
   tokens: object
   lists: object
   currencies: CurrenciesState
+  companyTokens: CompanyTokensState
 }

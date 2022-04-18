@@ -20,8 +20,8 @@ import {
   Spinner,
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import Footer from 'components/Menu/Footer'
+// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+// import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
@@ -378,7 +378,7 @@ export default function Swap() {
   }, [onUserInput, window.location.hostname])
 
   return (
-    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed}>
+    <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed} removeInnerPadding>
       <Flex justifyContent="space-between" position="relative">
         {isDesktop && (
           <StyledChartContainer $isChartDisplayed={isChartDisplayed}>
@@ -514,7 +514,7 @@ export default function Swap() {
                   </AutoColumn>
                 )*/}
             </AutoColumn>
-            <Box mt="0.25rem">
+            <Box mt="1rem">
               {swapIsUnsupported ? (
                 <Button width="100%" disabled>
                   {t('Unsupported Asset')}

@@ -15,11 +15,11 @@ export const StyledPriceChart = styled(Box)<{ $isDark: boolean; $isExpanded?: bo
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 10px auto 0;
     padding-top: 8px;
-    background: ${({ $isDark }) => ($isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
+    background: ${({ $isDark }) => ($isDark ? 'rgba(39, 38, 44, 0.5)' : '')};
     ${({ theme, $withBorder }) => ($withBorder ? `border: 1px solid ${theme.colors.cardBorder};` : '')}
     border-radius: ${({ $isExpanded }) => ($isExpanded ? '0' : '16px')};
     width: ${({ $isExpanded }) => ($isExpanded ? '100%' : '50%')};
-    height: ${({ $isExpanded }) => ($isExpanded ? 'calc(100vh - 160px)' : '516px')};
+    height: ${({ $isExpanded }) => ($isExpanded ? 'min(calc(100vh - 120px), 100%)' : '516px')};
   }
 `
 

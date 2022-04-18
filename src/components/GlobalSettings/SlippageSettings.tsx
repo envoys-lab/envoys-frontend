@@ -59,10 +59,10 @@ const SlippageSettings: React.FC = () => {
             </Flex>
           </SettingsOptionButton>
         </Flex>
-        <FlexWithTopBorder justifyContent="space-between" pt={'16px'}>
+        {/* <FlexWithTopBorder justifyContent="space-between" pt={'16px'}>
           <Text small>{t('Slip Tolerance')}</Text>
           <Toggle scale="sm" checked={isSlippageEnabled} onChange={toggleSlippageEnabled} />
-        </FlexWithTopBorder>
+        </FlexWithTopBorder> */}
       </Flex>
     </Flex>
   )

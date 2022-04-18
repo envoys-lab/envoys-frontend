@@ -18,6 +18,8 @@ import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
+import { getCompanyTokensList } from '../../state/companyTokens/selectors'
+import { getIsKYCVerified } from '../../utils/getIsKYCVerified'
 
 const RoundInput = styled(Input)`
   border-radius: 36px;
@@ -42,6 +44,7 @@ function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const [user] = useState()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -52,6 +55,10 @@ function CurrencySearch({
   const [invertSearchOrder] = useState<boolean>(false)
 
   const allTokens = useAllTokens()
+
+  const companyTokens = getCompanyTokensList()
+  const companyTokensAddresses = companyTokens.map((token) => (token as Token).address)
+  const isKYCVerified = getIsKYCVerified(user)
 
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
@@ -156,6 +163,8 @@ function CurrencySearch({
               currencies={
                 filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
               }
+              isKYCVerified={isKYCVerified}
+              companyTokens={companyTokensAddresses}
               breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
               onCurrencySelect={handleCurrencySelect}
               otherCurrency={otherSelectedCurrency}
