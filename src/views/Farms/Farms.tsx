@@ -91,7 +91,7 @@ const ControlContainer = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.mdl} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 30px 30px;

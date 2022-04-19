@@ -133,11 +133,11 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
 
-  const { isDesktop, isMobile, isTablet, isXl } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isXlm, isXl, isMdl } = useMatchBreakpoints()
 
-  let lowResolution = isMobile || isTablet
+  let lowResolution = isMobile || isMdl
 
-  const isSmallerScreen = isXl || !isDesktop
+  const isSmallerScreen = isXlm || isXl || !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
