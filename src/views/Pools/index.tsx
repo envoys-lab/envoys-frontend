@@ -247,7 +247,7 @@ const Pools: React.FC = () => {
 
   return (
     <>
-      <PageHeader>
+      {/* <PageHeader>
         <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
           <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
             <Heading as="h1" scale="xxl" color="secondary" mb="24px">
@@ -265,74 +265,74 @@ const Pools: React.FC = () => {
             <BountyCard />
           </Flex>
         </Flex>
-      </PageHeader>
-      <Page>
-        <PoolControls>
-          <PoolTabButtons
-            stakedOnly={stakedOnly}
-            setStakedOnly={setStakedOnly}
-            hasStakeInFinishedPools={hasStakeInFinishedPools}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-          />
-          <FilterContainer>
-            <LabelWrapper>
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Sort by')}
-              </Text>
-              <ControlStretch>
-                <Select
-                  options={[
-                    {
-                      label: t('Hot'),
-                      value: 'hot',
-                    },
-                    {
-                      label: t('APR'),
-                      value: 'apr',
-                    },
-                    {
-                      label: t('Earned'),
-                      value: 'earned',
-                    },
-                    {
-                      label: t('Total staked'),
-                      value: 'totalStaked',
-                    },
-                  ]}
-                  onOptionChange={handleSortOptionChange}
-                />
-              </ControlStretch>
-            </LabelWrapper>
-            <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Search')}
-              </Text>
-              <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
-            </LabelWrapper>
-          </FilterContainer>
-        </PoolControls>
-        {showFinishedPools && (
-          <Text fontSize="20px" color="failure" pb="32px">
-            {t('These pools are no longer distributing rewards. Please unstake your tokens.')}
-          </Text>
-        )}
-        {account && !userDataLoaded && stakedOnly && (
-          <Flex justifyContent="center" mb="4px">
-            <Loading />
-          </Flex>
-        )}
-        {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
-        <div ref={observerRef} />
-        <Image
-          mx="auto"
-          mt="12px"
-          src="/images/decorations/3d-syrup-bunnies.png"
-          alt="Envoys illustration"
-          width={192}
-          height={184.5}
+      </PageHeader> */}
+      {/* <Page> */}
+      <PoolControls>
+        <PoolTabButtons
+          stakedOnly={stakedOnly}
+          setStakedOnly={setStakedOnly}
+          hasStakeInFinishedPools={hasStakeInFinishedPools}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
         />
-      </Page>
+        <FilterContainer>
+          <LabelWrapper>
+            <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
+              {t('Sort by')}
+            </Text>
+            <ControlStretch>
+              <Select
+                options={[
+                  {
+                    label: t('Hot'),
+                    value: 'hot',
+                  },
+                  {
+                    label: t('APR'),
+                    value: 'apr',
+                  },
+                  {
+                    label: t('Earned'),
+                    value: 'earned',
+                  },
+                  {
+                    label: t('Total staked'),
+                    value: 'totalStaked',
+                  },
+                ]}
+                onOptionChange={handleSortOptionChange}
+              />
+            </ControlStretch>
+          </LabelWrapper>
+          <LabelWrapper style={{ marginLeft: 16 }}>
+            <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
+              {t('Search')}
+            </Text>
+            <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
+          </LabelWrapper>
+        </FilterContainer>
+      </PoolControls>
+      {showFinishedPools && (
+        <Text fontSize="20px" color="failure" pb="32px">
+          {t('These pools are no longer distributing rewards. Please unstake your tokens.')}
+        </Text>
+      )}
+      {account && !userDataLoaded && stakedOnly && (
+        <Flex justifyContent="center" mb="4px">
+          <Loading />
+        </Flex>
+      )}
+      {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
+      <div ref={observerRef} />
+      <Image
+        mx="auto"
+        mt="12px"
+        src="/images/decorations/3d-syrup-bunnies.png"
+        alt="Envoys illustration"
+        width={192}
+        height={184.5}
+      />
+      {/* </Page> */}
     </>
   )
 }

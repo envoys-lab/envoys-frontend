@@ -30,9 +30,9 @@ const StyledTokenInput = styled.div<InputProps>`
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.input};
   border-radius: 16px;
-  box-shadow: ${getBoxShadow};
+  /* box-shadow: ${getBoxShadow}; */
   color: ${({ theme }) => theme.colors.text};
-  padding: 8px 16px 8px 0;
+  padding: 16px 16px 16px 0;
   width: 100%;
 `
 
@@ -85,11 +85,11 @@ const ModalInput: React.FC<ModalInputProps> = ({
   return (
     <div style={{ position: 'relative' }}>
       <StyledTokenInput isWarning={isBalanceZero}>
-        <Flex justifyContent="space-between" pl="16px">
+        <Flex justifyContent="space-between" pl="16px" mb="16px">
           <Text fontSize="14px">{inputTitle}</Text>
           <Text fontSize="14px">{t('Balance: %balance%', { balance: displayBalance(max) })}</Text>
         </Flex>
-        <Flex alignItems="flex-end" justifyContent="space-around">
+        <Flex alignItems="center" justifyContent="space-around">
           <StyledInput
             pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
             inputMode="decimal"

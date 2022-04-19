@@ -8,7 +8,7 @@ const MILLION = 1000000
 const TRILLION = 1000000000000
 
 const RoiCardWrapper = styled(Box)`
-  background: linear-gradient(180deg, #53dee9, #7645d9);
+  /* background: linear-gradient(180deg, #53dee9, #7645d9); */
   padding: 1px;
   width: 100%;
   border-radius: ${({ theme }) => theme.radii.default};
@@ -18,7 +18,9 @@ const RoiCardInner = styled(Box)`
   height: 120px;
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.default};
-  background: ${({ theme }) => theme.colors.gradients.bubblegum};
+
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  /* background: ${({ theme }) => theme.colors.input}; */
 `
 
 const RoiInputContainer = styled(Box)`
@@ -48,7 +50,7 @@ const RoiDollarAmount = styled(Text)<{ fadeOut: boolean }>`
     height: 0px;
   }
 
-  ${({ fadeOut, theme }) =>
+  /* ${({ fadeOut, theme }) =>
     fadeOut &&
     `
       &:after {
@@ -65,7 +67,7 @@ const RoiDollarAmount = styled(Text)<{ fadeOut: boolean }>`
         top: 0;
         width: 40px;
       }
-  `}
+  `} */
 `
 
 interface RoiCardProps {
@@ -112,7 +114,7 @@ const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, 
   return (
     <RoiCardWrapper>
       <RoiCardInner>
-        <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+        <Text fontSize="12px" color="text" bold textTransform="uppercase">
           {t('ROI at current rates')}
         </Text>
         <Flex justifyContent="space-between" mt="4px" height="36px">

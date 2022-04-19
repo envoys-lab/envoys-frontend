@@ -9,6 +9,11 @@ import { useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
 const ApyLabelContainer = styled(Flex)`
   cursor: pointer;
 
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: #133d65;
+
   &:hover {
     opacity: 0.5;
   }
@@ -65,7 +70,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({
       {displayApr}%
       {variant === 'text-and-button' && (
         <IconButton variant="text" scale="sm" ml="4px">
-          <CalculateIcon width="18px" />
+          <CalculateIcon width="18px" opacity="0.7" />
         </IconButton>
       )}
     </ApyLabelContainer>

@@ -6,6 +6,8 @@ interface Props extends BoxProps {
   text: string | React.ReactNode
   placement?: Placement
   size?: string
+  mr?: string
+  ml?: string
 }
 
 const QuestionWrapper = styled.div`

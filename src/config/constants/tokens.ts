@@ -2083,7 +2083,7 @@ export const testnetTokens = defineTokens({
     'Wrapped BNB',
     'https://www.binance.com/',
   ),
-  // bnb: new Token(TESTNET, '0xae13d989dac2f0debff460ac112a837c89baa7cd', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
+  bnb: new Token(TESTNET, '0xae13d989dac2f0debff460ac112a837c89baa7cd', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     TESTNET,
     '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79',
@@ -2115,6 +2115,14 @@ export const testnetTokens = defineTokens({
     'BUSD',
     'Binance USD',
     'https://www.paxos.com/busd/',
+  ),
+  usdt: new Token(
+    TESTNET,
+    '0x337610d27c682e347c9cd60bd4b3b107c9d34ddd',
+    18,
+    'USDT',
+    'USDT Token',
+    'https://tether.to/en/',
   ),
   syrup: new Token(
     TESTNET,
@@ -2195,7 +2203,7 @@ coinGeckoTokenListShort.map((item) => {
       return
     }
     if (allowedPlatforms.includes(key)) {
-      platformAddress = item.platforms[key].toLowerCase()
+      platformAddress = item.symbol
       allowToken = true
     }
   })
@@ -2207,6 +2215,8 @@ coinGeckoTokenListShort.map((item) => {
     coinGeckoIdToAddressMap[item.id] = platformAddress
   }
 })
+
+export const PLATFORM_TOKEN = unserializedTokens.evt
 
 export { coinGeckoAddressToIdMap, coinGeckoIdToAddressMap }
 

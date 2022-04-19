@@ -25,8 +25,8 @@ const Container = styled.div`
   color: ${({ theme }) => theme.colors.text};
 
   button {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
 
     svg {
       path {
@@ -38,7 +38,10 @@ const Container = styled.div`
 
 const AprWrapper = styled.div`
   min-width: 60px;
-  text-align: left;
+  text-align: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
 `
 
 const Apr: React.FC<AprProps> = ({
@@ -55,10 +58,10 @@ const Apr: React.FC<AprProps> = ({
 }) => {
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-
-  return originalValue !== 0 ? (
+  let fixedValue = originalValue ?? 0
+  return fixedValue !== 0 ? (
     <Container>
-      {originalValue ? (
+      {fixedValue ? (
         <ApyButton
           variant={hideButton ? 'text' : 'text-and-button'}
           pid={pid}
@@ -78,7 +81,7 @@ const Apr: React.FC<AprProps> = ({
     </Container>
   ) : (
     <Container>
-      <AprWrapper>{originalValue}%</AprWrapper>
+      <AprWrapper>{fixedValue}%</AprWrapper>
     </Container>
   )
 }

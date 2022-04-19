@@ -82,7 +82,6 @@ const GlobalSearch = () => {
   }
 
   useEffect(() => {
-    // console.log(getObjectsArraysLength(searchResults), getObjectsArraysLength(paginatedSearchResults))
     setHasNextPage(getObjectsArraysLength(searchResults) > getObjectsArraysLength(paginatedSearchResults))
   }, [searchResults, paginatedSearchResults])
 
@@ -140,7 +139,6 @@ const GlobalSearch = () => {
       })
     }
 
-    // console.log({ result })
     setPaginatedSearchResults(result)
     setIsResultsPanelShown(hasResults)
   }, [searchResults, debouncedSearchTerm, pagination])

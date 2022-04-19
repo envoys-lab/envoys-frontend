@@ -11,7 +11,20 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     active: true,
     href: '/swap',
     showItemsOnMobile: false,
-    items: [],
+    items: [
+      {
+        href: '/swap',
+      },
+      {
+        href: '/liquidity',
+      },
+      {
+        href: '/find',
+      },
+      {
+        href: '/add',
+      },
+    ],
     iconComponent: MenuTrade,
   },
   {
@@ -19,7 +32,14 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     icon: 'Earn',
     active: true,
     href: '/farms',
-    items: [],
+    items: [
+      {
+        href: '/farms',
+      },
+      {
+        href: '/pools',
+      },
+    ],
     iconComponent: MenuFinance,
   },
   {

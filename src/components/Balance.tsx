@@ -4,6 +4,7 @@ import { Text, TextProps } from '@envoysvision/uikit'
 
 interface BalanceProps extends TextProps {
   value: number
+  color?: string
   decimals?: number
   unit?: string
   isDisabled?: boolean

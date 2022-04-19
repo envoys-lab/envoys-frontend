@@ -1,13 +1,11 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
-
 import { State } from 'state/types'
 import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
-
+import { coinGeckoAddressToIdMap } from '../../config/constants/tokens'
 import { fetchPricesAction } from './actions'
 import { getCurrency } from './selectors'
-import { coinGeckoAddressToIdMap } from '../../config/constants/tokens'
 
 const getTokens = () => {
   const tokens: any = useSelector((state: State) => state.lists)
@@ -32,9 +30,9 @@ export const useCurrency = () => {
   const tokens = getTokens()
   const poolsSyrup = usePoolsWithVault()
 
-  const poolAddresses = poolsSyrup.map((item) => item.earningToken.address.toLowerCase())
+  const poolAddresses = poolsSyrup.map((item) => item.earningToken.symbol.toLowerCase())
   const tokenAddresses = tokens.map((item) => {
-    return item.address.toLowerCase()
+    return item.symbol.toLowerCase()
   })
   const ids = mergeArraysOfStrings(poolAddresses, tokenAddresses)
     .map((address) => coinGeckoAddressToIdMap[address.toLowerCase()])

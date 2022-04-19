@@ -51,9 +51,7 @@ const Company = ({ companyId }: { companyId: string }) => {
   }
 
   const handleGetCompany = async () => {
-    // console.log(companyId)
     const company = await getCompany(companyId)
-    // console.log(company)
     setCompany(company)
   }
 

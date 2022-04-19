@@ -51,20 +51,27 @@ const Container = styled.div<{ expanded }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.background};
+  ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
   width: 100%;
-  flex-direction: column-reverse;
+  flex-direction: row;
   padding: 24px;
+
+  border-radius: 0px 0px 18px 18px;
+  margin-bottom: 20px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px 0px;
   }
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.primary};
+  max-height: 16px;
+  margin-bottom: 7px;
 `
 
 const StakeContainer = styled.div`
@@ -102,6 +109,7 @@ const TagsContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -112,22 +120,24 @@ const ActionContainer = styled.div`
 `
 
 const InfoContainer = styled.div`
-  min-width: 200px;
-`
+  min-width: 120px;
+  width: 27%;
 
-const ValueContainer = styled.div`
-  display: block;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    display: none;
-  }
-`
-
-const ValueWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 4px 0px;
+  flex-direction: row;
+  justify-content: center;
+
+  padding-left: 0;
+`
+
+const InfoInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+
+const LeftSideContainer = styled.div`
+  padding-left: 6%;
 `
 
 const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
@@ -155,34 +165,19 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   return (
     <Container expanded={expanded}>
       <InfoContainer>
-        {isActive && (
-          <StakeContainer>
-            <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-              {t('Get %symbol%', { symbol: lpLabel })}
-            </StyledLinkExternal>
-          </StakeContainer>
-        )}
-        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
-        <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
-        <TagsContainer>
-          {farm.isCommunity ? <CommunityTag /> : <CoreTag />}
-          {dual ? <DualTag /> : null}
-        </TagsContainer>
+        <InfoInnerContainer>
+          {isActive && (
+            <StakeContainer>
+              <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+                {t('Get %symbol%', { symbol: lpLabel })}
+              </StyledLinkExternal>
+            </StakeContainer>
+          )}
+          <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
+          <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal>
+        </InfoInnerContainer>
       </InfoContainer>
-      <ValueContainer>
-        <ValueWrapper>
-          <Text>{t('APR')}</Text>
-          <Apr {...apr} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Multiplier')}</Text>
-          <Multiplier {...multiplier} />
-        </ValueWrapper>
-        <ValueWrapper>
-          <Text>{t('Liquidity')}</Text>
-          <Liquidity {...liquidity} />
-        </ValueWrapper>
-      </ValueContainer>
+
       <ActionContainer>
         <HarvestAction {...farm} userDataReady={userDataReady} />
         <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />

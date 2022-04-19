@@ -79,7 +79,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   stakingTokenPrice,
   multiplier,
   initialValue,
-  earningTokenSymbol = 'CAKE',
+  earningTokenSymbol = 'EVT',
   autoCompoundFrequency = 0,
   performanceFee = 0,
   isFarm = false,
@@ -141,9 +141,15 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
     <StyledModal title={t('ROI Calculator')} onDismiss={onBack || onDismiss} onBack={onBack ?? null}>
       <ScrollableContainer>
         <Flex flexDirection="column" mb="8px">
-          <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
-            {t('%asset% staked', { asset: stakingTokenSymbol })}
-          </Text>
+          <Flex paddingBottom="8px">
+            <Text color="primary" bold fontSize="12px" paddingRight="4px" textTransform="uppercase">
+              {stakingTokenSymbol}
+            </Text>
+            <Text color="text" bold fontSize="12px" textTransform="uppercase">
+              staked
+            </Text>
+          </Flex>
+
           <BalanceInput
             currencyValue={`${conversionValue} ${conversionUnit}`}
             innerRef={balanceInputRef}
@@ -154,11 +160,12 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
             switchEditingUnits={toggleEditingCurrency}
             onFocus={onBalanceFocus}
           />
-          <Flex justifyContent="space-between" mt="8px">
+          <Flex justifyContent="space-between" alignItems="center" mt="8px">
             <Button
               scale="xs"
               p="4px 16px"
               width="68px"
+              height="30px"
               variant="tertiary"
               onClick={() => setPrincipalFromUSDValue('100')}
             >
@@ -168,6 +175,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               scale="xs"
               p="4px 16px"
               width="68px"
+              height="30px"
               variant="tertiary"
               onClick={() => setPrincipalFromUSDValue('1000')}
             >
@@ -178,6 +186,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               scale="xs"
               p="4px 16px"
               width="128px"
+              height="30px"
               variant="tertiary"
               onClick={() =>
                 setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
@@ -190,7 +199,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
             </span>
             {tooltipVisible && tooltip}
           </Flex>
-          <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">
+          <Text mt="24px" color="text" bold fontSize="12px" textTransform="uppercase">
             {t('Staked for')}
           </Text>
           <FullWidthButtonMenu activeIndex={stakingDuration} onItemClick={setStakingDuration} scale="sm">
@@ -202,7 +211,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
           </FullWidthButtonMenu>
           {autoCompoundFrequency === 0 && (
             <>
-              <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">
+              <Text mt="24px" color="text" bold fontSize="12px" textTransform="uppercase">
                 {t('Compounding every')}
               </Text>
               <Flex alignItems="center">

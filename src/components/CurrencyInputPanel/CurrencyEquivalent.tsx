@@ -4,6 +4,7 @@ import { getCurrency, getCurrencyData } from '../../state/currencies/selectors'
 import { Text } from '@envoysvision/uikit'
 import { Currency, Token } from '@envoysvision/sdk'
 import { formatAmount, formatAmountNotation } from '../../views/Info/utils/formatInfoNumbers'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 
 interface CurrencyEquivalentProps {
   amount?: string
@@ -14,19 +15,25 @@ interface CurrencyEquivalentProps {
 
 export const getTokenCurrencyEquivalent = (currency: Currency) => {
   const vsCurrenciesData = getCurrencyData()
-  let address = (currency as Token)?.address?.toLowerCase()
-  if (!address && currency?.symbol === 'BNB') {
-    // use WBNB address
-    address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'.toLowerCase()
+  let symbol = (currency as Token)?.symbol?.toLowerCase()
+  if (currency?.symbol === 'BNB') {
+    // use WBNB
+    symbol = 'WBNB'.toLowerCase()
   }
-  return vsCurrenciesData[address]
+  return vsCurrenciesData[symbol]
 }
 
 const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', currency, decimals = 0, notation }) => {
   const parsedAmount = parseFloat(amount)
   const vsCurrency = getCurrency()
   const vsSymbol = getSymbolFromCurrency(vsCurrency)
-  const modifier = getTokenCurrencyEquivalent(currency)
+  let modifier = getTokenCurrencyEquivalent(currency)
+  const cakePriceBusd = usePriceCakeBusd()
+
+  if (!modifier && vsCurrency.toLowerCase().includes('usd')) {
+    modifier = cakePriceBusd
+  }
+
   let content = '-'
   let displayValue
   if (modifier) {
@@ -47,7 +54,7 @@ const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', c
     }
   }
   return (
-    <Text color={'mainDark'} fontWeight={'500'} thin small>
+    <Text color={'mainDark'} lineHeight={'14px'} fontWeight={'500'} thin small>
       {content}
     </Text>
   )

@@ -95,10 +95,10 @@ const ControlContainer = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.mdl} {
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 16px 32px;
+    padding: 30px 30px;
     margin-bottom: 0;
   }
 `
@@ -139,7 +139,10 @@ const ViewControls = styled.div`
   width: 100%;
 
   > div {
-    padding: 8px 0px;
+    /* padding: 8px 8px; */
+    padding-top: 16px;
+    padding-right: 8px;
+    padding-left: 8px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -147,7 +150,7 @@ const ViewControls = styled.div`
     width: auto;
 
     > div {
-      padding: 0;
+      padding: 8px;
     }
   }
 `
@@ -391,7 +394,8 @@ const Farms: React.FC = ({ children }) => {
               id="staked-only-farms"
               checked={stakedOnly}
               onChange={() => setStakedOnly(!stakedOnly)}
-              scale="sm"
+              checkedColor="secondary"
+              scale="ev"
             />
             <Space size={8} />
             <TextContainer> {t('Staked only')}</TextContainer>
