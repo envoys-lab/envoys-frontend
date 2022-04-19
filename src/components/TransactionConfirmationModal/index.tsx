@@ -36,7 +36,7 @@ const ConfirmedIcon = styled(ColumnCenter)`
 function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation()
   return (
-    <Wrapper>
+    <Wrapper style={{ padding: 8 }}>
       <ConfirmedIcon>
         <Spinner />
       </ConfirmedIcon>

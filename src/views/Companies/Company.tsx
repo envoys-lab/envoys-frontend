@@ -84,32 +84,26 @@ const Company = ({ companyId }: { companyId: string }) => {
         <Flex position={'relative'} alignItems={'center'} width={'100%'}>
           <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={isMobile ? 0 : showTabs}>
             {visibleTabs.ico && (
-              <Tab>
-                <AnchorLink offset="58" href="#ico">
+              <AnchorLink offset="58" href="#ico">
+                <Tab className={``}>
                   <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
-                </AnchorLink>
-              </Tab>
+                </Tab>
+              </AnchorLink>
             )}
             {visibleTabs.about && (
-              <Tab>
-                <AnchorLink offset="58" href="#about">
-                  {t('About')}
-                </AnchorLink>
-              </Tab>
+              <AnchorLink offset="58" href="#about">
+                <Tab>{t('About')}</Tab>
+              </AnchorLink>
             )}
             {visibleTabs.roadmap && (
-              <Tab>
-                <AnchorLink offset="58" href="#roadmap">
-                  {t('Roadmap')}
-                </AnchorLink>
-              </Tab>
+              <AnchorLink offset="58" href="#roadmap">
+                <Tab>{t('Roadmap')}</Tab>
+              </AnchorLink>
             )}
             {visibleTabs.team && (
-              <Tab>
-                <AnchorLink offset="58" href="#team">
-                  {t('Team')}
-                </AnchorLink>
-              </Tab>
+              <AnchorLink offset="58" href="#team">
+                <Tab>{t('Team')}</Tab>
+              </AnchorLink>
             )}
             {visibleTabs.documents && (
               <Tab>

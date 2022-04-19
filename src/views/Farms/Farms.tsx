@@ -1,11 +1,9 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, RowType, Toggle, Text, Flex } from '@envoysvision/uikit'
-import { ChainId } from '@envoysvision/sdk'
+import { RowType, Toggle, Text, Flex } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
-import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
@@ -18,14 +16,12 @@ import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import Loading from 'components/Loading'
 import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
 import { CURRENT_CHAIN_ID } from 'config'
 
@@ -113,17 +109,11 @@ const ToggleWrapper = styled.div`
   }
 `
 
-const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
-`
-
 const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 0px;
+  padding: 8px 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
