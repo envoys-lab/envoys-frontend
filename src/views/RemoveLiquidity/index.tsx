@@ -8,7 +8,7 @@ import { Currency, currencyEquals, ETHER, Percent, WETH } from '@envoysvision/sd
 import { Button, Text, AddIcon, ArrowDownIcon, CardBody, Slider, Box, Flex, useModal } from '@envoysvision/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useTranslation } from 'contexts/Localization'
-import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
+import Column, { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -312,7 +312,7 @@ export default function RemoveLiquidity() {
 
   function modalHeader() {
     return (
-      <AutoColumn gap="md">
+      <Column style={{ padding: '0 8px' }}>
         <RowBetween align="flex-end">
           <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
           <RowFixed gap="4px">
@@ -340,24 +340,26 @@ export default function RemoveLiquidity() {
             slippage: allowedSlippage / 100,
           })}
         </Text>
-      </AutoColumn>
+      </Column>
     )
   }
 
   function modalBottom() {
     return (
-      <>
-        <RowBetween>
-          <Text>
-            {t('%assetA%/%assetB% Burned', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
-          </Text>
-          <RowFixed>
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin />
-            <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}</Text>
-          </RowFixed>
-        </RowBetween>
+      <Column>
+        <Column style={{ padding: '8px' }}>
+          <RowBetween>
+            <Text>
+              {t('%assetA%/%assetB% Burned', { assetA: currencyA?.symbol ?? '', assetB: currencyB?.symbol ?? '' })}
+            </Text>
+            <RowFixed>
+              <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin />
+              <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}</Text>
+            </RowFixed>
+          </RowBetween>
+        </Column>
         {pair && (
-          <>
+          <Column style={{ padding: '8px' }}>
             <RowBetween>
               <Text>{t('Price')}</Text>
               <Text>
@@ -370,12 +372,16 @@ export default function RemoveLiquidity() {
                 1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
               </Text>
             </RowBetween>
-          </>
+          </Column>
         )}
-        <Button disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)} onClick={onRemove}>
+        <Button
+          disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
+          onClick={onRemove}
+          mt={'8px'}
+        >
           {t('Confirm')}
         </Button>
-      </>
+      </Column>
     )
   }
 
