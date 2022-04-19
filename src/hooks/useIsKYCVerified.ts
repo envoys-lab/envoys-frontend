@@ -44,7 +44,8 @@ const useIsKYCVerified = () => {
       const isCompleted = application?.status === VerificationStatus.completed
       return isVerificationPassed(application?.verifications) && isCompleted
     }
-    setIsAccountVerified(isVerified(businessApplication) || isVerified(personalApplication))
+    const isAnyVerified = isVerified(businessApplication) || isVerified(personalApplication)
+    setIsAccountVerified(isAnyVerified)
   }, [user])
 
   return isAccountVerified
