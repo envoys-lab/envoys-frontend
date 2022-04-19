@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Flex } from '@envoysvision/uikit'
 import { useRouter } from 'next/router'
 import styles from './CompanyButton.module.scss'
@@ -17,7 +17,11 @@ interface CompanyButtonProps {
 const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const { t } = useTranslation()
   const router = useRouter()
-  const isKYCVerified = useIsKYCVerified()
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
 
   const handleTrade = () => {
     if (!isKYCVerified) {

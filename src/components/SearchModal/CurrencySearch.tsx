@@ -57,7 +57,11 @@ function CurrencySearch({
 
   const companyTokens = getCompanyTokensList()
   const companyTokensAddresses = companyTokens.map((token) => (token as Token).address)
-  const isKYCVerified = useIsKYCVerified()
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
 
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
