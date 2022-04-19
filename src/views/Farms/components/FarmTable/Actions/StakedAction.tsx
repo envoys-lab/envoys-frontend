@@ -3,8 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import unserializedTokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -224,10 +226,13 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
                   {t('Staked')}
                 </HarvestText>
               </ActionTitles>
-              <HarvestText>{displayBalance}</HarvestText>
+              <HarvestText>{displayBalance()}</HarvestText>
               <div>
                 {stakedBalance.gt(0) && lpPrice.gt(0) && (
-                  <EnvoysBalance decimals={0} value={getBalanceNumber(lpPrice.times(stakedBalance))} prefix="~$" />
+                  <CurrencyEquivalent
+                    currency={unserializedTokens.evt}
+                    amount={getBalanceNumber(lpPrice.times(stakedBalance)).toString()}
+                  />
                 )}
               </div>
             </StakedContainer>
