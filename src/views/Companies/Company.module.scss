@@ -4,6 +4,33 @@
   color: red;
 }
 
+.scrollspy {
+  display: flex;
+  justify-content: space-between;
+  height: 35px;
+  align-items: flex-end;
+  margin: 0 1.3em;
+
+  a {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    height: 1.5em;
+    padding-bottom: 1.5em;
+    font-size: 14px;
+    line-height: 16px;
+    border-bottom: 4px solid transparent;
+
+    /* Main_Dark */
+
+    color: #133d65;
+
+    &.isCurrent {
+      color: #f48020;
+      border-bottom: 4px solid #f48020;
+    }
+  }
+}
 .company__head {
   margin: 20px 0;
   display: inline-flex;
@@ -16,19 +43,15 @@
 }
 
 .company__tabs {
-  margin-top: 34px;
-  padding-bottom: 35px;
-  display: block;
   background-color: white;
+
   button {
     background-color: white;
   }
 
   max-width: 728px;
-
   position: sticky;
   top: 0;
-
   z-index: 2;
 }
 
