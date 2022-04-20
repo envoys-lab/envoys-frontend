@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Scrollspy from 'react-scrollspy'
+import AnchorLink from 'react-anchor-link-smooth-scroll'
+import { useMatchBreakpoints } from '@envoysvision/uikit'
 
 import PageLoader from 'components/Loader/PageLoader'
 import Page from '../../components/Layout/Page'
@@ -14,14 +17,12 @@ import {
   CompanyMembers,
   CompanyInterviews,
 } from './components'
+import { BaseCompany } from './utils'
+import { useTranslation } from '../../contexts/Localization'
 
 import { getCompany, getHolders } from './api'
 
 import styles from './Company.module.scss'
-import { Flex, Tab, TabMenu, useMatchBreakpoints } from '@envoysvision/uikit'
-import AnchorLink from 'react-anchor-link-smooth-scroll'
-import { BaseCompany } from './utils'
-import { useTranslation } from '../../contexts/Localization'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
@@ -65,8 +66,6 @@ const Company = ({ companyId }: { companyId: string }) => {
     documents: !!company.documents?.length,
   }
 
-  const showTabs = 5 //Object.values(visibleTabs).reduce((p, c) => p + (+c), 0);
-
   return (
     <Page>
       <HeadText />
@@ -81,39 +80,22 @@ const Company = ({ companyId }: { companyId: string }) => {
       </div>
 
       <div id="tabs" className={`${styles['company__tabs']}`}>
-        <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-          <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={isMobile ? 0 : showTabs}>
-            {visibleTabs.ico && (
-              <AnchorLink offset="58" href="#ico">
-                <Tab className={``}>
-                  <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
-                </Tab>
-              </AnchorLink>
-            )}
-            {visibleTabs.about && (
-              <AnchorLink offset="58" href="#about">
-                <Tab>{t('About')}</Tab>
-              </AnchorLink>
-            )}
-            {visibleTabs.roadmap && (
-              <AnchorLink offset="58" href="#roadmap">
-                <Tab>{t('Roadmap')}</Tab>
-              </AnchorLink>
-            )}
-            {visibleTabs.team && (
-              <AnchorLink offset="58" href="#team">
-                <Tab>{t('Team')}</Tab>
-              </AnchorLink>
-            )}
-            {visibleTabs.documents && (
-              <Tab>
-                <AnchorLink offset="58" href="#docs">
-                  {t('Docs')}
-                </AnchorLink>
-              </Tab>
-            )}
-          </TabMenu>
-        </Flex>
+        <Scrollspy
+          offset={-35}
+          className={styles.scrollspy}
+          items={['ico', 'about', 'roadmap', 'team', 'docs']}
+          currentClassName={styles.isCurrent}
+        >
+          {visibleTabs.ico && (
+            <AnchorLink href="#ico">
+              <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
+            </AnchorLink>
+          )}
+          {visibleTabs.about && <AnchorLink href="#about">{t('About')}</AnchorLink>}
+          {visibleTabs.roadmap && <AnchorLink href="#roadmap">{t('Roadmap')}</AnchorLink>}
+          {visibleTabs.team && <AnchorLink href="#team">{t('Team')}</AnchorLink>}
+          {visibleTabs.documents && <AnchorLink href="#docs">{t('Docs')}</AnchorLink>}
+        </Scrollspy>
       </div>
       <div id="ico" className={styles['company__tab-info']}>
         <div className={styles['company-ico']}>
