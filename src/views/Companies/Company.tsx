@@ -28,7 +28,6 @@ import styles from './Company.module.scss'
 const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<BaseCompany>()
   const [holders, setHolders] = useState<number>(0)
-  const [activeTab, setActiveTab] = useState(0)
 
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()

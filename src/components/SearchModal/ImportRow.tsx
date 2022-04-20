@@ -1,8 +1,8 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import { Token } from '@envoysvision/sdk'
-import { Button, Text, CheckmarkCircleIcon } from '@envoysvision/uikit'
-import { AutoRow, RowFixed } from 'components/Layout/Row'
-import { AutoColumn } from 'components/Layout/Column'
+import { Button, Text, CheckmarkCircleIcon, Flex } from '@envoysvision/uikit'
+import { RowFixed } from 'components/Layout/Row'
+import Column, { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { ListLogo } from 'components/Logo'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -10,14 +10,18 @@ import { useCombinedInactiveList } from 'state/lists/hooks'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { useTranslation } from 'contexts/Localization'
+import useIsKYCVerified from '../../hooks/useIsKYCVerified'
+import { useRouter } from 'next/router'
+import { getCompanyTokensList } from '../../state/companyTokens/selectors'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
-  padding: 4px 20px;
+  padding: 4px;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto;
-  grid-gap: 16px;
+  grid-gap: 8px;
   align-items: center;
+  justify-content: center;
 
   opacity: ${({ dim }) => (dim ? '0.4' : '1')};
 `
@@ -54,6 +58,7 @@ export default function ImportRow({
   const { chainId } = useActiveWeb3React()
 
   const { t } = useTranslation()
+  const router = useRouter()
 
   // check if token comes from list
   const inactiveTokenList = useCombinedInactiveList()
@@ -63,16 +68,39 @@ export default function ImportRow({
   const isAdded = useIsUserAddedToken(token)
   const isActive = useIsTokenActive(token)
 
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
+
+  const companyTokens = getCompanyTokensList()
+  const companyTokensAddresses = companyTokens.map((token) => (token as Token).address)
+  const isCompanyToken = companyTokensAddresses.includes(token.address)
+  const requireKyc = !isKYCVerified && isCompanyToken
+  const handleImport = () => {
+    if (requireKyc) {
+      router.push(`/settings`)
+      return
+    }
+
+    if (setImportToken) {
+      setImportToken(token)
+    }
+    showImportView()
+  }
+
   return (
     <TokenSection style={style}>
       <CurrencyLogo currency={token} size="24px" style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
-        <AutoRow>
+        <Column>
           <Text>{token.symbol}</Text>
-          <Text color="textDisabled" ml="8px">
+          <Text color="gray">
             <NameOverflow title={token.name}>{token.name}</NameOverflow>
           </Text>
-        </AutoRow>
+        </Column>
         {list && list.logoURI && (
           <RowFixed>
             <Text small mr="4px" color="textSubtle">
@@ -83,17 +111,14 @@ export default function ImportRow({
         )}
       </AutoColumn>
       {!isActive && !isAdded ? (
-        <Button
-          width="fit-content"
-          onClick={() => {
-            if (setImportToken) {
-              setImportToken(token)
-            }
-            showImportView()
-          }}
-        >
-          {t('Import')}
-        </Button>
+        <Flex alignItems="center">
+          <Text small color="danger" textAlign={'right'} mr={'8px'}>
+            KYC verification required
+          </Text>
+          <Button width="fit-content" onClick={handleImport}>
+            {requireKyc ? t('Verify') : t('Import')}
+          </Button>
+        </Flex>
       ) : (
         <RowFixed style={{ minWidth: 'fit-content' }}>
           <CheckIcon />
