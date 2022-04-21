@@ -47,7 +47,7 @@ interface CurrencySearchModalProps extends InjectedModalProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
-  onDismiss: () => void
+  onDismiss?: () => void
 }
 
 export default function CurrencySearchModal({
