@@ -47,6 +47,7 @@ interface CurrencySearchModalProps extends InjectedModalProps {
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
+  onDismiss?: () => void
 }
 
 export default function CurrencySearchModal({
@@ -108,6 +109,7 @@ export default function CurrencySearchModal({
             selectedCurrency={selectedCurrency}
             otherSelectedCurrency={otherSelectedCurrency}
             showCommonBases={showCommonBases}
+            onDismiss={onDismiss}
             showImportView={() => setModalView(CurrencyModalView.importToken)}
             setImportToken={setImportToken}
           />
@@ -118,6 +120,7 @@ export default function CurrencySearchModal({
         ) : modalView === CurrencyModalView.manage ? (
           <Manage
             setModalView={setModalView}
+            onDismiss={onDismiss}
             setImportToken={setImportToken}
             setImportList={setImportList}
             setListUrl={setListUrl}
