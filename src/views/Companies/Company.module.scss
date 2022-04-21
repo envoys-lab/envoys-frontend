@@ -53,6 +53,10 @@
   position: sticky;
   top: 0;
   z-index: 2;
+
+  &--low-res {
+    top: 60px;
+  }
 }
 
 .company__tab-info {

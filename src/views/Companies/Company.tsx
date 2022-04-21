@@ -30,7 +30,9 @@ const Company = ({ companyId }: { companyId: string }) => {
   const [holders, setHolders] = useState<number>(0)
 
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpoints()
+
+  const lowResolutionMode = isTablet || isMobile
 
   useEffect(() => {
     handleGetCompany()
@@ -78,9 +80,12 @@ const Company = ({ companyId }: { companyId: string }) => {
         <CompanyButton token={company.token} holders={holders} homePageUrl={company.homePageUrl} />
       </div>
 
-      <div id="tabs" className={`${styles['company__tabs']}`}>
+      <div
+        id="tabs"
+        className={`${styles['company__tabs']} ${lowResolutionMode ? styles['company__tabs--low-res'] : ''}`}
+      >
         <Scrollspy
-          offset={-35}
+          offset={lowResolutionMode ? -95 : -35}
           className={styles.scrollspy}
           items={['ico', 'about', 'roadmap', 'team', 'docs']}
           currentClassName={styles.isCurrent}
