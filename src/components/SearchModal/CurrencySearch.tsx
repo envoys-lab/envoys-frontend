@@ -31,12 +31,14 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   showImportView: () => void
+  onDismiss: () => void
   setImportToken: (token: Token) => void
 }
 
 function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
+  onDismiss,
   otherSelectedCurrency,
   showCommonBases,
   showImportView,
@@ -156,7 +158,12 @@ function CurrencySearch({
         </AutoColumn>
         {searchToken && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
-            <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+            <ImportRow
+              onDismiss={onDismiss}
+              token={searchToken}
+              showImportView={showImportView}
+              setImportToken={setImportToken}
+            />
           </Column>
         ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
           <Box margin="24px -24px">

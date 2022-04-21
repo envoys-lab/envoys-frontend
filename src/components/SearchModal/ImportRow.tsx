@@ -45,6 +45,7 @@ export default function ImportRow({
   token,
   style,
   dim,
+  onDismiss,
   showImportView,
   setImportToken,
 }: {
@@ -52,6 +53,7 @@ export default function ImportRow({
   style?: CSSProperties
   dim?: boolean
   showImportView: () => void
+  onDismiss?: () => void
   setImportToken: (token: Token) => void
 }) {
   // globals
@@ -81,6 +83,8 @@ export default function ImportRow({
   const requireKyc = !isKYCVerified && isCompanyToken
   const handleImport = () => {
     if (requireKyc) {
+      showImportView()
+      onDismiss()
       router.push(`/settings`)
       return
     }
