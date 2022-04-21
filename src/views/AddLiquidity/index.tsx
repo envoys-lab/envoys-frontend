@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { useRouter } from 'next/router'
 import { AppDispatch } from '../../state'
 import { LightCard } from '../../components/Card'
-import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
+import Column, { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { DoubleCurrencyLogo } from '../../components/Logo'
@@ -214,9 +214,9 @@ export default function AddLiquidity() {
         />
       </Flex>
     ) : (
-      <AutoColumn>
+      <Column style={{ padding: '0 8px' }}>
         <Flex alignItems="center">
-          <Text fontSize="40px" marginRight="10px">
+          <Text fontSize="40px" marginRight="10px" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {liquidityMinted?.toSignificant(6)}
           </Text>
           <DoubleCurrencyLogo
@@ -235,7 +235,7 @@ export default function AddLiquidity() {
             slippage: allowedSlippage / 100,
           })}
         </Text>
-      </AutoColumn>
+      </Column>
     )
   }
 

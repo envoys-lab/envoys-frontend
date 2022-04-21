@@ -15,7 +15,7 @@ export interface FarmProps {
 }
 
 const Container = styled.div`
-  padding-left: 0px;
+  padding-left: 0;
   display: flex;
   align-items: center;
 
@@ -85,7 +85,14 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
   return (
     <Container>
       <TokenWrapper>
-        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={40} height={22} />
+        <TokenPairImage
+          variant="inverted"
+          primaryToken={token}
+          secondaryToken={quoteToken}
+          width={40}
+          height={22}
+          absolutePosition
+        />
       </TokenWrapper>
       <div>
         {handleRenderFarming()}

@@ -35,7 +35,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@envoysvision/sdk": "^2.4.1",
-    "@envoysvision/uikit": "0.63.23",
+    "@envoysvision/uikit": "0.63.28",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
@@ -88,6 +88,7 @@
     "react-infinite-scroll-hook": "^4.0.2",
     "react-markdown": "6.0.2",
     "react-redux": "^7.2.4",
+    "react-scrollspy": "^3.4.3",
     "react-transition-group": "^4.4.1",
     "react-window": "^1.8.6",
     "recharts": "2.0.6",

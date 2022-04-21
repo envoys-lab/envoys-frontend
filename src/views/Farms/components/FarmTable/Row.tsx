@@ -39,7 +39,7 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  margin: 14px 0px 13px 0px;
+  margin: 14px 0 13px 0;
   height: 42px;
   display: flex;
   align-items: flex-start;

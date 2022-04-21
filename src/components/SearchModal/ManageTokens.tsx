@@ -33,9 +33,11 @@ const Footer = styled.div`
 export default function ManageTokens({
   setModalView,
   setImportToken,
+  onDismiss,
 }: {
   setModalView: (view: CurrencyModalView) => void
   setImportToken: (token: Token) => void
+  onDismiss: () => void
 }) {
   const { chainId } = useActiveWeb3React()
 
@@ -110,6 +112,7 @@ export default function ManageTokens({
           {searchToken && (
             <ImportRow
               token={searchToken}
+              onDismiss={onDismiss}
               showImportView={() => setModalView(CurrencyModalView.importToken)}
               setImportToken={setImportToken}
               style={{ height: 'fit-content' }}
