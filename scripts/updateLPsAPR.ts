@@ -6,10 +6,10 @@ import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
 import farmsConfig from '../src/config/constants/farms'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT, INFO_CLIENT } from '../src/config/constants/endpoints'
+import { GRAPH_API_BLOCKS, GRAPH_API_EXCHANGE } from '../src/config/constants/endpoints'
 
-const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
-const STREAMING_FAST_ENDPOINT = INFO_CLIENT
+const BLOCK_SUBGRAPH_ENDPOINT = GRAPH_API_BLOCKS
+const STREAMING_FAST_ENDPOINT = GRAPH_API_EXCHANGE
 
 interface SingleFarmResponse {
   id: string

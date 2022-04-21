@@ -17,7 +17,8 @@ export const COVALENTHQ_API_KEY = process.env.NEXT_PUBLIC_COVALENTHQ_API_KEY
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
-export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
+export const GRAPH_API_EXCHANGE = process.env.NEXT_PUBLIC_GRAPH_API_EXCHANGE
+export const GRAPH_API_BLOCKS = process.env.NEXT_PUBLIC_GRAPH_API_BLOCKS
+
 export const GRAPH_API_NFTMARKET = process.env.NEXT_PUBLIC_GRAPH_API_NFT_MARKET
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
