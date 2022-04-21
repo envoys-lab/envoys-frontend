@@ -15,12 +15,12 @@ interface IFOCreditCellProps {
 
 const StyledCell = styled(BaseCell)`
   flex: 4.5;
-  ${({ theme }) => theme.mediaQueries.sm} {
+  /* ${({ theme }) => theme.mediaQueries.sm} {
     flex: 1 0 120px;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
     flex: 2 0 100px;
-  }
+  } */
 `
 
 const HelpIconWrapper = styled.div`

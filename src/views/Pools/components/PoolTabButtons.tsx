@@ -17,6 +17,24 @@ const ToggleWrapper = styled.div`
   }
 `
 
+const TextContainer = styled.div<{ opacity?: number }>`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.text};
+  opacity: ${({ opacity }) => opacity ?? 1.0};
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  user-select: none;
+`
+
 const ViewControls = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
@@ -38,18 +56,23 @@ const ViewControls = styled.div`
   }
 `
 
+const Space = styled.div<{ size: number }>`
+  min-width: ${({ size }) => size + 'px'};
+  height: 100%;
+`
+
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: auto;
 
   a {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 16px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: auto;
   }
 `
 
@@ -64,7 +87,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const liveOrFinishedSwitch = (
     <Wrapper>
-      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
+      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="tevd">
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/pools" replace>
           {t('Live')}
         </ButtonMenuItem>
@@ -79,17 +102,19 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const stakedOnlySwitch = (
     <ToggleWrapper>
-      <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} scale="sm" />
-      <Text> {t('Staked only')}</Text>
+      <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} checkedColor="secondary" scale="ev" />
+      <Space size={8} />
+      <TextContainer> {t('Staked only')}</TextContainer>
     </ToggleWrapper>
   )
 
   return (
-    <ViewControls>
-      {viewModeToggle}
+    <>
+      {/* {viewModeToggle} */}
       {stakedOnlySwitch}
+      <Space size={20} />
       {liveOrFinishedSwitch}
-    </ViewControls>
+    </>
   )
 }
 

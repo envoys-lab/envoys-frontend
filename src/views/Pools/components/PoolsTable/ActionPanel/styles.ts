@@ -12,7 +12,7 @@ export const ActionContainer = styled.div<{ isAutoVault?: boolean }>`
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 0;
-    height: ${({ isAutoVault }) => (isAutoVault ? '130px' : 'auto')};
+    height: ${({ isAutoVault }) => (isAutoVault ? '100px' : 'auto')};
   }
 }
 
@@ -29,6 +29,6 @@ export const ActionTitles = styled.div`
 
 export const ActionContent = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 `

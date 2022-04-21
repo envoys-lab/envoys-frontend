@@ -35,9 +35,6 @@ const TitleContainer = styled.div`
   line-height: 16px;
   display: flex;
   align-items: center;
-
-  /* Main_Dark */
-
   color: ${({ theme }) => theme.colors.text};
 `
 
@@ -54,14 +51,11 @@ const RaiseContainer = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
-  /* identical to box height */
 
   display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
-
-  /* Main_Dark */
 
   color: ${({ theme }) => theme.colors.text};
 `
@@ -72,6 +66,9 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
   const rawStakedBalance = getBalanceNumber(stakedBalance)
 
   const title = label.replace('-', '/')
+
+  const priceChange24hValue = 0.0
+  const displayValue = priceChange24hValue.toFixed(1)
 
   const handleRenderFarming = (): JSX.Element => {
     if (rawStakedBalance) {
@@ -94,9 +91,13 @@ const Farm: React.FunctionComponent<FarmProps> = ({ token, quoteToken, label, pi
         {handleRenderFarming()}
         <TitleContainer>{title}</TitleContainer>
       </div>
-      <RaiseContainer>
-        <div>0.3%</div>
-      </RaiseContainer>
+      {priceChange24hValue !== 0 ? (
+        <RaiseContainer>
+          <div>{displayValue}%</div>
+        </RaiseContainer>
+      ) : (
+        ''
+      )}
     </Container>
   )
 }

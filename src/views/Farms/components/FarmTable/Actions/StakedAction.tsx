@@ -224,7 +224,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
                   {t('Staked')}
                 </HarvestText>
               </ActionTitles>
-              <HarvestText>{displayBalance}</HarvestText>
+              <HarvestText>{displayBalance()}</HarvestText>
               <div>
                 {stakedBalance.gt(0) && lpPrice.gt(0) && (
                   <EnvoysBalance decimals={0} value={getBalanceNumber(lpPrice.times(stakedBalance))} prefix="~$" />

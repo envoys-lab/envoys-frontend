@@ -49,7 +49,6 @@ const SortContainer = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   height: 30px;
-  /* padding: 0px 0px 0px 15px; */
 `
 
 const TopContaiener = styled.div`
@@ -436,14 +435,12 @@ const Farms: React.FC = ({ children }) => {
         </FilterContainer>
       </ControlContainer>
       <TopContaiener>{renderContent()}</TopContaiener>
-      {account && !userDataLoaded && stakedOnly && (
+      {/* {account && !userDataLoaded && stakedOnly && (
         <Flex justifyContent="center">
           <Loading />
         </Flex>
-      )}
+      )} */}
       <div ref={observerRef} />
-      {/* <StyledImage src="/images/decorations/3dpan.png" alt="Envoys illustration" width={120} height={103} /> */}
-      {/* </Page> */}
     </FarmsContext.Provider>
   )
 }
