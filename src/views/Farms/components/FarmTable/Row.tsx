@@ -94,7 +94,6 @@ const ItemsContainer = styled.div`
 
 const FarmContainer = styled.div`
   width: 190px;
-
   display: flex;
 `
 

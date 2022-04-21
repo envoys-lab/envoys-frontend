@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text, useModal, Flex, Skeleton, Heading } from '@envoysvision/uikit'
+import { Button, Text, useModal, Flex, Skeleton } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { PoolCategory } from 'config/constants/types'
@@ -9,8 +9,47 @@ import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionTitles, ActionContent } from './styles'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
+import styled from 'styled-components'
+import { ActionButton } from 'views/Farms/components/FarmTable/Actions/styles'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import { Currency } from '@envoysvision/sdk'
+import { Label } from '../Cells/styles'
+
+export const ActionContainer = styled.div`
+  padding-left: 17px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`
+
+export const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  padding-right: 16px;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-right: 30px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-right: 65px;
+  }
+`
+
+const Heading = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: ${({ theme }) => theme.colors.text};
+`
 
 interface HarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
@@ -36,6 +75,8 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   const isCompoundPool = sousId === 0
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
+  const currency = earningToken as Currency
+
   const [onPresentCollect] = useModal(
     <CollectModal
       formattedBalance={formattedBalance}
@@ -50,10 +91,10 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
 
   const actionTitle = (
     <>
-      <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
+      <Text fontSize="12px" fontWeight="500" color="primary" as="span" textTransform="uppercase">
         {earningToken.symbol}{' '}
       </Text>
-      <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
+      <Text fontSize="12px" fontWeight="500" color="text" as="span" textTransform="uppercase">
         {t('Earned')}
       </Text>
     </>
@@ -62,11 +103,13 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   if (!account) {
     return (
       <ActionContainer>
-        <ActionTitles>{actionTitle}</ActionTitles>
-        <ActionContent>
-          <Heading>0</Heading>
-          <Button disabled>{isCompoundPool ? t('Collect') : t('Harvest')}</Button>
-        </ActionContent>
+        <InfoContainer>
+          <ActionTitles>{actionTitle}</ActionTitles>
+          <ActionContent>
+            <Heading>0</Heading>
+            <ActionButton disabled>{isCompoundPool ? t('Collect') : t('Harvest')}</ActionButton>
+          </ActionContent>
+        </InfoContainer>
       </ActionContainer>
     )
   }
@@ -74,48 +117,48 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   if (!userDataLoaded) {
     return (
       <ActionContainer>
-        <ActionTitles>{actionTitle}</ActionTitles>
-        <ActionContent>
-          <Skeleton width={180} height="32px" marginTop={14} />
-        </ActionContent>
+        <InfoContainer>
+          <ActionTitles>{actionTitle}</ActionTitles>
+          <ActionContent>
+            <Skeleton width={180} height="32px" marginTop={14} />
+          </ActionContent>
+        </InfoContainer>
       </ActionContainer>
     )
   }
 
   return (
     <ActionContainer>
-      <ActionTitles>{actionTitle}</ActionTitles>
+      <InfoContainer>
+        <ActionTitles>{actionTitle}</ActionTitles>
+        <>
+          {hasEarnings ? (
+            <>
+              <Balance
+                color="text"
+                fontSize="12px"
+                lineHeight="14px"
+                fontWeight={500}
+                decimals={5}
+                value={earningTokenBalance}
+              />
+              {earningTokenPrice > 0 && (
+                <CurrencyEquivalent currency={currency} amount={earningTokenBalance.toString()} />
+              )}
+            </>
+          ) : (
+            <>
+              <Heading color="textDisabled">0</Heading>
+              <CurrencyEquivalent currency={currency} amount={'0'} />
+            </>
+          )}
+        </>
+      </InfoContainer>
       <ActionContent>
-        <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
-          <>
-            {hasEarnings ? (
-              <>
-                <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
-                {earningTokenPrice > 0 && (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                <Heading color="textDisabled">0</Heading>
-                <Text fontSize="12px" color="textDisabled">
-                  0 USD
-                </Text>
-              </>
-            )}
-          </>
-        </Flex>
-        <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+        {/* <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start"></Flex> */}
+        <ActionButton disabled={!hasEarnings} onClick={onPresentCollect}>
           {isCompoundPool ? t('Collect') : t('Harvest')}
-        </Button>
+        </ActionButton>
       </ActionContent>
     </ActionContainer>
   )

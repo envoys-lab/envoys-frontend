@@ -9,13 +9,18 @@ import { useVaultPoolByKey, useVaultPools } from 'state/pools/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import BaseCell, { CellContent } from './BaseCell'
+import { BallanceContainer, Label } from './styles'
 
 interface TotalStakedCellProps {
   pool: DeserializedPool
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
+  /* flex: 2 0 100px; */
+`
+
+const InfoContainer = styled.div`
+  padding-top: 2px;
 `
 
 const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
@@ -43,16 +48,22 @@ const TotalStakedCell: React.FC<TotalStakedCellProps> = ({ pool }) => {
   return (
     <StyledCell role="cell">
       <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('Total staked')}
-        </Text>
-        {totalStaked && totalStaked.gte(0) ? (
-          <Flex height="20px" alignItems="center">
-            <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
-          </Flex>
-        ) : (
-          <Skeleton width="80px" height="16px" />
-        )}
+        <Label>{t('Total staked')}</Label>
+        <InfoContainer>
+          {totalStaked && totalStaked.gte(0) ? (
+            <Balance
+              fontSize="12px"
+              lineHeight={'14px'}
+              fontWeight={500}
+              color="text"
+              value={totalStakedBalance}
+              decimals={0}
+              unit={` ${stakingToken.symbol}`}
+            />
+          ) : (
+            <Skeleton width="80px" height="14px" />
+          )}
+        </InfoContainer>
       </CellContent>
     </StyledCell>
   )

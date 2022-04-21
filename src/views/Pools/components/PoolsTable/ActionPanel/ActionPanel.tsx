@@ -61,24 +61,25 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.dropdown};
+  ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  padding: 12px;
+  width: 100%;
+  flex-direction: row;
+  padding: 24px;
 
   border-radius: 0px 0px 18px 18px;
   margin-bottom: 20px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
+    padding: 16px 0px;
   }
 `
 
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
@@ -114,6 +115,31 @@ const InfoSection = styled(Box)`
     padding: 0;
     flex-basis: 230px;
   }
+`
+
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.primary};
+  max-height: 16px;
+  margin-bottom: 7px;
+`
+
+const InfoInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+
+const InfoContainer = styled.div`
+  min-width: 120px;
+  width: 27%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  padding-left: 0;
 `
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
@@ -253,64 +279,50 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
 
   return (
     <StyledActionPanel expanded={expanded}>
-      <InfoSection>
-        {maxStakeRow}
-        {(isXs || isSm) && aprRow}
-        {(isXs || isSm || isMd) && totalStakedRow}
-        {shouldShowBlockCountdown && blocksRow}
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
+      <InfoContainer>
+        <InfoInnerContainer>
+          {maxStakeRow}
+          {(isXs || isSm) && aprRow}
+          {(isXs || isSm || isMd) && totalStakedRow}
+          {shouldShowBlockCountdown && blocksRow}
+          <StyledLinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
             {t('See Token Info')}
-          </LinkExternal>
-        </Flex>
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={earningToken.projectLink} bold={false}>
+          </StyledLinkExternal>
+          <StyledLinkExternal href={earningToken.projectLink} bold={false}>
             {t('View Project Site')}
-          </LinkExternal>
-        </Flex>
-        {poolContractAddress && (
-          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-            <LinkExternal
+          </StyledLinkExternal>
+          {poolContractAddress && (
+            <StyledLinkExternal
               href={`${BASE_BSC_SCAN_URL}/address/${vaultKey ? vaultContractAddress : poolContractAddress}`}
               bold={false}
             >
               {t('View Contract')}
-            </LinkExternal>
-          </Flex>
-        )}
-        {account && isMetaMaskInScope && tokenAddress && (
-          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            </StyledLinkExternal>
+          )}
+          {account && isMetaMaskInScope && tokenAddress && (
             <Button
               variant="text"
               p="0"
-              height="auto"
+              height="14px"
               onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals)}
             >
-              <Text color="primary">{t('Add to Metamask')}</Text>
+              <Text fontSize="14px" color="primary">
+                {t('Add to Metamask')}
+              </Text>
               <MetamaskIcon ml="4px" />
             </Button>
-          </Flex>
-        )}
-        {vaultKey ? <CompoundingPoolTag /> : <ManualPoolTag />}
-        {tagTooltipVisible && tagTooltip}
-        <span ref={tagTargetRef}>
-          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-        </span>
-      </InfoSection>
+          )}
+        </InfoInnerContainer>
+      </InfoContainer>
       <ActionContainer>
-        {showSubtitle && (
-          <Text mt="4px" mb="16px" color="textSubtle">
-            {vaultKey
-              ? t(vaultPoolConfig[vaultKey].description)
-              : `${t('Earn')} EVT ${t('Stake').toLocaleLowerCase()} EVT`}
-          </Text>
-        )}
+        {/* <div> */}
         {pool.vaultKey ? (
           <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
         ) : (
           <Harvest {...pool} userDataLoaded={userDataLoaded} />
         )}
         <Stake pool={pool} userDataLoaded={userDataLoaded} />
+        {/* </div> */}
       </ActionContainer>
     </StyledActionPanel>
   )

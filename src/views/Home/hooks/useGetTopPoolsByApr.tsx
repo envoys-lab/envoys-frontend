@@ -16,7 +16,7 @@ export function usePoolsWithVault() {
     const activePools = poolsWithoutAutoVault.filter((pool) => !pool.isFinished)
     const cakePool = activePools.find((pool) => pool.sousId === 0)
     const cakeAutoVault = { ...cakePool, vaultKey: VaultKey.CakeVault }
-    const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
+    // const ifoPoolVault = { ...cakePool, vaultKey: VaultKey.IfoPool }
     const cakeAutoVaultWithApr = {
       ...cakeAutoVault,
       apr: getAprData(cakeAutoVault, cakeVault.fees.performanceFeeAsDecimal).apr,

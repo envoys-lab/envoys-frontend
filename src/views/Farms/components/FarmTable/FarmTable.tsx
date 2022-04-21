@@ -18,7 +18,7 @@ const Container = styled.div`
   background: ${({ theme }) => theme.card.background};
   border-radius: 16px;
   /* margin: 16px 0px; */
-  margin-top: 16px;
+  margin-top: 5px;
 `
 
 const TableWrapper = styled.div`

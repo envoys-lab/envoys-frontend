@@ -4,19 +4,17 @@ import styled from 'styled-components'
 const BaseCell = styled(Flex)`
   color: black;
 
-  padding: 24px 8px;
+  /* padding: 20px 0px; */
 
-  flex-direction: column;
-  justify-content: flex-start;
+  min-width: 110px;
+
+  /* flex-direction: column; */
+  justify-content: flex-end;
 `
 
 export const CellContent = styled(Flex)`
   flex-direction: column;
   justify-content: center;
-  max-height: 40px;
-  ${Text} {
-    line-height: 1;
-  }
 `
 
 export default BaseCell

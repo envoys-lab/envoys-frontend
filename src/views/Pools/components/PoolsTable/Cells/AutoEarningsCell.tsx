@@ -12,6 +12,9 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getInterestBreakdown } from 'utils/compoundApyHelpers'
 import { vaultPoolConfig } from 'config/constants/pools'
 import BaseCell, { CellContent } from './BaseCell'
+import { Label } from './styles'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from 'config/constants/tokens'
 
 interface AutoEarningsCellProps {
   pool: DeserializedPool
@@ -19,10 +22,9 @@ interface AutoEarningsCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 4.5;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 120px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `
 
 const HelpIconWrapper = styled.div`
@@ -124,54 +126,31 @@ const AutoEarningsCell: React.FC<AutoEarningsCellProps> = ({ pool, account }) =>
 
   return (
     <StyledCell role="cell">
-      <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {labelText}
-        </Text>
-        {userDataLoading && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
-          <>
-            {tooltipVisible && tooltip}
-            <Flex>
-              <Box mr="8px" height="32px">
-                <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? '14px' : '16px'}
-                  color={hasEarnings ? 'primary' : 'textDisabled'}
-                  decimals={hasEarnings ? 5 : 1}
-                  value={hasEarnings ? earningTokenBalance : 0}
-                />
-                {hasEarnings ? (
-                  <>
-                    {earningTokenPrice > 0 && (
-                      <Balance
-                        display="inline"
-                        fontSize="12px"
-                        color="textSubtle"
-                        decimals={2}
-                        prefix="~"
-                        value={earningTokenDollarBalance}
-                        unit=" USD"
-                      />
-                    )}
-                  </>
-                ) : (
-                  <Text mt="4px" fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                )}
-              </Box>
-              {hasEarnings && !isMobile && (
-                <HelpIconWrapper ref={targetRef}>
-                  <HelpIcon color="textSubtle" />
-                </HelpIconWrapper>
+      <Label>{labelText}</Label>
+      {userDataLoading && account ? (
+        <Skeleton width="80px" height="14px" />
+      ) : (
+        <>
+          <Balance
+            mt="2px"
+            fontWeight="500"
+            fontSize="12px"
+            lineHeight="14px"
+            color="text"
+            decimals={hasEarnings ? 2 : 1}
+            value={hasEarnings ? earningTokenBalance : 0}
+          />
+          {hasEarnings ? (
+            <>
+              {earningTokenPrice > 0 && (
+                <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenDollarBalance.toString()} />
               )}
-            </Flex>
-          </>
-        )}
-      </CellContent>
+            </>
+          ) : (
+            <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+          )}
+        </>
+      )}
     </StyledCell>
   )
 }

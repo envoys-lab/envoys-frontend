@@ -1,11 +1,12 @@
 import React from 'react'
-import { Flex, Text, Button, Heading, useModal, Skeleton } from '@envoysvision/uikit'
+import { Flex, Text, Button, useModal, Skeleton } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
 import { Token } from '@envoysvision/sdk'
 import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import CollectModal from '../Modals/CollectModal'
+import styled from 'styled-components'
 
 interface HarvestActionsProps {
   earnings: BigNumber
@@ -15,6 +16,13 @@ interface HarvestActionsProps {
   isBnbPool: boolean
   isLoading?: boolean
 }
+
+const Heading = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  color: ${({ theme }) => theme.colors.text};
+`
 
 const HarvestActions: React.FC<HarvestActionsProps> = ({
   earnings,
