@@ -5,7 +5,6 @@ import { ProfileState, Profile } from 'state/types'
 import { NftToken } from 'state/nftMarket/types'
 import { FetchStatus } from 'config/constants/types'
 import { getProfile, getProfileAvatar, getUsername } from './helpers'
-import { stat } from 'fs'
 
 export const initialState: ProfileState = {
   isInitialized: false,
