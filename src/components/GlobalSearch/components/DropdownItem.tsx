@@ -40,7 +40,7 @@ const DropdownItem: React.FC<DropdownProps> = ({
 }) => {
   return (
     <StyledDiv style={isFullWidth ? { flexGrow: 1, justifyContent: 'flex-end' } : {}}>
-      <StyledBox {...props} px={isMobile ? '8px' : '16px'} style={{ borderLeft: noBorder ? 'none' : 'inherit' }}>
+      <StyledBox {...props} px={isMobile ? '8px' : '16px'} style={noBorder ? { borderLeft: 'none' } : {}}>
         {component}
         <SwapVertIcon color={'mainDark'} ml={'4px'} style={{ transform: isOpen ? 'rotate(180deg)' : 'none' }} />
       </StyledBox>
