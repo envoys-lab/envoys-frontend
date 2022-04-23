@@ -101,9 +101,22 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
     <Container>
       <TokenWrapper>
         {vaultKey ? (
-          <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} width={40} height={22} />
+          <UITokenPairImage
+            variant="inverted"
+            {...vaultPoolConfig[vaultKey].tokenImage}
+            width={40}
+            height={22}
+            absolutePosition
+          />
         ) : (
-          <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={40} height={22} />
+          <TokenPairImage
+            variant="inverted"
+            primaryToken={earningToken}
+            secondaryToken={stakingToken}
+            width={40}
+            height={22}
+            absolutePosition
+          />
         )}
       </TokenWrapper>
       <CellContent>
