@@ -24,9 +24,6 @@ const Menu = (props) => {
   const menuItems = config(t)
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
-  console.log(menuItems)
-  console.log(activeMenuItem)
-  console.log(activeSubMenuItem)
   return (
     <UikitMenu
       searchBar={<GlobalSearch />}
