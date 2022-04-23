@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Token } from '@envoysvision/sdk'
+import { VaultKey } from "../../state/types";
 
 export type TranslatableText =
   | string
@@ -91,7 +92,7 @@ export interface PoolDeployedBlockNumber {
 }
 
 interface PoolConfigBaseProps {
-  vaultKey?: string
+  vaultKey?: VaultKey
   sousId: number
   contractAddress: Address
   poolCategory: PoolCategory
