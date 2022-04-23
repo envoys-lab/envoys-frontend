@@ -91,6 +91,7 @@ export interface PoolDeployedBlockNumber {
 }
 
 interface PoolConfigBaseProps {
+  vaultKey?: string
   sousId: number
   contractAddress: Address
   poolCategory: PoolCategory
