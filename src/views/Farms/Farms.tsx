@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { RowType, Toggle, Text, Flex } from '@envoysvision/uikit'
+import { RowType, Toggle, Text } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
@@ -17,7 +17,6 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import Select, { OptionProps } from 'components/Select/Select'
-import Loading from 'components/Loading'
 import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -90,7 +89,7 @@ const ControlContainer = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.mdl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 30px 30px;
