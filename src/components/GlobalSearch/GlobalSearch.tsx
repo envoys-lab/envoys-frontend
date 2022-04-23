@@ -39,6 +39,7 @@ import {
   CardsLayout,
   SettingsOptionButton,
   SettingsBox,
+  SearchContainer,
 } from './components/styles'
 import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
@@ -356,51 +357,57 @@ const GlobalSearch = () => {
   }
 
   return (
-    <BodyWrapper>
-      <div ref={setInputPanelElement}>
-        <SearchWrapper>
-          <PoolUpdater />
-          <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'}>
-            <StyledInput
-              id="global-search-input"
-              placeholder={t('Search by account, token,ENS...')}
-              autoComplete="off"
-              value={query}
-              onChange={handleChange}
-              onFocus={showResultsOnFocus}
-            />
-          </InputGroup>
-          {isMobile && (
-            <DropdownItem onClick={() => setIsMobileSettingsOpen(true)} isOpen={isMobileSettingsOpen} component={<></>}>
-              <InlineMenu
+    <SearchContainer>
+      <BodyWrapper>
+        <div ref={setInputPanelElement}>
+          <SearchWrapper>
+            <PoolUpdater />
+            <InputGroup startIcon={<SearchIcon width="18px" opacity={0.3} color={'darkClear'} />} scale={'lg'}>
+              <StyledInput
+                id="global-search-input"
+                placeholder={t('Search by account, token,ENS...')}
+                autoComplete="off"
+                value={query}
+                onChange={handleChange}
+                onFocus={showResultsOnFocus}
+              />
+            </InputGroup>
+            {isMobile && (
+              <DropdownItem
+                onClick={() => setIsMobileSettingsOpen(true)}
                 isOpen={isMobileSettingsOpen}
                 component={<></>}
-                onClose={() => setIsMobileSettingsOpen(false)}
               >
-                <Box p="10px" minWidth={'90vw'}>
-                  <Flex>{renderSettings(true)}</Flex>
-                </Box>
-              </InlineMenu>
-            </DropdownItem>
-          )}
-          {!isMobile && renderSettings()}
-        </SearchWrapper>
-      </div>
-      <div ref={setResultsPanelElement}>
-        <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none' }}>
-          <div>
-            {renderResults()}
-            {hasNextPage && (
-              <div ref={infiniteRef}>
-                <div>
-                  <Text m={'12px'}>{t('Loading...')}</Text>
-                </div>
-              </div>
+                <InlineMenu
+                  isOpen={isMobileSettingsOpen}
+                  component={<></>}
+                  onClose={() => setIsMobileSettingsOpen(false)}
+                >
+                  <Box p="10px" minWidth={'90vw'}>
+                    <Flex>{renderSettings(true)}</Flex>
+                  </Box>
+                </InlineMenu>
+              </DropdownItem>
             )}
-          </div>
-        </ResultsWrapper>
-      </div>
-    </BodyWrapper>
+            {!isMobile && renderSettings()}
+          </SearchWrapper>
+        </div>
+        <div ref={setResultsPanelElement}>
+          <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none' }}>
+            <div>
+              {renderResults()}
+              {hasNextPage && (
+                <div ref={infiniteRef}>
+                  <div>
+                    <Text m={'12px'}>{t('Loading...')}</Text>
+                  </div>
+                </div>
+              )}
+            </div>
+          </ResultsWrapper>
+        </div>
+      </BodyWrapper>
+    </SearchContainer>
   )
 }
 

@@ -8,7 +8,6 @@ export const BodyWrapper = styled(Card)<{ $autoWidth: boolean }>`
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
   background: white;
   width: 100%;
-  max-width: 90vw;
   overflow: unset;
 
   ${({ theme, $autoWidth }) =>
@@ -18,12 +17,8 @@ export const BodyWrapper = styled(Card)<{ $autoWidth: boolean }>`
       width: auto;
     }
   `}
-  ${({ theme }) => theme.mediaQueries.lg} {
-    max-width: calc(90vw - 290px);
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    max-width: min(968px, 90vw - 290px);
-  }
+
+  max-width: 962px;
 `
 
 /**
