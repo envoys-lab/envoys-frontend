@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
-import { Text, Flex, CardFooter, Button, AddIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
+import { Text, Flex, CardFooter, Button, AddCircleOutlineIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import FullPositionCard from '../../components/PositionCard'
@@ -14,6 +14,7 @@ import { Wrapper } from '../Swap/components/styleds'
 import { useRouter } from 'next/router'
 import AppHeader from '../../components/App/AppHeader'
 import { PageContainer } from '../../components/Layout/PageContainer'
+import { LightCard } from '../../components/Card'
 
 export const Body = styled(Card)`
   padding: 30px 20px;
@@ -23,6 +24,14 @@ export const Body = styled(Card)`
 const ThinText = styled(Text)`
   opacity: 0.7;
   font-weight: 700;
+`
+
+export const Divider = styled.div`
+  background-color: ${({ theme }) => theme.colors.cardBorder};
+  opacity: 0.5;
+  height: 1px;
+  margin: 10px 0;
+  width: 100%;
 `
 
 export default function Pool() {
@@ -60,9 +69,28 @@ export default function Pool() {
   const v2IsLoading =
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
-  const allV2PairsWithLiquidity = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
-
+  const allV2PairsWithLiquidity0 = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
+  const allV2PairsWithLiquidity = [...allV2PairsWithLiquidity0, ...allV2PairsWithLiquidity0]
   const renderBody = () => {
+    if (allV2PairsWithLiquidity?.length > 0) {
+      return allV2PairsWithLiquidity.map((v2Pair, index) => (
+        <>
+          {index > 0 && <Divider />}
+          <FullPositionCard
+            key={v2Pair.liquidityToken.address}
+            pair={v2Pair}
+            style={{ marginBottom: index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0 }}
+            background={'transparent'}
+          />
+        </>
+      ))
+    }
+    return <></>
+  }
+  const renderEmptyBody = () => {
+    if (allV2PairsWithLiquidity?.length > 0) {
+      return <></>
+    }
     if (!account) {
       return (
         <Text color="textSubtle" textAlign="center">
@@ -76,16 +104,6 @@ export default function Pool() {
           <Dots>{t('Loading')}</Dots>
         </Text>
       )
-    }
-    if (allV2PairsWithLiquidity?.length > 0) {
-      return allV2PairsWithLiquidity.map((v2Pair, index) => (
-        <FullPositionCard
-          key={v2Pair.liquidityToken.address}
-          pair={v2Pair}
-          mb={index < allV2PairsWithLiquidity.length - 1 ? '16px' : 0}
-          background={'transparent'}
-        />
-      ))
     }
     return (
       <ThinText color="primary" textAlign="center">
@@ -124,11 +142,12 @@ export default function Pool() {
           </Flex>
         </AppHeader>
         <Wrapper id="liquidity-page" pb={'0 !important'}>
-          <Body background={'transparent'}>
-            {renderBody()}
+          {renderBody()}
+          <LightCard background={'transparent'} mt={'16px'}>
+            {renderEmptyBody()}
             {account && !v2IsLoading && (
               <Flex flexDirection="column" alignItems="center">
-                <ThinText color="primary" my="16px">
+                <ThinText color="primary" mb="16px" fontSize={'14px'}>
                   {t("Don't see a pool you joined?")}
                 </ThinText>
                 <Button
@@ -144,14 +163,14 @@ export default function Pool() {
                 </Button>
               </Flex>
             )}
-          </Body>
+          </LightCard>
         </Wrapper>
         <CardFooter style={{ textAlign: 'center' }}>
           <Button
             id="join-pool-button"
             width="100%"
             scale="lg"
-            startIcon={<AddIcon color="white" />}
+            startIcon={<AddCircleOutlineIcon color="white" />}
             disabled={isAddLoading}
             onClick={handleAdd}
           >

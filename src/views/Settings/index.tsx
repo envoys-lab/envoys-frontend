@@ -150,7 +150,9 @@ const Settings = () => {
   useEffect(() => {
     const handlePostUserWallet = async () => {
       const data = await postUserWallet(account)
-      setUserId(data._id)
+      if (data) {
+        setUserId(data._id)
+      }
     }
 
     if (account) {

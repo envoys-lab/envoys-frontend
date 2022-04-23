@@ -85,7 +85,7 @@ function CurrencyRow({
     /* @ts-ignore */
     return companyTokens.some((companyToken) => companyToken.address === currency.address)
   }
-
+  console.log('isDisabledCompanyToken', isDisabledCompanyToken)
   return (
     <MenuItem
       style={style}
@@ -206,6 +206,13 @@ export default function CurrencyList({
           <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
         )
       }
+      console.log(currency.name)
+      console.log('!ver', !isKYCVerified)
+      console.log('has addr', companyTokens.includes(token.address))
+      console.log(
+        '!isKYCVerified && companyTokens.includes(token.address)',
+        !isKYCVerified && companyTokens.includes(token.address),
+      )
       return (
         <CurrencyRow
           style={style}
