@@ -2,10 +2,8 @@ import styled from 'styled-components'
 import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
 
 export const BodyWrapper = styled(Card)`
-  width: 100%;
-  max-width: 90vw;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  margin: 16px auto 0;
+  margin: 30px auto 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: relative;
   overflow: visible;
@@ -15,12 +13,12 @@ export const BodyWrapper = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    max-width: calc(90vw - 290px);
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    max-width: min(968px, 90vw - 290px);
-  }
+  max-width: 962px;
+`
+
+export const SearchContainer = styled.div`
+  padding-left: 28px;
+  padding-right: 28px;
 `
 
 export const ResultsWrapper = styled(BodyWrapper)`
