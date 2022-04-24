@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Token } from '@envoysvision/sdk'
-import { VaultKey } from "../../state/types";
+import { VaultKey } from '../../state/types'
 
 export type TranslatableText =
   | string
