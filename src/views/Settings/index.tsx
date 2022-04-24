@@ -10,6 +10,7 @@ import Page from '../../components/Layout/Page'
 import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 import { documentNormalize, isVerificationPassed } from './heplers'
+import { getSignature } from 'state/profile/selectors'
 import { User, VerificationStatus } from './types'
 
 const Container = styled.div`
@@ -123,6 +124,7 @@ const Settings = () => {
   const [verificationLinks, setVerificationLinks] = useState({ personal: '', company: '' })
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const { signature, message } = getSignature()
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = [t('My KYC'), t('Business')]
@@ -149,20 +151,20 @@ const Settings = () => {
 
   useEffect(() => {
     const handlePostUserWallet = async () => {
-      const data = await postUserWallet(account)
-      if (data) {
-        setUserId(data._id)
+      if (signature && message) {
+        const data = await postUserWallet(account, signature, message)
+        setUserId(data?._id)
       }
     }
 
     if (account) {
       handlePostUserWallet()
     }
-  }, [account])
+  }, [account, signature, message])
 
   useEffect(() => {
-    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
-  }, [account, library])
+    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask' && !!signature && !!message)
+  }, [account, library, signature, message])
 
   useEffect(() => {
     const handleGetUser = async () => {

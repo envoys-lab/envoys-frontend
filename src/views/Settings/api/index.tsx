@@ -12,9 +12,13 @@ const defaultOptions = {
   },
 }
 
-const postUserWallet = async (account: string) => {
+const postUserWallet = async (account: string, signature: string, message: string) => {
   try {
-    const response = await axiosInstance.post(`${ENVOYS_PUBLIC_API}/users/${account}`)
+    const response = await axiosInstance.post(
+      `${ENVOYS_PUBLIC_API}/users/${account}`,
+      { signature, message },
+      defaultOptions,
+    )
     return response.data
   } catch (e) {
     console.error(e)

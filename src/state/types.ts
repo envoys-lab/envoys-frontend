@@ -175,6 +175,10 @@ export interface ProfileState {
   isLoading: boolean
   hasRegistered: boolean
   data: Profile
+  signature: {
+    signature: string
+    message: string
+  }
   profileAvatars: {
     [key: string]: {
       username: string
