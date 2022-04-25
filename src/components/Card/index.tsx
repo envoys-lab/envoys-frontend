@@ -16,7 +16,7 @@ const Card = styled(Box)<{
 export default Card
 
 export const LightCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.colors.tipBackground};
+  /*border: 1px solid ${({ theme }) => theme.colors.tipBackground};*/
   background-color: ${({ theme }) => theme.colors.tipBackground};
 `
 
@@ -27,4 +27,11 @@ export const LightGreyCard = styled(Card)`
 
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdown};
+`
+
+export const GreyCardExpandable = styled(Card)<{ $isExpanded?: boolean }>`
+  ${({ $isExpanded, theme }) =>
+    `
+      background-color: ${$isExpanded ? theme.colors.background : theme.colors.backgroundAlt}
+    `}} 
 `

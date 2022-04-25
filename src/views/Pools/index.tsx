@@ -4,7 +4,7 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Image, Text } from '@envoysvision/uikit'
+import { Text } from '@envoysvision/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
@@ -19,9 +19,6 @@ import {
 } from 'state/pools/hooks'
 import { latinise } from 'utils/latinise'
 import FlexLayout from 'components/Layout/Flex'
-import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
-import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
@@ -29,12 +26,9 @@ import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
-import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import BountyCard from './components/BountyCard'
-import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
 
@@ -67,7 +61,7 @@ const PoolControls = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.mdl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 30px 30px;
@@ -102,7 +96,7 @@ const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 0px;
+  padding: 8px 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;

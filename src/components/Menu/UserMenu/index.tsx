@@ -36,7 +36,7 @@ const UserMenu = () => {
   if (!account) {
     return (
       <ButtonsContainer>
-        <ConnectWalletButton width="100%" scale="md" />
+        <ConnectWalletButton width="100%" scale="md" menuBtn />
       </ButtonsContainer>
     )
   }

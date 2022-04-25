@@ -153,7 +153,6 @@ const Settings = () => {
     const handlePostUserWallet = async () => {
       if (signature && message) {
         const data = await postUserWallet(account, signature, message)
-
         setUserId(data?._id)
       }
     }

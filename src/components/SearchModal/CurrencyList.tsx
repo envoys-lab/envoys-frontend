@@ -85,7 +85,7 @@ function CurrencyRow({
     /* @ts-ignore */
     return companyTokens.some((companyToken) => companyToken.address === currency.address)
   }
-
+  console.log('isDisabledCompanyToken', isDisabledCompanyToken)
   return (
     <MenuItem
       style={style}

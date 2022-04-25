@@ -21,13 +21,14 @@ import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
-import { LightCard } from '../Card'
+import { GreyCardExpandable, LightCard } from '../Card'
 import { AutoColumn } from '../Layout/Column'
 import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
+import { Divider } from '../../views/Pool'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -171,8 +172,8 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
       : [undefined, undefined]
 
   return (
-    <Card style={{ borderRadius: '12px' }} {...props} background={'transparent'}>
-      <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
+    <GreyCardExpandable $isExpanded={showMore}>
+      <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)}>
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
@@ -188,72 +189,91 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
       </Flex>
 
       {showMore && (
-        <AutoColumn gap="8px" style={{ padding: '16px' }}>
-          <FixedHeightRow>
-            <RowFixed>
-              <CurrencyLogo size="20px" currency={currency0} />
-              <Text color="textSubtle" ml="4px">
-                {t('Pooled %asset%', { asset: currency0.symbol })}:
-              </Text>
-            </RowFixed>
-            {token0Deposited ? (
+        <>
+          <Divider />
+          <AutoColumn gap="8px">
+            <FixedHeightRow>
               <RowFixed>
-                <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                <CurrencyLogo size="22px" currency={currency0} />
+                <Flex>
+                  <Text color="textSubtle" mx="4px" fontWeight={500}>
+                    {t('Pooled %asset%', { asset: '' })}
+                  </Text>
+                  <Text color="primary" fontWeight={500}>
+                    {currency0.symbol}
+                  </Text>
+                </Flex>
               </RowFixed>
-            ) : (
-              '-'
-            )}
-          </FixedHeightRow>
+              {token0Deposited ? (
+                <RowFixed>
+                  <Text color="mainDark" fontWeight={500} ml="6px">
+                    {token0Deposited?.toSignificant(6)}
+                  </Text>
+                </RowFixed>
+              ) : (
+                '-'
+              )}
+            </FixedHeightRow>
 
-          <FixedHeightRow>
-            <RowFixed>
-              <CurrencyLogo size="20px" currency={currency1} />
-              <Text color="textSubtle" ml="4px">
-                {t('Pooled %asset%', { asset: currency1.symbol })}:
-              </Text>
-            </RowFixed>
-            {token1Deposited ? (
+            <FixedHeightRow>
               <RowFixed>
-                <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                <CurrencyLogo size="22px" currency={currency1} />
+                <Flex>
+                  <Text color="textSubtle" mx="4px" fontWeight={500}>
+                    {t('Pooled %asset%', { asset: '' })}
+                  </Text>
+                  <Text color="primary" fontWeight={500}>
+                    {currency1.symbol}
+                  </Text>
+                </Flex>
               </RowFixed>
-            ) : (
-              '-'
+              {token1Deposited ? (
+                <RowFixed>
+                  <Text color="mainDark" fontWeight={500} ml="6px">
+                    {token1Deposited?.toSignificant(6)}
+                  </Text>
+                </RowFixed>
+              ) : (
+                '-'
+              )}
+            </FixedHeightRow>
+
+            <FixedHeightRow mt={'4px'}>
+              <Text color="mainDark" fontWeight={500} thin>
+                {t('Share of Pool')}
+              </Text>
+              <Text color="mainDark" fontWeight={500}>
+                {poolTokenPercentage
+                  ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
+                  : '-'}
+              </Text>
+            </FixedHeightRow>
+
+            {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
+              <Flex style={{ gridGap: '16px', marginTop: '12px' }}>
+                <Button
+                  as={NextLinkFromReactRouter}
+                  to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  variant="text"
+                  startIcon={<AddIcon color="primary" />}
+                  width="100%"
+                >
+                  {t('Add liquidity instead')}
+                </Button>
+                <Button
+                  scale={'md'}
+                  as={NextLinkFromReactRouter}
+                  to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  variant="primary"
+                  style={{ padding: '10px 30px' }}
+                >
+                  {t('Remove')}
+                </Button>
+              </Flex>
             )}
-          </FixedHeightRow>
-
-          <FixedHeightRow>
-            <Text color="textSubtle">{t('Share of Pool')}</Text>
-            <Text>
-              {poolTokenPercentage
-                ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
-                : '-'}
-            </Text>
-          </FixedHeightRow>
-
-          {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
-            <Flex flexDirection="column">
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
-                variant="primary"
-                width="100%"
-                mb="8px"
-              >
-                {t('Remove')}
-              </Button>
-              <Button
-                as={NextLinkFromReactRouter}
-                to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
-                variant="text"
-                startIcon={<AddIcon color="primary" />}
-                width="100%"
-              >
-                {t('Add liquidity instead')}
-              </Button>
-            </Flex>
-          )}
-        </AutoColumn>
+          </AutoColumn>
+        </>
       )}
-    </Card>
+    </GreyCardExpandable>
   )
 }
