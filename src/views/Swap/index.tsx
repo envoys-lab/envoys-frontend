@@ -20,7 +20,7 @@ import {
   Spinner,
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 // import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
@@ -31,13 +31,13 @@ import Column, { AutoColumn } from '../../components/Layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-// import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
+import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 // import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 // import ProgressSteps from './components/ProgressSteps'
-import { AppBody, AppHeader } from '../../components/App'
+import { AppHeader } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -616,11 +616,11 @@ export default function Swap() {
               {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
             </Box>
           </Wrapper>
-          {/* (!swapIsUnsupported ? (
-                trade && <AdvancedSwapDetailsDropdown trade={trade} />
-              ) : (
-                <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-              )) */}
+          {!swapIsUnsupported ? (
+            trade && <AdvancedSwapDetailsDropdown trade={trade} />
+          ) : (
+            <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+          )}
         </StyledSwapContainer>
         {/* isChartExpanded && (
             <Box display={['none', null, null, 'block']} width="100%" height="100%">
