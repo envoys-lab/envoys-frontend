@@ -37,7 +37,7 @@ import {
   SearchWrapper,
   StyledInput,
   CardsLayout,
-  SettingsOptionButton,
+  CurrencySettingsOptionButton,
   SettingsBox,
   SearchContainer,
 } from './components/styles'
@@ -323,19 +323,24 @@ const GlobalSearch = () => {
             <SettingsBox>
               <CardsLayout>
                 {currencies.map((currency) => (
-                  <SettingsOptionButton
+                  <CurrencySettingsOptionButton
                     onClick={() => handleSetCurrency(currency)}
                     $active={currency === globalCurrency}
                     key={`settings-item-${currency}`}
                   >
                     {currency}
-                  </SettingsOptionButton>
+                  </CurrencySettingsOptionButton>
                 ))}
               </CardsLayout>
             </SettingsBox>
           </InlineMenu>
         </DropdownItem>
-        <DropdownItem isMobile={isMobile} onClick={() => setIsGasOpen(true)} isOpen={isGasOpen} component={<GasIcon />}>
+        <DropdownItem
+          isMobile={isMobile}
+          onClick={() => setIsGasOpen(true)}
+          isOpen={isGasOpen}
+          component={<GasIcon width={'18px'} height={'18px'} />}
+        >
           <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
             <SettingsBox>
               <GasSettings />
@@ -346,7 +351,7 @@ const GlobalSearch = () => {
           isMobile={isMobile}
           onClick={() => setIsSettingsOpen(true)}
           isOpen={isSettingsOpen}
-          component={<CogIcon />}
+          component={<CogIcon width={'18px'} height={'18px'} />}
         >
           <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
             <SettingsBox>

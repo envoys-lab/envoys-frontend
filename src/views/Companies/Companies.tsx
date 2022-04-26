@@ -1,11 +1,25 @@
 import React from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
+import styled from 'styled-components'
 import { useLoadItems } from './utils'
 import { CompanyCard } from './components'
-import styles from './Companies.module.scss'
 import Page from '../../components/Layout/Page'
-import { Spinner } from '@envoysvision/uikit'
+import { Spinner, Grid } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
+
+const CompaniesGrid = styled(Grid)`
+  padding: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 110px;
+  gap: 30px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 30px 45px;
+  }
+`
 
 const Companies = () => {
   const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
@@ -31,7 +45,7 @@ const Companies = () => {
   return (
     <Page>
       {companies?.length === 0 && <Spinner />}
-      <div className={styles['company__list-container']}>{companies.map((item) => renderCompany(item))}</div>
+      <CompaniesGrid>{companies.map((item) => renderCompany(item))}</CompaniesGrid>
       {hasNextPage && (
         <div ref={infiniteRef}>
           <div>{companies?.length > 0 && t('Loading')}</div>

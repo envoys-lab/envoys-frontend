@@ -33,24 +33,26 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
           />
         </Flex>
       ) : (
-        <Text color={'darkClear'} mb={'8px'}>
+        <Text color={'darkClear'} mb={'12px'}>
           {t('Gas settings')}
         </Text>
       )}
 
-      <Grid gridGap={12} gridTemplateColumns={`repeat(3, 1fr)`}>
+      <Grid gridGap={12} gridTemplateColumns={`repeat(3, 1fr)`} mb={'12px'}>
         {showButtons.map((gas, key) => (
           <SettingsOptionButton
             key={`gas-option-${key}`}
             onClick={() => setGasPrice(GAS_PRICE_GWEI[gas])}
             $active={gasPrice === GAS_PRICE_GWEI[gas]}
           >
-            <Text fontSize={'14px'} color={'inherit'} bold>
-              {t(`gas_${gas}`)}
-            </Text>
-            <Text fontSize={'14px'} color={'darkClear'} thin>
-              ({GAS_PRICE[gas]} Gwei)
-            </Text>
+            <Flex mx={'1px'} flexDirection={'column'}>
+              <Text fontSize={'14px'} color={'inherit'} bold>
+                {t(`gas_${gas}`)}
+              </Text>
+              <Text fontSize={'14px'} color={'darkClear'} thin>
+                ({GAS_PRICE[gas]} Gwei)
+              </Text>
+            </Flex>
           </SettingsOptionButton>
         ))}
         {/*<SettingsOptionButton

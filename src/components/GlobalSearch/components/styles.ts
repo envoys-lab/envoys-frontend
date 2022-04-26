@@ -46,6 +46,7 @@ export const SearchWrapper = styled.div`
 `
 
 export const StyledInput = styled(Input)`
+  height: 56px;
   border: none;
   box-shadow: none;
   background: transparent;
@@ -72,7 +73,7 @@ export const SearchResultBox = styled(Box)`
 `
 
 export const SettingsBox = styled(Box)`
-  padding: 16px;
+  padding: 14px 15px;
 `
 
 export const FilterItem = styled(Box)`
@@ -135,7 +136,18 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
   }
 `
 
+export const CurrencySettingsOptionButton = styled(SettingsOptionButton)`
+  width: 70px;
+  height: 30px;
+  padding: 0;
+`
+
 SettingsOptionButton.defaultProps = {
+  scale: 'sm',
+  variant: 'tertiary',
+}
+
+CurrencySettingsOptionButton.defaultProps = {
   scale: 'sm',
   variant: 'tertiary',
 }
