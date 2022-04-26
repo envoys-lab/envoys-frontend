@@ -20,6 +20,7 @@ import { getSwapSound } from './swapSound'
 import ImportRow from './ImportRow'
 import { getCompanyTokensList } from '../../state/companyTokens/selectors'
 import useIsKYCVerified from '../../hooks/useIsKYCVerified'
+import { useRouter } from 'next/router'
 
 const RoundInput = styled(Input)`
   border-radius: 36px;
@@ -46,6 +47,7 @@ function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const router = useRouter()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -97,6 +99,11 @@ function CurrencySearch({
     },
     [audioPlay, onCurrencySelect],
   )
+
+  const handleDismiss = useCallback(() => {
+    router.push('/settings')
+    onDismiss()
+  }, [router, onDismiss])
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
@@ -182,6 +189,7 @@ function CurrencySearch({
               fixedListRef={fixedList}
               showImportView={showImportView}
               setImportToken={setImportToken}
+              onDismiss={handleDismiss}
             />
           </Box>
         ) : (
