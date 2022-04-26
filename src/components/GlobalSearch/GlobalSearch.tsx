@@ -287,6 +287,9 @@ const GlobalSearch = () => {
       setIsSettingsOpen(false)
     }
   }, [isMobileSettingsOpen, setIsGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
+
+  const fitToComponent = inputPanelElement?.parentElement?.parentElement
+
   const renderSettings = (isMobile = false) => {
     return (
       <>
@@ -319,7 +322,12 @@ const GlobalSearch = () => {
           isOpen={isCurrencyOpen}
           component={globalCurrency}
         >
-          <InlineMenu isOpen={isCurrencyOpen} component={<></>} onClose={() => setIsCurrencyOpen(false)}>
+          <InlineMenu
+            isOpen={isCurrencyOpen}
+            component={<></>}
+            fitToComponent={fitToComponent}
+            onClose={() => setIsCurrencyOpen(false)}
+          >
             <SettingsBox>
               <CardsLayout>
                 {currencies.map((currency) => (
@@ -341,7 +349,12 @@ const GlobalSearch = () => {
           isOpen={isGasOpen}
           component={<GasIcon width={'18px'} height={'18px'} />}
         >
-          <InlineMenu isOpen={isGasOpen} component={<></>} onClose={() => setIsGasOpen(false)}>
+          <InlineMenu
+            isOpen={isGasOpen}
+            component={<></>}
+            fitToComponent={fitToComponent}
+            onClose={() => setIsGasOpen(false)}
+          >
             <SettingsBox>
               <GasSettings />
             </SettingsBox>
@@ -353,7 +366,12 @@ const GlobalSearch = () => {
           isOpen={isSettingsOpen}
           component={<CogIcon width={'18px'} height={'18px'} />}
         >
-          <InlineMenu isOpen={isSettingsOpen} component={<></>} onClose={() => setIsSettingsOpen(false)}>
+          <InlineMenu
+            isOpen={isSettingsOpen}
+            component={<></>}
+            fitToComponent={fitToComponent}
+            onClose={() => setIsSettingsOpen(false)}
+          >
             <SettingsBox>
               <SlippageSettings />
             </SettingsBox>
