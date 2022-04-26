@@ -43,6 +43,7 @@ import {
 } from './components/styles'
 import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
+import useUserAddedTokens from 'state/user/hooks/useUserAddedTokens'
 
 const GlobalSearch = () => {
   const dispatch = useDispatch()
@@ -51,6 +52,7 @@ const GlobalSearch = () => {
   const [poolsLiquidity, setPoolsLiquidity] = useState({})
   const { isMobile } = useMatchBreakpoints()
   const tokens = getTokens()
+  const userAddedTokens = useUserAddedTokens()
   const farms = useFarms()
   const poolsSyrup = usePoolsWithVault()
   const debouncedSearchTerm = useDebounce(query)
@@ -173,7 +175,7 @@ const GlobalSearch = () => {
       return
     }
     const searchResults = await getSearchResults({
-      tokens,
+      tokens: [...tokens, ...userAddedTokens],
       farms: farms.data,
       poolsLiquidity,
       poolsSyrup,
