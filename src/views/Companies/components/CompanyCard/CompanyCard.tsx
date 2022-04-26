@@ -54,21 +54,12 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
   const realLogoUrl =
     !company.logoUrl || company.logoUrl !== 'https://cloud.example/logo' ? company.logoUrl : '/images/company.png'
 
-  let cName = company.name
-  if (company.name === 'Default Company #2') {
-    cName = 'Default Company With really long name'
-  }
-
-  if (company.name === 'Default Company #3') {
-    cName = 'Incomprehensibilities lab'
-  }
-
   return (
     <StyledCompanyCard onClick={handleClick} key={company._id}>
       <CompanyCardTopRow>
         <CompanyCardImage src={realLogoUrl} />
         <CompanyCardName>
-          <LinesEllipsis text={cName} maxLine="2" ellipsis="..." trimRight basedOn="words" />
+          <LinesEllipsis text={company.name} maxLine="2" ellipsis="..." trimRight basedOn="words" />
         </CompanyCardName>
         <CompanyCardStar>
           <StarIcon />
