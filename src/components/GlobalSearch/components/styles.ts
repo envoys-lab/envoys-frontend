@@ -142,12 +142,10 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
 `
 
 export const CurrencySettingsOptionButton = styled(SettingsOptionButton)`
-  width: 66px;
+  width: 70px;
   height: 30px;
   padding: 0;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 70px;
-  }
+  box-sizing: border-box;
 `
 
 SettingsOptionButton.defaultProps = {
