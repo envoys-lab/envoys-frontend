@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-import crypto from 'crypto'
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProfileState, Profile } from 'state/types'
 import { NftToken } from 'state/nftMarket/types'
@@ -12,29 +10,16 @@ export const initialState: ProfileState = {
   hasRegistered: false,
   data: null,
   profileAvatars: {},
-  signature: {
-    signature: '',
-    message: '',
-  },
 }
 
-export const fetchProfile = createAsyncThunk<
-  { hasRegistered: boolean; profile?: Profile; signature: string; message: string },
-  string
->('profile/fetchProfile', async (account) => {
-  const { hasRegistered, profile } = await getProfile(account)
-  let nonce = crypto.randomBytes(16).toString('base64')
-  const message = `Welcome to Envoys! ${nonce}`
+export const fetchProfile = createAsyncThunk<{ hasRegistered: boolean; profile?: Profile }, string>(
+  'profile/fetchProfile',
+  async (account) => {
+    const { hasRegistered, profile } = await getProfile(account)
 
-  if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
-
-  await (window as any).ethereum.send('eth_requestAccounts')
-  const provider = new ethers.providers.Web3Provider(window.ethereum)
-  const signer = provider.getSigner()
-  const signature = await signer.signMessage(message)
-
-  return { hasRegistered, profile, signature, message }
-})
+    return { hasRegistered, profile }
+  },
+)
 
 export const fetchProfileAvatar = createAsyncThunk<{ account: string; nft: NftToken; hasRegistered: boolean }, string>(
   'profile/fetchProfileAvatar',
@@ -72,13 +57,12 @@ export const profileSlice = createSlice({
       state.isLoading = true
     })
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
-      const { hasRegistered, profile, signature, message } = action.payload
+      const { hasRegistered, profile } = action.payload
 
       state.isInitialized = true
       state.isLoading = false
       state.hasRegistered = hasRegistered
       state.data = profile
-      state.signature = { signature, message }
     })
     builder.addCase(fetchProfile.rejected, (state) => {
       state.isLoading = false

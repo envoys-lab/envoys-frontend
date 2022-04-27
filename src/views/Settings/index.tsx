@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
+import crypto from 'crypto'
 import styled from 'styled-components'
 import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints, Flex } from '@envoysvision/uikit'
 
@@ -10,7 +12,6 @@ import Page from '../../components/Layout/Page'
 import { postUserWallet, getUser, getPersonVerificationLink, getCompanyVerificationLink } from './api'
 
 import { documentNormalize, isVerificationPassed } from './heplers'
-import { getSignature } from 'state/profile/selectors'
 import { User, VerificationStatus } from './types'
 
 const Container = styled.div`
@@ -124,7 +125,6 @@ const Settings = () => {
   const [verificationLinks, setVerificationLinks] = useState({ personal: '', company: '' })
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const { signature, message } = getSignature()
 
   const handleItemClick = (index: number) => setActiveTab(index)
   const tabs = [t('My KYC'), t('Business')]
@@ -151,20 +151,18 @@ const Settings = () => {
 
   useEffect(() => {
     const handlePostUserWallet = async () => {
-      if (signature && message) {
-        const data = await postUserWallet(account, signature, message)
-        setUserId(data?._id)
-      }
+      const data = await postUserWallet(account)
+      setUserId(data?._id)
     }
 
     if (account) {
       handlePostUserWallet()
     }
-  }, [account, signature, message])
+  }, [account])
 
   useEffect(() => {
-    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask' && !!signature && !!message)
-  }, [account, library, signature, message])
+    setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
+  }, [account, library])
 
   useEffect(() => {
     const handleGetUser = async () => {
@@ -177,9 +175,29 @@ const Settings = () => {
     }
   }, [userId, isMetaMaskConnected])
 
+  const getSignature = async () => {
+    let nonce = crypto.randomBytes(16).toString('base64')
+    const message = `Welcome to Envoys! ${nonce}`
+
+    if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
+
+    await (window as any).ethereum.send('eth_requestAccounts')
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const signature = await signer.signMessage(message)
+
+    return { signature, message }
+  }
+
   const handleGetPersonVerificationLink = async () => {
+    const { signature, message } = await getSignature()
+
+    if (!signature || !message || !account) {
+      return
+    }
+
     const redirectUrl = window.location.href
-    const personal = await getPersonVerificationLink(userId, redirectUrl)
+    const personal = await getPersonVerificationLink(userId, redirectUrl, signature, message, account)
 
     if (personal?.formUrl) {
       setVerificationLinks({ ...verificationLinks, personal: personal?.formUrl })
@@ -189,8 +207,15 @@ const Settings = () => {
   }
 
   const handleGetCompanyVerificationLink = async () => {
+    const { signature, message } = await getSignature()
+
+    if (!signature || !message || !account) {
+      return
+    }
+
     const redirectUrl = window.location.href
-    const company = await getCompanyVerificationLink(userId, redirectUrl)
+    const company = await getCompanyVerificationLink(userId, redirectUrl, signature, message, account)
+
     if (company?.formUrl) {
       setVerificationLinks({ ...verificationLinks, company: company?.formUrl })
       window.location.href = company?.formUrl
@@ -321,7 +346,7 @@ const Settings = () => {
       </>
     )
 
-    return <>{renderKYCFlow(personalVerification, personalData, children, handleGetPersonVerificationLink)}</>
+    return renderKYCFlow(personalVerification, personalData, children, handleGetPersonVerificationLink)
   }
 
   const renderCompany = () => {
@@ -338,7 +363,7 @@ const Settings = () => {
       </>
     )
 
-    return <>{renderKYCFlow(companyVerification, companyData, children, handleGetCompanyVerificationLink)}</>
+    return renderKYCFlow(companyVerification, companyData, children, handleGetCompanyVerificationLink)
   }
 
   return (
