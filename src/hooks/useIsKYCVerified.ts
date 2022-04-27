@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { getSignature } from 'state/profile/selectors'
 
 import { User, VerificationStatus } from '../views/Settings/types'
 import { isVerificationPassed } from '../views/Settings/heplers'
@@ -12,20 +11,17 @@ const useIsKYCVerified = () => {
   const [user, setUser] = useState<User>()
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false)
   const [isAccountVerified, setIsAccountVerified] = useState(false)
-  const { signature, message } = getSignature()
 
   useEffect(() => {
     const handlePostUserWallet = async () => {
-      if (signature && message) {
-        const data = await postUserWallet(account, signature, message)
-        setUserId(data?._id)
-      }
+      const data = await postUserWallet(account)
+      setUserId(data?._id)
     }
 
     if (account) {
       handlePostUserWallet()
     }
-  }, [account, signature, message])
+  }, [account])
 
   useEffect(() => {
     setIsMetaMaskConnected(account && library?.connection?.url === 'metamask')
