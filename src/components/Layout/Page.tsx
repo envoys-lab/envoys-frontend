@@ -23,7 +23,7 @@ const StyledPage = styled.div<{ $removePadding: boolean }>`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: ${({ $removePadding }) => ($removePadding ? '0' : '24px')};
+    padding: ${({ $removePadding }) => ($removePadding ? '0' : '30px')};
     padding-bottom: 0;
   }
 

@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router'
 import React from 'react'
+import LinesEllipsis from 'react-lines-ellipsis'
+import { Box, Text } from '@envoysvision/uikit'
 import { BaseCompany, CompanyStage, companyStatusOngoing, companyStatusPast, companyStatusUpcoming } from '../../utils'
-import styles from './CompanyCard.module.scss'
 import StarIcon from '../../assets/Star'
 import { useTranslation } from '../../../../contexts/Localization'
+import { CompanyCardImage, CompanyCardName, CompanyCardStar, CompanyCardTopRow, StyledCompanyCard } from './styles'
 
 const getDaysRange = (company: BaseCompany): string => {
   const { t } = useTranslation()
@@ -51,20 +53,28 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
 
   const realLogoUrl =
     !company.logoUrl || company.logoUrl !== 'https://cloud.example/logo' ? company.logoUrl : '/images/company.png'
+
   return (
-    <div className={styles['company-card']} onClick={handleClick} key={company._id}>
-      <div className={styles['company-card__logo']}>
-        <img src={realLogoUrl} alt={company.name} />
-      </div>
-      <div className={styles['company-card__content']}>
-        <div className={styles['company-card__name']}>{company.name}</div>
-        <div className={styles['company-card__status']}>{company.status}</div>
-        <div className={styles['company-card__expiration']}>{getDaysRange(company)}</div>
-      </div>
-      <div className={styles['company-card__star']}>
-        <StarIcon />
-      </div>
-    </div>
+    <StyledCompanyCard onClick={handleClick} key={company._id}>
+      <CompanyCardTopRow>
+        <CompanyCardImage src={realLogoUrl} />
+        <CompanyCardName>
+          <LinesEllipsis text={company.name} maxLine="2" ellipsis="..." trimRight basedOn="words" />
+        </CompanyCardName>
+        <CompanyCardStar>
+          <StarIcon />
+        </CompanyCardStar>
+      </CompanyCardTopRow>
+
+      <Box ml={'64px'} mt={'5px'}>
+        <Text color={'success'} fontSize={'14px'}>
+          {company.status}
+        </Text>
+        <Text thin color={'mainDark'} fontSize={'14px'}>
+          {getDaysRange(company)}
+        </Text>
+      </Box>
+    </StyledCompanyCard>
   )
 }
 
