@@ -410,6 +410,7 @@ const GlobalSearch = () => {
               >
                 <InlineMenu
                   isOpen={isMobileSettingsOpen}
+                  fitToComponent={fitToComponent}
                   component={<></>}
                   onClose={() => setIsMobileSettingsOpen(false)}
                 >
