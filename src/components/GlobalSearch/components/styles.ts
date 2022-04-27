@@ -17,8 +17,10 @@ export const BodyWrapper = styled(Card)`
 `
 
 export const SearchContainer = styled.div`
-  padding-left: 28px;
-  padding-right: 28px;
+  padding: 0 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0 28px;
+  }
 `
 
 export const ResultsWrapper = styled(BodyWrapper)`
