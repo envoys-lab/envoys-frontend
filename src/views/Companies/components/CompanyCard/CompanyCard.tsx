@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import LinesEllipsis from 'react-lines-ellipsis'
+import Truncate from 'react-truncate'
 import { Box, Text } from '@envoysvision/uikit'
 import { BaseCompany, CompanyStage, companyStatusOngoing, companyStatusPast, companyStatusUpcoming } from '../../utils'
 import StarIcon from '../../assets/Star'
@@ -54,12 +54,22 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
   const realLogoUrl =
     !company.logoUrl || company.logoUrl !== 'https://cloud.example/logo' ? company.logoUrl : '/images/company.png'
 
+  /*
+  let cName = company.name
+  if (cName === 'Default Company #1') {
+    cName = 'Veryyyyyyyyyyyyyyyyyyy long'
+  }
+  if (cName === 'Default Company #2') {
+    cName = 'Very looooooooooooooooong'
+  }
+  */
+
   return (
     <StyledCompanyCard onClick={handleClick} key={company._id}>
       <CompanyCardTopRow>
         <CompanyCardImage src={realLogoUrl} />
         <CompanyCardName>
-          <LinesEllipsis text={company.name} maxLine="2" ellipsis="..." trimRight basedOn="words" />
+          <Truncate lines={2}>{company.name}</Truncate>
         </CompanyCardName>
         <CompanyCardStar>
           <StarIcon />
