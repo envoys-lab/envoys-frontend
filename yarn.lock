@@ -649,10 +649,10 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@envoysvision/uikit@0.63.32":
-  version "0.63.32"
-  resolved "https://registry.yarnpkg.com/@envoysvision/uikit/-/uikit-0.63.32.tgz#11516c28e80bda0d55f35c8912a845b86d1b7b44"
-  integrity sha512-ONb8CteAOscI6KLx1YPxb5gw0HEJbG4YfJ/7OorfzqRjOOdFYzA2qbS8vLr5EQqwYORGk9QaAvSK1rwxHQp32w==
+"@envoysvision/uikit@0.63.33":
+  version "0.63.33"
+  resolved "https://registry.yarnpkg.com/@envoysvision/uikit/-/uikit-0.63.33.tgz#c02dd5457793c34a615b038013619a638341e1ab"
+  integrity sha512-I9qy6ACeWRLRV/dvANXKvhH7wGfX/kiTEiG9QrLtnz90Ihr31Z1ynU9nI24z1Gwg4bh+/U1R2dacsnCe6mocrg==
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/styled-system" "^5.1.10"

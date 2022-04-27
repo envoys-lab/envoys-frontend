@@ -24,7 +24,7 @@ export const CompanyCardName = styled(Text)`
   line-height: 20px;
   font-weight: 500;
   overflow: hidden;
-  word-break: break-word;
+  /*word-break: break-word;*/
 `
 
 export const CompanyCardImage = styled(Flex)<{ src }>`
