@@ -304,7 +304,7 @@ const GlobalSearch = () => {
           <InlineMenu
             isOpen={isFilterOpen}
             component={<></>}
-            fitToComponent={inputPanelElement}
+            fitToComponent={!isMobile && inputPanelElement}
             onClose={() => setIsFilterOpen(false)}
           >
             <Box p="10px" minWidth={'200px'}>
@@ -330,7 +330,7 @@ const GlobalSearch = () => {
           <InlineMenu
             isOpen={isCurrencyOpen}
             component={<></>}
-            fitToComponent={fitToComponent}
+            fitToComponent={!isMobile && fitToComponent}
             onClose={() => setIsCurrencyOpen(false)}
           >
             <SettingsBox>
@@ -357,7 +357,7 @@ const GlobalSearch = () => {
           <InlineMenu
             isOpen={isGasOpen}
             component={<></>}
-            fitToComponent={fitToComponent}
+            fitToComponent={!isMobile && fitToComponent}
             onClose={() => setIsGasOpen(false)}
           >
             <SettingsBox>
@@ -374,7 +374,7 @@ const GlobalSearch = () => {
           <InlineMenu
             isOpen={isSettingsOpen}
             component={<></>}
-            fitToComponent={fitToComponent}
+            fitToComponent={!isMobile && fitToComponent}
             onClose={() => setIsSettingsOpen(false)}
           >
             <SettingsBox>
@@ -410,7 +410,6 @@ const GlobalSearch = () => {
               >
                 <InlineMenu
                   isOpen={isMobileSettingsOpen}
-                  fitToComponent={fitToComponent}
                   component={<></>}
                   onClose={() => setIsMobileSettingsOpen(false)}
                 >

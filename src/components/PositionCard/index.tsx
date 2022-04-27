@@ -29,6 +29,7 @@ import { RowBetween, RowFixed } from '../Layout/Row'
 import { BIG_INT_ZERO } from '../../config/constants'
 import Dots from '../Loader/Dots'
 import { Divider } from '../../views/Pool'
+import CurrencyEquivalent from '../CurrencyInputPanel/CurrencyEquivalent'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -184,6 +185,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
           <Text fontSize="14px" color="textSubtle">
             {userPoolBalance?.toSignificant(4)}
           </Text>
+          <CurrencyEquivalent currency={currency0} amount={userPoolBalance.toString()} />
         </Flex>
         {showMore ? <ChevronUpIcon /> : <ChevronDownIcon />}
       </Flex>
