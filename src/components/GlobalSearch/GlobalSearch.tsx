@@ -306,12 +306,7 @@ const GlobalSearch = () => {
           isOpen={isFilterOpen}
           component={t(typeFilter)}
         >
-          <InlineMenu
-            isOpen={isFilterOpen}
-            component={<></>}
-            fitToComponent={!isMobile && inputPanelElement}
-            onClose={() => setIsFilterOpen(false)}
-          >
+          <InlineMenu {...defaultProps} isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
             <Box p="10px" minWidth={'200px'}>
               {groupTypes.map((type, key) => (
                 <FilterItem
