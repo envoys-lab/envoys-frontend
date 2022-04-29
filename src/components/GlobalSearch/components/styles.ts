@@ -161,4 +161,7 @@ CurrencySettingsOptionButton.defaultProps = {
 export const CardsLayout = styled(Grid)`
   grid-gap: 8px;
   grid-template-columns: repeat(4, 1fr);
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 4px;
+  }
 `
