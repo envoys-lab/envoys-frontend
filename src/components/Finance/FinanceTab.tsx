@@ -31,12 +31,15 @@ const TabContainer = styled(Flex)`
   border-radius: 28px;
 
   margin-top: 40px;
-  margin-left: 28px;
-  margin-right: 28px;
   margin-bottom: 40px;
 
   width: 100%;
   max-width: 962px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 28px;
+    margin-right: 28px;
+  }
 `
 
 const EntireContainer = styled.div`

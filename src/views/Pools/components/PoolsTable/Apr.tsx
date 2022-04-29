@@ -53,7 +53,7 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
   const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
-  const d = apr === 0 || isNaN(apr) ? 0.0 : apr
+  const d = apr === 0 || isNaN(apr) || !apr ? 0.0 : apr
   const values = d.toFixed(2).split('.')
 
   const afterDot = values[1].substring(0, 2)

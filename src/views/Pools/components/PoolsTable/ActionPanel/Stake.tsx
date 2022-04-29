@@ -13,12 +13,19 @@ import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useERC20 } from 'hooks/useContract'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import { ActionTitles, ActionContent } from './styles'
+import { ActionTitles, ActionContent, EnvoysSkeleton } from './styles'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import StakeModal from '../../PoolCard/Modals/StakeModal'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
 import { useCheckVaultApprovalStatus, useApprovePool, useVaultApprove } from '../../../hooks/useApprove'
-import { ActionButton } from 'views/Farms/components/FarmTable/Actions/styles'
+import {
+  ActionButton,
+  EnvoysIconButton,
+  HarvestControlsContainer,
+  PanelContainer,
+  TitleText,
+  VerticalSpacer,
+} from 'views/Farms/components/FarmTable/Actions/styles'
 import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 import { Currency } from '@envoysvision/sdk'
 
@@ -26,14 +33,11 @@ const IconButtonWrapper = styled.div`
   display: flex;
 `
 
-const EnvoysSkeleton = styled(Skeleton)`
-  border-radius: 14px;
-`
-
 const PoolsConnectWalletButton = styled(ConnectWalletButton)`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
+  border-radius: 10px;
 `
 
 export const InfoContainer = styled.div`
@@ -41,15 +45,7 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 30px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 65px;
-  }
+  padding-right: 8px;
 `
 
 const StakedContainer = styled(InfoContainer)`
@@ -67,10 +63,8 @@ export const ActionContainer = styled.div`
   flex-direction: row;
 `
 
-export const HarvestText = styled(Text)`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
+export const HarvestText = styled(Text)<{ opacity?: number }>`
+  opacity: ${({ opacity }) => opacity ?? 1.0};
 `
 
 interface StackedActionProps {
@@ -186,62 +180,62 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
 
   if (!account) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <PoolsConnectWalletButton width="100%" height="42px" minWidth="132px" />
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START FARMING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <PoolsConnectWalletButton width="100%" height="40px" />
+      </PanelContainer>
     )
   }
 
   if (!userDataLoaded) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <EnvoysSkeleton width={132} height={42} marginBottom={0} marginTop={0} />
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START STAKING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <EnvoysSkeleton width="100%" height={40} marginBottom={0} marginTop={0} />
+      </PanelContainer>
     )
   }
 
   if (needsApproval) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <ActionButton height="42px" minWidth="134px" disabled={requestedApproval} onClick={handleApprove}>
-            {t('Enable')}
-          </ActionButton>
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START STAKING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <ActionButton height="40px" width="100%" disabled={requestedApproval} onClick={handleApprove}>
+          {t('Enable')}
+        </ActionButton>
+      </PanelContainer>
     )
   }
 
   // Wallet connected, user data loaded and approved
   if (isNotVaultAndHasStake || isVaultWithShares) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <StakedContainer>
-            <ActionTitles>
-              <Text
-                fontSize="12px"
-                lineHeight="14px"
-                fontWeight={500}
-                color="primary"
-                as="span"
-                textTransform="uppercase"
-              >
-                {stakingToken.symbol}{' '}
-              </Text>
-              <Text fontSize="12px" lineHeight="14px" fontWeight={500} color="text" as="span" textTransform="uppercase">
-                {t('Staked')}
-              </Text>
-            </ActionTitles>
+      <PanelContainer>
+        <ActionTitles>
+          <HarvestText
+            opacity={0.7}
+            fontWeight={500}
+            lineHeight={'14px'}
+            textTransform="uppercase"
+            color="primary"
+            fontSize="12px"
+            pr="2px"
+          >
+            {stakingToken.symbol}
+          </HarvestText>
+          <TitleText>{t('Staked').toUpperCase()}</TitleText>
+        </ActionTitles>
+        <VerticalSpacer height={7} />
+        <HarvestControlsContainer>
+          <InfoContainer>
             <Balance
               color="text"
-              fontSize="12px"
-              lineHeight="14px"
-              fontWeight={500}
+              fontSize="16px"
+              lineHeight="19px"
+              fontWeight={600}
               decimals={2}
               value={vaultKey ? cakeAsNumberBalance : stakedTokenBalance}
             />
@@ -249,43 +243,49 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
               currency={currency}
               amount={(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance).toString()}
             />
-          </StakedContainer>
-
-          <IconButtonWrapper>
-            <IconButton scale="tev" variant="secondary" onClick={onUnstake} mr="6px">
-              <MinusIcon color="primary" width="14px" />
-            </IconButton>
-            {reachStakingLimit ? (
-              <span ref={targetRef}>
-                <IconButton variant="secondary" disabled>
-                  <AddIcon color="textDisabled" width="24px" height="24px" />
-                </IconButton>
-              </span>
-            ) : (
-              <IconButton
-                scale="tev"
-                variant="secondary"
-                onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
-                disabled={isFinished}
-              >
-                <AddIcon color="primary" width="14px" />
-              </IconButton>
-            )}
-          </IconButtonWrapper>
-          {tooltipVisible && tooltip}
-        </ActionContent>
-      </ActionContainer>
+          </InfoContainer>
+          <ActionContent>
+            <IconButtonWrapper>
+              <EnvoysIconButton scale="tev" variant="secondary" onClick={onUnstake} mr="6px">
+                <MinusIcon color="primary" width="14px" />
+              </EnvoysIconButton>
+              {reachStakingLimit ? (
+                <span ref={targetRef}>
+                  <EnvoysIconButton variant="secondary" disabled>
+                    <AddIcon color="textDisabled" width="24px" height="24px" />
+                  </EnvoysIconButton>
+                </span>
+              ) : (
+                <EnvoysIconButton
+                  scale="tev"
+                  variant="secondary"
+                  onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+                  disabled={isFinished}
+                >
+                  <AddIcon color="primary" width="14px" />
+                </EnvoysIconButton>
+              )}
+            </IconButtonWrapper>
+            {/* {tooltipVisible && tooltip} */}
+          </ActionContent>
+        </HarvestControlsContainer>
+      </PanelContainer>
     )
   }
 
   return (
-    <ActionContainer>
-      <ActionContent>
-        <ActionButton onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired} disabled={isFinished}>
-          {t('Stake')}
-        </ActionButton>
-      </ActionContent>
-    </ActionContainer>
+    <PanelContainer>
+      <TitleText>{t('START STAKING')}</TitleText>
+      <VerticalSpacer height={8} />
+      <ActionButton
+        height="40px"
+        width="100%"
+        onClick={stakingTokenBalance.gt(0) ? onStake : onPresentTokenRequired}
+        disabled={isFinished}
+      >
+        {t('Stake')}
+      </ActionButton>
+    </PanelContainer>
   )
 }
 
