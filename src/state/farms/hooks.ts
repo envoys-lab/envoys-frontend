@@ -96,7 +96,6 @@ export const useFarms = (): DeserializedFarmsState => {
 
 export const useFarmFromPid = (pid: number): DeserializedFarm => {
   const farms = useSelector((state: State) => state.farms.data)
-  // console.log(farms)
   const farm = farms.find((f) => f.pid === pid)
   return deserializeFarm(farm)
 }
