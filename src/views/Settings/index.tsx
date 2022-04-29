@@ -272,7 +272,7 @@ const Settings = () => {
   }
 
   const renderKYCFlow = (application?: any, data?: any, children?: any, callback?: () => Promise<void>) => {
-    const isInitialState = application?.status === undefined
+    const isInitialState = application?.status === undefined || application?.status === VerificationStatus.unused
     const isCompleted = application?.status === VerificationStatus.completed
     const isPending = !isInitialState && !isCompleted
     const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
