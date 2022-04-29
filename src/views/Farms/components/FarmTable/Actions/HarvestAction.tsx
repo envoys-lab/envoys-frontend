@@ -22,6 +22,10 @@ import {
   InfoContainer,
   EnvoysBalance,
   HarvestText,
+  HarvestControlsContainer,
+  TitleText,
+  VerticalSpacer,
+  PanelContainer,
 } from './styles'
 import styled from 'styled-components'
 import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
@@ -37,7 +41,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
   // const cakePrice = usePriceCakeBusd()
   let earnings = BIG_ZERO
   // let earningsBusd = 0
-  let displayBalance = userDataReady ? earnings.toLocaleString() : <Skeleton width={60} />
+  let displayBalance = userDataReady ? earnings.toFixed(1).toLocaleString() : <Skeleton width={60} />
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
@@ -54,67 +58,77 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
   const { account } = useWeb3React()
 
   return (
-    <ActionContainer>
-      <InfoContainer>
-        <ActionTitles>
-          <HarvestText bold textTransform="uppercase" color="primary" fontSize="12px" pr="4px">
-            EVT
-          </HarvestText>
-          <HarvestText bold textTransform="uppercase" color="text" fontSize="12px">
-            {t('Earned')}
-          </HarvestText>
-        </ActionTitles>
-        <HarvestText>{displayBalance}</HarvestText>
-        <div>
-          <CurrencyEquivalent currency={unserializedTokens.evt} amount={earnings.toString()} />
-        </div>
-      </InfoContainer>
-      <ActionContent>
-        <ActionButton
-          height="42px"
-          minWidth="134px"
-          disabled={earnings.eq(0) || pendingTx || !userDataReady}
-          onClick={async () => {
-            setPendingTx(true)
-            try {
-              await onReward(
-                (tx) => {
-                  toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
-                },
-                (receipt) => {
-                  toastSuccess(
-                    `${t('Harvested')}!`,
-                    <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                      {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-                    </ToastDescriptionWithTx>,
-                  )
-                },
-                (receipt) => {
-                  toastError(
-                    t('Error'),
-                    <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-                      {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
-                    </ToastDescriptionWithTx>,
-                  )
-                },
-              )
-            } catch (e) {
-              toastError(
-                t('Error'),
-                t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
-              )
-              logError(e)
-            } finally {
-              setPendingTx(false)
-            }
-            dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
-          }}
-          ml="4px"
+    <PanelContainer>
+      <ActionTitles>
+        <HarvestText
+          opacity={0.7}
+          fontWeight={500}
+          lineHeight={'14px'}
+          textTransform="uppercase"
+          color="primary"
+          fontSize="12px"
+          pr="2px"
         >
-          {pendingTx ? t('Harvesting') : t('Harvest')}
-        </ActionButton>
-      </ActionContent>
-    </ActionContainer>
+          EVT
+        </HarvestText>
+        <TitleText>{t('Earned').toUpperCase()}</TitleText>
+      </ActionTitles>
+      <VerticalSpacer height={8} />
+      <HarvestControlsContainer>
+        <InfoContainer>
+          <HarvestText fontWeight={600} lineHeight={'19px'} fontSize="16px">
+            {displayBalance}
+          </HarvestText>
+          <div>
+            <CurrencyEquivalent currency={unserializedTokens.evt} amount={earnings.toString()} />
+          </div>
+        </InfoContainer>
+        <ActionContent>
+          <ActionButton
+            width="100px"
+            height="40px"
+            disabled={earnings.eq(0) || pendingTx || !userDataReady}
+            onClick={async () => {
+              setPendingTx(true)
+              try {
+                await onReward(
+                  (tx) => {
+                    toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
+                  },
+                  (receipt) => {
+                    toastSuccess(
+                      `${t('Harvested')}!`,
+                      <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                        {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+                      </ToastDescriptionWithTx>,
+                    )
+                  },
+                  (receipt) => {
+                    toastError(
+                      t('Error'),
+                      <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+                        {t('Please try again. Confirm the transaction and make sure you are paying enough gas!')}
+                      </ToastDescriptionWithTx>,
+                    )
+                  },
+                )
+              } catch (e) {
+                toastError(
+                  t('Error'),
+                  t('Please try again. Confirm the transaction and make sure you are paying enough gas!'),
+                )
+                logError(e)
+              } finally {
+                setPendingTx(false)
+              }
+              dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+            }}
+          >
+            {pendingTx ? t('Harvesting') : t('Harvest')}
+          </ActionButton>
+        </ActionContent>
+      </HarvestControlsContainer>
+    </PanelContainer>
   )
 }
 

@@ -94,7 +94,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
                 <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
               ) : null}
               {/* {isLargerScreen && !isDefaultPool && <TotalStakedCell pool={pool} />} */}
-              {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
+              {isDesktop && (pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />)}
               {isLargerScreen && isDefaultPool && <TotalStakedCell pool={pool} />}
               {isDesktop && !isDefaultPool && <EndsInCell pool={pool} />}
               <DetailsContainer>

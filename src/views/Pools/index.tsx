@@ -71,7 +71,7 @@ const PoolControls = styled.div`
 
 const ViewControls = styled.div`
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   display: flex;
   align-items: center;
   width: 100%;
@@ -97,10 +97,12 @@ const FilterContainer = styled.div`
   align-items: center;
   width: 100%;
   padding: 8px 0;
+  flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
     padding: 0;
+    flex-direction: row;
   }
 `
 const TextContainer = styled.div<{ opacity?: number }>`
