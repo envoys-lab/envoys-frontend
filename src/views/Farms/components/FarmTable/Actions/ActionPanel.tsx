@@ -13,6 +13,7 @@ import StakedAction from './StakedAction'
 import Apr, { AprProps } from '../Apr'
 import Multiplier, { MultiplierProps } from '../Multiplier'
 import Liquidity, { LiquidityProps } from '../Liquidity'
+import { ActionContainer, ActionPanelContainer, HorizontalSpacer } from './styles'
 
 export interface ActionPanelProps {
   apr: AprProps
@@ -54,15 +55,21 @@ const Container = styled.div<{ expanded }>`
   ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   padding: 24px;
 
   border-radius: 0px 0px 18px 18px;
   margin-bottom: 20px;
 
+  ${({ theme }) => theme.mediaQueries.xs} {
+    flex-direction: row;
+    padding: 11px 8px 19px 8px;
+  }
+
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 0px;
+    padding: 11px 0px 19px 0px;
   }
 `
 
@@ -106,22 +113,19 @@ const TagsContainer = styled.div`
   }
 `
 
-const ActionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const ContentPanelContainer = styled.div`
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  border-radius: 17px;
+  max-width: 302px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
-  }
+  width: 100%;
+  height: 90px;
 `
 
 const InfoContainer = styled.div`
   min-width: 120px;
-  width: 27%;
+  width: 25%;
 
   display: flex;
   flex-direction: row;
@@ -178,10 +182,16 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         </InfoInnerContainer>
       </InfoContainer>
 
-      <ActionContainer>
-        <HarvestAction {...farm} userDataReady={userDataReady} />
-        <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
-      </ActionContainer>
+      <ActionPanelContainer>
+        <ContentPanelContainer>
+          <HarvestAction {...farm} userDataReady={userDataReady} />
+        </ContentPanelContainer>
+        <HorizontalSpacer size={20} />
+        <ContentPanelContainer>
+          <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
+        </ContentPanelContainer>
+        <HorizontalSpacer size={16} />
+      </ActionPanelContainer>
     </Container>
   )
 }

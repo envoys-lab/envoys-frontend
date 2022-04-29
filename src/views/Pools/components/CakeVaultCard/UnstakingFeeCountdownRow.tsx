@@ -60,14 +60,14 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       return t('Unstaking Fee')
     }
     if (shouldShowTimer) {
-      return t('unstaking fee until')
+      return t('unstaking fee')
     }
     return t('unstaking fee if withdrawn within %num%h', { num: withdrawalFeePeriodHour })
   }
 
   return (
     <Flex
-      alignItems={isTableVariant ? 'flex-start' : 'center'}
+      alignItems={isTableVariant ? 'flex-end' : 'center'}
       justifyContent="space-between"
       flexDirection={isTableVariant ? 'column' : 'row'}
     >

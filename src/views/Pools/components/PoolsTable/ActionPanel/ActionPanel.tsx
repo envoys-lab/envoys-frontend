@@ -32,6 +32,13 @@ import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
 import AutoHarvest from './AutoHarvest'
+import {
+  ActionContainer,
+  ActionPanelContainer,
+  EnvoysBalance,
+  HorizontalSpacer,
+  TitleText,
+} from 'views/Farms/components/FarmTable/Actions/styles'
 
 const expandAnimation = keyframes`
   from {
@@ -64,28 +71,21 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
   ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   padding: 24px;
 
   border-radius: 0px 0px 18px 18px;
   margin-bottom: 20px;
 
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    padding: 16px 16px;
+  }
+
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 0px;
-  }
-`
-
-const ActionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
+    padding: 16px 16px;
   }
 `
 
@@ -132,14 +132,31 @@ const InfoInnerContainer = styled.div`
 `
 
 const InfoContainer = styled.div`
-  min-width: 120px;
-  width: 27%;
+  min-width: 150px;
+  width: 25%;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
 
   padding-left: 0;
+
+  padding-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    padding-bottom: 0px;
+  }
+`
+
+const ContentPanelContainer = styled.div`
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  border-radius: 17px;
+  max-width: 302px;
+
+  width: 100%;
+  min-height: 90px;
 `
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
@@ -259,20 +276,20 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   )
 
   const totalStakedRow = (
-    <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text maxWidth={['50px', '100%']}>{t('Total staked')}:</Text>
+    <Flex flexDirection={'column'} justifyContent="space-between" alignItems="flex-start" mb="8px">
+      <TitleText>{t('Total staked').toUpperCase()}:</TitleText>
       <Flex alignItems="center">
         {totalStaked && totalStaked.gte(0) ? (
           <>
-            <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-            <span ref={totalStakedTargetRef}>
+            <EnvoysBalance value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+            {/* <span ref={totalStakedTargetRef}>
               <HelpIcon color="textSubtle" width="20px" ml="4px" />
-            </span>
+            </span> */}
           </>
         ) : (
           <Skeleton width="56px" height="16px" />
         )}
-        {totalStakedTooltipVisible && totalStakedTooltip}
+        {/* {totalStakedTooltipVisible && totalStakedTooltip} */}
       </Flex>
     </Flex>
   )
@@ -282,7 +299,7 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
       <InfoContainer>
         <InfoInnerContainer>
           {maxStakeRow}
-          {(isXs || isSm) && aprRow}
+          {/* {(isXs || isSm) && aprRow} */}
           {(isXs || isSm || isMd) && totalStakedRow}
           {shouldShowBlockCountdown && blocksRow}
           <StyledLinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
@@ -314,16 +331,20 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
           )}
         </InfoInnerContainer>
       </InfoContainer>
-      <ActionContainer>
-        {/* <div> */}
-        {pool.vaultKey ? (
-          <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
-        ) : (
-          <Harvest {...pool} userDataLoaded={userDataLoaded} />
-        )}
-        <Stake pool={pool} userDataLoaded={userDataLoaded} />
-        {/* </div> */}
-      </ActionContainer>
+      <ActionPanelContainer>
+        <ContentPanelContainer>
+          {pool.vaultKey ? (
+            <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
+          ) : (
+            <Harvest {...pool} userDataLoaded={userDataLoaded} />
+          )}
+        </ContentPanelContainer>
+        <HorizontalSpacer size={20} />
+        <ContentPanelContainer>
+          <Stake pool={pool} userDataLoaded={userDataLoaded} />
+        </ContentPanelContainer>
+        <HorizontalSpacer size={16} />
+      </ActionPanelContainer>
     </StyledActionPanel>
   )
 }

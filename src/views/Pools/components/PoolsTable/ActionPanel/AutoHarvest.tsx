@@ -7,35 +7,18 @@ import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 
-import { ActionTitles, ActionContent } from './styles'
+import { ActionTitles, ActionContent, EnvoysSkeleton, Heading, InfoContainer } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import styled from 'styled-components'
 import { Label } from '../Cells/styles'
 import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 import unserializedTokens from 'config/constants/tokens'
-
-export const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 30px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 65px;
-  }
-`
-
-const Heading = styled.div`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-  color: ${({ theme }) => theme.colors.text};
-`
+import {
+  HarvestControlsContainer,
+  PanelContainer,
+  TitleText,
+  VerticalSpacer,
+} from 'views/Farms/components/FarmTable/Actions/styles'
 
 export const ActionContainer = styled.div`
   padding-left: 17px;
@@ -46,6 +29,10 @@ export const ActionContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
+`
+
+const FeeContainer = styled.div`
+  width: 114px;
 `
 
 interface AutoHarvestActionProps extends DeserializedPool {
@@ -82,71 +69,72 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     { placement: 'bottom-start' },
   )
 
-  const actionTitle = (
-    <Text fontSize="12px" fontWeight="500" color="text" as="span" textTransform="uppercase">
-      {t('RECENT EVT PROFIT')}
-    </Text>
-  )
+  const actionTitle = <TitleText>{t('RECENT EVT PROFIT').toUpperCase()}</TitleText>
 
   if (!account) {
     return (
-      <ActionContainer>
-        <InfoContainer>
-          <ActionTitles>{actionTitle}</ActionTitles>
-          <ActionContent>
-            <Heading>0</Heading>
-          </ActionContent>
-        </InfoContainer>
-      </ActionContainer>
+      <PanelContainer>
+        <ActionTitles>{actionTitle}</ActionTitles>
+        <VerticalSpacer height={8} />
+        <HarvestControlsContainer>
+          <InfoContainer>
+            <Heading>0.0</Heading>
+            <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+          </InfoContainer>
+        </HarvestControlsContainer>
+      </PanelContainer>
     )
   }
 
   if (!userDataLoaded) {
     return (
-      <ActionContainer>
-        <InfoContainer>
-          <ActionTitles>{actionTitle}</ActionTitles>
-          <ActionContent>
-            <Skeleton width={180} height="32px" marginTop={14} />
-          </ActionContent>
-        </InfoContainer>
-      </ActionContainer>
+      <PanelContainer>
+        <ActionTitles>{actionTitle}</ActionTitles>
+        <VerticalSpacer height={8} />
+        <EnvoysSkeleton width="100%" height="40px" marginBottom={0} marginTop={0} />
+      </PanelContainer>
     )
   }
 
   return (
-    <ActionContainer>
-      <InfoContainer>
-        <ActionTitles>{actionTitle}</ActionTitles>
-        <>
-          {hasEarnings ? (
-            <>
-              <Balance
-                color="text"
-                fontSize="12px"
-                lineHeight="14px"
-                fontWeight={500}
-                decimals={5}
-                value={earningTokenBalance}
-              />
-              {earningTokenPrice > 0 && (
-                <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenBalance.toString()} />
-              )}
-            </>
-          ) : (
-            <>
-              <Heading color="textDisabled">0</Heading>
-              <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
-            </>
-          )}
-        </>
-        <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
-        <Flex mb="2px" justifyContent="space-between" alignItems="center">
-          {tooltipVisible && tooltip}
+    <PanelContainer>
+      <ActionTitles>{actionTitle}</ActionTitles>
+      <VerticalSpacer height={8} />
+      <HarvestControlsContainer>
+        <InfoContainer>
+          <>
+            {hasEarnings ? (
+              <>
+                <Balance
+                  color="text"
+                  fontSize="16px"
+                  lineHeight="19px"
+                  fontWeight={600}
+                  decimals={5}
+                  value={earningTokenBalance}
+                />
+                {earningTokenPrice > 0 && (
+                  <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenBalance.toString()} />
+                )}
+              </>
+            ) : (
+              <>
+                <Heading color="textDisabled">0.0</Heading>
+                <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+              </>
+            )}
+          </>
+        </InfoContainer>
+
+        <FeeContainer>
+          <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
+          {/* <Flex mb="2px" justifyContent="space-between" alignItems="center"> */}
+          {/* {tooltipVisible && tooltip} */}
           <Label>{t('Performance Fee') + ' ' + performanceFee / 100 + '%'}</Label>
-        </Flex>
-      </InfoContainer>
-    </ActionContainer>
+          {/* </Flex> */}
+        </FeeContainer>
+      </HarvestControlsContainer>
+    </PanelContainer>
   )
 }
 
