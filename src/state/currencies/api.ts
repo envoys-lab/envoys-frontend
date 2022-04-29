@@ -7,8 +7,11 @@ const axiosInstance = axios.create({
 })
 
 const fetchPrices = async ({ ids, vs_currencies }) => {
+  const extendedCurrencies = `${vs_currencies},USD`
   try {
-    const response = await axiosInstance.get(`${COINGECKO_API}/simple/price`, { params: { ids, vs_currencies } })
+    const response = await axiosInstance.get(`${COINGECKO_API}/simple/price`, {
+      params: { ids, vs_currencies: extendedCurrencies },
+    })
     return response.data
   } catch (e) {
     console.error(e)

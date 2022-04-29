@@ -22,8 +22,8 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
   return (
     <Flex flexDirection="column">
       {showHelper ? (
-        <Flex mb="16px" alignItems="center">
-          <Text>{t('Default Transaction Speed (GWEI)')}</Text>
+        <Flex mb="7px" alignItems="center" p={'4px'}>
+          <Text fontSize={'14px'}>{t('Default Transaction Speed (GWEI)')}</Text>
           <QuestionHelper
             text={t(
               'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
@@ -33,7 +33,7 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
           />
         </Flex>
       ) : (
-        <Text color={'darkClear'} mb={'12px'}>
+        <Text color={'darkClear'} mb={'7px'} fontSize={'14px'} p={'4px'}>
           {t('Gas settings')}
         </Text>
       )}
