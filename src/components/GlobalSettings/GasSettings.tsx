@@ -49,7 +49,7 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
               <Text fontSize={'14px'} color={'inherit'} bold>
                 {t(`gas_${gas}`)}
               </Text>
-              <Text fontSize={'14px'} color={'darkClear'} thin>
+              <Text fontSize={'14px'} color={'darkClear'} thin style={{ whiteSpace: 'nowrap' }}>
                 ({GAS_PRICE[gas]} Gwei)
               </Text>
             </Flex>

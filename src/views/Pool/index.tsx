@@ -143,11 +143,11 @@ export default function Pool() {
         </AppHeader>
         <Wrapper id="liquidity-page" pb={'0 !important'}>
           {renderBody()}
-          <LightCard background={'transparent'} mt={'16px'}>
+          <LightCard background={'transparent'} mt={'16px'} padding="24px 20px">
             {renderEmptyBody()}
             {account && !v2IsLoading && (
-              <Flex flexDirection="column" alignItems="center">
-                <ThinText color="primary" mb="16px" fontSize={'14px'}>
+              <Flex flexDirection="column" alignItems="center" mt={'20px'}>
+                <ThinText color="primary" mb="17px" fontSize={'14px'}>
                   {t("Don't see a pool you joined?")}
                 </ThinText>
                 <Button

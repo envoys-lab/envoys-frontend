@@ -7,8 +7,10 @@ import { useTranslation } from 'contexts/Localization'
 const MenuButton = styled(Button)`
   color: ${({ theme }) => theme.colors.mainDark};
   background-color: ${({ theme }) => theme.colors.background};
+  box-shadow: none;
   &:hover {
     opacity: 1 !important;
+    box-shadow: ${({ theme }) => theme.shadows.connectBtn};
     > svg {
       color: ${({ theme }) => theme.colors.basicOrange};
     }

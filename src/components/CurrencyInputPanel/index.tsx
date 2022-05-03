@@ -43,7 +43,7 @@ const InputPanel = styled.div`
 const Container = styled.div<ContainerProps>`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.backgroundPage};
-  height: ${(props: ContainerProps) => (props.hideBalance ? '65px' : '100px')};
+  height: ${(props: ContainerProps) => (props.hideBalance ? '70px' : '100px')};
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -52,7 +52,7 @@ const Container = styled.div<ContainerProps>`
 const CurrencySelect = styled(Flex)`
   align-items: center;
   z-index: 2;
-  justify-content: flex-start;
+  justify-content: center;
   flex-grow: 0;
   flex-direction: column;
   > button {

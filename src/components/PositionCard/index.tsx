@@ -32,7 +32,7 @@ import { Divider } from '../../views/Pool'
 import CurrencyEquivalent from '../CurrencyInputPanel/CurrencyEquivalent'
 
 const FixedHeightRow = styled(RowBetween)`
-  height: 24px;
+  height: 42px;
 `
 
 interface PositionCardProps extends CardProps {
@@ -254,6 +254,7 @@ export default function FullPositionCard({ pair, ...props }: PositionCardProps) 
             {userPoolBalance && JSBI.greaterThan(userPoolBalance.raw, BIG_INT_ZERO) && (
               <Flex style={{ gridGap: '16px', marginTop: '12px' }}>
                 <Button
+                  style={{ paddingLeft: 0 }}
                   as={NextLinkFromReactRouter}
                   to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                   variant="text"
