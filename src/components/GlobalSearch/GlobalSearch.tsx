@@ -292,6 +292,7 @@ const GlobalSearch = () => {
   const defaultProps = {
     component: <></>,
     isAnimated: true,
+    shift: 'right',
     fitToComponent: !isMobile && fitToComponent,
   }
 
@@ -306,7 +307,11 @@ const GlobalSearch = () => {
           isOpen={isFilterOpen}
           component={t(typeFilter)}
         >
-          <InlineMenu {...defaultProps} isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
+          <InlineMenu
+            {...{ ...defaultProps, shift: null }}
+            isOpen={isFilterOpen}
+            onClose={() => setIsFilterOpen(false)}
+          >
             <Box p="10px" minWidth={'200px'}>
               {groupTypes.map((type, key) => (
                 <FilterItem
@@ -394,9 +399,9 @@ const GlobalSearch = () => {
                 component={<></>}
               >
                 <InlineMenu
+                  {...defaultProps}
+                  fitToComponent={fitToComponent}
                   isOpen={isMobileSettingsOpen}
-                  component={<></>}
-                  isAnimated={true}
                   onClose={() => setIsMobileSettingsOpen(false)}
                 >
                   <Box p="10px" minWidth={'90vw'}>
@@ -409,7 +414,7 @@ const GlobalSearch = () => {
           </SearchWrapper>
         </div>
         <div ref={setResultsPanelElement}>
-          <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none' }}>
+          <ResultsWrapper style={{ display: isResultsPanelShown ? 'inherit' : 'none', marginTop: 10 }}>
             <div>
               {renderResults()}
               {hasNextPage && (

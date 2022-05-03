@@ -14,7 +14,7 @@ import Column, { AutoColumn, ColumnCenter } from '../../components/Layout/Column
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { DoubleCurrencyLogo } from '../../components/Logo'
-import { AppHeader, AppBody } from '../../components/App'
+import { AppHeader } from '../../components/App'
 import Row, { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 

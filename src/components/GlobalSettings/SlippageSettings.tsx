@@ -42,7 +42,7 @@ const SlippageSettings: React.FC<SlippageSettingsProps> = ({ showToggle = false 
             {t('Slip Tolerance')}
           </Text>
         </Flex>
-        <Flex flexWrap="wrap" mb={'16px'}>
+        <Flex flexWrap="wrap" mb={'16px'} style={{ flexWrap: 'nowrap' }}>
           <SettingsOptionButton
             disabled={!isSlippageEnabled}
             mr="16px"

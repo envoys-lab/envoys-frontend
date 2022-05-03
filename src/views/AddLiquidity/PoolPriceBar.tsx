@@ -11,8 +11,8 @@ import styled from 'styled-components'
 const ThinText = styled(Text).attrs({
   thin: true,
   color: 'primary',
-  small: true,
 })`
+  font-size: 14px;
   font-weight: 700;
 `
 
