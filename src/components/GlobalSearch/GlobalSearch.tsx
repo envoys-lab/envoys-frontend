@@ -41,6 +41,7 @@ import {
   CurrencySettingsOptionButton,
   SettingsBox,
   SearchContainer,
+  FilterDropdown,
 } from './components/styles'
 import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
@@ -64,6 +65,7 @@ const GlobalSearch = () => {
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
+  const [isFilterShown, setIsFilterShown] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isGasOpen, setIsGasOpen] = useState(false)
@@ -303,7 +305,8 @@ const GlobalSearch = () => {
   const renderSettings = (isMobile = false) => {
     return (
       <>
-        <DropdownItem
+        <FilterDropdown
+          $isShown={isFilterShown || isFilterOpen}
           noBorder={isMobile}
           isMobile={isMobile}
           isFullWidth={isMobile}
@@ -328,7 +331,7 @@ const GlobalSearch = () => {
               ))}
             </Box>
           </InlineMenu>
-        </DropdownItem>
+        </FilterDropdown>
         <DropdownItem
           noBorder={isMobile}
           isMobile={isMobile}
@@ -381,7 +384,7 @@ const GlobalSearch = () => {
   }
 
   return (
-    <SearchContainer>
+    <SearchContainer onFocus={() => setIsFilterShown(true)} onBlur={() => setIsFilterShown(false)}>
       <BodyWrapper>
         <div ref={setInputPanelElement}>
           <SearchWrapper>
