@@ -24,6 +24,7 @@ import {
   SearchIcon,
   Text,
   useMatchBreakpoints,
+  MenuOptions,
 } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
@@ -294,6 +295,9 @@ const GlobalSearch = () => {
     isAnimated: true,
     shift: 'right',
     fitToComponent: !isMobile && fitToComponent,
+    options: {
+      offset: [0, 10],
+    } as MenuOptions,
   }
 
   const renderSettings = (isMobile = false) => {
@@ -308,7 +312,7 @@ const GlobalSearch = () => {
           component={t(typeFilter)}
         >
           <InlineMenu
-            {...{ ...defaultProps, shift: null }}
+            {...{ ...defaultProps, shift: null, options: { offset: [-20, 10] } as MenuOptions }}
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
           >
