@@ -1,5 +1,6 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
+import DropdownItem from './DropdownItem'
 
 export const BodyWrapper = styled(Card)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
@@ -76,6 +77,23 @@ export const SearchResultBox = styled(Box)`
 
 export const SettingsBox = styled(Box)`
   padding: 14px 15px;
+`
+
+export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
+  ${({ theme }) => {
+    const transitionFlow = `${theme.animations.duration} ease-in-out`
+    return css`
+      transform: scaleX(0);
+      opacity: 0;
+      transition: transform ${transitionFlow}, opacity ${transitionFlow};
+    `
+  }}
+  ${({ $isShown }) =>
+    $isShown &&
+    css`
+      transform: scaleX(1);
+      opacity: 1;
+    `}
 `
 
 export const FilterItem = styled(Box)`

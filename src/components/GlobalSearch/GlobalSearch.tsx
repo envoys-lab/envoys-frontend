@@ -24,6 +24,7 @@ import {
   SearchIcon,
   Text,
   useMatchBreakpoints,
+  MenuOptions,
 } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
@@ -40,6 +41,7 @@ import {
   CurrencySettingsOptionButton,
   SettingsBox,
   SearchContainer,
+  FilterDropdown,
 } from './components/styles'
 import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
@@ -63,6 +65,7 @@ const GlobalSearch = () => {
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
+  const [isFilterShown, setIsFilterShown] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isGasOpen, setIsGasOpen] = useState(false)
@@ -294,12 +297,16 @@ const GlobalSearch = () => {
     isAnimated: true,
     shift: 'right',
     fitToComponent: !isMobile && fitToComponent,
+    options: {
+      offset: [0, 10],
+    } as MenuOptions,
   }
 
   const renderSettings = (isMobile = false) => {
     return (
       <>
-        <DropdownItem
+        <FilterDropdown
+          $isShown={isFilterShown || isFilterOpen}
           noBorder={isMobile}
           isMobile={isMobile}
           isFullWidth={isMobile}
@@ -308,7 +315,7 @@ const GlobalSearch = () => {
           component={t(typeFilter)}
         >
           <InlineMenu
-            {...{ ...defaultProps, shift: null }}
+            {...{ ...defaultProps, shift: null, options: { offset: [-20, 10] } as MenuOptions }}
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
           >
@@ -324,7 +331,7 @@ const GlobalSearch = () => {
               ))}
             </Box>
           </InlineMenu>
-        </DropdownItem>
+        </FilterDropdown>
         <DropdownItem
           noBorder={isMobile}
           isMobile={isMobile}
@@ -377,7 +384,7 @@ const GlobalSearch = () => {
   }
 
   return (
-    <SearchContainer>
+    <SearchContainer onFocus={() => setIsFilterShown(true)} onBlur={() => setIsFilterShown(false)}>
       <BodyWrapper>
         <div ref={setInputPanelElement}>
           <SearchWrapper>
