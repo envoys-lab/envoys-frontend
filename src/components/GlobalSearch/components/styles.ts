@@ -87,7 +87,7 @@ export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
       transform: translateX(100%);
       opacity: 0;
       transition: transform ${transitionFlow}, opacity ${transitionFlow};
-      transition-delay: 0.2s;
+      transition-delay: ${theme.animations.duration};
     `
   }}
   ${({ $isShown }) =>
