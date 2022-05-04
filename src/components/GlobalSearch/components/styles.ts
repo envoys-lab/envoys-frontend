@@ -80,10 +80,11 @@ export const SettingsBox = styled(Box)`
 `
 
 export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
+  z-index: 1 !important;
   ${({ theme }) => {
     const transitionFlow = `${theme.animations.duration} ease-in-out`
     return css`
-      transform: scaleX(0);
+      transform: translateX(100%);
       opacity: 0;
       transition: transform ${transitionFlow}, opacity ${transitionFlow};
     `
@@ -91,7 +92,7 @@ export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
   ${({ $isShown }) =>
     $isShown &&
     css`
-      transform: scaleX(1);
+      transform: translateX(0);
       opacity: 1;
     `}
 `
