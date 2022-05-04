@@ -306,7 +306,7 @@ const GlobalSearch = () => {
     return (
       <>
         <FilterDropdown
-          $isShown={isFilterShown || isFilterOpen}
+          $isShown={isMobile || isFilterShown || isFilterOpen || isResultsPanelShown}
           noBorder={isMobile}
           isMobile={isMobile}
           isFullWidth={isMobile}
