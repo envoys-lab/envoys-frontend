@@ -87,7 +87,7 @@ export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
       transform: translateX(100%);
       opacity: 0;
       transition: transform ${transitionFlow}, opacity ${transitionFlow};
-      transition-delay: ${theme.animations.duration};
+      transition-delay: ${theme.animations.durationClose};
     `
   }}
   ${({ $isShown }) =>
@@ -144,6 +144,7 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
   height: auto;
   padding: 4px 15px;
   box-sizing: content-box;
+  transition: border-color ${({ theme }) => theme.animations.durationClose} ease-in-out;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 4px 18px;
   }

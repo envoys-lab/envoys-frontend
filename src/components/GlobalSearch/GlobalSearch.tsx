@@ -191,6 +191,7 @@ const GlobalSearch = () => {
   }
 
   const showResultsOnFocus = () => {
+    setIsFilterShown(true)
     if (query.length > 1) {
       setIsResultsPanelShown(true)
     }
@@ -384,7 +385,7 @@ const GlobalSearch = () => {
   }
 
   return (
-    <SearchContainer onFocus={() => setIsFilterShown(true)} onBlur={() => setIsFilterShown(false)}>
+    <SearchContainer>
       <BodyWrapper>
         <div ref={setInputPanelElement}>
           <SearchWrapper>
@@ -397,6 +398,7 @@ const GlobalSearch = () => {
                 value={query}
                 onChange={handleChange}
                 onFocus={showResultsOnFocus}
+                onBlur={() => setIsFilterShown(false)}
               />
             </InputGroup>
             {isMobile && (
