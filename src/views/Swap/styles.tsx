@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { PageContainer } from '../../components/Layout/PageContainer'
-import { Flex } from '@envoysvision/uikit'
+import { Flex, Box } from '@envoysvision/uikit'
 
 export const StyledSwapContainer = styled(PageContainer)<{ $isChartDisplayed: boolean }>`
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -11,4 +11,11 @@ export const StyledSwapContainer = styled(PageContainer)<{ $isChartDisplayed: bo
 
 export const StyledChartContainer = styled(Flex)<{ $isChartDisplayed: boolean }>`
   flex-grow: 1;
+`
+
+export const IconBox = styled(Box)`
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  animation: ${({ theme }) => theme.animations.modal} ${({ theme }) => theme.animations.duration} ease-in-out;
 `

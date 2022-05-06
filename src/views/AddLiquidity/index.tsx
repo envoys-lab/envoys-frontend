@@ -2,7 +2,18 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, ETHER, TokenAmount } from '@envoysvision/sdk'
-import { Button, Text, Flex, Box, Message, useModal, TabMenu, Tab, CardFooter } from '@envoysvision/uikit'
+import {
+  Button,
+  Text,
+  Flex,
+  Box,
+  Message,
+  useModal,
+  TabMenu,
+  Tab,
+  CardFooter,
+  animationDuration,
+} from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -40,6 +51,7 @@ import { PageContainer } from '../../components/Layout/PageContainer'
 import { Wrapper } from '../Swap/components/styleds'
 
 export default function AddLiquidity() {
+  const thisTabIndex = 1
   const router = useRouter()
   const [currencyIdA, currencyIdB] = router.query.currency || []
 
@@ -313,12 +325,22 @@ export default function AddLiquidity() {
     'addLiquidityModal',
   )
 
+  const [tabClicked, setTabClicked] = useState<number>(thisTabIndex)
   const handleTabClick = (newTabIndex) => {
+    setTabClicked(newTabIndex)
     if (newTabIndex === 0) {
-      return router.push('/swap')
+      router.prefetch('/swap').then(() => {
+        setTimeout(() => {
+          return router.push('/swap')
+        }, animationDuration)
+      })
     }
     if (newTabIndex === 1) {
-      return router.push('/liquidity')
+      router.prefetch('/liquidity').then(() => {
+        setTimeout(() => {
+          return router.push('/liquidity')
+        }, animationDuration)
+      })
     }
   }
 
@@ -335,7 +357,7 @@ export default function AddLiquidity() {
               'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
             )}*/}
           <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-            <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
+            <TabMenu activeIndex={thisTabIndex} nextIndex={tabClicked} onItemClick={handleTabClick} fixedForItems={2}>
               <Tab>{t('Swap')}</Tab>
               <Tab>{t('Liquidity')}</Tab>
             </TabMenu>
