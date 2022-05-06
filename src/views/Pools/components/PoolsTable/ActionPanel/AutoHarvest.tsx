@@ -7,7 +7,7 @@ import Balance from 'components/Balance'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool } from 'state/types'
 
-import { ActionTitles, ActionContent, EnvoysSkeleton, Heading, InfoContainer } from './styles'
+import { ActionTitles, ActionContent, EnvoysSkeleton, Heading, InfoContainer, FeeLabel } from './styles'
 import UnstakingFeeCountdownRow from '../../CakeVaultCard/UnstakingFeeCountdownRow'
 import styled from 'styled-components'
 import { Label } from '../Cells/styles'
@@ -19,6 +19,12 @@ import {
   TitleText,
   VerticalSpacer,
 } from 'views/Farms/components/FarmTable/Actions/styles'
+import { HarvestText } from './Stake'
+
+const AutoHarvestPanelContainer = styled(PanelContainer)`
+  flex-direction: row;
+  justify-content: space-between;
+`
 
 export const ActionContainer = styled.div`
   padding-left: 17px;
@@ -69,7 +75,22 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
     { placement: 'bottom-start' },
   )
 
-  const actionTitle = <TitleText>{t('RECENT EVT PROFIT').toUpperCase()}</TitleText>
+  const actionTitle = (
+    <>
+      <HarvestText
+        opacity={0.7}
+        fontWeight={500}
+        lineHeight={'14px'}
+        textTransform="uppercase"
+        color="primary"
+        fontSize="12px"
+        pr="2px"
+      >
+        {'EVT '}
+      </HarvestText>
+      <TitleText>{t('PROFIT').toUpperCase()}</TitleText>
+    </>
+  )
 
   if (!account) {
     return (
@@ -97,44 +118,47 @@ const AutoHarvestAction: React.FunctionComponent<AutoHarvestActionProps> = ({
   }
 
   return (
-    <PanelContainer>
-      <ActionTitles>{actionTitle}</ActionTitles>
-      <VerticalSpacer height={8} />
-      <HarvestControlsContainer>
-        <InfoContainer>
-          <>
-            {hasEarnings ? (
-              <>
-                <Balance
-                  color="text"
-                  fontSize="16px"
-                  lineHeight="19px"
-                  fontWeight={600}
-                  decimals={5}
-                  value={earningTokenBalance}
-                />
-                {earningTokenPrice > 0 && (
-                  <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenBalance.toString()} />
-                )}
-              </>
-            ) : (
-              <>
-                <Heading color="textDisabled">0.0</Heading>
-                <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
-              </>
-            )}
-          </>
-        </InfoContainer>
-
+    <AutoHarvestPanelContainer>
+      <div>
+        <ActionTitles>{actionTitle}</ActionTitles>
+        <VerticalSpacer height={8} />
+        <HarvestControlsContainer>
+          <InfoContainer>
+            <>
+              {hasEarnings ? (
+                <>
+                  <Balance
+                    color="text"
+                    fontSize="16px"
+                    lineHeight="19px"
+                    fontWeight={600}
+                    decimals={5}
+                    value={earningTokenBalance}
+                  />
+                  {earningTokenPrice > 0 && (
+                    <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenBalance.toString()} />
+                  )}
+                </>
+              ) : (
+                <>
+                  <Heading color="textDisabled">0.0</Heading>
+                  <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+                </>
+              )}
+            </>
+          </InfoContainer>
+        </HarvestControlsContainer>
+      </div>
+      <div>
         <FeeContainer>
           <UnstakingFeeCountdownRow vaultKey={vaultKey} isTableVariant />
           {/* <Flex mb="2px" justifyContent="space-between" alignItems="center"> */}
           {/* {tooltipVisible && tooltip} */}
-          <Label>{t('Performance Fee') + ' ' + performanceFee / 100 + '%'}</Label>
+          <FeeLabel>{t('Performance Fee') + ' ' + performanceFee / 100 + '%'}</FeeLabel>
           {/* </Flex> */}
         </FeeContainer>
-      </HarvestControlsContainer>
-    </PanelContainer>
+      </div>
+    </AutoHarvestPanelContainer>
   )
 }
 

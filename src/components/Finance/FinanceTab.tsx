@@ -60,7 +60,7 @@ export const FinanceTab: FC = ({ children }) => {
 
   const renderTabs = () => {
     return (
-      <TabMenu verticalMargin={71.5} activeIndex={activeTab} onItemClick={handleTabClick}>
+      <TabMenu verticalMargin={82.336} activeIndex={activeTab} onItemClick={handleTabClick}>
         {tabs.map((item) => (
           <Tab key={item.title}>{item.title}</Tab>
         ))}

@@ -9,6 +9,23 @@ export const InfoContainer = styled.div`
   padding-right: 8px;
 `
 
+export const FeeLabel = styled.div`
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+
+  text-align: right;
+
+  /* Main_Dark */
+
+  color: #133d65;
+
+  opacity: 0.7;
+`
+
 export const ActionContainer = styled.div<{ isAutoVault?: boolean }>`
   padding: 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
