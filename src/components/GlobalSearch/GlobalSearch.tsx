@@ -293,6 +293,7 @@ const GlobalSearch = () => {
   }, [isMobileSettingsOpen, setIsGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
 
   const fitToComponent = inputPanelElement?.parentElement?.parentElement
+  const fitToComponentMobile = fitToComponent?.parentElement
   const defaultProps = {
     component: <></>,
     isAnimated: true,
@@ -409,7 +410,7 @@ const GlobalSearch = () => {
               >
                 <InlineMenu
                   {...defaultProps}
-                  fitToComponent={fitToComponent}
+                  fitToComponent={fitToComponentMobile}
                   isOpen={isMobileSettingsOpen}
                   onClose={() => setIsMobileSettingsOpen(false)}
                 >
