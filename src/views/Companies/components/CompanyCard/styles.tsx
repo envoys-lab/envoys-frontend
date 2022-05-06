@@ -11,6 +11,14 @@ export const StyledCompanyCard = styled(Flex)`
   border-radius: ${({ theme }) => theme.radii.default};
   cursor: pointer;
   padding: 10px 11px;
+  transition-timing-function: ease-in-out;
+  transition-duration: ${({ theme }) => theme.animations.duration};
+  transition-property: background, box-shadow;
+  &:hover {
+    background: url(/public/images/campaign-card.png) bottom left no-repeat;
+    background-size: cover;
+    box-shadow: 0 31px 40px -22px rgba(244, 128, 32, 0.19);
+  }
 `
 
 export const CompanyCardTopRow = styled(Flex)`
