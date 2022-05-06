@@ -65,7 +65,7 @@ import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../../components/Layout/Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-import { StyledChartContainer, StyledSwapContainer } from './styles'
+import { IconBox, StyledChartContainer, StyledSwapContainer } from './styles'
 
 /*
 const Label = styled(Text)`
@@ -427,11 +427,11 @@ export default function Swap() {
           <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} noSettings>
             <Flex position={'relative'} alignItems={'center'} width={'100%'}>
               {setIsChartDisplayed && (
-                <Box position={'absolute'} left={0}>
+                <IconBox>
                   <ColoredIconButton onClick={() => setIsChartDisplayed((a) => !a)} variant="text" scale="sm">
                     {!isChartDisplayed ? <ChartDisableIcon color="basicOrange" /> : <ChartIcon color="basicOrange" />}
                   </ColoredIconButton>
-                </Box>
+                </IconBox>
               )}
               <TabMenu activeIndex={thisTabIndex} nextIndex={tabClicked} onItemClick={handleTabClick} fixedForItems={2}>
                 <Tab>{t('Swap')}</Tab>
