@@ -2,21 +2,29 @@ import styled from 'styled-components'
 import { Flex, Text } from '@envoysvision/uikit'
 
 export const StyledCompanyCard = styled(Flex)`
-  border: 1px solid ${({ theme }) => theme.colors.backgroundAlt};
-  box-sizing: border-box;
   flex-direction: column;
   /* windows */
   background: ${({ theme }) => theme.colors.backgroundAlt};
   box-shadow: ${({ theme }) => theme.shadows.level0};
   border-radius: ${({ theme }) => theme.radii.default};
   cursor: pointer;
-  padding: 10px 11px;
-  transition-timing-function: ease-in-out;
-  transition-duration: ${({ theme }) => theme.animations.duration};
-  transition-property: background, box-shadow;
-  &:hover {
-    background: url(/public/images/campaign-card.png) bottom left no-repeat;
+  padding: 11px 12px;
+  transition: box-shadow ${({ theme }) => theme.animations.duration} ease-in-out;
+  position: relative;
+  &:after {
+    position: absolute;
+    display: block;
+    inset: 0 0 0 0;
+    content: '';
+    transition: opacity ${({ theme }) => theme.animations.duration} ease-in-out;
+    background: url(/images/campaign-card.svg) bottom left no-repeat;
     background-size: cover;
+    opacity: 0;
+  }
+  &:hover {
+    &:after {
+      opacity: 1;
+    }
     box-shadow: 0 31px 40px -22px rgba(244, 128, 32, 0.19);
   }
 `
