@@ -317,7 +317,7 @@ const GlobalSearch = () => {
           component={t(typeFilter)}
         >
           <InlineMenu
-            {...{ ...defaultProps, shift: null, options: { offset: [-20, 10] } as MenuOptions }}
+            {...{ ...defaultProps, shift: null }}
             isOpen={isFilterOpen}
             onClose={() => setIsFilterOpen(false)}
           >

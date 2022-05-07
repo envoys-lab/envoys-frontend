@@ -1,11 +1,11 @@
-import { Flex, Tab, TabMenu } from '@envoysvision/uikit'
-import { AppBody } from 'components/App'
-import FarmsPage from 'pages/farms'
+import { animationDuration, Flex, Tab, TabMenu } from '@envoysvision/uikit'
+// import { AppBody } from 'components/App'
+// import FarmsPage from 'pages/farms'
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import styled from 'styled-components'
 import Farms from 'views/Farms/Farms'
-import Page from 'views/Page'
+// import Page from 'views/Page'
 import Pools from 'views/Pools'
 
 const tabs = [
@@ -27,7 +27,7 @@ const TabContainer = styled(Flex)`
 
   background: #ffffff;
 
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
   border-radius: 28px;
 
   margin-top: 40px;
@@ -52,15 +52,23 @@ const EntireContainer = styled.div`
 export const FinanceTab: FC = ({ children }) => {
   const router = useRouter()
 
+  const [tabClicked, setTabClicked] = useState<number>(undefined)
   const activeTab = tabs.findIndex((item) => router.pathname.startsWith(item.path)) ?? 0
 
   const handleTabClick = (newTabIndex) => {
-    return router.push(tabs[newTabIndex].path)
+    setTabClicked(newTabIndex)
+    if (newTabIndex !== activeTab) {
+      router.prefetch(tabs[newTabIndex].path).then(() => {
+        setTimeout(() => {
+          return router.push(tabs[newTabIndex].path)
+        }, animationDuration)
+      })
+    }
   }
 
   const renderTabs = () => {
     return (
-      <TabMenu verticalMargin={71.5} activeIndex={activeTab} onItemClick={handleTabClick}>
+      <TabMenu verticalMargin={71.5} activeIndex={activeTab} nextIndex={tabClicked} onItemClick={handleTabClick}>
         {tabs.map((item) => (
           <Tab key={item.title}>{item.title}</Tab>
         ))}
