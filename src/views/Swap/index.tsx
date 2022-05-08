@@ -17,27 +17,27 @@ import {
   SwapVertIcon,
   TabMenu,
   Tab,
-  Spinner,
+  animationDuration,
 } from '@envoysvision/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 // import Footer from 'components/Menu/Footer'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import AddressInputPanel from './components/AddressInputPanel'
 import { GreyCard } from '../../components/Card'
-import Column, { AutoColumn } from '../../components/Layout/Column'
+import { AutoColumn } from '../../components/Layout/Column'
 import ConfirmSwapModal from './components/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from '../../components/Layout/Row'
-// import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
+import AdvancedSwapDetailsDropdown from './components/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from './components/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, SwapCallbackError, Wrapper } from './components/styleds'
 // import TradePrice from './components/TradePrice'
 import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 // import ProgressSteps from './components/ProgressSteps'
-import { AppBody, AppHeader } from '../../components/App'
+import { AppHeader } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
@@ -65,13 +65,15 @@ import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../../components/Layout/Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-import { StyledChartContainer, StyledSwapContainer } from './styles'
+import { IconBox, StyledChartContainer, StyledSwapContainer } from './styles'
 
+/*
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.secondary};
 `
+*/
 
 export const SwitchIconButton = styled(IconButton)`
   background: transparent;
@@ -98,6 +100,9 @@ const ColoredIconButton = styled(IconButton)`
 `
 
 export default function Swap() {
+  const thisTabIndex = 0
+  const [tabClicked, setTabClicked] = useState<number>(thisTabIndex)
+
   const router = useRouter()
   const loadedUrlParams = useDefaultsFromURLSearch()
   const { t } = useTranslation()
@@ -255,7 +260,7 @@ export default function Swap() {
   }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t])
 
   // errors
-  const [showInverted, setShowInverted] = useState<boolean>(false)
+  // const [showInverted, setShowInverted] = useState<boolean>(false)
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
@@ -366,8 +371,13 @@ export default function Swap() {
   )
 
   const handleTabClick = (newTabIndex) => {
+    setTabClicked(newTabIndex)
     if (newTabIndex === 1) {
-      return router.push('/liquidity')
+      router.prefetch('/liquidity').then(() => {
+        setTimeout(() => {
+          return router.push('/liquidity')
+        }, animationDuration)
+      })
     }
   }
 
@@ -376,7 +386,6 @@ export default function Swap() {
       onUserInput(Field.INPUT, '0.000001')
     }
   }, [onUserInput, window.location.hostname])
-
   return (
     <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed} removeInnerPadding>
       <Flex justifyContent="space-between" position="relative">
@@ -418,13 +427,13 @@ export default function Swap() {
           <AppHeader title={t('Exchange')} subtitle={t('Trade tokens in an instant')} noSettings>
             <Flex position={'relative'} alignItems={'center'} width={'100%'}>
               {setIsChartDisplayed && (
-                <Box position={'absolute'} left={0}>
+                <IconBox>
                   <ColoredIconButton onClick={() => setIsChartDisplayed((a) => !a)} variant="text" scale="sm">
                     {!isChartDisplayed ? <ChartDisableIcon color="basicOrange" /> : <ChartIcon color="basicOrange" />}
                   </ColoredIconButton>
-                </Box>
+                </IconBox>
               )}
-              <TabMenu activeIndex={0} onItemClick={handleTabClick} fixedForItems={2}>
+              <TabMenu activeIndex={thisTabIndex} nextIndex={tabClicked} onItemClick={handleTabClick} fixedForItems={2}>
                 <Tab>{t('Swap')}</Tab>
                 <Tab>{t('Liquidity')}</Tab>
               </TabMenu>
@@ -616,11 +625,11 @@ export default function Swap() {
               {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
             </Box>
           </Wrapper>
-          {/* (!swapIsUnsupported ? (
-                trade && <AdvancedSwapDetailsDropdown trade={trade} />
-              ) : (
-                <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-              )) */}
+          {!swapIsUnsupported ? (
+            trade && <AdvancedSwapDetailsDropdown trade={trade} />
+          ) : (
+            <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
+          )}
         </StyledSwapContainer>
         {/* isChartExpanded && (
             <Box display={['none', null, null, 'block']} width="100%" height="100%">

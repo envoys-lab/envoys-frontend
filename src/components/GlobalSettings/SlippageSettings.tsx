@@ -9,7 +9,11 @@ const FlexWithTopBorder = styled(Flex)`
   border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const SlippageSettings: React.FC = () => {
+interface SlippageSettingsProps {
+  showToggle?: boolean
+}
+
+const SlippageSettings: React.FC<SlippageSettingsProps> = ({ showToggle = false }) => {
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
   const [isSlippageEnabled, setIsSlippageEnabled] = useState<boolean>(userSlippageTolerance > 0)
   const { t } = useTranslation()
@@ -31,14 +35,14 @@ const SlippageSettings: React.FC = () => {
   }, [isSlippageEnabled, userSlippageTolerance])
 
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" p={'4px'}>
       <Flex flexDirection="column">
         <Flex mb="12px">
-          <Text color={'darkClear'} mb={'8px'}>
+          <Text color={'darkClear'} mb={'8px'} fontSize={'14px'}>
             {t('Slip Tolerance')}
           </Text>
         </Flex>
-        <Flex flexWrap="wrap" mb={'16px'}>
+        <Flex flexWrap="wrap" mb={'16px'} style={{ flexWrap: 'nowrap' }}>
           <SettingsOptionButton
             disabled={!isSlippageEnabled}
             mr="16px"
@@ -59,10 +63,12 @@ const SlippageSettings: React.FC = () => {
             </Flex>
           </SettingsOptionButton>
         </Flex>
-        {/* <FlexWithTopBorder justifyContent="space-between" pt={'16px'}>
-          <Text small>{t('Slip Tolerance')}</Text>
-          <Toggle scale="sm" checked={isSlippageEnabled} onChange={toggleSlippageEnabled} />
-        </FlexWithTopBorder> */}
+        {showToggle && (
+          <FlexWithTopBorder justifyContent="space-between" pt={'16px'}>
+            <Text small>{t('Slip Tolerance')}</Text>
+            <Toggle scale="sm" checked={isSlippageEnabled} onChange={toggleSlippageEnabled} />
+          </FlexWithTopBorder>
+        )}
       </Flex>
     </Flex>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Text, useModal, Flex, Skeleton, Heading } from '@envoysvision/uikit'
+import { Button, Text, useModal, Flex, Skeleton } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
 import { PoolCategory } from 'config/constants/types'
@@ -9,8 +9,31 @@ import Balance from 'components/Balance'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 
-import { ActionContainer, ActionTitles, ActionContent } from './styles'
+import { ActionTitles, ActionContent, EnvoysSkeleton, Heading, InfoContainer } from './styles'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
+import styled from 'styled-components'
+import {
+  ActionButton,
+  HarvestControlsContainer,
+  PanelContainer,
+  TitleText,
+  VerticalSpacer,
+} from 'views/Farms/components/FarmTable/Actions/styles'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import { Currency } from '@envoysvision/sdk'
+import { Label } from '../Cells/styles'
+import { HarvestText } from './Stake'
+
+export const ActionContainer = styled.div`
+  padding-left: 17px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`
 
 interface HarvestActionProps extends DeserializedPool {
   userDataLoaded: boolean
@@ -36,6 +59,8 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
   const isCompoundPool = sousId === 0
   const isBnbPool = poolCategory === PoolCategory.BINANCE
 
+  const currency = earningToken as Currency
+
   const [onPresentCollect] = useModal(
     <CollectModal
       formattedBalance={formattedBalance}
@@ -50,74 +75,83 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({
 
   const actionTitle = (
     <>
-      <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
+      <HarvestText
+        opacity={0.7}
+        fontWeight={500}
+        lineHeight={'14px'}
+        textTransform="uppercase"
+        color="primary"
+        fontSize="12px"
+        pr="2px"
+      >
         {earningToken.symbol}{' '}
-      </Text>
-      <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
-        {t('Earned')}
-      </Text>
+      </HarvestText>
+      <TitleText>{t('Earned').toUpperCase()}</TitleText>
     </>
   )
 
   if (!account) {
     return (
-      <ActionContainer>
+      <PanelContainer>
         <ActionTitles>{actionTitle}</ActionTitles>
-        <ActionContent>
-          <Heading>0</Heading>
-          <Button disabled>{isCompoundPool ? t('Collect') : t('Harvest')}</Button>
-        </ActionContent>
-      </ActionContainer>
+        <VerticalSpacer height={8} />
+        <HarvestControlsContainer>
+          <InfoContainer>
+            <Heading>0.0</Heading>
+            <CurrencyEquivalent currency={currency} amount={'0'} />
+          </InfoContainer>
+          <ActionButton width="100px" height="40px" disabled>
+            {isCompoundPool ? t('Collect') : t('Harvest')}
+          </ActionButton>
+        </HarvestControlsContainer>
+      </PanelContainer>
     )
   }
 
   if (!userDataLoaded) {
     return (
-      <ActionContainer>
+      <PanelContainer>
         <ActionTitles>{actionTitle}</ActionTitles>
-        <ActionContent>
-          <Skeleton width={180} height="32px" marginTop={14} />
-        </ActionContent>
-      </ActionContainer>
+        <VerticalSpacer height={8} />
+        <EnvoysSkeleton width="100%" height={40} marginBottom={0} marginTop={0} />
+      </PanelContainer>
     )
   }
 
   return (
-    <ActionContainer>
+    <PanelContainer>
       <ActionTitles>{actionTitle}</ActionTitles>
-      <ActionContent>
-        <Flex flex="1" pt="16px" flexDirection="column" alignSelf="flex-start">
+      <VerticalSpacer height={8} />
+      <HarvestControlsContainer>
+        <InfoContainer>
           <>
             {hasEarnings ? (
               <>
-                <Balance lineHeight="1" bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                <Balance
+                  color="text"
+                  fontSize="16px"
+                  lineHeight="19px"
+                  fontWeight={600}
+                  decimals={5}
+                  value={earningTokenBalance}
+                />
                 {earningTokenPrice > 0 && (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
-                  />
+                  <CurrencyEquivalent currency={currency} amount={earningTokenBalance.toString()} />
                 )}
               </>
             ) : (
               <>
-                <Heading color="textDisabled">0</Heading>
-                <Text fontSize="12px" color="textDisabled">
-                  0 USD
-                </Text>
+                <Heading color="textDisabled">0.0</Heading>
+                <CurrencyEquivalent currency={currency} amount={'0'} />
               </>
             )}
           </>
-        </Flex>
-        <Button disabled={!hasEarnings} onClick={onPresentCollect}>
+        </InfoContainer>
+        <ActionButton width="100px" height="40px" disabled={!hasEarnings} onClick={onPresentCollect}>
           {isCompoundPool ? t('Collect') : t('Harvest')}
-        </Button>
-      </ActionContent>
-    </ActionContainer>
+        </ActionButton>
+      </HarvestControlsContainer>
+    </PanelContainer>
   )
 }
 

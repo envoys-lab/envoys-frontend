@@ -17,7 +17,8 @@ const InputRow = styled.div<{ selected: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
+  // padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
+  padding: 0 1rem;
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0 0.5rem;
@@ -29,7 +30,7 @@ const LabelRow = styled.div`
   color: ${({ theme }) => theme.colors.text};
   font-size: 0.75rem;
   line-height: 1rem;
-  padding: 0.75rem 1rem 0 1rem;
+  padding: 0 1rem;
 `
 const InputPanel = styled.div`
   display: flex;
@@ -39,22 +40,21 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div`
+const Container = styled.div<ContainerProps>`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.backgroundPage};
-  height: 70px;
+  height: ${(props: ContainerProps) => (props.hideBalance ? '70px' : '100px')};
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
 `
 
 const CurrencySelect = styled(Flex)`
   align-items: center;
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: 0;
-  bottom: 0;
   z-index: 2;
-  justify-content: space-between;
+  justify-content: center;
+  flex-grow: 0;
+  flex-direction: column;
   > button {
     background: ${({ theme }) => theme.colors.backgroundAlt};
     padding: 0;
@@ -65,6 +65,16 @@ const CurrencySelect = styled(Flex)`
     }
   }
 `
+
+const CurrencyInput = styled(Flex)`
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+`
+
+interface ContainerProps {
+  hideBalance: boolean
+}
 
 interface CurrencyInputPanelProps {
   value: string
@@ -111,7 +121,7 @@ export default function CurrencyInputPanel({
   return (
     <Box id={id} position={'relative'} width={'100%'}>
       <InputPanel>
-        <Container>
+        <Container hideBalance={hideBalance && !showMaxButton}>
           <CurrencySelect>
             <CurrencySelectButton
               className="open-currency-select-button"
@@ -152,34 +162,41 @@ export default function CurrencyInputPanel({
               </Flex>
             </CurrencySelectButton>
             {account && !hideBalance && (
-              <Text onClick={onMax} color="textSubtle" fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+              <Text
+                onClick={onMax}
+                color="textSubtle"
+                fontSize="14px"
+                style={{ marginTop: '5px', display: 'inline', cursor: 'pointer' }}
+              >
                 {!!currency
                   ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
                   : ' '}
               </Text>
             )}
           </CurrencySelect>
-          <LabelRow>
-            <RowBetween>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                }}
-              />
-            </RowBetween>
-          </LabelRow>
-          <InputRow selected={false} style={{ paddingRight: '1rem' }}>
-            <CurrencyEquivalent amount={value} currency={currency} />
-          </InputRow>
-          <InputRow selected={disableCurrencySelect}>
-            {account && currency && showMaxButton && label !== 'To' && (
-              <Button onClick={onMax} scale="xs" variant="secondary">
-                MAX
-              </Button>
-            )}
-          </InputRow>
+          <CurrencyInput>
+            <LabelRow>
+              <RowBetween>
+                <NumericalInput
+                  className="token-amount-input"
+                  value={value}
+                  onUserInput={(val) => {
+                    onUserInput(val)
+                  }}
+                />
+              </RowBetween>
+            </LabelRow>
+            <InputRow selected={false} style={{ paddingRight: '1rem' }}>
+              <CurrencyEquivalent amount={value} currency={currency} />
+            </InputRow>
+            {/* <InputRow selected={disableCurrencySelect}>
+              {account && currency && showMaxButton && label !== 'To' && (
+                <Button onClick={onMax} scale="xs" variant="secondary">
+                  MAX
+                </Button>
+              )}
+            </InputRow> */}
+          </CurrencyInput>
         </Container>
       </InputPanel>
     </Box>

@@ -1,11 +1,9 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Image, RowType, Toggle, Text, Flex } from '@envoysvision/uikit'
-import { ChainId } from '@envoysvision/sdk'
+import { RowType, Toggle, Text } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
-import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { DeserializedFarm } from 'state/types'
@@ -18,14 +16,11 @@ import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
-import Loading from 'components/Loading'
 import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
 import { CURRENT_CHAIN_ID } from 'config'
 
@@ -49,7 +44,6 @@ const SortContainer = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   height: 30px;
-  /* padding: 0px 0px 0px 15px; */
 `
 
 const TopContaiener = styled.div`
@@ -95,7 +89,7 @@ const ControlContainer = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.mdl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 30px 30px;
@@ -113,27 +107,23 @@ const ToggleWrapper = styled.div`
   }
 `
 
-const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
-`
-
 const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 0px;
+  padding: 8px 0;
+  flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
     padding: 0;
+    flex-direction: row;
   }
 `
 
 const ViewControls = styled.div`
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   display: flex;
   align-items: center;
   width: 100%;
@@ -436,14 +426,12 @@ const Farms: React.FC = ({ children }) => {
         </FilterContainer>
       </ControlContainer>
       <TopContaiener>{renderContent()}</TopContaiener>
-      {account && !userDataLoaded && stakedOnly && (
+      {/* {account && !userDataLoaded && stakedOnly && (
         <Flex justifyContent="center">
           <Loading />
         </Flex>
-      )}
+      )} */}
       <div ref={observerRef} />
-      {/* <StyledImage src="/images/decorations/3dpan.png" alt="Envoys illustration" width={120} height={103} /> */}
-      {/* </Page> */}
     </FarmsContext.Provider>
   )
 }

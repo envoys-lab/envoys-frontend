@@ -22,8 +22,8 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
   return (
     <Flex flexDirection="column">
       {showHelper ? (
-        <Flex mb="16px" alignItems="center">
-          <Text>{t('Default Transaction Speed (GWEI)')}</Text>
+        <Flex mb="7px" alignItems="center" p={'4px'}>
+          <Text fontSize={'14px'}>{t('Default Transaction Speed (GWEI)')}</Text>
           <QuestionHelper
             text={t(
               'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
@@ -33,24 +33,26 @@ const GasSettings: React.FC<GasSettingsProps> = ({ showHelper = false }) => {
           />
         </Flex>
       ) : (
-        <Text color={'darkClear'} mb={'8px'}>
+        <Text color={'darkClear'} mb={'7px'} fontSize={'14px'} p={'4px'}>
           {t('Gas settings')}
         </Text>
       )}
 
-      <Grid gridGap={12} gridTemplateColumns={`repeat(3, 1fr)`}>
+      <Grid gridGap={12} gridTemplateColumns={`repeat(3, 1fr)`} mb={'12px'}>
         {showButtons.map((gas, key) => (
           <SettingsOptionButton
             key={`gas-option-${key}`}
             onClick={() => setGasPrice(GAS_PRICE_GWEI[gas])}
             $active={gasPrice === GAS_PRICE_GWEI[gas]}
           >
-            <Text fontSize={'14px'} color={'inherit'} bold>
-              {t(`gas_${gas}`)}
-            </Text>
-            <Text fontSize={'14px'} color={'darkClear'} thin>
-              ({GAS_PRICE[gas]} Gwei)
-            </Text>
+            <Flex mx={'1px'} flexDirection={'column'}>
+              <Text fontSize={'14px'} color={'inherit'} bold>
+                {t(`gas_${gas}`)}
+              </Text>
+              <Text fontSize={'14px'} color={'darkClear'} thin style={{ whiteSpace: 'nowrap' }}>
+                ({GAS_PRICE[gas]} Gwei)
+              </Text>
+            </Flex>
           </SettingsOptionButton>
         ))}
         {/*<SettingsOptionButton

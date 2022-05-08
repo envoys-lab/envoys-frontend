@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { HelpIcon, Text, Skeleton, useTooltip } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from 'config/constants/tokens'
 
 const ReferenceElement = styled.div`
   display: inline-block;
@@ -27,12 +29,7 @@ const Container = styled.div`
 `
 
 const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
-  const lq = liquidity ?? 0
-  const displayLiquidity = lq ? (
-    `$${Number(lq).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-  ) : (
-    <Skeleton width={60} />
-  )
+  const lq = liquidity
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Total value of the funds in this farm’s liquidity pool'),
@@ -42,7 +39,11 @@ const Liquidity: React.FunctionComponent<LiquidityProps> = ({ liquidity }) => {
   return (
     <Container>
       <LiquidityWrapper>
-        <div>{displayLiquidity}</div>
+        {lq ? (
+          <CurrencyEquivalent currency={unserializedTokens.evt} amount={Number(lq).toString()} />
+        ) : (
+          <Skeleton width={60} />
+        )}
       </LiquidityWrapper>
       {tooltipVisible && tooltip}
     </Container>

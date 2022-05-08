@@ -14,14 +14,54 @@ interface NameCellProps {
   pool: DeserializedPool
 }
 
-const StyledCell = styled(BaseCell)`
-  flex: 5;
-  flex-direction: row;
-  padding-left: 12px;
+const Container = styled.div`
+  width: 210px;
+  padding-left: 0px;
+  display: flex;
+  align-items: center;
+
   ${({ theme }) => theme.mediaQueries.sm} {
-    flex: 1 0 150px;
-    padding-left: 32px;
+    padding-left: 4px;
   }
+`
+
+const TokenWrapper = styled.div`
+  width: 40px;
+  margin-right: 10px;
+`
+
+const RaiseContainer = styled.div`
+  width: 38px;
+  height: 22px;
+
+  margin-left: 10px;
+
+  border: 1px solid ${({ theme }) => theme.colors.raiseBorder};
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+
+  color: ${({ theme }) => theme.colors.text};
+`
+
+const TitleContainer = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+
+  /* Main_Dark */
+
+  color: ${({ theme }) => theme.colors.text};
 `
 
 const NameCell: React.FC<NameCellProps> = ({ pool }) => {
@@ -46,6 +86,9 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   let subtitle = `${t('Stake')} ${stakingTokenSymbol}`
   const showSubtitle = sousId !== 0 || (sousId === 0 && !isMobile)
 
+  const priceChange24hValue = 0.0
+  const displayValue = priceChange24hValue.toFixed(1)
+
   if (vaultKey) {
     title = t(vaultPoolConfig[vaultKey].name)
     subtitle = t(vaultPoolConfig[vaultKey].description)
@@ -55,28 +98,48 @@ const NameCell: React.FC<NameCellProps> = ({ pool }) => {
   }
 
   return (
-    <StyledCell role="cell">
-      {vaultKey ? (
-        <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
-      ) : (
-        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
-      )}
+    <Container>
+      <TokenWrapper>
+        {vaultKey ? (
+          <UITokenPairImage
+            variant="inverted"
+            {...vaultPoolConfig[vaultKey].tokenImage}
+            width={40}
+            height={22}
+            absolutePosition
+          />
+        ) : (
+          <TokenPairImage
+            variant="inverted"
+            primaryToken={earningToken}
+            secondaryToken={stakingToken}
+            width={40}
+            height={22}
+            absolutePosition
+          />
+        )}
+      </TokenWrapper>
       <CellContent>
         {showStakedTag && (
           <Text fontSize="12px" bold color={isFinished ? 'failure' : 'secondary'} textTransform="uppercase">
             {t('Staked')}
           </Text>
         )}
-        <Text bold={!isMobile} small={isMobile}>
-          {title}
-        </Text>
+        <TitleContainer>{title}</TitleContainer>
         {showSubtitle && (
           <Text fontSize="12px" color="textSubtle">
             {subtitle}
           </Text>
         )}
       </CellContent>
-    </StyledCell>
+      {priceChange24hValue !== 0 ? (
+        <RaiseContainer>
+          <div>{displayValue}%</div>
+        </RaiseContainer>
+      ) : (
+        ''
+      )}
+    </Container>
   )
 }
 

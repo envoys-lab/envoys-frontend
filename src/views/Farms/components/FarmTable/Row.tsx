@@ -39,7 +39,7 @@ const cells = {
 }
 
 const CellInner = styled.div`
-  margin: 14px 0px 13px 0px;
+  margin: 14px 0 13px 0;
   height: 42px;
   display: flex;
   align-items: flex-start;
@@ -94,7 +94,6 @@ const ItemsContainer = styled.div`
 
 const FarmContainer = styled.div`
   width: 190px;
-
   display: flex;
 `
 
@@ -133,9 +132,9 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
 
-  const { isDesktop, isMobile, isXlm, isXl, isMdl } = useMatchBreakpoints()
+  const { isDesktop, isMobile, isXlm, isXl, isMd } = useMatchBreakpoints()
 
-  let lowResolution = isMobile || isMdl
+  let lowResolution = isMobile || isMd
 
   const isSmallerScreen = isXlm || isXl || !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema

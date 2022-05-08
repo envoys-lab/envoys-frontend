@@ -4,8 +4,35 @@
   color: red;
 }
 
+.scrollspy {
+  display: flex;
+  justify-content: space-between;
+  height: 45px;
+  align-items: flex-end;
+  margin: 0 1.3em;
+
+  a {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    height: 2em;
+    padding-bottom: 1.5em;
+    font-size: 14px;
+    line-height: 16px;
+    border-bottom: 4px solid transparent;
+
+    /* Main_Dark */
+
+    color: #133d65;
+
+    &.isCurrent {
+      color: #f48020;
+      border-bottom: 4px solid #f48020;
+    }
+  }
+}
 .company__head {
-  margin: 20px 0;
+  margin-top: 20px;
   display: inline-flex;
   justify-content: space-between;
   flex-direction: column;
@@ -16,17 +43,22 @@
 }
 
 .company__tabs {
-  margin-top: 34px;
-  padding-bottom: 35px;
-  display: block;
-  background-color: white;
+  padding-top: 19px;
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.8) 246.09%);
+  backdrop-filter: blur(40px);
+
+  button {
+    background-color: transparent;
+  }
 
   max-width: 728px;
-
   position: sticky;
   top: 0;
-
   z-index: 2;
+
+  &--low-res {
+    top: 60px;
+  }
 }
 
 .company__tab-info {

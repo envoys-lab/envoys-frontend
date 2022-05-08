@@ -19,7 +19,8 @@ import { getSwapSound } from './swapSound'
 
 import ImportRow from './ImportRow'
 import { getCompanyTokensList } from '../../state/companyTokens/selectors'
-import { getIsKYCVerified } from '../../utils/getIsKYCVerified'
+import useIsKYCVerified from '../../hooks/useIsKYCVerified'
+import { useRouter } from 'next/router'
 
 const RoundInput = styled(Input)`
   border-radius: 36px;
@@ -31,12 +32,14 @@ interface CurrencySearchProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   showImportView: () => void
+  onDismiss: () => void
   setImportToken: (token: Token) => void
 }
 
 function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
+  onDismiss,
   otherSelectedCurrency,
   showCommonBases,
   showImportView,
@@ -44,7 +47,7 @@ function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const [user] = useState()
+  const router = useRouter()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -58,7 +61,11 @@ function CurrencySearch({
 
   const companyTokens = getCompanyTokensList()
   const companyTokensAddresses = companyTokens.map((token) => (token as Token).address)
-  const isKYCVerified = getIsKYCVerified(user)
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
 
   // if they input an address, use it
   const searchToken = useToken(debouncedQuery)
@@ -92,6 +99,11 @@ function CurrencySearch({
     },
     [audioPlay, onCurrencySelect],
   )
+
+  const handleDismiss = useCallback(() => {
+    router.push('/settings')
+    onDismiss()
+  }, [router, onDismiss])
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
@@ -153,7 +165,12 @@ function CurrencySearch({
         </AutoColumn>
         {searchToken && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
-            <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+            <ImportRow
+              onDismiss={onDismiss}
+              token={searchToken}
+              showImportView={showImportView}
+              setImportToken={setImportToken}
+            />
           </Column>
         ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
           <Box margin="24px -24px">
@@ -172,6 +189,7 @@ function CurrencySearch({
               fixedListRef={fixedList}
               showImportView={showImportView}
               setImportToken={setImportToken}
+              onDismiss={handleDismiss}
             />
           </Box>
         ) : (

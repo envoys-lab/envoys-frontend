@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
+import crypto from 'crypto'
 import styled from 'styled-components'
 import { Button, Tab, TabMenu, useWalletModal, useMatchBreakpoints, Flex } from '@envoysvision/uikit'
 
@@ -150,7 +152,7 @@ const Settings = () => {
   useEffect(() => {
     const handlePostUserWallet = async () => {
       const data = await postUserWallet(account)
-      setUserId(data._id)
+      setUserId(data?._id)
     }
 
     if (account) {
@@ -173,9 +175,29 @@ const Settings = () => {
     }
   }, [userId, isMetaMaskConnected])
 
+  const getSignature = async () => {
+    let nonce = crypto.randomBytes(16).toString('base64')
+    const message = `Welcome to Envoys! ${nonce}`
+
+    if (!window.ethereum) throw new Error('No crypto wallet found. Please install it.')
+
+    await (window as any).ethereum.send('eth_requestAccounts')
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const signer = provider.getSigner()
+    const signature = await signer.signMessage(message)
+
+    return { signature, message }
+  }
+
   const handleGetPersonVerificationLink = async () => {
+    const { signature, message } = await getSignature()
+
+    if (!signature || !message || !account) {
+      return
+    }
+
     const redirectUrl = window.location.href
-    const personal = await getPersonVerificationLink(userId, redirectUrl)
+    const personal = await getPersonVerificationLink(userId, redirectUrl, signature, message, account)
 
     if (personal?.formUrl) {
       setVerificationLinks({ ...verificationLinks, personal: personal?.formUrl })
@@ -185,8 +207,15 @@ const Settings = () => {
   }
 
   const handleGetCompanyVerificationLink = async () => {
+    const { signature, message } = await getSignature()
+
+    if (!signature || !message || !account) {
+      return
+    }
+
     const redirectUrl = window.location.href
-    const company = await getCompanyVerificationLink(userId, redirectUrl)
+    const company = await getCompanyVerificationLink(userId, redirectUrl, signature, message, account)
+
     if (company?.formUrl) {
       setVerificationLinks({ ...verificationLinks, company: company?.formUrl })
       window.location.href = company?.formUrl
@@ -243,7 +272,7 @@ const Settings = () => {
   }
 
   const renderKYCFlow = (application?: any, data?: any, children?: any, callback?: () => Promise<void>) => {
-    const isInitialState = application?.status === undefined
+    const isInitialState = application?.status === undefined || application?.status === VerificationStatus.unused
     const isCompleted = application?.status === VerificationStatus.completed
     const isPending = !isInitialState && !isCompleted
     const isVerificationAccepted = isVerificationPassed(application?.verifications) && isCompleted
@@ -317,7 +346,7 @@ const Settings = () => {
       </>
     )
 
-    return <>{renderKYCFlow(personalVerification, personalData, children, handleGetPersonVerificationLink)}</>
+    return renderKYCFlow(personalVerification, personalData, children, handleGetPersonVerificationLink)
   }
 
   const renderCompany = () => {
@@ -334,7 +363,7 @@ const Settings = () => {
       </>
     )
 
-    return <>{renderKYCFlow(companyVerification, companyData, children, handleGetCompanyVerificationLink)}</>
+    return renderKYCFlow(companyVerification, companyData, children, handleGetCompanyVerificationLink)
   }
 
   return (

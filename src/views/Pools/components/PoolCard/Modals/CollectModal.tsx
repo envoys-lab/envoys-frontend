@@ -20,7 +20,22 @@ import { formatNumber } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
 import useHarvestPool from '../../../hooks/useHarvestPool'
 import useStakePool from '../../../hooks/useStakePool'
+import styled from 'styled-components'
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+
+  a {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: auto;
+  }
+`
 interface CollectModalProps {
   formattedBalance: string
   fullBalance: string
@@ -136,15 +151,18 @@ const CollectModal: React.FC<CollectModalProps> = ({
     >
       {isCompoundPool && (
         <Flex justifyContent="center" alignItems="center" mb="24px">
-          <ButtonMenu
-            activeIndex={shouldCompound ? 0 : 1}
-            scale="sm"
-            variant="subtle"
-            onItemClick={(index) => setShouldCompound(!index)}
-          >
-            <ButtonMenuItem as="button">{t('Compound')}</ButtonMenuItem>
-            <ButtonMenuItem as="button">{t('Harvest')}</ButtonMenuItem>
-          </ButtonMenu>
+          <Wrapper>
+            <ButtonMenu
+              activeIndex={shouldCompound ? 0 : 1}
+              scale="sm"
+              variant="tev"
+              // slim={true}
+              onItemClick={(index) => setShouldCompound(!index)}
+            >
+              <ButtonMenuItem>{t('Compound')}</ButtonMenuItem>
+              <ButtonMenuItem>{t('Harvest')}</ButtonMenuItem>
+            </ButtonMenu>
+          </Wrapper>
           <Flex ml="10px" ref={targetRef}>
             <HelpIcon color="textSubtle" />
           </Flex>

@@ -1,6 +1,8 @@
 import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -10,6 +12,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import BaseCell, { CellContent } from './BaseCell'
+import { Label } from './styles'
 
 interface StakedCellProps {
   pool: DeserializedPool
@@ -18,7 +21,13 @@ interface StakedCellProps {
 }
 
 const StyledCell = styled(BaseCell)`
-  flex: 2 0 100px;
+  /* flex: 2 0 130px; */
+  min-width: 110px;
+  width: 110px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
@@ -52,46 +61,33 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
 
   return (
     <StyledCell role="cell">
-      <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {labelText}
-        </Text>
-        {userDataLoading && account ? (
-          <Skeleton width="80px" height="16px" />
-        ) : (
-          <>
-            <Flex>
-              <Box mr="8px" height="32px">
-                <Balance
-                  mt="4px"
-                  bold={!isMobile}
-                  fontSize={isMobile ? '14px' : '16px'}
-                  color={hasStaked ? 'primary' : 'textDisabled'}
-                  decimals={hasStaked ? 5 : 1}
-                  value={
-                    pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance
-                  }
-                />
-                {hasStaked ? (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={pool.vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance}
-                    unit=" USD"
-                  />
-                ) : (
-                  <Text mt="4px" fontSize="12px" color="textDisabled">
-                    0 USD
-                  </Text>
-                )}
-              </Box>
-            </Flex>
-          </>
-        )}
-      </CellContent>
+      <Label>{labelText}</Label>
+      {userDataLoading && account ? (
+        <Skeleton width="80px" height="14px" />
+      ) : (
+        <>
+          <Balance
+            mt="2px"
+            fontWeight="500"
+            fontSize="12px"
+            lineHeight="14px"
+            color="text"
+            decimals={hasStaked ? 2 : 1}
+            value={pool.vaultKey ? (Number.isNaN(cakeAsNumberBalance) ? 0 : cakeAsNumberBalance) : stakedTokenBalance}
+          />
+          {hasStaked ? (
+            <CurrencyEquivalent
+              currency={unserializedTokens.evt}
+              amount={(pool.vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance).toString()}
+            />
+          ) : (
+            <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+          )}
+          {/* </Box>
+            </Flex> */}
+        </>
+      )}
+      {/* </CellContent> */}
     </StyledCell>
   )
 }

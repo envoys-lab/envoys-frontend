@@ -4,7 +4,7 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Image, Text } from '@envoysvision/uikit'
+import { Text } from '@envoysvision/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
@@ -19,9 +19,6 @@ import {
 } from 'state/pools/hooks'
 import { latinise } from 'utils/latinise'
 import FlexLayout from 'components/Layout/Flex'
-import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
-import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
@@ -29,17 +26,29 @@ import { usePoolsWithVault } from 'views/Home/hooks/useGetTopPoolsByApr'
 import { ViewMode } from 'state/user/actions'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { useRouter } from 'next/router'
-import Loading from 'components/Loading'
 import PoolCard from './components/PoolCard'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
-import BountyCard from './components/BountyCard'
-import HelpButton from './components/HelpButton'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
 
+const TextTitleContainer = styled.div`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: flex-end;
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
+
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
+`
+
+const Space = styled.div<{ size: number }>`
+  min-width: ${({ size }) => size + 'px'};
+  height: 100%;
 `
 
 const PoolControls = styled.div`
@@ -52,11 +61,34 @@ const PoolControls = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 16px 32px;
+    padding: 30px 30px;
     margin-bottom: 0;
+  }
+`
+
+const ViewControls = styled.div`
+  flex-wrap: wrap;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  > div {
+    padding-top: 16px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: flex-start;
+    width: auto;
+
+    > div {
+      padding: 8px;
+    }
   }
 `
 
@@ -64,23 +96,52 @@ const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 8px 0px;
+  padding: 8px 0;
+  flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
     padding: 0;
+    flex-direction: row;
   }
 `
+const TextContainer = styled.div<{ opacity?: number }>`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
 
-const LabelWrapper = styled.div`
-  > ${Text} {
-    font-size: 12px;
-  }
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.text};
+  opacity: ${({ opacity }) => opacity ?? 1.0};
+
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  user-select: none;
 `
 
-const ControlStretch = styled(Flex)`
-  > div {
-    flex: 1;
+const SortContainer = styled.div`
+  background: ${({ theme }) => theme.colors.backgroundPage};
+  border: 1px solid ${({ theme }) => theme.colors.backgroundPage};
+  box-sizing: border-box;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  height: 30px;
+`
+
+const TopContaiener = styled.div`
+  padding-left: 8px;
+  padding-right: 8px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 `
 
@@ -247,92 +308,59 @@ const Pools: React.FC = () => {
 
   return (
     <>
-      {/* <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
-            </Heading>
-            <Heading scale="md" color="text">
-              {t('Just stake some tokens to earn.')}
-            </Heading>
-            <Heading scale="md" color="text">
-              {t('High APR, low risk.')}
-            </Heading>
-          </Flex>
-          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
-            <HelpButton />
-            <BountyCard />
-          </Flex>
-        </Flex>
-      </PageHeader> */}
-      {/* <Page> */}
       <PoolControls>
-        <PoolTabButtons
-          stakedOnly={stakedOnly}
-          setStakedOnly={setStakedOnly}
-          hasStakeInFinishedPools={hasStakeInFinishedPools}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-        />
+        <ViewControls>
+          <TextTitleContainer>{t('Stake EVT tokens to earn')}</TextTitleContainer>
+        </ViewControls>
         <FilterContainer>
-          <LabelWrapper>
-            <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-              {t('Sort by')}
-            </Text>
-            <ControlStretch>
-              <Select
-                options={[
-                  {
-                    label: t('Hot'),
-                    value: 'hot',
-                  },
-                  {
-                    label: t('APR'),
-                    value: 'apr',
-                  },
-                  {
-                    label: t('Earned'),
-                    value: 'earned',
-                  },
-                  {
-                    label: t('Total staked'),
-                    value: 'totalStaked',
-                  },
-                ]}
-                onOptionChange={handleSortOptionChange}
-              />
-            </ControlStretch>
-          </LabelWrapper>
-          <LabelWrapper style={{ marginLeft: 16 }}>
-            <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-              {t('Search')}
-            </Text>
-            <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
-          </LabelWrapper>
+          <PoolTabButtons
+            stakedOnly={stakedOnly}
+            setStakedOnly={setStakedOnly}
+            hasStakeInFinishedPools={hasStakeInFinishedPools}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+          />
+          <Space size={13} />
+          <SortContainer>
+            <Space size={15} />
+            <TextContainer opacity={0.7}>{t('Sort by') + ':'}</TextContainer>
+            <Space size={10} />
+            <Select
+              options={[
+                {
+                  label: t('Hot'),
+                  value: 'hot',
+                },
+                {
+                  label: t('APR'),
+                  value: 'apr',
+                },
+                {
+                  label: t('Earned'),
+                  value: 'earned',
+                },
+                {
+                  label: t('Total staked'),
+                  value: 'totalStaked',
+                },
+              ]}
+              onOptionChange={handleSortOptionChange}
+            />
+          </SortContainer>
         </FilterContainer>
       </PoolControls>
       {showFinishedPools && (
-        <Text fontSize="20px" color="failure" pb="32px">
+        <Text fontSize="16px" ml="16px" color="failure" pb="32px">
           {t('These pools are no longer distributing rewards. Please unstake your tokens.')}
         </Text>
       )}
-      {account && !userDataLoaded && stakedOnly && (
+      {/* {account && !userDataLoaded && stakedOnly && (
         <Flex justifyContent="center" mb="4px">
           <Loading />
         </Flex>
-      )}
-      {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
+      )} */}
+      <TopContaiener>{viewMode === ViewMode.CARD ? cardLayout : tableLayout}</TopContaiener>
       <div ref={observerRef} />
-      <Image
-        mx="auto"
-        mt="12px"
-        src="/images/decorations/3d-syrup-bunnies.png"
-        alt="Envoys illustration"
-        width={192}
-        height={184.5}
-      />
-      {/* </Page> */}
     </>
   )
 }

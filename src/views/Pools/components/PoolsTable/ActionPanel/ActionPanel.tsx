@@ -32,6 +32,13 @@ import Harvest from './Harvest'
 import Stake from './Stake'
 import Apr from '../Apr'
 import AutoHarvest from './AutoHarvest'
+import {
+  ActionContainer,
+  ActionPanelContainer,
+  EnvoysBalance,
+  HorizontalSpacer,
+  TitleText,
+} from 'views/Farms/components/FarmTable/Actions/styles'
 
 const expandAnimation = keyframes`
   from {
@@ -61,30 +68,24 @@ const StyledActionPanel = styled.div<{ expanded: boolean }>`
           ${collapseAnimation} 300ms linear forwards
         `};
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.dropdown};
+  ${({ theme, expanded }) => (expanded ? { background: theme.colors.background } : {})};
   display: flex;
-  flex-direction: column-reverse;
-  justify-content: center;
-  padding: 12px;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
 
   border-radius: 0px 0px 18px 18px;
   margin-bottom: 20px;
 
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    padding: 16px 16px;
+  }
+
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
-    padding: 16px 32px;
-  }
-`
-
-const ActionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    align-items: center;
-    flex-grow: 1;
-    flex-basis: 0;
+    padding: 16px 16px;
   }
 `
 
@@ -114,6 +115,48 @@ const InfoSection = styled(Box)`
     padding: 0;
     flex-basis: 230px;
   }
+`
+
+const StyledLinkExternal = styled(LinkExternal)`
+  font-weight: 400;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.primary};
+  max-height: 16px;
+  margin-bottom: 7px;
+`
+
+const InfoInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
+
+const InfoContainer = styled.div`
+  min-width: 150px;
+  width: 25%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  padding-left: 0;
+
+  padding-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    padding-bottom: 0px;
+  }
+`
+
+const ContentPanelContainer = styled.div`
+  border: 1px solid #e6e6e6;
+  box-sizing: border-box;
+  border-radius: 17px;
+  max-width: 302px;
+
+  width: 100%;
+  min-height: 90px;
 `
 
 const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded, expanded, breakpoints }) => {
@@ -233,85 +276,75 @@ const ActionPanel: React.FC<ActionPanelProps> = ({ account, pool, userDataLoaded
   )
 
   const totalStakedRow = (
-    <Flex justifyContent="space-between" alignItems="center" mb="8px">
-      <Text maxWidth={['50px', '100%']}>{t('Total staked')}:</Text>
+    <Flex flexDirection={'column'} justifyContent="space-between" alignItems="flex-start" mb="8px">
+      <TitleText>{t('Total staked').toUpperCase()}:</TitleText>
       <Flex alignItems="center">
         {totalStaked && totalStaked.gte(0) ? (
           <>
-            <Balance fontSize="16px" value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
-            <span ref={totalStakedTargetRef}>
+            <EnvoysBalance value={getTotalStakedBalance()} decimals={0} unit={` ${stakingToken.symbol}`} />
+            {/* <span ref={totalStakedTargetRef}>
               <HelpIcon color="textSubtle" width="20px" ml="4px" />
-            </span>
+            </span> */}
           </>
         ) : (
           <Skeleton width="56px" height="16px" />
         )}
-        {totalStakedTooltipVisible && totalStakedTooltip}
+        {/* {totalStakedTooltipVisible && totalStakedTooltip} */}
       </Flex>
     </Flex>
   )
 
   return (
     <StyledActionPanel expanded={expanded}>
-      <InfoSection>
-        {maxStakeRow}
-        {(isXs || isSm) && aprRow}
-        {(isXs || isSm || isMd) && totalStakedRow}
-        {shouldShowBlockCountdown && blocksRow}
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
+      <InfoContainer>
+        <InfoInnerContainer>
+          {maxStakeRow}
+          {/* {(isXs || isSm) && aprRow} */}
+          {(isXs || isSm || isMd) && totalStakedRow}
+          {shouldShowBlockCountdown && blocksRow}
+          <StyledLinkExternal href={`/info/token/${earningToken.address}`} bold={false}>
             {t('See Token Info')}
-          </LinkExternal>
-        </Flex>
-        <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-          <LinkExternal href={earningToken.projectLink} bold={false}>
+          </StyledLinkExternal>
+          <StyledLinkExternal href={earningToken.projectLink} bold={false}>
             {t('View Project Site')}
-          </LinkExternal>
-        </Flex>
-        {poolContractAddress && (
-          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
-            <LinkExternal
+          </StyledLinkExternal>
+          {poolContractAddress && (
+            <StyledLinkExternal
               href={`${BASE_BSC_SCAN_URL}/address/${vaultKey ? vaultContractAddress : poolContractAddress}`}
               bold={false}
             >
               {t('View Contract')}
-            </LinkExternal>
-          </Flex>
-        )}
-        {account && isMetaMaskInScope && tokenAddress && (
-          <Flex mb="8px" justifyContent={['flex-end', 'flex-end', 'flex-start']}>
+            </StyledLinkExternal>
+          )}
+          {account && isMetaMaskInScope && tokenAddress && (
             <Button
               variant="text"
               p="0"
-              height="auto"
+              height="14px"
               onClick={() => registerToken(tokenAddress, earningToken.symbol, earningToken.decimals)}
             >
-              <Text color="primary">{t('Add to Metamask')}</Text>
+              <Text fontSize="14px" color="primary">
+                {t('Add to Metamask')}
+              </Text>
               <MetamaskIcon ml="4px" />
             </Button>
-          </Flex>
-        )}
-        {vaultKey ? <CompoundingPoolTag /> : <ManualPoolTag />}
-        {tagTooltipVisible && tagTooltip}
-        <span ref={tagTargetRef}>
-          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-        </span>
-      </InfoSection>
-      <ActionContainer>
-        {showSubtitle && (
-          <Text mt="4px" mb="16px" color="textSubtle">
-            {vaultKey
-              ? t(vaultPoolConfig[vaultKey].description)
-              : `${t('Earn')} EVT ${t('Stake').toLocaleLowerCase()} EVT`}
-          </Text>
-        )}
-        {pool.vaultKey ? (
-          <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
-        ) : (
-          <Harvest {...pool} userDataLoaded={userDataLoaded} />
-        )}
-        <Stake pool={pool} userDataLoaded={userDataLoaded} />
-      </ActionContainer>
+          )}
+        </InfoInnerContainer>
+      </InfoContainer>
+      <ActionPanelContainer>
+        <ContentPanelContainer>
+          {pool.vaultKey ? (
+            <AutoHarvest {...pool} userDataLoaded={userDataLoaded} />
+          ) : (
+            <Harvest {...pool} userDataLoaded={userDataLoaded} />
+          )}
+        </ContentPanelContainer>
+        <HorizontalSpacer size={20} />
+        <ContentPanelContainer>
+          <Stake pool={pool} userDataLoaded={userDataLoaded} />
+        </ContentPanelContainer>
+        <HorizontalSpacer size={16} />
+      </ActionPanelContainer>
     </StyledActionPanel>
   )
 }

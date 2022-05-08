@@ -36,7 +36,7 @@ const ConfirmedIcon = styled(ColumnCenter)`
 function ConfirmationPendingContent({ pendingText }: { pendingText: string }) {
   const { t } = useTranslation()
   return (
-    <Wrapper>
+    <Wrapper style={{ padding: 8 }}>
       <ConfirmedIcon>
         <Spinner />
       </ConfirmedIcon>
@@ -183,7 +183,7 @@ const TransactionConfirmationModal: React.FC<InjectedModalProps & ConfirmationMo
         <TransactionSubmittedContent
           chainId={chainId}
           hash={hash}
-          onDismiss={onDismiss}
+          onDismiss={handleDismiss}
           currencyToAdd={currencyToAdd}
         />
       ) : (

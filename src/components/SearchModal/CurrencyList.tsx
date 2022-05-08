@@ -43,23 +43,42 @@ function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
 
-const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
+const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean; kycRequired: boolean }>`
   padding: 4px 24px 4px 32px;
   height: 70px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) minmax(0, 72px);
   grid-gap: 8px;
-  cursor: ${({ disabled }) => !disabled && 'pointer'};
-  pointer-events: ${({ disabled }) => disabled && 'none'};
+  pointer-events: ${({ disabled, kycRequired }) => disabled && !kycRequired && 'none'};
   :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.colors.background};
+    ${({ theme, disabled, kycRequired }) =>
+      !(kycRequired || disabled) &&
+      `
+      background-color: ${theme.colors.background};
+      cursor: pointer;
+    `};
   }
-  opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+  opacity: ${({ disabled, selected, kycRequired }) => (!kycRequired && (disabled || selected) ? 0.5 : 1)};
+  ${({ kycRequired }) =>
+    kycRequired &&
+    `
+    & * {
+      opacity: 0.5;
+    }
+  `}
+`
+
+const KycText = styled(Text)`
+  cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
 `
 
 function CurrencyRow({
   currency,
   onSelect,
+  onDismiss,
   isSelected,
   isDisabledCompanyToken,
   otherSelected,
@@ -67,6 +86,7 @@ function CurrencyRow({
 }: {
   currency: Currency
   onSelect: () => void
+  onDismiss: () => void
   isSelected: boolean
   isDisabledCompanyToken: boolean
   otherSelected: boolean
@@ -85,13 +105,13 @@ function CurrencyRow({
     /* @ts-ignore */
     return companyTokens.some((companyToken) => companyToken.address === currency.address)
   }
-
   return (
     <MenuItem
       style={style}
       className={`token-item-${key}`}
-      onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected || isDisabledCompanyToken}
+      onClick={() => (isSelected ? null : isDisabledCompanyToken ? onDismiss() : onSelect())}
+      disabled={isSelected}
+      kycRequired={isDisabledCompanyToken}
       selected={otherSelected}
     >
       <CurrencyLogo currency={currency} size="32px" />
@@ -109,9 +129,9 @@ function CurrencyRow({
       <Column style={{ justifySelf: 'flex-end', alignItems: 'flex-end', flexShrink: 0 }}>
         {isDisabledCompanyToken ? (
           <>
-            <Text small color="danger" textAlign={'right'}>
+            <KycText small color="danger" textAlign={'right'}>
               KYC verification required
-            </Text>
+            </KycText>
           </>
         ) : (
           <>
@@ -136,6 +156,7 @@ export default function CurrencyList({
   companyTokens,
   selectedCurrency,
   onCurrencySelect,
+  onDismiss,
   otherCurrency,
   fixedListRef,
   showETH,
@@ -149,6 +170,7 @@ export default function CurrencyList({
   companyTokens: string[]
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
+  onDismiss: () => void
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showETH: boolean
@@ -175,11 +197,12 @@ export default function CurrencyList({
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: Currency = data[index]
+      const token = wrappedCurrency(currency, chainId)
+      const isKYCRequired = !isKYCVerified && companyTokens.includes(token?.address)
+
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))
       const handleSelect = () => onCurrencySelect(currency)
-
-      const token = wrappedCurrency(currency, chainId)
 
       const showImport = inactiveTokens && token && Object.keys(inactiveTokens).includes(token.address)
 
@@ -211,8 +234,9 @@ export default function CurrencyList({
           style={style}
           currency={currency}
           isSelected={isSelected}
-          isDisabledCompanyToken={!isKYCVerified && companyTokens.includes(token.address)}
+          isDisabledCompanyToken={isKYCRequired}
           onSelect={handleSelect}
+          onDismiss={() => isKYCRequired && onDismiss()}
           otherSelected={otherSelected}
         />
       )

@@ -1,6 +1,6 @@
 import React from 'react'
 import getSymbolFromCurrency from 'currency-symbol-map'
-import { getCurrency, getCurrencyData } from '../../state/currencies/selectors'
+import { getCurrency, getCurrencyBUSDReferenceData, getCurrencyData } from '../../state/currencies/selectors'
 import { Text } from '@envoysvision/uikit'
 import { Currency, Token } from '@envoysvision/sdk'
 import { formatAmount, formatAmountNotation } from '../../views/Info/utils/formatInfoNumbers'
@@ -27,11 +27,15 @@ const CurrencyEquivalent: React.FC<CurrencyEquivalentProps> = ({ amount = '1', c
   const parsedAmount = parseFloat(amount)
   const vsCurrency = getCurrency()
   const vsSymbol = getSymbolFromCurrency(vsCurrency)
-  let modifier = getTokenCurrencyEquivalent(currency)
+  const fiatPrices = getTokenCurrencyEquivalent(currency)
+  const referencePairData = getCurrencyBUSDReferenceData()
+
+  const currencyKey = vsCurrency.toLowerCase()
+  let modifier = fiatPrices && fiatPrices[currencyKey]
   const cakePriceBusd = usePriceCakeBusd()
 
-  if (!modifier && vsCurrency.toLowerCase().includes('usd')) {
-    modifier = cakePriceBusd
+  if (!modifier && cakePriceBusd && referencePairData[currencyKey]) {
+    modifier = +cakePriceBusd * (referencePairData[currencyKey] / referencePairData.usd)
   }
 
   let content = '-'

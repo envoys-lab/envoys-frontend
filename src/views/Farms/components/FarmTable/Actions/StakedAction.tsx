@@ -3,8 +3,10 @@ import { useWeb3React } from '@web3-react/core'
 import { BigNumber } from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import unserializedTokens from 'config/constants/tokens'
 import { useTranslation } from 'contexts/Localization'
 import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
@@ -32,10 +34,15 @@ import {
   InfoContainer,
   HarvestText,
   EnvoysBalance,
+  TitleText,
+  PanelContainer,
+  VerticalSpacer,
+  HarvestControlsContainer,
+  EnvoysIconButton,
 } from './styles'
 
 const EnvoysSkeleton = styled(Skeleton)`
-  border-radius: 14px;
+  border-radius: 10px;
 `
 
 const IconButtonWrapper = styled.div`
@@ -46,6 +53,7 @@ const FarmsConnectWalletButton = styled(ConnectWalletButton)`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
+  border-radius: 10px;
 `
 
 const StakedContainer = styled(InfoContainer)`
@@ -205,82 +213,86 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({
 
   if (!account) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <FarmsConnectWalletButton width="100%" height="42px" minWidth="132px" />
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START FARMING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <FarmsConnectWalletButton width="100%" height="40px" />
+      </PanelContainer>
     )
   }
 
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
-        <ActionContainer>
-          <ActionContent>
+        <PanelContainer>
+          <TitleText>{t('Staked').toUpperCase()}</TitleText>
+          <VerticalSpacer height={8} />
+          <HarvestControlsContainer>
             <StakedContainer>
-              <ActionTitles>
-                <HarvestText bold textTransform="uppercase" color="text" fontSize="12px">
-                  {t('Staked')}
-                </HarvestText>
-              </ActionTitles>
-              <HarvestText>{displayBalance}</HarvestText>
+              <HarvestText fontWeight={600} lineHeight={'19px'} fontSize="16px">
+                {displayBalance()}
+              </HarvestText>
               <div>
                 {stakedBalance.gt(0) && lpPrice.gt(0) && (
-                  <EnvoysBalance decimals={0} value={getBalanceNumber(lpPrice.times(stakedBalance))} prefix="~$" />
+                  <CurrencyEquivalent
+                    currency={unserializedTokens.evt}
+                    amount={getBalanceNumber(lpPrice.times(stakedBalance)).toString()}
+                  />
                 )}
               </div>
             </StakedContainer>
             <IconButtonWrapper>
-              <IconButton scale="tev" variant="secondary" onClick={onPresentWithdraw} mr="6px">
+              <EnvoysIconButton scale="tev" variant="secondary" onClick={onPresentWithdraw} mr="6px">
                 <MinusIcon color="primary" width="14px" />
-              </IconButton>
-              <IconButton
+              </EnvoysIconButton>
+              <EnvoysIconButton
                 scale="tev"
                 variant="secondary"
                 onClick={onPresentDeposit}
                 disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
               >
                 <AddIcon color="primary" width="14px" />
-              </IconButton>
+              </EnvoysIconButton>
             </IconButtonWrapper>
-          </ActionContent>
-        </ActionContainer>
+          </HarvestControlsContainer>
+        </PanelContainer>
       )
     }
 
     return (
-      <ActionContainer>
-        <ActionContent>
-          <ActionButton
-            onClick={onPresentDeposit}
-            disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-          >
-            {t('Stake LP')}
-          </ActionButton>
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START FARMING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <ActionButton
+          width="100%"
+          height="40px"
+          onClick={onPresentDeposit}
+          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
+        >
+          {t('Stake LP')}
+        </ActionButton>
+      </PanelContainer>
     )
   }
 
   if (!userDataReady) {
     return (
-      <ActionContainer>
-        <ActionContent>
-          <EnvoysSkeleton width={132} height={42} marginBottom={0} marginTop={0} />
-        </ActionContent>
-      </ActionContainer>
+      <PanelContainer>
+        <TitleText>{t('START FARMING')}</TitleText>
+        <VerticalSpacer height={8} />
+        <EnvoysSkeleton width="100%" height={40} marginBottom={0} marginTop={0} />
+      </PanelContainer>
     )
   }
 
   return (
-    <ActionContainer>
-      <ActionContent>
-        <ActionButton height="42px" minWidth="134px" disabled={requestedApproval} onClick={handleApprove}>
-          {t('Start Farming')}
-        </ActionButton>
-      </ActionContent>
-    </ActionContainer>
+    <PanelContainer>
+      <TitleText>{t('START FARMING')}</TitleText>
+      <VerticalSpacer height={8} />
+      <ActionButton height="40px" width="100%" disabled={requestedApproval} onClick={handleApprove}>
+        {t('Enable')}
+      </ActionButton>
+    </PanelContainer>
   )
 }
 

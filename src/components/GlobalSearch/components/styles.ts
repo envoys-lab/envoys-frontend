@@ -1,11 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
+import DropdownItem from './DropdownItem'
 
 export const BodyWrapper = styled(Card)`
-  width: 100%;
-  max-width: 90vw;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  margin: 16px auto 0;
+  margin: 30px auto 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: relative;
   overflow: visible;
@@ -15,11 +14,13 @@ export const BodyWrapper = styled(Card)`
   ${({ theme }) => theme.mediaQueries.sm} {
     width: auto;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    max-width: calc(90vw - 290px);
-  }
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    max-width: min(968px, 90vw - 290px);
+  max-width: 962px;
+`
+
+export const SearchContainer = styled.div`
+  padding: 0 16px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 0 28px;
   }
 `
 
@@ -48,6 +49,7 @@ export const SearchWrapper = styled.div`
 `
 
 export const StyledInput = styled(Input)`
+  height: 56px;
   border: none;
   box-shadow: none;
   background: transparent;
@@ -74,7 +76,26 @@ export const SearchResultBox = styled(Box)`
 `
 
 export const SettingsBox = styled(Box)`
-  padding: 16px;
+  padding: 14px 15px;
+`
+
+export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
+  z-index: 1 !important;
+  ${({ theme }) => {
+    const transitionFlow = `${theme.animations.duration} ease-in-out`
+    return css`
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform ${transitionFlow}, opacity ${transitionFlow};
+      transition-delay: ${theme.animations.durationClose};
+    `
+  }}
+  ${({ $isShown }) =>
+    $isShown &&
+    css`
+      transform: translateX(0);
+      opacity: 1;
+    `}
 `
 
 export const FilterItem = styled(Box)`
@@ -121,8 +142,12 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
   border-color: transparent;
   flex-direction: column;
   height: auto;
-  padding: 4px 18px;
+  padding: 4px 15px;
   box-sizing: content-box;
+  transition: border-color ${({ theme }) => theme.animations.durationClose} ease-in-out;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 4px 18px;
+  }
   ${({ $active, theme }) =>
     $active &&
     `
@@ -137,7 +162,19 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
   }
 `
 
+export const CurrencySettingsOptionButton = styled(SettingsOptionButton)`
+  width: 70px;
+  height: 30px;
+  padding: 0;
+  box-sizing: border-box;
+`
+
 SettingsOptionButton.defaultProps = {
+  scale: 'sm',
+  variant: 'tertiary',
+}
+
+CurrencySettingsOptionButton.defaultProps = {
   scale: 'sm',
   variant: 'tertiary',
 }
@@ -145,4 +182,7 @@ SettingsOptionButton.defaultProps = {
 export const CardsLayout = styled(Grid)`
   grid-gap: 8px;
   grid-template-columns: repeat(4, 1fr);
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 10px 8px;
+  }
 `

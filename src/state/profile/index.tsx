@@ -16,6 +16,7 @@ export const fetchProfile = createAsyncThunk<{ hasRegistered: boolean; profile?:
   'profile/fetchProfile',
   async (account) => {
     const { hasRegistered, profile } = await getProfile(account)
+
     return { hasRegistered, profile }
   },
 )

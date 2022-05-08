@@ -19,7 +19,7 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
+        <LogoIcon width="64px" mb="8px" style={{ transform: 'translateX(16%)' }} />
         <Heading scale="xxl">404</Heading>
         <Text mb="16px">{t('Oops, page not found.')}</Text>
         <Link href="/" passHref>

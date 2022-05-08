@@ -14,6 +14,7 @@ import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
 import StakedCell from './Cells/StakedCell'
+import CellLayout from 'views/Farms/components/FarmTable/CellLayout'
 
 interface PoolRowProps {
   pool: DeserializedPool
@@ -23,8 +24,41 @@ interface PoolRowProps {
 
 const StyledRow = styled.div`
   background-color: transparent;
-  display: flex;
+  /* display: flex; */
   cursor: pointer;
+`
+
+const BorderContainer = styled.div`
+  width: 100%;
+  border-bottom: 1px solid rgba(230, 230, 230, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const ExpandContainer = styled.div<{ showBackground: boolean }>`
+  ${({ showBackground }) => (showBackground ? 'background: #f9f9f9;' : '')}
+
+  border-radius: 18px 18px 0 0;
+  padding-left: 18px;
+  padding-right: 18px;
+`
+
+const ItemsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  margin-top: 14px;
+`
+
+const DetailsContainer = styled.div`
+  width: 83px;
+  min-width: 83px;
+  height: 55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 `
 
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
@@ -38,29 +72,39 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
     setExpanded((prev) => !prev)
   }
 
-  const isCakePool = pool.sousId === 0
+  const isDefaultPool = pool.sousId === 0
 
   return (
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
-        <NameCell pool={pool} />
-        {pool.vaultKey ? (
-          ((isXLargerScreen && pool.vaultKey === VaultKey.IfoPool) || pool.vaultKey === VaultKey.CakeVault) && (
-            <AutoEarningsCell pool={pool} account={account} />
-          )
-        ) : (
-          <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
-        )}
-        {pool.vaultKey === VaultKey.IfoPool ? (
-          <IFOCreditCell account={account} />
-        ) : isXLargerScreen && isCakePool ? (
-          <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
-        ) : null}
-        {isLargerScreen && !isCakePool && <TotalStakedCell pool={pool} />}
-        {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
-        {isLargerScreen && isCakePool && <TotalStakedCell pool={pool} />}
-        {isDesktop && !isCakePool && <EndsInCell pool={pool} />}
-        <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
+        <ExpandContainer showBackground={expanded}>
+          <BorderContainer>
+            <NameCell pool={pool} />
+            <ItemsContainer>
+              {pool.vaultKey ? (
+                ((isXLargerScreen && pool.vaultKey === VaultKey.IfoPool) || pool.vaultKey === VaultKey.CakeVault) && (
+                  <AutoEarningsCell pool={pool} account={account} />
+                )
+              ) : (
+                <EarningsCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+              )}
+              {pool.vaultKey === VaultKey.IfoPool ? (
+                <IFOCreditCell account={account} />
+              ) : isXLargerScreen && isDefaultPool ? (
+                <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
+              ) : null}
+              {/* {isLargerScreen && !isDefaultPool && <TotalStakedCell pool={pool} />} */}
+              {isDesktop && (pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />)}
+              {isLargerScreen && isDefaultPool && <TotalStakedCell pool={pool} />}
+              {isDesktop && !isDefaultPool && <EndsInCell pool={pool} />}
+              <DetailsContainer>
+                <CellLayout>
+                  <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
+                </CellLayout>
+              </DetailsContainer>
+            </ItemsContainer>
+          </BorderContainer>
+        </ExpandContainer>
       </StyledRow>
       {shouldRenderActionPanel && (
         <ActionPanel

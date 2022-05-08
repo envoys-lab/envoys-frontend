@@ -10,9 +10,23 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 
 const AprLabelContainer = styled(Flex)`
+  width: 100px;
   &:hover {
     opacity: 0.5;
   }
+`
+
+const EnvoysBalance = styled.div`
+  color: #133d65;
+
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+
+  /* padding-top: 2px; */
+
+  text-align: right;
 `
 
 interface AprProps extends FlexProps {
@@ -39,6 +53,11 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
 
   const apyModalLink = stakingToken.address ? `/swap?outputCurrency=${stakingToken.address}` : '/swap'
+  const d = apr === 0 || isNaN(apr) || !apr ? 0.0 : apr
+  const values = d.toFixed(2).split('.')
+
+  const afterDot = values[1].substring(0, 2)
+  const aprValue = values[0] + '.' + afterDot
 
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -61,20 +80,22 @@ const Apr: React.FC<AprProps> = ({ pool, showIcon, stakedBalance, performanceFee
   }
 
   return (
-    <AprLabelContainer alignItems="center" justifyContent="flex-start" {...props}>
+    <AprLabelContainer alignItems="center" justifyContent="center" {...props}>
       {apr || isFinished ? (
         <>
-          <Balance
+          {/* <EnvoysBalance
             onClick={openRoiModal}
             fontSize="16px"
             isDisabled={isFinished}
             value={isFinished ? 0 : apr}
             decimals={2}
             unit="%"
-          />
+          /> */}
+
+          <EnvoysBalance>{aprValue}</EnvoysBalance>
           {!isFinished && showIcon && (
-            <Button onClick={openRoiModal} variant="text" width="20px" height="20px" padding="0px" marginLeft="4px">
-              <CalculateIcon color="textSubtle" width="20px" />
+            <Button onClick={openRoiModal} variant="text" width="12px" height="18px" padding="0px" marginLeft="4px">
+              <CalculateIcon color="textSubtle" width="12px" opacity={'0.7'} />
             </Button>
           )}
         </>

@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import Scrollspy from 'react-scrollspy'
+import AnchorLink from 'react-anchor-link-smooth-scroll'
+import { useMatchBreakpoints } from '@envoysvision/uikit'
 
 import PageLoader from 'components/Loader/PageLoader'
 import Page from '../../components/Layout/Page'
@@ -14,23 +17,22 @@ import {
   CompanyMembers,
   CompanyInterviews,
 } from './components'
+import { BaseCompany } from './utils'
+import { useTranslation } from '../../contexts/Localization'
 
 import { getCompany, getHolders } from './api'
 
 import styles from './Company.module.scss'
-import { Flex, Tab, TabMenu, useMatchBreakpoints } from '@envoysvision/uikit'
-import AnchorLink from 'react-anchor-link-smooth-scroll'
-import { BaseCompany } from './utils'
-import { useTranslation } from '../../contexts/Localization'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<BaseCompany>()
   const [holders, setHolders] = useState<number>(0)
-  const [activeTab, setActiveTab] = useState(0)
 
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isMobile, isTablet } = useMatchBreakpoints()
+
+  const lowResolutionMode = isTablet || isMobile
 
   useEffect(() => {
     handleGetCompany()
@@ -65,8 +67,6 @@ const Company = ({ companyId }: { companyId: string }) => {
     documents: !!company.documents?.length,
   }
 
-  const showTabs = 5 //Object.values(visibleTabs).reduce((p, c) => p + (+c), 0);
-
   return (
     <Page>
       <HeadText />
@@ -80,46 +80,26 @@ const Company = ({ companyId }: { companyId: string }) => {
         <CompanyButton token={company.token} holders={holders} homePageUrl={company.homePageUrl} />
       </div>
 
-      <div id="tabs" className={`${styles['company__tabs']}`}>
-        <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-          <TabMenu activeIndex={activeTab} onItemClick={setActiveTab} fixedForItems={isMobile ? 0 : showTabs}>
-            {visibleTabs.ico && (
-              <Tab>
-                <AnchorLink offset="58" href="#ico">
-                  <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
-                </AnchorLink>
-              </Tab>
-            )}
-            {visibleTabs.about && (
-              <Tab>
-                <AnchorLink offset="58" href="#about">
-                  {t('About')}
-                </AnchorLink>
-              </Tab>
-            )}
-            {visibleTabs.roadmap && (
-              <Tab>
-                <AnchorLink offset="58" href="#roadmap">
-                  {t('Roadmap')}
-                </AnchorLink>
-              </Tab>
-            )}
-            {visibleTabs.team && (
-              <Tab>
-                <AnchorLink offset="58" href="#team">
-                  {t('Team')}
-                </AnchorLink>
-              </Tab>
-            )}
-            {visibleTabs.documents && (
-              <Tab>
-                <AnchorLink offset="58" href="#docs">
-                  {t('Docs')}
-                </AnchorLink>
-              </Tab>
-            )}
-          </TabMenu>
-        </Flex>
+      <div
+        id="tabs"
+        className={`${styles['company__tabs']} ${lowResolutionMode ? styles['company__tabs--low-res'] : ''}`}
+      >
+        <Scrollspy
+          offset={lowResolutionMode ? -95 : -35}
+          className={styles.scrollspy}
+          items={['ico', 'about', 'roadmap', 'team', 'docs']}
+          currentClassName={styles.isCurrent}
+        >
+          {visibleTabs.ico && (
+            <AnchorLink href="#ico">
+              <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
+            </AnchorLink>
+          )}
+          {visibleTabs.about && <AnchorLink href="#about">{t('About')}</AnchorLink>}
+          {visibleTabs.roadmap && <AnchorLink href="#roadmap">{t('Roadmap')}</AnchorLink>}
+          {visibleTabs.team && <AnchorLink href="#team">{t('Team')}</AnchorLink>}
+          {visibleTabs.documents && <AnchorLink href="#docs">{t('Docs')}</AnchorLink>}
+        </Scrollspy>
       </div>
       <div id="ico" className={styles['company__tab-info']}>
         <div className={styles['company-ico']}>

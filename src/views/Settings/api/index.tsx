@@ -39,11 +39,17 @@ const refreshVerification = async (userId: string) => {
   }
 }
 
-const getPersonVerificationLink = async (userId: string, redirectUrl: string) => {
+const getPersonVerificationLink = async (
+  userId: string,
+  redirectUrl: string,
+  signature: string,
+  message: string,
+  userWalletAddress: string,
+) => {
   try {
     const response = await axiosInstance.post(
       `${ENVOYS_PUBLIC_API}/users/${userId}/verification/PERSON/create`,
-      { redirectUrl },
+      { redirectUrl, signature, message, userWalletAddress },
       defaultOptions,
     )
     return response.data
@@ -52,11 +58,17 @@ const getPersonVerificationLink = async (userId: string, redirectUrl: string) =>
   }
 }
 
-const getCompanyVerificationLink = async (userId: string, redirectUrl: string) => {
+const getCompanyVerificationLink = async (
+  userId: string,
+  redirectUrl: string,
+  signature: string,
+  message: string,
+  userWalletAddress: string,
+) => {
   try {
     const response = await axiosInstance.post(
       `${ENVOYS_PUBLIC_API}/users/${userId}/verification/COMPANY/create`,
-      { redirectUrl },
+      { redirectUrl, signature, message, userWalletAddress },
       defaultOptions,
     )
     return response.data

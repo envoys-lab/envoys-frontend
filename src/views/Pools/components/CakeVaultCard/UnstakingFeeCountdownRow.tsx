@@ -8,6 +8,7 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { secondsToDay } from 'utils/timeHelper'
 import { VaultKey } from 'state/types'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
+import { Label } from '../PoolsTable/Cells/styles'
 
 interface UnstakingFeeCountdownRowProps {
   isTableVariant?: boolean
@@ -59,21 +60,21 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       return t('Unstaking Fee')
     }
     if (shouldShowTimer) {
-      return t('unstaking fee until')
+      return t('unstaking fee')
     }
     return t('unstaking fee if withdrawn within %num%h', { num: withdrawalFeePeriodHour })
   }
 
   return (
     <Flex
-      alignItems={isTableVariant ? 'flex-start' : 'center'}
+      alignItems={isTableVariant ? 'flex-end' : 'center'}
       justifyContent="space-between"
       flexDirection={isTableVariant ? 'column' : 'row'}
     >
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef} small textTransform="lowercase">
+      <Label>
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}
-      </TooltipText>
+      </Label>
       {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
     </Flex>
   )

@@ -6,6 +6,7 @@ import { useTranslation } from 'contexts/Localization'
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../Apr'
 import { convertSharesToCake } from '../../../helpers'
+import { Label } from './styles'
 
 interface AprCellProps {
   pool: DeserializedPool
@@ -24,11 +25,9 @@ const AutoAprCell: React.FC<AprCellProps> = ({ pool }) => {
   const { cakeAsBigNumber } = convertSharesToCake(userShares, pricePerFullShare)
 
   return (
-    <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+    <BaseCell role="cell">
       <CellContent>
-        <Text fontSize="12px" color="textSubtle" textAlign="left">
-          {t('APY')}
-        </Text>
+        <Label center={true}>{t('APY')}</Label>
         <Apr
           pool={pool}
           stakedBalance={cakeAsBigNumber}

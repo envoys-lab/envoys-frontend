@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { Button, Flex } from '@envoysvision/uikit'
+import React, { useEffect, useState } from 'react'
+import { Flex } from '@envoysvision/uikit'
 import { useRouter } from 'next/router'
 import styles from './CompanyButton.module.scss'
 import AccountIcon from 'views/Companies/assets/AccountIcon'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
 import { useTranslation } from '../../../../contexts/Localization'
-import { getIsKYCVerified } from '../../../../utils/getIsKYCVerified'
+import useIsKYCVerified from '../../../../hooks/useIsKYCVerified'
 
 interface CompanyButtonProps {
   holders: number
@@ -16,12 +16,15 @@ interface CompanyButtonProps {
 
 const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const { t } = useTranslation()
-  const [user] = useState()
-  const isVerificationAccepted = getIsKYCVerified(user)
   const router = useRouter()
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
 
   const handleTrade = () => {
-    if (!isVerificationAccepted) {
+    if (!isKYCVerified) {
       router.push(`/settings`)
       return
     }
@@ -41,18 +44,18 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
   }
 
   return (
-    <div className={`${styles['сompany-button']} ${className}`}>
+    <div className={`${styles['company-button']} ${className}`}>
       <Flex style={{ gridGap: '8px' }} flexDirection={'column'}>
-        <div>{t('You have to complete KYC verification to trade')}</div>
-        <div className={styles['сompany-button__button']} onClick={handleTrade}>
-          {t(isVerificationAccepted ? 'TRADE' : 'Verify')}
+        {!isKYCVerified && <div>{t('You have to complete KYC verification to trade')}</div>}
+        <div className={styles['company-button__button']} onClick={handleTrade}>
+          {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
       </Flex>
-      <div className={styles['сompany-button__holders']}>
+      <div className={styles['company-button__holders']}>
         <AccountIcon className={styles['account-icon']} color="#F48020" />
         <span>Holders: {holders}</span>
-        <div className={styles['сompany-button__home-page-button']} onClick={handleCompanyUrlClick}>
-          <div className={styles['сompany-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
+        <div className={styles['company-button__home-page-button']} onClick={handleCompanyUrlClick}>
+          <div className={styles['company-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
           <div>
             <LinkIcon className={styles['link-icon']} color="#133D65" />
           </div>

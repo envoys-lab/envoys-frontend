@@ -1,16 +1,18 @@
-import { Button, Text } from '@envoysvision/uikit'
+import { Button, IconButton, Text } from '@envoysvision/uikit'
 import Balance from 'components/Balance'
 import styled from 'styled-components'
 
 export const ActionContainer = styled.div`
-  padding-left: 17px;
+  display: flex;
+  flex-direction: column;
+  /* padding-left: 17px;
   padding-right: 8px;
   padding-top: 4px;
   padding-bottom: 4px;
 
   display: flex;
   align-items: center;
-  flex-direction: row;
+  flex-direction: row; */
 `
 
 export const ActionTitles = styled.div`
@@ -23,13 +25,43 @@ export const ActionContent = styled.div`
   align-items: center;
 `
 
+export const HorizontalSpacer = styled.div<{ size: number }>`
+  width: ${({ size }) => size / 6.99 + '%'};
+  height: 8px;
+`
+
+export const ActionPanelContainer = styled.div`
+  width: 75%;
+
+  display: flex;
+  justify-content: flex-end;
+
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding-left: 24px;
+  }
+`
+
+export const PanelContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 14px 13px 12px 13px;
+  height: 100%;
+`
+
 export const ActionButton = styled(Button)`
   font-size: 14px !important;
   font-weight: 500;
   line-height: 16px;
 
-  height: 42px;
-  min-width: 134px;
+  border-radius: 10px;
+
+  /* height: 42px; */
+  /* min-width: 134px; */
 `
 
 export const InfoContainer = styled.div`
@@ -37,15 +69,7 @@ export const InfoContainer = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  padding-right: 16px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding-right: 30px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 65px;
-  }
+  padding-right: 8px;
 `
 
 export const EnvoysBalance = styled(Balance)`
@@ -56,8 +80,34 @@ export const EnvoysBalance = styled(Balance)`
   line-height: 14px;
 `
 
-export const HarvestText = styled(Text)`
-  font-weight: 500;
+export const HarvestText = styled(Text)<{ opacity?: number }>`
+  opacity: ${({ opacity }) => opacity ?? 1.0};
+`
+
+export const EnvoysIconButton = styled(IconButton)`
+  width: 40px;
+  height: 40px;
+`
+
+export const HarvestControlsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  justify-content: space-between;
+`
+
+export const TitleText = styled.div`
+  font-weight: 400;
   font-size: 12px;
   line-height: 14px;
+
+  text-align: right;
+
+  color: ${({ theme }) => theme.colors.text};
+
+  opacity: 0.7;
+`
+export const VerticalSpacer = styled.div<{ height: number }>`
+  height: ${({ height }) => height + 'px'};
+  min-height: ${({ height }) => height + 'px'};
 `

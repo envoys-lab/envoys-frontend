@@ -15,9 +15,10 @@ interface Props extends InjectedModalProps {
 }
 
 const DetailsFooter = styled.div`
-  padding: 8px 0;
+  padding: 8px;
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
+  margin-bottom: 16px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   color: ${({ theme }) => theme.colors.text};
