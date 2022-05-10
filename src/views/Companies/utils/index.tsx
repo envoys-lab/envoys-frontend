@@ -45,7 +45,7 @@ export interface BaseCompany {
   videoUrl: string
   token: string
   _id: string
-  holdersCount: any
+  holdersCount: number
 }
 
 export interface Member {
