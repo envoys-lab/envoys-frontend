@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
+import { Box, Button, Card, Input, Link, Grid, Flex } from '@envoysvision/uikit'
 import DropdownItem from './DropdownItem'
 
 export const BodyWrapper = styled(Card)`
@@ -185,4 +185,15 @@ export const CardsLayout = styled(Grid)`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 10px 8px;
   }
+`
+
+export const MobileSearchFlex = styled(Flex)`
+  width: fit-content;
+  margin: 0 0 0 auto;
+`
+
+export const PopoverContainer = styled.div<{ isMobile: boolean }>`
+  position: absolute;
+  left: 50%;
+  bottom: ${({ isMobile }) => (isMobile ? '-5px' : '-20px')};
 `
