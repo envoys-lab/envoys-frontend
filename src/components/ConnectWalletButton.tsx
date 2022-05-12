@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { AddCircleOutlineIcon, Button, Flex, useWalletModal, BaseButtonProps } from '@envoysvision/uikit'
+import { AddCircleOutlineIcon, Button, Flex, useWalletModal, ButtonProps } from '@envoysvision/uikit'
 import useAuth from 'hooks/useAuth'
 import { useTranslation } from 'contexts/Localization'
 import connectingAnimation from './Menu/UserMenu/connect-btn-connecting.json'
@@ -129,7 +129,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
     `}
 `
 
-interface ConnectWalletButtonProps extends BaseButtonProps {
+interface ConnectWalletButtonProps extends ButtonProps {
   menuBtn?: boolean
   isConnecting?: boolean
   isDisconnecting?: boolean

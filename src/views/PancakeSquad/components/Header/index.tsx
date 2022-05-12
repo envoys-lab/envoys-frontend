@@ -153,7 +153,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                 )}
                 {isLoading &&
                   (userStatus === UserStatusEnum.UNCONNECTED ? (
-                    <ConnectWalletButton userStatus={userStatus} />
+                    <ConnectWalletButton />
                   ) : (
                     <Spinner />
                   ))}
