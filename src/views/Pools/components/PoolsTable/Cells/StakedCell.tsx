@@ -78,7 +78,12 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
           {hasStaked ? (
             <CurrencyEquivalent
               currency={unserializedTokens.evt}
-              amount={(pool.vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance).toString()}
+              amount={(pool.vaultKey
+                ? Number.isNaN(cakeAsNumberBalance)
+                  ? 0
+                  : cakeAsNumberBalance
+                : stakedTokenBalance
+              ).toString()}
             />
           ) : (
             <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />

@@ -27,6 +27,7 @@ import { logError } from 'utils/sentry'
 import PercentageButton from './PercentageButton'
 import useStakePool from '../../../hooks/useStakePool'
 import useUnstakePool from '../../../hooks/useUnstakePool'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 
 interface StakeModalProps {
   isBnbPool: boolean
@@ -243,7 +244,6 @@ const StakeModal: React.FC<StakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={stakingTokenPrice !== 0 && `~${formattedUsdValueStaked || 0} USD`}
         isWarning={hasReachedStakeLimit || userNotEnoughToken}
         decimals={stakingToken.decimals}
       />
