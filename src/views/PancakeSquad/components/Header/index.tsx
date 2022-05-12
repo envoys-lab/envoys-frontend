@@ -151,12 +151,7 @@ const PancakeSquadHeader: React.FC<PancakeSquadHeaderType> = ({
                     )}
                   </>
                 )}
-                {isLoading &&
-                  (userStatus === UserStatusEnum.UNCONNECTED ? (
-                    <ConnectWalletButton />
-                  ) : (
-                    <Spinner />
-                  ))}
+                {isLoading && (userStatus === UserStatusEnum.UNCONNECTED ? <ConnectWalletButton /> : <Spinner />)}
               </Flex>
             </Flex>
           </StyledSquadEventContainer>
