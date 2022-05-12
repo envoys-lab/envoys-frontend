@@ -82,7 +82,7 @@ export default function Pool() {
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
   const allV2PairsWithLiquidity0 = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
-  const allV2PairsWithLiquidity = [...allV2PairsWithLiquidity0, ...allV2PairsWithLiquidity0]
+  const allV2PairsWithLiquidity = [...allV2PairsWithLiquidity0]
   const renderBody = () => {
     if (allV2PairsWithLiquidity?.length > 0) {
       return allV2PairsWithLiquidity.map((v2Pair, index) => (
