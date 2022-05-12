@@ -72,8 +72,8 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   }, [dispatch, listUrl])
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <div>
-      <Text>{list && listVersionLabel(list.version)}</Text>
+    <AutoColumn style={{ gap: 8 }}>
+      <Text fontSize="14px">{list && listVersionLabel(list.version)}</Text>
       <LinkExternal external href={`https://tokenlists.org/token-list?url=${listUrl}`}>
         {t('See')}
       </LinkExternal>
@@ -85,7 +85,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
           {t('Update list')}
         </Button>
       )}
-    </div>,
+    </AutoColumn>,
     { placement: 'right-end', trigger: 'click' },
   )
 

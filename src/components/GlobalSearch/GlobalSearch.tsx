@@ -16,7 +16,6 @@ import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
 import {
   Box,
-  Flex,
   CogIcon,
   GasIcon,
   InlineMenu,
@@ -148,6 +147,9 @@ const GlobalSearch = () => {
     }
 
     setPaginatedSearchResults(result)
+    if (!hasResults && typeFilter === groupTypes[0]) {
+      hasResults = true
+    }
     setIsResultsPanelShown(hasResults)
   }, [searchResults, debouncedSearchTerm, pagination])
 
@@ -246,6 +248,13 @@ const GlobalSearch = () => {
         )
       }
     })
+    if (renderedGroups.length === 0 && typeFilter === groupTypes[0]) {
+      renderedGroups.push(
+        <ResultGroup title={''} key={`search-group-all`}>
+          {t('No matching results')}
+        </ResultGroup>,
+      )
+    }
     return renderedGroups
   }
 
