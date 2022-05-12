@@ -241,7 +241,7 @@ const Staked: React.FunctionComponent<StackedActionProps> = ({ pool, userDataLoa
             />
             <CurrencyEquivalent
               currency={currency}
-              amount={(vaultKey ? stakedAutoDollarValue : stakedTokenDollarBalance).toString()}
+              amount={(vaultKey ? cakeAsNumberBalance : stakedTokenBalance).toString()}
             />
           </InfoContainer>
           <ActionContent>
