@@ -14,7 +14,7 @@ import Multiplier, { MultiplierProps } from './Multiplier'
 import Liquidity, { LiquidityProps } from './Liquidity'
 import ActionPanel from './Actions/ActionPanel'
 import CellLayout from './CellLayout'
-import { DesktopColumnSchema, MobileColumnSchema } from '../types'
+import { DesktopColumnSchema, MobileColumnSchema, TabletColumnSchema } from '../types'
 
 export interface RowProps {
   apr: AprProps
@@ -46,7 +46,16 @@ const CellInner = styled.div`
 `
 
 const DetailsContainer = styled.div`
-  width: 83px;
+  width: 43px;
+  min-width: 43px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 63px;
+    min-width: 63px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: 83px;
+    min-width: 83px;
+  }
 `
 
 const StyledTr = styled.div`
@@ -57,8 +66,16 @@ const ExpandContainer = styled.div<{ showBackground: boolean }>`
   ${({ showBackground }) => (showBackground ? 'background: #f9f9f9;' : '')}
 
   border-radius: 18px 18px 0 0;
-  padding-left: 18px;
-  padding-right: 18px;
+  padding-left: 8px;
+  padding-right: 8px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
 `
 
 const BorderContainer = styled.div`
@@ -67,19 +84,6 @@ const BorderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
-
-const EarnedMobileCell = styled.td`
-  padding: 16px 0 24px 16px;
-`
-
-const AprMobileCell = styled.td`
-  padding-top: 16px;
-  padding-bottom: 24px;
-
-  ${({ theme }) => theme.mediaQueries.xs} {
-    padding-left: 8px;
-  }
 `
 
 const FarmMobileCell = styled.td`
@@ -93,8 +97,14 @@ const ItemsContainer = styled.div`
 `
 
 const FarmContainer = styled.div`
-  width: 190px;
+  width: 150px;
   display: flex;
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 170px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: 210px;
+  }
 `
 
 const APRContainer = styled.div`
@@ -132,12 +142,17 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
 
-  const { isDesktop, isMobile, isXlm, isXl, isMd } = useMatchBreakpoints()
-
-  let lowResolution = isMobile || isMd
+  const { isDesktop, isMobile, isSm, isMd, isXlm, isXl } = useMatchBreakpoints()
 
   const isSmallerScreen = isXlm || isXl || !isDesktop
-  const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
+  let tableSchema = DesktopColumnSchema
+  if (isMd) {
+    tableSchema = TabletColumnSchema
+  }
+  if (isMobile) {
+    tableSchema = MobileColumnSchema
+  }
+
   const columnNames = tableSchema.map((column) => column.name)
 
   const instantiateComponent = (props, key, userDataReady) => {
@@ -145,7 +160,7 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
   }
 
   const handleRenderRow = () => {
-    if (!lowResolution) {
+    if (!isSm) {
       return (
         <StyledTr onClick={toggleActionPanel}>
           <ExpandContainer showBackground={actionPanelExpanded}>
@@ -237,34 +252,34 @@ const Row: React.FunctionComponent<RowPropsWithLoading> = (props) => {
     return (
       <StyledTr onClick={toggleActionPanel}>
         <ExpandContainer showBackground={actionPanelExpanded}>
-          <td>
-            <tr>
-              <FarmMobileCell>
-                <CellLayout>
-                  <Farm {...props.farm} />
-                </CellLayout>
-              </FarmMobileCell>
-            </tr>
-            <tr>
-              <EarnedMobileCell>
+          <BorderContainer>
+            <FarmMobileCell>
+              <CellLayout>
+                <Farm {...props.farm} />
+              </CellLayout>
+            </FarmMobileCell>
+            <EarnedContainer>
+              <CellInner>
                 <CellLayout label={t('Earned')}>
                   <Earned {...props.earned} userDataReady={userDataReady} />
                 </CellLayout>
-              </EarnedMobileCell>
-              <AprMobileCell>
-                <CellLayout label={t('APR')}>
-                  <Apr {...props.apr} hideButton />
+              </CellInner>
+            </EarnedContainer>
+            <APRContainer>
+              <CellInner>
+                <CellLayout center={true} label={t('APR')}>
+                  <Apr {...props.apr} hideButton={isSmallerScreen} />
                 </CellLayout>
-              </AprMobileCell>
-            </tr>
-          </td>
-          <td>
-            <CellInner>
-              <CellLayout>
-                <Details actionPanelToggled={actionPanelExpanded} />
-              </CellLayout>
-            </CellInner>
-          </td>
+              </CellInner>
+            </APRContainer>
+            <ItemContainer>
+              <CellInner>
+                <CellLayout>
+                  <Details actionPanelToggled={actionPanelExpanded} />
+                </CellLayout>
+              </CellInner>
+            </ItemContainer>
+          </BorderContainer>
         </ExpandContainer>
       </StyledTr>
     )

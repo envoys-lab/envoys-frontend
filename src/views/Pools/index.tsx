@@ -1,24 +1,22 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import styled from 'styled-components'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { Text } from '@envoysvision/uikit'
+import { Text, useMatchBreakpoints } from '@envoysvision/uikit'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { useTranslation } from 'contexts/Localization'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import {
-  useFetchPublicPoolsData,
-  usePools,
-  useFetchUserPools,
   useFetchCakeVault,
   useFetchIfoPool,
+  useFetchPublicPoolsData,
+  useFetchUserPools,
+  usePools,
   useVaultPools,
 } from 'state/pools/hooks'
 import { latinise } from 'utils/latinise'
-import FlexLayout from 'components/Layout/Flex'
 import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
@@ -31,119 +29,17 @@ import CakeVaultCard from './components/CakeVaultCard'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import { getCakeVaultEarnings } from './helpers'
-
-const TextTitleContainer = styled.div`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  display: flex;
-  align-items: flex-end;
-  color: ${({ theme }) => theme.colors.textSubtle};
-`
-
-const CardLayout = styled(FlexLayout)`
-  justify-content: center;
-`
-
-const Space = styled.div<{ size: number }>`
-  min-width: ${({ size }) => size + 'px'};
-  height: 100%;
-`
-
-const PoolControls = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  position: relative;
-
-  justify-content: space-between;
-  flex-direction: column;
-  margin-bottom: 32px;
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 30px 30px;
-    margin-bottom: 0;
-  }
-`
-
-const ViewControls = styled.div`
-  flex-wrap: wrap;
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  width: 100%;
-
-  > div {
-    padding-top: 16px;
-    padding-right: 8px;
-    padding-left: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: flex-start;
-    width: auto;
-
-    > div {
-      padding: 8px;
-    }
-  }
-`
-
-const FilterContainer = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 8px 0;
-  flex-direction: column;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: auto;
-    padding: 0;
-    flex-direction: row;
-  }
-`
-const TextContainer = styled.div<{ opacity?: number }>`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 14px;
-
-  text-align: center;
-
-  color: ${({ theme }) => theme.colors.text};
-  opacity: ${({ opacity }) => opacity ?? 1.0};
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
-
-  user-select: none;
-`
-
-const SortContainer = styled.div`
-  background: ${({ theme }) => theme.colors.backgroundPage};
-  border: 1px solid ${({ theme }) => theme.colors.backgroundPage};
-  box-sizing: border-box;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-  height: 30px;
-`
-
-const TopContaiener = styled.div`
-  padding-left: 8px;
-  padding-right: 8px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-`
+import {
+  CardLayout,
+  FilterContainer,
+  PoolControls,
+  SortContainer,
+  Space,
+  TextContainer,
+  TextTitleContainer,
+  TopContainer,
+  ViewControls,
+} from './styles'
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
@@ -163,6 +59,7 @@ const Pools: React.FC = () => {
   const cakeInVaults = Object.values(vaultPools).reduce((total, vault) => {
     return total.plus(vault.totalCakeInVault)
   }, BIG_ZERO)
+  const { isMobile } = useMatchBreakpoints()
 
   const pools = usePoolsWithVault()
 
@@ -359,7 +256,7 @@ const Pools: React.FC = () => {
           <Loading />
         </Flex>
       )} */}
-      <TopContaiener>{viewMode === ViewMode.CARD ? cardLayout : tableLayout}</TopContaiener>
+      <TopContainer>{viewMode === ViewMode.CARD || isMobile ? cardLayout : tableLayout}</TopContainer>
       <div ref={observerRef} />
     </>
   )
