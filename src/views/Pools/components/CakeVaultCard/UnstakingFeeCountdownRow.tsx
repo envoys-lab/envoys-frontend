@@ -9,6 +9,12 @@ import { secondsToDay } from 'utils/timeHelper'
 import { VaultKey } from 'state/types'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 import { Label } from '../PoolsTable/Cells/styles'
+import { FeeLabel } from '../PoolsTable/ActionPanel/styles'
+import styled from 'styled-components'
+
+const TimerLabelContainer = styled.div`
+  padding-bottom: 5px;
+`
 
 interface UnstakingFeeCountdownRowProps {
   isTableVariant?: boolean
@@ -60,9 +66,9 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       return t('Unstaking Fee')
     }
     if (shouldShowTimer) {
-      return t('unstaking fee')
+      return t('Unstaking Fee')
     }
-    return t('unstaking fee if withdrawn within %num%h', { num: withdrawalFeePeriodHour })
+    return t('unstaking fee for the first %num%h', { num: withdrawalFeePeriodHour })
   }
 
   return (
@@ -70,12 +76,17 @@ const UnstakingFeeCountdownRow: React.FC<UnstakingFeeCountdownRowProps> = ({ isT
       alignItems={isTableVariant ? 'flex-end' : 'center'}
       justifyContent="space-between"
       flexDirection={isTableVariant ? 'column' : 'row'}
+      paddingBottom="2px"
     >
-      {tooltipVisible && tooltip}
-      <Label>
+      {shouldShowTimer && (
+        <TimerLabelContainer>
+          <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />
+        </TimerLabelContainer>
+      )}
+
+      <FeeLabel>
         {noFeeToPay ? '0' : feeAsDecimal}% {getRowText()}
-      </Label>
-      {shouldShowTimer && <WithdrawalFeeTimer secondsRemaining={secondsRemaining} />}
+      </FeeLabel>
     </Flex>
   )
 }
