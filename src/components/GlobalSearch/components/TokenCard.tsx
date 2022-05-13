@@ -19,7 +19,7 @@ const SearchItemCard: React.FC<ResultGroupProps> = ({ item }) => {
   const hasEquivalent = getTokenCurrencyEquivalent(item)
   return (
     <SearchResultBox>
-      <FlexLink href={`/info/token/${item.address}`}>
+      <FlexLink href={item.href ? item.href : `/info/token/${item.address}`} target={item.href ? '_blank' : '_self'}>
         <div style={{ width: 20, flexShrink: 0 }}>
           <Image src={item.logoURI} width={20} height={20} mt={'4px'} />
         </div>

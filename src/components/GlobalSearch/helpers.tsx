@@ -1,5 +1,9 @@
 import { getCompaniesSearch } from './api'
 import { DefaultFarmIdentifier } from 'config/constants/farms'
+import { BASE_BSC_SCAN_URLS, CURRENT_CHAIN_ID } from 'config'
+import { getBscScanLink } from 'utils'
+
+const getCustomTokens = (arr) => arr.map((el) => ({ ...el, href: getBscScanLink(el.address, 'token') }))
 
 const getSearchStr = (str) => str.toLowerCase().trim()
 
@@ -117,4 +121,4 @@ const getObjectsArraysLength = (obj) => {
   }, 0)
 }
 
-export { getSearchResults, getObjectsArraysLength }
+export { getSearchResults, getObjectsArraysLength, getCustomTokens }

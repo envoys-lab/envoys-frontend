@@ -12,7 +12,7 @@ import { currenciesArray as currencies } from 'state/currencies/helpers'
 import { setCurrency } from 'state/currencies/actions'
 import { getCurrency } from 'state/currencies/selectors'
 
-import { getObjectsArraysLength, getSearchResults } from './helpers'
+import { getObjectsArraysLength, getSearchResults, getCustomTokens } from './helpers'
 import { getTokens, useDebounce } from './hooks'
 import {
   Box,
@@ -182,7 +182,7 @@ const GlobalSearch = () => {
       return
     }
     const searchResults = await getSearchResults({
-      tokens: [...tokens, ...userAddedTokens],
+      tokens: [...tokens, ...getCustomTokens(userAddedTokens)],
       farms: farms.data,
       poolsLiquidity,
       poolsSyrup,
