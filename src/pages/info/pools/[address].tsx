@@ -5,7 +5,8 @@ import Pool from 'views/Info/Pools/PoolPage'
 
 const PoolPage = () => {
   const router = useRouter()
-  return <Pool address={String(router.query.address)} />
+  const address = router.query.address
+  return <>${address && <Pool address={String(router.query.address)} />}</>
 }
 
 PoolPage.Layout = InfoPageLayout
