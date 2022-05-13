@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { RowType, Toggle, Text } from '@envoysvision/uikit'
+import { RowType, Toggle, Text, useMatchBreakpoints } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import FlexLayout from 'components/Layout/Flex'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
@@ -21,7 +21,7 @@ import { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import Table from './components/FarmTable/FarmTable'
 import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
-import { DesktopColumnSchema } from './components/types'
+import { DesktopColumnSchema, MobileColumnSchema } from './components/types'
 import { CURRENT_CHAIN_ID } from 'config'
 
 const TextTitleContainer = styled.div`
@@ -172,6 +172,7 @@ const Farms: React.FC = ({ children }) => {
   const isArchived = pathname.includes('archived')
   const isInactive = pathname.includes('history')
   const isActive = !isInactive && !isArchived
+  const { isMobile, isDesktop, isTablet } = useMatchBreakpoints()
 
   usePollFarmsWithUserData(isArchived)
 
@@ -335,9 +336,8 @@ const Farms: React.FC = ({ children }) => {
   })
 
   const renderContent = (): JSX.Element => {
-    if (viewMode === ViewMode.TABLE && rowData.length) {
-      const columnSchema = DesktopColumnSchema
-
+    const columnSchema = isDesktop || isTablet ? DesktopColumnSchema : MobileColumnSchema
+    if (viewMode === ViewMode.TABLE && !isMobile && rowData.length) {
       const columns = columnSchema.map((column) => ({
         id: column.id,
         name: column.name,

@@ -28,6 +28,7 @@ export interface Pool extends SearchResultItem, SerializedPoolConfig {
 }
 
 export interface Token extends SearchResultItem, SerializedToken {
+  href?: string
   logoURI?: string
 }
 

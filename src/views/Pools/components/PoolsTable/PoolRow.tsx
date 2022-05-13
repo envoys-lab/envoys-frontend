@@ -40,8 +40,16 @@ const ExpandContainer = styled.div<{ showBackground: boolean }>`
   ${({ showBackground }) => (showBackground ? 'background: #f9f9f9;' : '')}
 
   border-radius: 18px 18px 0 0;
-  padding-left: 18px;
-  padding-right: 18px;
+  padding-left: 8px;
+  padding-right: 8px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
 `
 
 const ItemsContainer = styled.div`
@@ -52,8 +60,16 @@ const ItemsContainer = styled.div`
 `
 
 const DetailsContainer = styled.div`
-  width: 83px;
-  min-width: 83px;
+  width: 43px;
+  min-width: 43px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    width: 63px;
+    min-width: 63px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: 83px;
+    min-width: 83px;
+  }
   height: 55px;
   display: flex;
   flex-direction: row;
@@ -63,8 +79,7 @@ const DetailsContainer = styled.div`
 
 const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
   const { isXs, isSm, isMd, isLg, isXl, isXxl, isTablet, isDesktop } = useMatchBreakpoints()
-  const isLargerScreen = isLg || isXl || isXxl
-  const isXLargerScreen = isXl || isXxl
+  const isLargerScreen = isLg || isTablet
   const [expanded, setExpanded] = useState(false)
   const shouldRenderActionPanel = useDelayedUnmount(expanded, 300)
 
@@ -82,7 +97,7 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
             <NameCell pool={pool} />
             <ItemsContainer>
               {pool.vaultKey ? (
-                ((isXLargerScreen && pool.vaultKey === VaultKey.IfoPool) || pool.vaultKey === VaultKey.CakeVault) && (
+                ((isDesktop && pool.vaultKey === VaultKey.IfoPool) || pool.vaultKey === VaultKey.CakeVault) && (
                   <AutoEarningsCell pool={pool} account={account} />
                 )
               ) : (
@@ -90,16 +105,16 @@ const PoolRow: React.FC<PoolRowProps> = ({ pool, account, userDataLoaded }) => {
               )}
               {pool.vaultKey === VaultKey.IfoPool ? (
                 <IFOCreditCell account={account} />
-              ) : isXLargerScreen && isDefaultPool ? (
+              ) : isDesktop && isDefaultPool ? (
                 <StakedCell pool={pool} account={account} userDataLoaded={userDataLoaded} />
               ) : null}
               {/* {isLargerScreen && !isDefaultPool && <TotalStakedCell pool={pool} />} */}
-              {isDesktop && (pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />)}
-              {isLargerScreen && isDefaultPool && <TotalStakedCell pool={pool} />}
-              {isDesktop && !isDefaultPool && <EndsInCell pool={pool} />}
+              {(isTablet || isDesktop) && (pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />)}
+              {!isMd && !(isDesktop && isXl) && isDefaultPool && <TotalStakedCell pool={pool} />}
+              {(isTablet || isDesktop) && !isDefaultPool && <EndsInCell pool={pool} />}
               <DetailsContainer>
                 <CellLayout>
-                  <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
+                  <ExpandActionCell expanded={expanded} isFullLayout={isLargerScreen} />
                 </CellLayout>
               </DetailsContainer>
             </ItemsContainer>

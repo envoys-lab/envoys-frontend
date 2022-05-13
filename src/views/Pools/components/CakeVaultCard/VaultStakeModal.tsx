@@ -39,6 +39,8 @@ import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { convertCakeToShares, convertSharesToCake } from '../../helpers'
 import FeeSummary from './FeeSummary'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from 'config/constants/tokens'
 
 interface VaultStakeModalProps {
   pool: DeserializedPool
@@ -245,7 +247,9 @@ const VaultStakeModal: React.FC<VaultStakeModalProps> = ({
       <BalanceInput
         value={stakeAmount}
         onUserInput={handleStakeInputChange}
-        currencyValue={cakePriceBusd.gt(0) && `~${formattedUsdValueStaked || 0} USD`}
+        currencyValue={
+          cakePriceBusd.gt(0) && <CurrencyEquivalent currency={unserializedTokens.evt} amount={stakeAmount} />
+        }
         decimals={stakingToken.decimals}
       />
       <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
