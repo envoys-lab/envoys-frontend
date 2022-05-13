@@ -8,20 +8,26 @@ import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { TokenPairImage } from 'components/TokenImage'
-import BaseCell, { CellContent } from './BaseCell'
+import { CellContent } from './BaseCell'
 
 interface NameCellProps {
   pool: DeserializedPool
 }
 
 const Container = styled.div`
-  width: 210px;
-  padding-left: 0px;
+  width: 170px;
+  padding-left: 0;
   display: flex;
   align-items: center;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-left: 4px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 190px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    width: 210px;
   }
 `
 

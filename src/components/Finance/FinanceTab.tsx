@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import Farms from 'views/Farms/Farms'
 // import Page from 'views/Page'
 import Pools from 'views/Pools'
+import Page from '../Layout/Page'
 
 const tabs = [
   {
@@ -22,31 +23,8 @@ const tabs = [
 const TabContainer = styled(Flex)`
   flex-direction: column;
   padding-top: 10px;
-
   justify-content: space-between;
-
-  background: #ffffff;
-
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
-  border-radius: 28px;
-
-  margin-top: 40px;
-  margin-bottom: 40px;
-
   width: 100%;
-  max-width: 962px;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-left: 28px;
-    margin-right: 28px;
-  }
-`
-
-const EntireContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
 `
 
 export const FinanceTab: FC = ({ children }) => {
@@ -77,11 +55,11 @@ export const FinanceTab: FC = ({ children }) => {
   }
 
   return (
-    <EntireContainer>
+    <Page removeInnerPadding={true} hideFooterOnDesktop={true}>
       <TabContainer>
         {renderTabs()}
         {children}
       </TabContainer>
-    </EntireContainer>
+    </Page>
   )
 }

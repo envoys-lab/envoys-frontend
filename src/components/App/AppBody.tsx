@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Card } from '@envoysvision/uikit'
 
-export const BodyWrapper = styled(Card)<{ $autoWidth: boolean }>`
+export const BodyWrapper = styled(Card)<{ $autoWidth?: boolean }>`
   border-radius: 28px;
   border: none;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
