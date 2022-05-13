@@ -21,6 +21,7 @@ import { logError } from 'utils/sentry'
 import useHarvestPool from '../../../hooks/useHarvestPool'
 import useStakePool from '../../../hooks/useStakePool'
 import styled from 'styled-components'
+import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,6 +37,12 @@ const Wrapper = styled.div`
     height: auto;
   }
 `
+
+const PriceContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+
 interface CollectModalProps {
   formattedBalance: string
   fullBalance: string
@@ -177,7 +184,9 @@ const CollectModal: React.FC<CollectModalProps> = ({
             {formattedBalance} {earningToken.symbol}
           </Heading>
           {earningsDollarValue > 0 && (
-            <Text fontSize="12px" color="textSubtle">{`~${formatNumber(earningsDollarValue)} USD`}</Text>
+            <PriceContainer>
+              <CurrencyEquivalent amount={fullBalance} currency={earningToken} />
+            </PriceContainer>
           )}
         </Flex>
       </Flex>

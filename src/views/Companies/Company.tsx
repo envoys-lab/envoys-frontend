@@ -20,14 +20,13 @@ import {
 import { BaseCompany } from './utils'
 import { useTranslation } from '../../contexts/Localization'
 
-import { getCompany, getHolders } from './api'
+import { getCompany } from './api'
 
 import styles from './Company.module.scss'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
   const [company, setCompany] = useState<BaseCompany>()
-  const [holders, setHolders] = useState<number>(0)
 
   const { t } = useTranslation()
   const { isMobile, isTablet } = useMatchBreakpoints()
@@ -37,20 +36,6 @@ const Company = ({ companyId }: { companyId: string }) => {
   useEffect(() => {
     handleGetCompany()
   }, [])
-
-  useEffect(() => {
-    if (company) {
-      handleGetHolders()
-    }
-  }, [company])
-
-  const handleGetHolders = async () => {
-    if (!company.token) {
-      return
-    }
-    const holders = await getHolders(company?.token)
-    setHolders(holders)
-  }
 
   const handleGetCompany = async () => {
     const company = await getCompany(companyId)
@@ -77,7 +62,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           logoUrl={company.logoUrl}
           className={styles['company__head']}
         />
-        <CompanyButton token={company.token} holders={holders} homePageUrl={company.homePageUrl} />
+        <CompanyButton token={company.token} holders={company.holdersCount} homePageUrl={company.homePageUrl} />
       </div>
 
       <div

@@ -78,7 +78,10 @@ const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoad
           {hasEarnings ? (
             <>
               {earningTokenPrice > 0 && (
-                <CurrencyEquivalent currency={unserializedTokens.evt} amount={earningTokenDollarBalance.toString()} />
+                <CurrencyEquivalent
+                  currency={unserializedTokens.evt}
+                  amount={(hasEarnings ? earningTokenBalance : 0).toString()}
+                />
               )}
             </>
           ) : (
