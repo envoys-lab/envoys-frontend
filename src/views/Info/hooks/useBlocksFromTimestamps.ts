@@ -1,8 +1,8 @@
+import { GRAPH_API_BLOCKS } from 'config/constants/endpoints'
 import { gql } from 'graphql-request'
-import { useState, useEffect } from 'react'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import { BLOCKS_CLIENT } from 'config/constants/endpoints'
+import { useEffect, useState } from 'react'
 import { Block } from 'state/info/types'
+import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 
 const getBlockSubqueries = (timestamps: number[]) =>
   timestamps.map((timestamp) => {
@@ -35,7 +35,7 @@ export const getBlocksFromTimestamps = async (
   const fetchedData: any = await multiQuery(
     blocksQueryConstructor,
     getBlockSubqueries(timestamps),
-    BLOCKS_CLIENT,
+    GRAPH_API_BLOCKS,
     skipCount,
   )
 

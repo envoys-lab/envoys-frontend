@@ -8,6 +8,7 @@ import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { ChartEntry, TokenData, PriceChartEntry } from 'state/info/types'
 import { fromUnixTime } from 'date-fns'
 import dynamic from 'next/dynamic'
+import { EnvoysCard } from 'views/Info/Overview'
 
 const CandleChart = dynamic(() => import('views/Info/components/InfoCharts/CandleChart'), {
   ssr: false,
@@ -82,7 +83,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
   }
 
   return (
-    <Card>
+    <EnvoysCard>
       <TabToggleGroup>
         <TabToggle isActive={view === ChartView.VOLUME} onClick={() => setView(ChartView.VOLUME)}>
           <Text>{t('Volume')}</Text>
@@ -113,7 +114,7 @@ const ChartCard: React.FC<ChartCardProps> = ({ variant, chartData, tokenData, to
           <CandleChart data={tokenPriceData} setValue={setHoverValue} setLabel={setHoverDate} />
         ) : null}
       </Box>
-    </Card>
+    </EnvoysCard>
   )
 }
 

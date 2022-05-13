@@ -6,6 +6,7 @@ import { useAllTokenData, useTokenDatas } from 'state/info/hooks'
 import { useWatchlistTokens } from 'state/user/hooks'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TopTokenMovers from 'views/Info/components/TopTokenMovers'
+import { EnvoysCard } from '../Overview'
 
 const TokensOverview: React.FC = () => {
   const { t } = useTranslation()
@@ -29,11 +30,11 @@ const TokensOverview: React.FC = () => {
       {savedTokens.length > 0 ? (
         <TokenTable tokenDatas={watchListTokens} />
       ) : (
-        <Card>
+        <EnvoysCard>
           <Text py="16px" px="24px">
             {t('Saved tokens will appear here')}
           </Text>
-        </Card>
+        </EnvoysCard>
       )}
       <TopTokenMovers />
       <Heading scale="lg" mt="40px" mb="16px" id="info-tokens-title">

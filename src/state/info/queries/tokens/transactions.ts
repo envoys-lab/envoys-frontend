@@ -7,7 +7,7 @@ import { infoClient } from 'utils/graphql'
 /**
  * Data to display transaction table on Token page
  */
-const TOKEN_TRANSACTIONS = gql`
+const LEGACY_TOKEN_TRANSACTIONS = gql`
   query tokenTransactions($address: Bytes!) {
     mintsAs0: mints(first: 10, orderBy: timestamp, orderDirection: desc, where: { token0: $address }) {
       id
@@ -124,13 +124,139 @@ const TOKEN_TRANSACTIONS = gql`
   }
 `
 
+const TOKEN_TRANSACTIONS = gql`
+  query tokenTransactions($address: Bytes!) {
+    tokenAs0: pairs(where: { token0: $address }) {
+      id
+      mints(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        to
+        amount0
+        amount1
+        amountUSD
+      }
+      swaps(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        from
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
+        amountUSD
+      }
+      burns(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        sender
+        amount0
+        amount1
+        amountUSD
+      }
+    }
+
+    tokenAs1: pairs(where: { token1: $address }) {
+      id
+      mints(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        to
+        amount0
+        amount1
+        amountUSD
+      }
+      swaps(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        from
+        amount0In
+        amount1In
+        amount0Out
+        amount1Out
+        amountUSD
+      }
+      burns(first: 10, orderBy: timestamp, orderDirection: desc) {
+        id
+        timestamp
+        pair {
+          token0 {
+            id
+            symbol
+          }
+          token1 {
+            id
+            symbol
+          }
+        }
+        sender
+        amount0
+        amount1
+        amountUSD
+      }
+    }
+  }
+`
+
+interface PaieResponseResults {
+  mints: MintResponse[]
+  burns: BurnResponse[]
+  swaps: SwapResponse[]
+}
+
 interface TransactionResults {
-  mintsAs0: MintResponse[]
-  mintsAs1: MintResponse[]
-  swapsAs0: SwapResponse[]
-  swapsAs1: SwapResponse[]
-  burnsAs0: BurnResponse[]
-  burnsAs1: BurnResponse[]
+  tokenAs0: PaieResponseResults[]
+  tokenAs1: PaieResponseResults[]
 }
 
 const fetchTokenTransactions = async (address: string): Promise<{ data?: Transaction[]; error: boolean }> => {
@@ -138,16 +264,34 @@ const fetchTokenTransactions = async (address: string): Promise<{ data?: Transac
     const data = await infoClient.request<TransactionResults>(TOKEN_TRANSACTIONS, {
       address,
     })
-    const mints0 = data.mintsAs0.map(mapMints)
-    const mints1 = data.mintsAs1.map(mapMints)
 
-    const burns0 = data.burnsAs0.map(mapBurns)
-    const burns1 = data.burnsAs1.map(mapBurns)
+    var mints = []
+    var burns = []
+    var swaps = []
 
-    const swaps0 = data.swapsAs0.map(mapSwaps)
-    const swaps1 = data.swapsAs1.map(mapSwaps)
+    data.tokenAs0.forEach((pair) => {
+      const mint = pair.mints.map(mapMints)
+      mints = [...mints, ...mint]
 
-    return { data: [...mints0, ...mints1, ...burns0, ...burns1, ...swaps0, ...swaps1], error: false }
+      const burn = pair.burns.map(mapBurns)
+      burns = [...burns, ...burn]
+
+      const swap = pair.swaps.map(mapSwaps)
+      swaps = [...swaps, ...swap]
+    })
+
+    data.tokenAs1.forEach((pair) => {
+      const mint = pair.mints.map(mapMints)
+      mints = [...mints, ...mint]
+
+      const burn = pair.burns.map(mapBurns)
+      burns = [...burns, ...burn]
+
+      const swap = pair.swaps.map(mapSwaps)
+      swaps = [...swaps, ...swap]
+    })
+
+    return { data: [...mints, ...burns, ...swaps], error: false }
   } catch (error) {
     console.error(`Failed to fetch transactions for token ${address}`, error)
     return {

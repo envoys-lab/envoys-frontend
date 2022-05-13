@@ -1,4 +1,4 @@
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { GRAPH_API_EXCHANGE } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import { Block } from 'state/info/types'
@@ -11,7 +11,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   const prices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    GRAPH_API_EXCHANGE,
     200,
   )
 
