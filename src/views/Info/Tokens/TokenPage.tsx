@@ -39,6 +39,7 @@ import { useWatchlistTokens } from 'state/user/hooks'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
+import { EnvoysCard } from '../Overview'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -178,7 +179,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
 
             {/* data on the right side of chart */}
             <ContentLayout>
-              <Card>
+              <EnvoysCard>
                 <Box p="24px">
                   <Text bold small color="secondary" fontSize="12px" textTransform="uppercase">
                     {t('Liquidity')}
@@ -210,7 +211,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                     {formatAmount(tokenData.txCount, { isInteger: true })}
                   </Text>
                 </Box>
-              </Card>
+              </EnvoysCard>
               {/* charts card */}
               <ChartCard
                 variant="token"

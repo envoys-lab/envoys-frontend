@@ -29,6 +29,7 @@ import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
+import { EnvoysCard } from '../Overview'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -165,7 +166,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
           </Flex>
           <ContentLayout>
             <Box>
-              <Card>
+              <EnvoysCard>
                 <Box p="24px">
                   <Flex justifyContent="space-between">
                     <Flex flex="1" flexDirection="column">
@@ -219,8 +220,8 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
                     </Flex>
                   </LockedTokensContainer>
                 </Box>
-              </Card>
-              <Card mt="16px">
+              </EnvoysCard>
+              <EnvoysCard mt="16px">
                 <Flex flexDirection="column" p="24px">
                   <ButtonMenu
                     activeIndex={showWeeklyData}
@@ -258,7 +259,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
                     </Flex>
                   </Flex>
                 </Flex>
-              </Card>
+              </EnvoysCard>
             </Box>
             <ChartCard variant="pool" chartData={chartData} />
           </ContentLayout>

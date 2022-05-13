@@ -8,6 +8,7 @@ import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import Percent from 'views/Info/components/Percent'
 import { useTranslation } from 'contexts/Localization'
+import { EnvoysCard } from 'views/Info/Overview'
 
 const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
@@ -27,13 +28,9 @@ const TopMoverCard = styled(Box)`
 
 export const ScrollableRow = styled.div`
   width: 100%;
-  max-width: calc(90vw - 32px);
   overflow-x: auto;
-  padding: 16px 0;
+  padding: 16px 0px;
   white-space: nowrap;
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 const DataCard = ({ tokenData }: { tokenData: TokenData }) => {
@@ -101,7 +98,7 @@ const TopTokenMovers: React.FC = () => {
   }
 
   return (
-    <Card my="16px">
+    <EnvoysCard my="16px">
       <Text ml="16px" mt="8px">
         {t('Top Movers')}
       </Text>
@@ -110,7 +107,7 @@ const TopTokenMovers: React.FC = () => {
           entry.data ? <DataCard key={`top-card-token-${entry.data?.address}`} tokenData={entry.data} /> : null,
         )}
       </ScrollableRow>
-    </Card>
+    </EnvoysCard>
   )
 }
 

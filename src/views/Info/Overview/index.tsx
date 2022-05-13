@@ -35,6 +35,10 @@ export const ChartCardsContainer = styled(Flex)`
   } ;
 `
 
+export const EnvoysCard = styled(Card)`
+  padding: 1px 1px 1px 1px !important;
+`
+
 const Overview: React.FC = () => {
   const {
     t,
@@ -112,18 +116,16 @@ const Overview: React.FC = () => {
         {t('Envoys Info & Analytics')}
       </Heading>
       <ChartCardsContainer>
-        <Card>
+        <EnvoysCard>
           <Box p={['16px', '16px', '24px']}>
             <Text bold color="secondary">
               {t('Liquidity')}
             </Text>
-            {liquidityHover > 0 ? (
-              <Text bold fontSize="24px">
-                ${formatAmount(liquidityHover)}
-              </Text>
-            ) : (
-              <Skeleton width="128px" height="36px" />
-            )}
+
+            <Text bold fontSize="24px">
+              ${formatAmount(liquidityHover)}
+            </Text>
+
             <Text>{liquidityDateHover ?? currentDate}</Text>
             <Box height="250px">
               <LineChart
@@ -133,25 +135,21 @@ const Overview: React.FC = () => {
               />
             </Box>
           </Box>
-        </Card>
-        <Card>
+        </EnvoysCard>
+        <EnvoysCard>
           <Box p={['16px', '16px', '24px']}>
             <Text bold color="secondary">
               {t('Volume 24H')}
             </Text>
-            {volumeHover > 0 ? (
-              <Text bold fontSize="24px">
-                ${formatAmount(volumeHover)}
-              </Text>
-            ) : (
-              <Skeleton width="128px" height="36px" />
-            )}
+            <Text bold fontSize="24px">
+              ${formatAmount(volumeHover)}
+            </Text>
             <Text>{volumeDateHover ?? currentDate}</Text>
             <Box height="250px">
               <BarChart data={formattedVolumeData} setHoverValue={setVolumeHover} setHoverDate={setVolumeDateHover} />
             </Box>
           </Box>
-        </Card>
+        </EnvoysCard>
       </ChartCardsContainer>
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Tokens')}

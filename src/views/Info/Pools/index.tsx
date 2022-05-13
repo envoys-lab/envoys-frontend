@@ -5,6 +5,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import { useAllPoolData, usePoolDatas } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import { useTranslation } from 'contexts/Localization'
+import { EnvoysCard } from '../Overview'
 
 const PoolsOverview: React.FC = () => {
   const { t } = useTranslation()
@@ -25,7 +26,7 @@ const PoolsOverview: React.FC = () => {
       <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
-      <Card>
+      <div>
         {watchlistPools.length > 0 ? (
           <PoolTable poolDatas={watchlistPools} />
         ) : (
@@ -33,7 +34,7 @@ const PoolsOverview: React.FC = () => {
             {t('Saved pools will appear here')}
           </Text>
         )}
-      </Card>
+      </div>
       <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
         {t('All Pools')}
       </Heading>
