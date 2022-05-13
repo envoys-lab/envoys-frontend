@@ -16,7 +16,6 @@ import { getObjectsArraysLength, getSearchResults } from './helpers'
 import { getTokens, useDebounce } from './hooks'
 import {
   Box,
-  Flex,
   CogIcon,
   GasIcon,
   InlineMenu,
@@ -24,6 +23,7 @@ import {
   SearchIcon,
   Text,
   useMatchBreakpoints,
+  MenuOptions,
 } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 import DropdownItem from './components/DropdownItem'
@@ -40,6 +40,9 @@ import {
   CurrencySettingsOptionButton,
   SettingsBox,
   SearchContainer,
+  FilterDropdown,
+  MobileSearchFlex,
+  PopoverContainer,
 } from './components/styles'
 import GasSettings from '../GlobalSettings/GasSettings'
 import SlippageSettings from '../GlobalSettings/SlippageSettings'
@@ -63,6 +66,7 @@ const GlobalSearch = () => {
   const [typeFilter, setTypeFilter] = useState<string>(groupTypes[0])
   const [inputPanelElement, setInputPanelElement] = useState<HTMLElement | null>(null)
   const [resultsPanelElement, setResultsPanelElement] = useState<HTMLElement | null>(null)
+  const [isFilterShown, setIsFilterShown] = useState(false)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const [isGasOpen, setIsGasOpen] = useState(false)
@@ -143,6 +147,9 @@ const GlobalSearch = () => {
     }
 
     setPaginatedSearchResults(result)
+    if (!hasResults && typeFilter === groupTypes[0]) {
+      hasResults = true
+    }
     setIsResultsPanelShown(hasResults)
   }, [searchResults, debouncedSearchTerm, pagination])
 
@@ -188,6 +195,7 @@ const GlobalSearch = () => {
   }
 
   const showResultsOnFocus = () => {
+    setIsFilterShown(true)
     if (query.length > 1) {
       setIsResultsPanelShown(true)
     }
@@ -240,6 +248,13 @@ const GlobalSearch = () => {
         )
       }
     })
+    if (renderedGroups.length === 0 && typeFilter === groupTypes[0]) {
+      renderedGroups.push(
+        <ResultGroup title={''} key={`search-group-all`}>
+          {t('No matching results')}
+        </ResultGroup>,
+      )
+    }
     return renderedGroups
   }
 
@@ -289,17 +304,22 @@ const GlobalSearch = () => {
   }, [isMobileSettingsOpen, setIsGasOpen, setIsCurrencyOpen, setIsSettingsOpen])
 
   const fitToComponent = inputPanelElement?.parentElement?.parentElement
+  const fitToComponentMobile = fitToComponent?.parentElement
   const defaultProps = {
     component: <></>,
     isAnimated: true,
     shift: 'right',
     fitToComponent: !isMobile && fitToComponent,
+    options: {
+      offset: [0, 10],
+    } as MenuOptions,
   }
 
   const renderSettings = (isMobile = false) => {
     return (
       <>
-        <DropdownItem
+        <FilterDropdown
+          $isShown={isMobile || isFilterShown || isFilterOpen || isResultsPanelShown}
           noBorder={isMobile}
           isMobile={isMobile}
           isFullWidth={isMobile}
@@ -307,24 +327,26 @@ const GlobalSearch = () => {
           isOpen={isFilterOpen}
           component={t(typeFilter)}
         >
-          <InlineMenu
-            {...{ ...defaultProps, shift: null }}
-            isOpen={isFilterOpen}
-            onClose={() => setIsFilterOpen(false)}
-          >
-            <Box p="10px" minWidth={'200px'}>
-              {groupTypes.map((type, key) => (
-                <FilterItem
-                  key={`filter-${key}`}
-                  className={classNames({ active: typeFilter.toString() === type.toString() })}
-                  onClick={() => setFilter(type)}
-                >
-                  {t(type)}
-                </FilterItem>
-              ))}
-            </Box>
-          </InlineMenu>
-        </DropdownItem>
+          <PopoverContainer isMobile={isMobile}>
+            <InlineMenu
+              {...{ ...defaultProps, shift: null }}
+              isOpen={isFilterOpen}
+              onClose={() => setIsFilterOpen(false)}
+            >
+              <Box p="10px" minWidth={'200px'}>
+                {groupTypes.map((type, key) => (
+                  <FilterItem
+                    key={`filter-${key}`}
+                    className={classNames({ active: typeFilter.toString() === type.toString() })}
+                    onClick={() => setFilter(type)}
+                  >
+                    {t(type)}
+                  </FilterItem>
+                ))}
+              </Box>
+            </InlineMenu>
+          </PopoverContainer>
+        </FilterDropdown>
         <DropdownItem
           noBorder={isMobile}
           isMobile={isMobile}
@@ -390,6 +412,7 @@ const GlobalSearch = () => {
                 value={query}
                 onChange={handleChange}
                 onFocus={showResultsOnFocus}
+                onBlur={() => setIsFilterShown(false)}
               />
             </InputGroup>
             {isMobile && (
@@ -400,12 +423,12 @@ const GlobalSearch = () => {
               >
                 <InlineMenu
                   {...defaultProps}
-                  fitToComponent={fitToComponent}
+                  fitToComponent={fitToComponentMobile}
                   isOpen={isMobileSettingsOpen}
                   onClose={() => setIsMobileSettingsOpen(false)}
                 >
                   <Box p="10px" minWidth={'90vw'}>
-                    <Flex>{renderSettings(true)}</Flex>
+                    <MobileSearchFlex>{renderSettings(true)}</MobileSearchFlex>
                   </Box>
                 </InlineMenu>
               </DropdownItem>

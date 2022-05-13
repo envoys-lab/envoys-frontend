@@ -10,21 +10,6 @@ const covalenthqAxiosInstance = axios.create({
   baseURL: COVALENTHQ_API,
 })
 
-const getHolders = async (tokenId) => {
-  try {
-    const response = await covalenthqAxiosInstance.get(`/tokens/${tokenId}/token_holders/`, {
-      params: {
-        ['quote-currency']: 'USD',
-        format: 'JSON',
-        key: COVALENTHQ_API_KEY,
-      },
-    })
-
-    return response?.data?.data?.pagination?.total_count
-  } catch (e) {
-    console.error(e)
-  }
-}
 const getCompanies = async (page = 1, size = 50) => {
   try {
     const response = await envoysAxiosInstance.get(`/companies`, { params: { page, size } })
@@ -43,4 +28,4 @@ const getCompany = async (companyId: string) => {
   }
 }
 
-export { getCompanies, getCompany, getHolders }
+export { getCompanies, getCompany }

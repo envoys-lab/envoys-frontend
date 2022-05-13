@@ -38,10 +38,8 @@ const WithdrawalFeeTimer: React.FC<{ secondsRemaining: number }> = ({ secondsRem
 
   return (
     <TimeContainer>
-      <TimeIcon/>
-      <TextContainer>
-        {t('%day%d : %hour%h : %minute%m', { day: days, hour: hours, minute: minutes })}
-      </TextContainer>
+      <TimeIcon />
+      <TextContainer>{t('%day%d : %hour%h : %minute%m', { day: days, hour: hours, minute: minutes })}</TextContainer>
     </TimeContainer>
   )
 }

@@ -198,7 +198,7 @@ export default function CurrencyList({
     ({ data, index, style }) => {
       const currency: Currency = data[index]
       const token = wrappedCurrency(currency, chainId)
-      const isKYCRequired = !isKYCVerified && companyTokens.includes(token.address)
+      const isKYCRequired = !isKYCVerified && companyTokens.includes(token?.address)
 
       const isSelected = Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))
       const otherSelected = Boolean(otherCurrency && currencyEquals(otherCurrency, currency))

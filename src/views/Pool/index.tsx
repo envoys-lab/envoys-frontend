@@ -1,7 +1,17 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Pair } from '@envoysvision/sdk'
-import { Text, Flex, CardFooter, Button, AddCircleOutlineIcon, TabMenu, Tab, Card } from '@envoysvision/uikit'
+import {
+  Text,
+  Flex,
+  CardFooter,
+  Button,
+  AddCircleOutlineIcon,
+  TabMenu,
+  Tab,
+  Card,
+  animationDuration,
+} from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import FullPositionCard from '../../components/PositionCard'
@@ -35,9 +45,11 @@ export const Divider = styled.div`
 `
 
 export default function Pool() {
+  const thisTabIndex = 1
   const router = useRouter()
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
+  const [tabClicked, setTabClicked] = useState<number>(thisTabIndex)
   const [isAddLoading, setIsAddLoading] = useState<boolean>(false)
   const [isFindLoading, setIsFindLoading] = useState<boolean>(false)
 
@@ -70,7 +82,7 @@ export default function Pool() {
     fetchingV2PairBalances || v2Pairs?.length < liquidityTokensWithBalances.length || v2Pairs?.some((V2Pair) => !V2Pair)
 
   const allV2PairsWithLiquidity0 = v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair))
-  const allV2PairsWithLiquidity = [...allV2PairsWithLiquidity0, ...allV2PairsWithLiquidity0]
+  const allV2PairsWithLiquidity = [...allV2PairsWithLiquidity0]
   const renderBody = () => {
     if (allV2PairsWithLiquidity?.length > 0) {
       return allV2PairsWithLiquidity.map((v2Pair, index) => (
@@ -113,8 +125,13 @@ export default function Pool() {
   }
 
   const handleTabClick = (newTabIndex) => {
+    setTabClicked(newTabIndex)
     if (newTabIndex === 0) {
-      return router.push('/swap')
+      router.prefetch('/liquidity').then(() => {
+        setTimeout(() => {
+          return router.push('/swap')
+        }, animationDuration * 2)
+      })
     }
   }
 
@@ -135,7 +152,7 @@ export default function Pool() {
       <PageContainer>
         <AppHeader title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} noSettings>
           <Flex position={'relative'} alignItems={'center'} width={'100%'}>
-            <TabMenu activeIndex={1} onItemClick={handleTabClick} fixedForItems={2}>
+            <TabMenu activeIndex={thisTabIndex} nextIndex={tabClicked} onItemClick={handleTabClick} fixedForItems={2}>
               <Tab>{t('Swap')}</Tab>
               <Tab>{t('Liquidity')}</Tab>
             </TabMenu>

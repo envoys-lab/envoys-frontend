@@ -5,6 +5,9 @@ import { Flex, FlexProps, SwapVertIcon } from '@envoysvision/uikit'
 const StyledDiv = styled.div`
   display: flex;
   flex-shrink: 0;
+  z-index: 2;
+  position: relative;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const StyledBox = styled(Flex)`

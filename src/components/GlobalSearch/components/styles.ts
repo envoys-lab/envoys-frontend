@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { Box, Button, Card, Input, Link, Grid } from '@envoysvision/uikit'
+import styled, { css } from 'styled-components'
+import { Box, Button, Card, Input, Link, Grid, Flex } from '@envoysvision/uikit'
+import DropdownItem from './DropdownItem'
 
 export const BodyWrapper = styled(Card)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
@@ -78,6 +79,25 @@ export const SettingsBox = styled(Box)`
   padding: 14px 15px;
 `
 
+export const FilterDropdown = styled(DropdownItem)<{ $isShown: boolean }>`
+  z-index: 1 !important;
+  ${({ theme }) => {
+    const transitionFlow = `${theme.animations.duration} ease-in-out`
+    return css`
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform ${transitionFlow}, opacity ${transitionFlow};
+      transition-delay: ${theme.animations.durationClose};
+    `
+  }}
+  ${({ $isShown }) =>
+    $isShown &&
+    css`
+      transform: translateX(0);
+      opacity: 1;
+    `}
+`
+
 export const FilterItem = styled(Box)`
   border-radius: 4px;
   margin-top: 4px;
@@ -124,6 +144,7 @@ export const SettingsOptionButton = styled(Button)<{ $active: boolean; variant: 
   height: auto;
   padding: 4px 15px;
   box-sizing: content-box;
+  transition: border-color ${({ theme }) => theme.animations.durationClose} ease-in-out;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 4px 18px;
   }
@@ -164,4 +185,15 @@ export const CardsLayout = styled(Grid)`
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 10px 8px;
   }
+`
+
+export const MobileSearchFlex = styled(Flex)`
+  width: fit-content;
+  margin: 0 0 0 auto;
+`
+
+export const PopoverContainer = styled.div<{ isMobile: boolean }>`
+  position: absolute;
+  left: 50%;
+  bottom: ${({ isMobile }) => (isMobile ? '-5px' : '-20px')};
 `

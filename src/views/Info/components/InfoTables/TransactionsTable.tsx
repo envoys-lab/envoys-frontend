@@ -16,12 +16,20 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
+const GridText = styled(Text)`
+  font-size: 14px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 16px;
+  }
+`
+
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
   grid-template-columns: 2fr 0.8fr repeat(4, 1fr);
   padding: 0 24px;
+
   @media screen and (max-width: 940px) {
     grid-template-columns: 2fr repeat(4, 1fr);
     & > *:nth-child(5) {
@@ -102,25 +110,25 @@ const DataRow: React.FC<{ transaction: Transaction }> = ({ transaction }) => {
   return (
     <ResponsiveGrid>
       <LinkExternal href={getBscScanLink(transaction.hash, 'transaction')}>
-        <Text>
+        <GridText>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
             : transaction.type === TransactionType.SWAP
             ? t('Swap %token0% for %token1%', { token0: inputTokenSymbol, token1: outputTokenSymbol })
             : t('Remove %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })}
-        </Text>
+        </GridText>
       </LinkExternal>
-      <Text>${formatAmount(transaction.amountUSD)}</Text>
+      <GridText>${formatAmount(transaction.amountUSD)}</GridText>
       <Text>
-        <Text>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</Text>
+        <GridText>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</GridText>
       </Text>
       <Text>
-        <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
+        <GridText>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</GridText>
       </Text>
       <LinkExternal href={getBscScanLink(transaction.sender, 'address')}>
         {truncateHash(transaction.sender)}
       </LinkExternal>
-      <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
+      <GridText>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</GridText>
     </ResponsiveGrid>
   )
 }
@@ -203,7 +211,7 @@ const TransactionTable: React.FC<{
 
   return (
     <Wrapper>
-      <Flex mb="16px">
+      <Flex mb="16px" flexDirection={['column', 'column', 'row']}>
         <Flex flexDirection={['column', 'row']}>
           <RadioGroup onClick={() => handleFilter(undefined)}>
             <Radio onChange={() => null} scale="sm" checked={txFilter === undefined} />
