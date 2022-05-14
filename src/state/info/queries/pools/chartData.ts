@@ -24,7 +24,7 @@ const getPoolChartData = async (skip: number, address: string): Promise<{ data?:
     `
     const { pairDayDatas } = await infoClient.request<PairDayDatasResponse>(query, {
       startTime: PCS_V2_START,
-      skip,
+      skip: Math.min(skip, 1),
       address,
     })
     const data = pairDayDatas.map(mapPairDayData)

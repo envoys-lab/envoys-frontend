@@ -24,7 +24,7 @@ const getOverviewChartData = async (skip: number): Promise<{ data?: ChartEntry[]
   try {
     const { envoysDayDatas } = await infoClient.request<EnvoysDayDatasResponse>(PANCAKE_DAY_DATAS, {
       startTime: PCS_V2_START,
-      skip: Math.min(skip, 5000),
+      skip: Math.min(skip, 1),
     })
     const data = envoysDayDatas.map(mapDayData)
     return { data, error: false }
