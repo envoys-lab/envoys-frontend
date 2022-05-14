@@ -1,6 +1,12 @@
 import React from 'react'
-import styles from './CompanyShortInfo.module.scss'
-import classNames from 'classnames'
+import {
+  BigScreenLogo,
+  CompanyDescription,
+  CompanyMainInfo,
+  CompanyName,
+  CompanyShortInfoBlock,
+  SmallScreenLogo,
+} from './styles'
 
 interface CompanyShortInfoProps {
   name: string
@@ -11,19 +17,16 @@ interface CompanyShortInfoProps {
 
 const CompanyShortInfo = ({ name, description, logoUrl, className }: CompanyShortInfoProps) => {
   const realLogoUrl = !logoUrl || logoUrl !== 'https://cloud.example/logo' ? logoUrl : '/images/company.png'
+  const logo = <img src={realLogoUrl} alt={name} />
   return (
-    <div className={`${styles['company-short']} ${className}`}>
-      <div style={{ margin: '15px' }} className={classNames([styles['company-short__logo'], styles['showAfterXxl']])}>
-        <img src={realLogoUrl}></img>
-      </div>
-      <div className={styles['company-short-main']}>
-        <div className={classNames([styles['company-short__logo'], styles['showBeforeXxl']])}>
-          <img src={realLogoUrl}></img>
-        </div>
-        <div className={styles['company-short-main__name']}>{name}</div>
-        <div className={styles['company-short-main__description']}>{description}</div>
-      </div>
-    </div>
+    <CompanyShortInfoBlock className={className}>
+      <BigScreenLogo>{logo}</BigScreenLogo>
+      <CompanyMainInfo>
+        <SmallScreenLogo>{logo}</SmallScreenLogo>
+        <CompanyName>{name}</CompanyName>
+        <CompanyDescription>{description}</CompanyDescription>
+      </CompanyMainInfo>
+    </CompanyShortInfoBlock>
   )
 }
 

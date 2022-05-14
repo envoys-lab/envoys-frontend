@@ -6,7 +6,7 @@ import { languageList } from 'config/localization/languages'
 import { useTranslation } from 'contexts/Localization'
 // import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import useTheme from 'hooks/useTheme'
-import { usePhishingBannerManager } from 'state/user/hooks'
+// import { usePhishingBannerManager } from 'state/user/hooks'
 import config from './config/config'
 import UserMenu from './UserMenu'
 // import GlobalSettings from './GlobalSettings'
@@ -19,7 +19,7 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const [showPhishingWarningBanner] = usePhishingBannerManager()
+  // const [showPhishingWarningBanner] = usePhishingBannerManager()
 
   const menuItems = config(t)
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })

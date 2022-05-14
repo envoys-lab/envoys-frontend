@@ -81,7 +81,7 @@ const UserMenu = () => {
   return (
     <UserMenuWrapper>
       <ConnectWalletButton width="100%" withAccount={!!account} scale="md" menuBtn {...connectionProps} />
-      <UserMenuContentWrapper withAccount={!!account} {...connectionProps}>
+      <UserMenuContentWrapper withAccount={!!account}>
         <AccountWrapper account={account} {...connectionProps}>
           <UserMenuItem onClick={() => disconnect()} style={{ position: 'relative' }}>
             <span>{t('Disconnect')}</span>

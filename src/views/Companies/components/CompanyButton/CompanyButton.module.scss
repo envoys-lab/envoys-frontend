@@ -6,11 +6,6 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
-  max-width: 232px;
-
-  @include screenMinSize('sm') {
-    margin-left: 12px;
-  }
 
   &__button {
     box-shadow: 0 15px 20px -18px #f48020;
@@ -93,9 +88,7 @@
 
     margin-top: 20px;
     margin-right: auto;
-    @include screenMinSize('sm') {
-      width: 25vw;
-    }
+
     @include screenMinSize('md') {
       width: 20vw;
     }
