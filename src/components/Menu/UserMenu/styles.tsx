@@ -16,7 +16,6 @@ export const UserMenuContentWrapper = styled.div<{
 `
 
 export const AccountWrapper = styled(UserMenu)<{ isConnecting?: boolean; isDisconnecting?: boolean }>`
-  transition: opacity ${({ theme }) => theme.animations.durationConnect} ease-in-out;
   opacity: 0;
   position: relative;
 

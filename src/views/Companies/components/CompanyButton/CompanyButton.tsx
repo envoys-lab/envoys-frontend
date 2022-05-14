@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Flex } from '@envoysvision/uikit'
+import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import styles from './CompanyButton.module.scss'
 import AccountIcon from 'views/Companies/assets/AccountIcon'
@@ -13,6 +14,30 @@ interface CompanyButtonProps {
   className?: string
   token?: string
 }
+
+const CompanyButtonBlock = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 30px;
+  > div {
+    width: 100%;
+    max-width: 272px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: min(25vw, 232px);
+    margin-top: 0;
+    margin-left: 12px;
+    align-items: flex-start;
+    max-width: 232px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 25vw;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    min-width: 232px;
+  }
+`
 
 const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const { t } = useTranslation()
@@ -44,7 +69,7 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
   }
 
   return (
-    <div className={`${styles['company-button']} ${className}`}>
+    <CompanyButtonBlock className={`${styles['company-button']} ${className}`}>
       <Flex style={{ gridGap: '8px' }} flexDirection={'column'}>
         {!isKYCVerified && <div>{t('You have to complete KYC verification to trade')}</div>}
         <div className={styles['company-button__button']} onClick={handleTrade}>
@@ -61,7 +86,7 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
           </div>
         </div>
       </div>
-    </div>
+    </CompanyButtonBlock>
   )
 }
 

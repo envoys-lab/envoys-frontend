@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Scrollspy from 'react-scrollspy'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import { useMatchBreakpoints } from '@envoysvision/uikit'
+import { Box, useMatchBreakpoints } from '@envoysvision/uikit'
 
 import PageLoader from 'components/Loader/PageLoader'
 import Page from '../../components/Layout/Page'
@@ -23,6 +23,7 @@ import { useTranslation } from '../../contexts/Localization'
 import { getCompany } from './api'
 
 import styles from './Company.module.scss'
+import { CompanyHead, CompanyTabInfo, CompanyTabInfoHeader, CompanyTabs, StyledFrame } from './styles'
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Company = ({ companyId }: { companyId: string }) => {
@@ -55,7 +56,7 @@ const Company = ({ companyId }: { companyId: string }) => {
   return (
     <Page>
       <HeadText />
-      <div className={styles['company__head']}>
+      <CompanyHead>
         <CompanyShortInfo
           name={company.name}
           description={company.description}
@@ -63,12 +64,8 @@ const Company = ({ companyId }: { companyId: string }) => {
           className={styles['company__head']}
         />
         <CompanyButton token={company.token} holders={company.holdersCount} homePageUrl={company.homePageUrl} />
-      </div>
-
-      <div
-        id="tabs"
-        className={`${styles['company__tabs']} ${lowResolutionMode ? styles['company__tabs--low-res'] : ''}`}
-      >
+      </CompanyHead>
+      <CompanyTabs id="tabs">
         <Scrollspy
           offset={lowResolutionMode ? -95 : -35}
           className={styles.scrollspy}
@@ -85,38 +82,38 @@ const Company = ({ companyId }: { companyId: string }) => {
           {visibleTabs.team && <AnchorLink href="#team">{t('Team')}</AnchorLink>}
           {visibleTabs.documents && <AnchorLink href="#docs">{t('Docs')}</AnchorLink>}
         </Scrollspy>
-      </div>
-      <div id="ico" className={styles['company__tab-info']}>
-        <div className={styles['company-ico']}>
-          <div className={styles['company-ico__video']}>{company?.videoUrl && <iframe src={company.videoUrl} />}</div>
-          <div className={styles['company-ico__stages']}>
+      </CompanyTabs>
+      <CompanyTabInfo id="ico">
+        <Box width={'100%'}>
+          <div>{company?.videoUrl && <StyledFrame src={company.videoUrl} />}</div>
+          <Box pt={'30px'}>
             {company &&
               company.stages &&
               company?.stages.map((stage, index) => <CompanyProgress key={index} stage={stage} />)}
-          </div>
+          </Box>
           <div>{company && <CompanyDetails details={company.details} />}</div>
-        </div>
-      </div>
-      <div id="about" className={styles['company__tab-info']}>
-        <div className={styles['company__tab-info-header']}>{t('About %company%', { company: company?.name })}</div>
+        </Box>
+      </CompanyTabInfo>
+      <CompanyTabInfo id="about">
+        <CompanyTabInfoHeader>{t('About %company%', { company: company?.name })}</CompanyTabInfoHeader>
         <About markdown={company.about.text} />
-      </div>
-      <div id="roadmap" className={styles['company__tab-info']}>
-        <div className={styles['company__tab-info-header']}>{t('Roadmap')}</div>
+      </CompanyTabInfo>
+      <CompanyTabInfo id="roadmap">
+        <CompanyTabInfoHeader>{t('Roadmap')}</CompanyTabInfoHeader>
         <Roadmap company={company} />
-      </div>
-      <div id="team" className={styles['company__tab-info']}>
-        <div className={styles['company__tab-info-header']}>{company?.name} Team</div>
+      </CompanyTabInfo>
+      <CompanyTabInfo id="team">
+        <CompanyTabInfoHeader>{company?.name} Team</CompanyTabInfoHeader>
         <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
-        <div className={styles['company__tab-info-header']}>Advisors</div>
+        <CompanyTabInfoHeader>Advisors</CompanyTabInfoHeader>
         <CompanyMembers members={company.members.filter((member) => member.advisor)} />
-        <div className={styles['company__tab-info-header']}>{company?.name} Interviews</div>
+        <CompanyTabInfoHeader>{company?.name} Interviews</CompanyTabInfoHeader>
         <CompanyInterviews members={company.members} />
-      </div>
-      <div id="docs" className={styles['company__tab-info']}>
-        <div className={styles['company__tab-info-header']}>{t('Docs')}</div>
+      </CompanyTabInfo>
+      <CompanyTabInfo id="docs">
+        <CompanyTabInfoHeader>{t('Docs')}</CompanyTabInfoHeader>
         {company.documents && company.documents.length && <Documents documents={company.documents} />}
-      </div>
+      </CompanyTabInfo>
     </Page>
   )
 }
