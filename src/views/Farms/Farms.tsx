@@ -398,6 +398,7 @@ const Farms: React.FC = ({ children }) => {
             <TextContainer opacity={0.7}>{t('Sort by') + ':'}</TextContainer>
             <Space size={10} />
             <Select
+              style={{ minWidth: 90, justifyItems: 'flex-end' }}
               options={[
                 {
                   label: t('Hot'),
