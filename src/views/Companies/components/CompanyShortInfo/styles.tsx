@@ -33,7 +33,7 @@ export const CompanyMainInfo = styled(Flex)`
     margin-right: 36px;
     align-items: flex-start;
   }
-  
+
   ${({ theme }) => theme.mediaQueries.xxl} {
     align-items: flex-start;
   }
