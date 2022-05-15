@@ -25,10 +25,14 @@ export const SmallScreenLogo = styled.div`
 `
 
 export const CompanyMainInfo = styled(Flex)`
-  margin-right: 36px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-right: 36px;
+    align-items: flex-start;
+  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     align-items: flex-start;
