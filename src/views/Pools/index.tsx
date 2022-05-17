@@ -223,6 +223,7 @@ const Pools: React.FC = () => {
             <TextContainer opacity={0.7}>{t('Sort by') + ':'}</TextContainer>
             <Space size={10} />
             <Select
+              style={{ width: 110 }}
               options={[
                 {
                   label: t('Hot'),
