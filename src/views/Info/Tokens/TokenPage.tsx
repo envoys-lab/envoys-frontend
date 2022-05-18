@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useMemo, useState } from 'react'
-import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
@@ -113,11 +113,7 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
   const compTokenAddrs = companyTokens.map((token) => (token as Token).address.toLowerCase())
 
   const handleClick = (url: string) => {
-    if (
-      !isKYCVerified &&
-      (compTokenAddrs.includes(poolData?.token0?.address.toLowerCase()) ||
-        compTokenAddrs.includes(poolData?.token1?.address.toLowerCase()))
-    ) {
+    if (!isKYCVerified && compTokenAddrs.includes(address.toLowerCase())) {
       router.push(`/settings`)
       return
     }
