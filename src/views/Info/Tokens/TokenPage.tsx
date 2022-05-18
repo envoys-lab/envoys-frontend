@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { useMemo } from 'react'
-import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
+import React, { useEffect, useMemo, useState } from 'react'
+import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Duration } from 'date-fns'
 import styled from 'styled-components'
 import {
@@ -40,6 +40,10 @@ import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { useTranslation } from 'contexts/Localization'
 import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import { EnvoysCard } from '../Overview'
+import { useRouter } from 'next/router'
+import useIsKYCVerified from '../../../hooks/useIsKYCVerified'
+import { getCompanyTokensList } from '../../../state/companyTokens/selectors'
+import { Token } from '@envoysvision/sdk'
 
 const ContentLayout = styled.div`
   margin-top: 16px;
@@ -98,6 +102,23 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
   }, [priceData, tokenData])
 
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
+
+  const router = useRouter()
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
+  const companyTokens = getCompanyTokensList()
+  const compTokenAddrs = companyTokens.map((token) => (token as Token).address.toLowerCase())
+
+  const handleClick = (url: string) => {
+    if (!isKYCVerified && compTokenAddrs.includes(address.toLowerCase())) {
+      router.push(`/settings`)
+      return
+    }
+    return router.push(url)
+  }
 
   return (
     <Page symbol={tokenData?.symbol}>
@@ -166,14 +187,10 @@ const TokenPage: React.FC<{ routeAddress: string }> = ({ routeAddress }) => {
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouterSlim to={`/add/${address}`}>
-                  <Button mr="8px" variant="tertiary">
-                    {t('Add Liquidity')}
-                  </Button>
-                </NextLinkFromReactRouterSlim>
-                <NextLinkFromReactRouterSlim to={`/swap?inputCurrency=${address}`}>
-                  <Button>{t('Trade')}</Button>
-                </NextLinkFromReactRouterSlim>
+                <Button mr="8px" variant="tertiary" onClick={() => handleClick(`/add/${address}`)}>
+                  {t('Add Liquidity')}
+                </Button>
+                <Button onClick={() => handleClick(`/swap?inputCurrency=${address}`)}>{t('Trade')}</Button>
               </Flex>
             </Flex>
 
