@@ -17,7 +17,6 @@ import {
 } from 'state/info/hooks'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Page from 'components/Layout/Page'
-import { AppBody } from '../../../components/App'
 
 export const ChartCardsContainer = styled(Flex)`
   justify-content: space-between;
