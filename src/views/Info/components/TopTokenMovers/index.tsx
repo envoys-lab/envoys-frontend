@@ -27,9 +27,10 @@ const TopMoverCard = styled(Box)`
 `
 
 export const ScrollableRow = styled.div`
+  max-width: 80vw;
   width: 100%;
   overflow-x: auto;
-  padding: 16px 0px;
+  padding: 16px 0;
   white-space: nowrap;
 `
 

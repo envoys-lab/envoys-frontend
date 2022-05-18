@@ -66,6 +66,9 @@ import Page from '../../components/Layout/Page'
 import SwapWarningModal from './components/SwapWarningModal'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import { IconBox, StyledChartContainer, StyledSwapContainer } from './styles'
+import useIsKYCVerified from '../../hooks/useIsKYCVerified'
+import { getCompanyTokensList } from '../../state/companyTokens/selectors'
+import { WrappedTokenInfo } from '../../state/lists/hooks'
 
 /*
 const Label = styled(Text)`
@@ -110,6 +113,15 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(true)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(!isDesktop)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
+
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
+
+  const companyTokens = getCompanyTokensList()
+  const compTokenAddrs = companyTokens.map((token) => (token as Token).address)
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -381,11 +393,30 @@ export default function Swap() {
     }
   }
 
-  useEffect(() => {
-    if (window.location.hostname === 'localhost') {
-      onUserInput(Field.INPUT, '0.000001')
+  const handleSwapClick = () => {
+    const inputCurrency = currencies[Field.INPUT] as WrappedTokenInfo
+    const outputCurrency = currencies[Field.OUTPUT] as WrappedTokenInfo
+    if (
+      !isKYCVerified &&
+      (compTokenAddrs.includes(inputCurrency.address) || compTokenAddrs.includes(outputCurrency.address))
+    ) {
+      router.push(`/settings`)
+      return
     }
-  }, [onUserInput, window.location.hostname])
+
+    if (isExpertMode) {
+      handleSwap()
+    } else {
+      setSwapState({
+        tradeToConfirm: trade,
+        attemptingTxn: false,
+        swapErrorMessage: undefined,
+        txHash: undefined,
+      })
+      onPresentConfirmModal()
+    }
+  }
+
   return (
     <Page hideFooterOnDesktop={isChartExpanded} autoWidth={!isChartDisplayed} removeInnerPadding>
       <Flex justifyContent="space-between" position="relative">
@@ -560,19 +591,7 @@ export default function Swap() {
                   </Button>
                   <Button
                     variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
-                    onClick={() => {
-                      if (isExpertMode) {
-                        handleSwap()
-                      } else {
-                        setSwapState({
-                          tradeToConfirm: trade,
-                          attemptingTxn: false,
-                          swapErrorMessage: undefined,
-                          txHash: undefined,
-                        })
-                        onPresentConfirmModal()
-                      }
-                    }}
+                    onClick={handleSwapClick}
                     width="48%"
                     id="swap-button"
                     disabled={
@@ -590,19 +609,7 @@ export default function Swap() {
                 <div style={{ marginTop: '14px' }}>
                   <Button
                     variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
-                    onClick={() => {
-                      if (isExpertMode) {
-                        handleSwap()
-                      } else {
-                        setSwapState({
-                          tradeToConfirm: trade,
-                          attemptingTxn: false,
-                          swapErrorMessage: undefined,
-                          txHash: undefined,
-                        })
-                        onPresentConfirmModal()
-                      }
-                    }}
+                    onClick={handleSwapClick}
                     id="swap-button"
                     width="100%"
                     height="70px"
