@@ -1,7 +1,6 @@
 import React from 'react'
 import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { DeserializedPool, VaultKey } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -10,6 +9,8 @@ import { useTranslation } from 'contexts/Localization'
 import NotEnoughTokensModal from '../../PoolCard/Modals/NotEnoughTokensModal'
 import { convertSharesToCake } from '../../../helpers'
 import VaultStakeModal from '../VaultStakeModal'
+import CurrencyEquivalent from '../../../../../components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from '../../../../../config/constants/tokens'
 
 interface HasStakeActionProps {
   pool: DeserializedPool
@@ -26,9 +27,6 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
   const { stakingToken } = pool
   const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
   const cakePriceBusd = usePriceCakeBusd()
-  const stakedDollarValue = cakePriceBusd.gt(0)
-    ? getBalanceNumber(cakeAsBigNumber.multipliedBy(cakePriceBusd), stakingToken.decimals)
-    : 0
   const { t } = useTranslation()
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
@@ -43,13 +41,29 @@ const HasSharesActions: React.FC<HasStakeActionProps> = ({ pool, stakingTokenBal
     totalShares &&
     userShares.dividedBy(totalShares).multipliedBy(100).decimalPlaces(5)
 
+  const hasSharesStaked = userShares && userShares.gt(0)
+  const isVaultWithShares = pool.vaultKey && hasSharesStaked
+  const hasStaked = stakingTokenBalance.gt(0) || isVaultWithShares
+
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <Flex flexDirection="column">
         <Balance fontSize="20px" bold value={cakeAsNumberBalance} decimals={5} />
         <Text as={Flex} fontSize="12px" color="textSubtle" flexWrap="wrap">
           {cakePriceBusd.gt(0) ? (
-            <Balance value={stakedDollarValue} fontSize="12px" color="textSubtle" decimals={2} prefix="~" unit=" USD" />
+            hasStaked ? (
+              <CurrencyEquivalent
+                currency={unserializedTokens.evt}
+                amount={(pool.vaultKey
+                  ? Number.isNaN(cakeAsNumberBalance)
+                    ? 0
+                    : cakeAsNumberBalance
+                  : stakingTokenBalance
+                ).toString()}
+              />
+            ) : (
+              <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+            )
           ) : (
             <Skeleton mt="1px" height={16} width={64} />
           )}

@@ -7,6 +7,10 @@ import { DeserializedPool } from 'state/types'
 import Balance from 'components/Balance'
 import NotEnoughTokensModal from '../Modals/NotEnoughTokensModal'
 import StakeModal from '../Modals/StakeModal'
+import CurrencyEquivalent from '../../../../../components/CurrencyInputPanel/CurrencyEquivalent'
+import unserializedTokens from '../../../../../config/constants/tokens'
+import { convertSharesToCake } from '../../../helpers'
+import { useVaultPoolByKey } from '../../../../../state/pools/hooks'
 
 interface StakeActionsProps {
   pool: DeserializedPool
@@ -28,10 +32,6 @@ const StakeAction: React.FC<StakeActionsProps> = ({
   const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool
   const { t } = useTranslation()
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
 
   const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />)
 
@@ -59,6 +59,16 @@ const StakeAction: React.FC<StakeActionsProps> = ({
     { placement: 'bottom' },
   )
 
+  // vault
+  const {
+    userData: { userShares },
+    pricePerFullShare,
+  } = useVaultPoolByKey(pool.vaultKey)
+  const hasSharesStaked = userShares && userShares.gt(0)
+  const isVaultWithShares = pool.vaultKey && hasSharesStaked
+  const { cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+  const hasStaked = stakedBalance.gt(0) || isVaultWithShares
+
   const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit)
 
   const renderStakeAction = () => {
@@ -69,14 +79,19 @@ const StakeAction: React.FC<StakeActionsProps> = ({
             <Balance bold fontSize="20px" decimals={3} value={stakedTokenBalance} />
             {stakingTokenPrice !== 0 && (
               <Text fontSize="12px" color="textSubtle">
-                <Balance
-                  fontSize="12px"
-                  color="textSubtle"
-                  decimals={2}
-                  value={stakedTokenDollarBalance}
-                  prefix="~"
-                  unit=" USD"
-                />
+                {hasStaked ? (
+                  <CurrencyEquivalent
+                    currency={unserializedTokens.evt}
+                    amount={(pool.vaultKey
+                      ? Number.isNaN(cakeAsNumberBalance)
+                        ? 0
+                        : cakeAsNumberBalance
+                      : stakedTokenBalance
+                    ).toString()}
+                  />
+                ) : (
+                  <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
+                )}
               </Text>
             )}
           </>

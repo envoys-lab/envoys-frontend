@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Skeleton, useMatchBreakpoints } from '@envoysvision/uikit'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import BaseCell, { CellContent } from './BaseCell'
+import BaseCell from './BaseCell'
 import { Label } from './styles'
 
 interface StakedCellProps {
@@ -32,7 +32,6 @@ const StyledCell = styled(BaseCell)`
 
 const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
 
   // vault
   const {
@@ -41,17 +40,12 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
   } = useVaultPoolByKey(pool.vaultKey)
   const hasSharesStaked = userShares && userShares.gt(0)
   const isVaultWithShares = pool.vaultKey && hasSharesStaked
-  const { cakeAsBigNumber, cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
+  const { cakeAsNumberBalance } = convertSharesToCake(userShares, pricePerFullShare)
 
   // pool
-  const { stakingTokenPrice, stakingToken, userData } = pool
-  const stakedAutoDollarValue = getBalanceNumber(cakeAsBigNumber.multipliedBy(stakingTokenPrice), stakingToken.decimals)
+  const { stakingToken, userData } = pool
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
   const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals)
-  const stakedTokenDollarBalance = getBalanceNumber(
-    stakedBalance.multipliedBy(stakingTokenPrice),
-    stakingToken.decimals,
-  )
 
   const labelText = `${pool.stakingToken.symbol} ${t('Staked')}`
 
@@ -88,11 +82,8 @@ const StakedCell: React.FC<StakedCellProps> = ({ pool, account, userDataLoaded }
           ) : (
             <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
           )}
-          {/* </Box>
-            </Flex> */}
         </>
       )}
-      {/* </CellContent> */}
     </StyledCell>
   )
 }
