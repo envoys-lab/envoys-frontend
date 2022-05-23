@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Skeleton, useModal } from '@envoysvision/uikit'
 import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
@@ -8,7 +8,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
-import BaseCell, { CellContent } from './BaseCell'
+import BaseCell from './BaseCell'
 import CollectModal from '../../PoolCard/Modals/CollectModal'
 import { Label } from './styles'
 import CurrencyEquivalent from 'components/CurrencyInputPanel/CurrencyEquivalent'
@@ -28,7 +28,6 @@ const StyledCell = styled(BaseCell)`
 
 const EarningsCell: React.FC<EarningsCellProps> = ({ pool, account, userDataLoaded }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
   const { sousId, earningToken, poolCategory, userData, earningTokenPrice } = pool
   const isManualCakePool = sousId === 0
 

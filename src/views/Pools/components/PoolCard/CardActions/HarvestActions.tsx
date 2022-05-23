@@ -7,8 +7,14 @@ import { getFullDisplayBalance, getBalanceNumber, formatNumber } from 'utils/for
 import Balance from 'components/Balance'
 import CollectModal from '../Modals/CollectModal'
 import styled from 'styled-components'
+import { useVaultPoolByKey } from '../../../../../state/pools/hooks'
+import { convertSharesToCake } from '../../../helpers'
+import unserializedTokens from '../../../../../config/constants/tokens'
+import CurrencyEquivalent from '../../../../../components/CurrencyInputPanel/CurrencyEquivalent'
+import { DeserializedPool } from '../../../../../state/types'
 
 interface HarvestActionsProps {
+  pool: DeserializedPool
   earnings: BigNumber
   earningToken: Token
   sousId: number
@@ -25,6 +31,7 @@ const Heading = styled.div`
 `
 
 const HarvestActions: React.FC<HarvestActionsProps> = ({
+  pool,
   earnings,
   earningToken,
   sousId,
@@ -53,7 +60,6 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
       isCompoundPool={isCompoundPool}
     />,
   )
-
   return (
     <Flex justifyContent="space-between" alignItems="center" mb="16px">
       <Flex flexDirection="column">
@@ -65,14 +71,9 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
               <>
                 <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
                 {earningTokenPrice > 0 && (
-                  <Balance
-                    display="inline"
-                    fontSize="12px"
-                    color="textSubtle"
-                    decimals={2}
-                    prefix="~"
-                    value={earningTokenDollarBalance}
-                    unit=" USD"
+                  <CurrencyEquivalent
+                    currency={unserializedTokens.evt}
+                    amount={(hasEarnings ? earningTokenBalance : 0).toString()}
                   />
                 )}
               </>
@@ -80,7 +81,7 @@ const HarvestActions: React.FC<HarvestActionsProps> = ({
               <>
                 <Heading color="textDisabled">0.0</Heading>
                 <Text fontSize="12px" color="textDisabled">
-                  0 USD
+                  <CurrencyEquivalent currency={unserializedTokens.evt} amount={'0'} />
                 </Text>
               </>
             )}
