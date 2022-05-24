@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@envoysvision/uikit'
 import useToast from 'hooks/useToast'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state'
@@ -16,6 +15,8 @@ import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import useUnstakeFarms from '../../hooks/useUnstakeFarms'
 import useStakeFarms from '../../hooks/useStakeFarms'
+import unserializedTokens from '../../../../config/constants/tokens'
+import CurrencyEquivalent from '../../../../components/CurrencyInputPanel/CurrencyEquivalent'
 
 interface FarmCardActionsProps {
   stakedBalance?: BigNumber
@@ -169,13 +170,9 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
       <Flex flexDirection="column" alignItems="flex-start">
         <Heading color={stakedBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance()}</Heading>
         {stakedBalance.gt(0) && lpPrice.gt(0) && (
-          <Balance
-            fontSize="12px"
-            color="textSubtle"
-            decimals={2}
-            value={getBalanceNumber(lpPrice.times(stakedBalance))}
-            unit=" USD"
-            prefix="~"
+          <CurrencyEquivalent
+            currency={unserializedTokens.evt}
+            amount={getBalanceNumber(lpPrice.times(stakedBalance)).toString()}
           />
         )}
       </Flex>
