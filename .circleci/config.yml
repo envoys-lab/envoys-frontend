@@ -8,7 +8,7 @@ workflows:
       - check:
           requires:
             - build
-      - image:
+      - image_develop:
           context: develop
           requires:
             - check
@@ -16,14 +16,30 @@ workflows:
             branches:
               only:
                 - develop
-      - deploy:
+      - image_production:
+          context: production
+          requires:
+            - check
+          filters:
+            branches:
+              only:
+                - main
+      - deploy_to_develop:
           context: develop
           requires:
-            - image
+            - image_develop
           filters:
             branches:
               only:
                 - develop
+      - deploy_to_production:
+          context: production
+          requires:
+            - image_production
+          filters:
+            branches:
+              only:
+                - main
 
 jobs:
   build:
@@ -53,7 +69,7 @@ jobs:
           name: Check project
           command: yarn ci
 
-  image:
+  image_develop:
     machine: true
     steps:
       - checkout
@@ -70,7 +86,36 @@ jobs:
             docker tag envoys-frontend "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
             docker push "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
 
-  deploy:
+  image_production:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Docker login
+          command: docker login -u ${REGISTRY_LOGIN} -p ${REGISTRY_PASSWORD} ${REGISTRY_HOST}
+      - run:
+          name: Build docker image
+          command: docker build -t envoys-frontend .
+      - run:
+          name: Publish docker image
+          command: |
+            echo "Build number: ${CIRCLE_BUILD_NUM}"
+            docker tag envoys-frontend "registry.app.envoys.vision/envoys-frontend:production-${CIRCLE_BUILD_NUM}"
+            docker push "registry.app.envoys.vision/envoys-frontend:production-${CIRCLE_BUILD_NUM}"
+
+  deploy_to_develop:
+    docker:
+      - image: bash:5-alpine3.15
+    steps:
+      - checkout
+      - run:
+          name: Install cURL
+          command: apk add curl
+      - run:
+          name: Run deploy
+          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "${CIRCLE_PREVIOUS_BUILD_NUM}"
+
+  deploy_to_production:
     docker:
       - image: bash:5-alpine3.15
     steps:
