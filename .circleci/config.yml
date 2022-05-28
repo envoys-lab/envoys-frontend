@@ -7,12 +7,16 @@ workflows:
       - install
       - build:
           context: production
+          requires:
+            - install
           filters:
             branches:
               only:
                 - production
       - build_develop:
           context: develop
+          requires:
+            - install
           filters:
             branches:
               only:
