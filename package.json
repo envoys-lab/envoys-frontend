@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
+    "clear:config": "rm -rf .env",
     "dev": "cp config/.env.development .env && next dev",
-    "build:beta": "cp config/.env.beta .env && next build",
-    "build": "cp config/.env.production .env && next build",
+    "build:beta": "yarn clear:config && cp config/.env.beta .env && next build",
+    "build": "yarn clear:config && cp config/.env.production .env && next build",
     "start": "next start",
     "test": "jest",
     "test:config": "jest src/__tests__/config/ --testPathIgnorePatterns",
