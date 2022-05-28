@@ -109,6 +109,17 @@ jobs:
           name: Check project
           command: yarn ci
 
+  check_develop:
+    docker:
+      - image: node:16
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /root/project
+      - run:
+          name: Check project
+          command: yarn ci
+
   image_develop:
     machine: true
     steps:
