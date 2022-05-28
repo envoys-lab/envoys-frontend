@@ -7,31 +7,31 @@ workflows:
       - build:
           context: production
           filters:
-              branches:
-                only:
-                  - production
+            branches:
+              only:
+                - production
       - build_develop:
           context: develop
           filters:
-              branches:
-                only:
-                  - develop
+            branches:
+              only:
+                - develop
       - check:
           context: production
           requires:
             - build
-          ilters:
-              branches:
-                only:
-                  - production
+          filters:
+            branches:
+              only:
+                - production
       - check_develop:
           context: develop
           requires:
             - build_develop
-          ilters:
-              branches:
-                only:
-                  - develop
+          filters:
+            branches:
+              only:
+                - develop
       - image_develop:
           context: develop
           requires:
