@@ -1,7 +1,6 @@
 import { Button, Flex, Heading } from '@envoysvision/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
 import { useTranslation } from 'contexts/Localization'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useToast from 'hooks/useToast'
@@ -13,6 +12,8 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { getBalanceAmount } from 'utils/formatBalance'
 import { logError } from 'utils/sentry'
 import useHarvestFarm from '../../hooks/useHarvestFarm'
+import unserializedTokens from '../../../../config/constants/tokens'
+import CurrencyEquivalent from '../../../../components/CurrencyInputPanel/CurrencyEquivalent'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
@@ -36,7 +37,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
       <Flex flexDirection="column" alignItems="flex-start">
         <Heading color={rawEarningsBalance.eq(0) ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
         {earningsBusd > 0 && (
-          <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
+          <CurrencyEquivalent
+            currency={unserializedTokens.evt}
+            amount={(rawEarningsBalance.gt(0) ? rawEarningsBalance : 0).toString()}
+          />
         )}
       </Flex>
       <Button

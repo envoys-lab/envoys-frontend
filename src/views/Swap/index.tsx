@@ -121,7 +121,7 @@ export default function Swap() {
   }, [isAccountVerified])
 
   const companyTokens = getCompanyTokensList()
-  const compTokenAddrs = companyTokens.map((token) => (token as Token).address)
+  const compTokenAddrs = companyTokens.map((token) => (token as Token).address.toLowerCase())
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
@@ -398,7 +398,8 @@ export default function Swap() {
     const outputCurrency = currencies[Field.OUTPUT] as WrappedTokenInfo
     if (
       !isKYCVerified &&
-      (compTokenAddrs.includes(inputCurrency.address) || compTokenAddrs.includes(outputCurrency.address))
+      (compTokenAddrs.includes(inputCurrency.address.toLowerCase()) ||
+        compTokenAddrs.includes(outputCurrency.address.toLowerCase()))
     ) {
       router.push(`/settings`)
       return

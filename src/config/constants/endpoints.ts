@@ -9,9 +9,6 @@ export const API_NFT = process.env.NEXT_PUBLIC_API_NFT
 export const SNAPSHOT_API = `${SNAPSHOT_BASE_URL}/graphql`
 export const SNAPSHOT_HUB_API = `${SNAPSHOT_BASE_URL}/api/message`
 
-export const COVALENTHQ_API = process.env.NEXT_PUBLIC_COVALENTHQ_API
-export const COVALENTHQ_API_KEY = process.env.NEXT_PUBLIC_COVALENTHQ_API_KEY
-
 /**
  * V1 will be deprecated but is still used to claim old rounds
  */

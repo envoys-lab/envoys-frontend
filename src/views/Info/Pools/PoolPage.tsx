@@ -18,7 +18,7 @@ import {
 import Page from 'components/Layout/Page'
 import { NextLinkFromReactRouter, NextLinkFromReactRouterSlim } from 'components/NextLink'
 import { useTranslation } from 'contexts/Localization'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePoolChartData, usePoolDatas, usePoolTransactions } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -30,6 +30,10 @@ import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import { formatAmount } from 'views/Info/utils/formatInfoNumbers'
 import { EnvoysCard } from '../Overview'
+import useIsKYCVerified from '../../../hooks/useIsKYCVerified'
+import { getCompanyTokensList } from '../../../state/companyTokens/selectors'
+import { Token } from '@envoysvision/sdk'
+import { useRouter } from 'next/router'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -89,6 +93,27 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
   const transactions = usePoolTransactions(address)
 
   const [watchlistPools, addPoolToWatchlist] = useWatchlistPools()
+
+  const router = useRouter()
+  const [isKYCVerified, setIsKYCVerified] = useState(false)
+  const isAccountVerified = useIsKYCVerified()
+  useEffect(() => {
+    setIsKYCVerified(isAccountVerified)
+  }, [isAccountVerified])
+  const companyTokens = getCompanyTokensList()
+  const compTokenAddrs = companyTokens.map((token) => (token as Token).address.toLowerCase())
+
+  const handleClick = (url: string) => {
+    if (
+      !isKYCVerified &&
+      (compTokenAddrs.includes(poolData?.token0?.address.toLowerCase()) ||
+        compTokenAddrs.includes(poolData?.token1?.address.toLowerCase()))
+    ) {
+      router.push(`/settings`)
+      return
+    }
+    return router.push(url)
+  }
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -151,16 +176,22 @@ const PoolPage: React.FC<{ address: string }> = ({ address: routeAddress }) => {
                 </NextLinkFromReactRouterSlim>
               </ButtonsWrapper>
               <Flex>
-                <NextLinkFromReactRouterSlim to={`/add/${poolData.token0.address}/${poolData.token1.address}`}>
-                  <Button mr="8px" variant="tertiary">
-                    {t('Add Liquidity')}
-                  </Button>
-                </NextLinkFromReactRouterSlim>
-                <NextLinkFromReactRouterSlim
-                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`}
+                <Button
+                  mr="8px"
+                  variant="tertiary"
+                  onClick={() => handleClick(`/add/${poolData.token0.address}/${poolData.token1.address}`)}
                 >
-                  <Button>{t('Trade')}</Button>
-                </NextLinkFromReactRouterSlim>
+                  {t('Add Liquidity')}
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleClick(
+                      `/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`,
+                    )
+                  }
+                >
+                  {t('Trade')}
+                </Button>
               </Flex>
             </Flex>
           </Flex>
