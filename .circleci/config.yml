@@ -4,14 +4,43 @@ workflows:
   version: 2
   master:
     jobs:
-      - build
+      - install
+      - build:
+          context: production
+          requires:
+            - install
+          filters:
+            branches:
+              only:
+                - production
+      - build_develop:
+          context: develop
+          requires:
+            - install
+          filters:
+            branches:
+              only:
+                - develop
       - check:
+          context: production
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - production
+      - check_develop:
+          context: develop
+          requires:
+            - build_develop
+          filters:
+            branches:
+              only:
+                - develop
       - image_develop:
           context: develop
           requires:
-            - check
+            - check_develop
           filters:
             branches:
               only:
@@ -42,7 +71,7 @@ workflows:
                 - main
 
 jobs:
-  build:
+  install:
     docker:
       - image: node:16
     steps:
@@ -50,6 +79,14 @@ jobs:
       - run:
           name: Install packages
           command: yarn install
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - node_modules
+  build:
+    docker:
+      - image: node:16
+    steps:
       - run:
           name: Build project
           command: yarn build
@@ -58,7 +95,30 @@ jobs:
           paths:
             - node_modules
 
+  build_develop:
+    docker:
+      - image: node:16
+    steps:
+      - run:
+          name: Build project
+          command: yarn build:beta
+      - persist_to_workspace:
+          root: /root/project
+          paths:
+            - node_modules
+
   check:
+    docker:
+      - image: node:16
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /root/project
+      - run:
+          name: Check project
+          command: yarn ci
+
+  check_develop:
     docker:
       - image: node:16
     steps:

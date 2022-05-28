@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "cp config/.env.development .env && next dev",
+    "build:beta": "cp config/.env.beta .env && next build",
+    "build": "cp config/.env.production .env && next build",
     "start": "next start",
     "test": "jest",
     "test:config": "jest src/__tests__/config/ --testPathIgnorePatterns",
