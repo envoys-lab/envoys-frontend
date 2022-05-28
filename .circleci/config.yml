@@ -4,19 +4,14 @@ workflows:
   version: 2
   master:
     jobs:
-      - install
       - build:
           context: production
-          requires:
-            - install
           filters:
             branches:
               only:
                 - production
       - build_develop:
           context: develop
-          requires:
-            - install
           filters:
             branches:
               only:
@@ -71,7 +66,7 @@ workflows:
                 - main
 
 jobs:
-  install:
+  build:
     docker:
       - image: node:16
     steps:
@@ -79,14 +74,6 @@ jobs:
       - run:
           name: Install packages
           command: yarn install
-      - persist_to_workspace:
-          root: /root/project
-          paths:
-            - node_modules
-  build:
-    docker:
-      - image: node:16
-    steps:
       - run:
           name: Build project
           command: yarn build
@@ -99,6 +86,10 @@ jobs:
     docker:
       - image: node:16
     steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: yarn install
       - run:
           name: Build project
           command: yarn build:beta
