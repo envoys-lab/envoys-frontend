@@ -47,7 +47,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - production
       - deploy_to_develop:
           context: develop
           requires:
@@ -63,7 +63,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - production
 
 jobs:
   build:
