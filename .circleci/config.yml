@@ -129,7 +129,7 @@ jobs:
           command: docker login -u ${REGISTRY_LOGIN} -p ${REGISTRY_PASSWORD} ${REGISTRY_HOST}
       - run:
           name: Build docker image
-          command: docker build -t envoys-frontend .
+          command: docker build -t envoys-frontend . --build-arg environment=beta
       - run:
           name: Publish docker image
           command: |
