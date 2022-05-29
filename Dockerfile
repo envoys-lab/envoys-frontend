@@ -1,22 +1,23 @@
 FROM node:16 AS deps
-
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 COPY src/config/abi ./src/config/abi
+COPY config ./config/
 
 RUN yarn install --frozen-lockfile
 
 FROM node:16-alpine AS builder
+ARG environment
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 COPY --from=deps /app/src/config/abi ./src/config/abi
+COPY --from=deps /app/config ./config
 
 ENV NEXT_TELEMETRY_DISABLED 1
-RUN yarn build
-
+RUN if [ "$environment" = "beta" ] ; then yarn build:development ; else yarn build ; fi
 
 FROM node:16-alpine AS runner
 WORKDIR /app
