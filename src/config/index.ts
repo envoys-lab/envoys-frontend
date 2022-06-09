@@ -26,7 +26,9 @@ export const CURRENT_CHAIN_ID: ChainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_
 export const EVT_PER_BLOCK = 40
 export const BLOCKS_PER_YEAR = (60 / BSC_BLOCK_TIME) * 60 * 24 * 365 // 10512000
 export const EVT_PER_YEAR = EVT_PER_BLOCK * BLOCKS_PER_YEAR
+
 export const BASE_URL = 'https://beta.envoys.vision/'
+
 export const BASE_ADD_LIQUIDITY_URL = `${BASE_URL}/add`
 export const BASE_BSC_SCAN_URL = BASE_BSC_SCAN_URLS[CURRENT_CHAIN_ID]
 export const DEFAULT_TOKEN_DECIMAL = BIG_TEN.pow(18)

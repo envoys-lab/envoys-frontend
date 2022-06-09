@@ -8,6 +8,7 @@
     "copy:d": "cp config/.env.development .env",
     "copy:p": "cp config/.env.production .env",
     "dev": "yarn copy:d && next dev",
+    "dev:p": "yarn copy:p && next dev",
     "build:development": "yarn clear:config && yarn copy:d && next build",
     "build": "yarn clear:config && yarn copy:p && next build",
     "start": "next start",
