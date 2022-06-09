@@ -1,13 +1,13 @@
 import React from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useLoadItems } from './utils'
 import { CompanyCard } from './components'
 import Page from '../../components/Layout/Page'
 import { Spinner, Grid } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 
-const CompaniesGrid = styled(Grid)`
+const CompaniesGrid = styled(Grid)<{ singleItem?: boolean }>`
   padding: 6px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: 110px;
@@ -19,6 +19,11 @@ const CompaniesGrid = styled(Grid)`
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 30px 45px;
   }
+  ${({ singleItem }) =>
+    singleItem &&
+    css`
+      grid-template-columns: repeat(auto-fit, minmax(250px, 450px)) !important;
+    `}
 `
 
 const Companies = () => {
@@ -45,7 +50,9 @@ const Companies = () => {
   return (
     <Page>
       {companies?.length === 0 && <Spinner />}
-      <CompaniesGrid>{companies.map((item) => renderCompany(item))}</CompaniesGrid>
+      <CompaniesGrid singleItem={companies?.length === 1 && !hasNextPage}>
+        {companies.map((item) => renderCompany(item))}
+      </CompaniesGrid>
       {hasNextPage && (
         <div ref={infiniteRef}>
           <div>{companies?.length > 0 && t('Loading')}</div>
