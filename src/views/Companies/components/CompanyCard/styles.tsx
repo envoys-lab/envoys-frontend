@@ -17,8 +17,8 @@ export const StyledCompanyCard = styled(Flex)`
     inset: 0 0 0 0;
     content: '';
     transition: opacity ${({ theme }) => theme.animations.duration} ease-in-out;
-    background: url(/images/campaign-card.png) bottom left no-repeat;
-    background-size: cover;
+    background: url(/images/campaign-card.png) bottom right no-repeat;
+    background-size: contain;
     opacity: 0;
   }
   &:hover {
