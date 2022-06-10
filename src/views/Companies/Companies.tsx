@@ -7,7 +7,7 @@ import Page from '../../components/Layout/Page'
 import { Spinner, Grid } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 
-const CompaniesGrid = styled(Grid)<{ singleItem?: boolean }>`
+const CompaniesGrid = styled(Grid)<{ incompleteRowItemNumber?: boolean }>`
   padding: 6px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: 110px;
@@ -19,10 +19,16 @@ const CompaniesGrid = styled(Grid)<{ singleItem?: boolean }>`
     grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 30px 45px;
   }
-  ${({ singleItem }) =>
-    singleItem &&
+  ${({ incompleteRowItemNumber }) =>
+    incompleteRowItemNumber &&
     css`
-      grid-template-columns: repeat(auto-fit, minmax(250px, 450px)) !important;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+      ${({ theme }) => theme.mediaQueries.md} {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      }
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      }
     `}
 `
 
@@ -50,7 +56,7 @@ const Companies = () => {
   return (
     <Page>
       {companies?.length === 0 && <Spinner />}
-      <CompaniesGrid singleItem={companies?.length === 1 && !hasNextPage}>
+      <CompaniesGrid incompleteRowItemNumber={companies?.length < 3 && !hasNextPage}>
         {companies.map((item) => renderCompany(item))}
       </CompaniesGrid>
       {hasNextPage && (
