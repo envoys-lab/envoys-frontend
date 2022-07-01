@@ -16,6 +16,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
   z-index: 1;
   padding-left: 19px;
   padding-right: 11px;
+  transition: box-shadow ${({ theme }) => theme.animations.duration} ease-in-out;
 
   > span {
     transition: opacity ${({ theme }) => theme.animations.durationConnect} ease-in-out;
@@ -27,7 +28,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
     position: relative;
     > div,
     > svg {
-      transition-property: opacity, color;
+      transition-property: transform, opacity, color;
       transition-duration: ${({ theme }) => theme.animations.duration};
       transition-timing-function: ease-in-out;
     }
@@ -83,6 +84,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
           }
           > svg {
             opacity: 1;
+            transform: translateX(-1.5px) translateY(0.5px);
             color: ${theme.colors.basicOrange};
           }
         }
