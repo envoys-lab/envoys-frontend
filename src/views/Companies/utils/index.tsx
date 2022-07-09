@@ -44,6 +44,8 @@ export interface BaseCompany {
   token: string
   _id: string
   holdersCount: number
+  sale?: CompanySaleDetails
+  airdrop?: CompanyAirdropDetails
 }
 
 export interface Member {
@@ -88,6 +90,29 @@ export interface AdditionalDetails {
   MVP: string
   platform: string
   whitelist?: WhiteListObj
+}
+
+export interface CompanyAirdropDetails {
+  airdropAddress: string
+  status: string
+  allocated: number
+  claimed: number
+  totalTokens: number
+  allocation: any[]
+  endTime: string
+}
+
+export interface CompanySaleDetails {
+  saleAddress: string
+  softCap: number
+  hardCap: number
+  startTime: string
+  endTime: string
+  sold: number
+  minBuy: number
+  maxBuy: number
+  status: string
+  pureDates?: any
 }
 
 export interface WhiteListObj {

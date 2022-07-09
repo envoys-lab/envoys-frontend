@@ -1840,5 +1840,6 @@
   "companies": "Companies",
   "poolsLiquidity": "Pools Liquidity",
   "farms": "Farms",
-  "poolsSyrup": "Pools Syrup"
+  "poolsSyrup": "Pools Syrup",
+  "%title% ends in": "%title% ends in"
 }

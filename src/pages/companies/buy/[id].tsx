@@ -1,7 +1,7 @@
-import Airdrop from 'views/Airdrop'
+import CompanySale from 'views/Companies/components/Subpages/Buy'
 
 const CompanyInterceptor = ({ id }) => {
-  return <Airdrop id={id} />
+  return <CompanySale id={id} />
 }
 
 CompanyInterceptor.getInitialProps = (appContext) => {

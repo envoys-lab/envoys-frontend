@@ -74,8 +74,8 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
     router.push(`/companies/airdrop/${id}`)
   }
 
-  const handleVerify = () => {
-    router.push(`/companies/verify/${id}`)
+  const handleBuy = () => {
+    router.push(`/companies/buy/${id}`)
   }
 
   const handleCompanyUrlClick = () => {
@@ -96,7 +96,7 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
         <div className={styles['company-button__button']} onClick={handleTrade}>
           {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
-        <StyledButton onClick={handleVerify}>{t('Verify')}</StyledButton>
+        <StyledButton onClick={handleBuy}>{t('Buy')}</StyledButton>
         <StyledButton onClick={handleAirdrop}>{t('Airdrop')}</StyledButton>
       </Flex>
 
