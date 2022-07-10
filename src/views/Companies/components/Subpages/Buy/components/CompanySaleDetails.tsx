@@ -11,7 +11,7 @@ const CompanySaleDetails: React.FC<{ company: BaseCompany }> = ({ company }) => 
   return (
     <>
       <TextWithHeader title="Private Sale Address">
-        <Link href="#" fontWeight={400}>
+        <Link href="#" fontWeight={400} style={{ display: 'inline' }}>
           {sale.saleAddress}
         </Link>
       </TextWithHeader>

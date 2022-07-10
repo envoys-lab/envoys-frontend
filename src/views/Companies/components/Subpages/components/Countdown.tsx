@@ -46,7 +46,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
         {boxes.map((box) => (
           <TimeBox key={`timeBox-${box.label}`} mx={'2px'} justifyContent={'center'} alignContent={'center'}>
             <Text color={'mainDark'} small style={{ lineHeight: 1 }}>
-              {box.value}
+              {`${box.value < 10 ? '0' : ''}${box.value}`}
             </Text>
           </TimeBox>
         ))}
@@ -63,9 +63,11 @@ const CountdownRow: React.FC<{ title: string; endTime?: string }> = ({ title, en
 
   const endDate = new Date(endTime)
   return (
-    <Flex justifyItems={'space-between'} style={{ width: '100%' }} mb={'20px'}>
+    <Flex justifyItems={'space-between'} style={{ width: '100%' }} mb={'32px'}>
       <Flex style={{ width: '100%' }} alignSelf={'center'}>
-        <Text fontSize={'14px'}>{t('%title% ends in', { title })}</Text>
+        <Text fontSize={'14px'} style={{ whiteSpace: 'nowrap' }}>
+          {t('%title% ends in', { title })}
+        </Text>
       </Flex>
       <Flex>
         <Countdown date={endDate.getTime()} renderer={renderer} />

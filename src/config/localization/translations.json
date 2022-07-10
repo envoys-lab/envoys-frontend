@@ -1841,5 +1841,9 @@
   "poolsLiquidity": "Pools Liquidity",
   "farms": "Farms",
   "poolsSyrup": "Pools Syrup",
-  "%title% ends in": "%title% ends in"
+  "%title% ends in": "%title% ends in",
+  "Buy with ”%title%”": "Buy with “%title%”",
+  "Buy with %title%": "Buy with %title%",
+  "Airdrop %title%": "Airdrop “%title%”",
+  "Get Airdrop": "Get Airdrop"
 }

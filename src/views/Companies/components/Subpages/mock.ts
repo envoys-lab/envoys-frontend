@@ -1,4 +1,4 @@
-import { CompanyAirdropDetails, CompanySaleDetails } from '../../utils'
+import { CompanyAirdropDetails, CompanyQuest, CompanySaleDetails } from '../../utils'
 
 const twoWeeksTime = 14 * 24 * 3600 * 1000
 const nowDate = new Date()
@@ -10,11 +10,13 @@ const fakeAddress = '0x75F8ADf88019E9B1d023fF4645DfAa350Bf3Fb04'
 const mockAirDrop: CompanyAirdropDetails = {
   airdropAddress: fakeAddress,
   totalTokens: 100000,
-  allocated: 1,
-  allocation: [],
-  claimed: 20,
+  maxClaim: 99,
+  minClaim: 1,
+  claimed: 33,
+  yourClaim: 7,
+  allocations: [],
   endTime: futureDate.toDateString(),
-  status: 'in process',
+  status: 'inprogress',
 }
 
 const mockSale: CompanySaleDetails = {
@@ -25,12 +27,59 @@ const mockSale: CompanySaleDetails = {
   endTime: futureDate.toDateString(),
   pureDates: { nowDate, futureDate },
   minBuy: 1,
-  maxBuy: 5,
+  maxBuy: 49,
   sold: 65,
-  status: 'in process',
+  toSell: 99,
+  status: 'inprogress',
 }
+
+const mockQuests: CompanyQuest[] = [
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    buttonLabel: 'ссылка на пост Twitter',
+    placeholder: 'Paste your link on social network',
+  },
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    buttonLabel: 'ссылка на пост Meta',
+    placeholder: 'Paste your link on social network',
+  },
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    buttonLabel: 'ссылка на пост Twitter',
+    placeholder: 'Paste your link on social network',
+  },
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    buttonLabel: 'ссылка на пост LiveJournal',
+    placeholder: 'Paste your link on social network',
+  },
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
+    buttonLabel: 'ссылка на пост Twitter',
+    placeholder: 'Paste your link on social network',
+  },
+  {
+    id: Math.random().toString(),
+    question:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    buttonLabel: 'ссылка на пост Twitter',
+    placeholder: 'Paste your link on social network',
+  },
+]
 
 export default {
   airdrop: mockAirDrop,
   sale: mockSale,
+  quests: mockQuests,
 }
