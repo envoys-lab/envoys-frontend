@@ -1,7 +1,7 @@
-version: 2
+version: 2.1
 
 workflows:
-  version: 2
+#  version: 2
   master:
     jobs:
       - build_develop:
@@ -131,11 +131,15 @@ jobs:
           name: Build docker image
           command: docker build -t envoys-frontend . --build-arg environment=beta
       - run:
+          name: CHeck pipeline var
+          command: |
+            echo "Build number: << pipeline.number >>"
+      - run:
           name: Publish docker image
           command: |
-            echo "Build number: ${CIRCLE_BUILD_NUM}"
-            docker tag envoys-frontend "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
-            docker push "registry.beta.envoys.vision/envoys-frontend:develop-${CIRCLE_BUILD_NUM}"
+            echo "Build number: << pipeline.number >>"
+            docker tag envoys-frontend "registry.beta.envoys.vision/envoys-frontend:develop-<< pipeline.number >>"
+            docker push "registry.beta.envoys.vision/envoys-frontend:develop-<< pipeline.number >>"
 
   image_production:
     machine: true
@@ -150,9 +154,9 @@ jobs:
       - run:
           name: Publish docker image
           command: |
-            echo "Build number: ${CIRCLE_BUILD_NUM}"
-            docker tag envoys-frontend "registry.app.envoys.vision/envoys-frontend:production-${CIRCLE_BUILD_NUM}"
-            docker push "registry.app.envoys.vision/envoys-frontend:production-${CIRCLE_BUILD_NUM}"
+            echo "Build number: << pipeline.number >>"
+            docker tag envoys-frontend "registry.app.envoys.vision/envoys-frontend:production-<< pipeline.number >>"
+            docker push "registry.app.envoys.vision/envoys-frontend:production-<< pipeline.number >>"
 
   deploy_to_develop:
     docker:
@@ -164,7 +168,9 @@ jobs:
           command: apk add curl
       - run:
           name: Run deploy
-          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "${CIRCLE_PREVIOUS_BUILD_NUM}"
+          command: |
+            echo "Deploy number: << pipeline.number >>"
+            ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
 
   deploy_to_production:
     docker:
@@ -176,4 +182,6 @@ jobs:
           command: apk add curl
       - run:
           name: Run deploy
-          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "${CIRCLE_PREVIOUS_BUILD_NUM}"
+          command: |
+            echo "Deploy number: << pipeline.number >>"
+            ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
