@@ -131,6 +131,10 @@ jobs:
           name: Build docker image
           command: docker build -t envoys-frontend . --build-arg environment=beta
       - run:
+          name: CHeck pipeline var
+          command: |
+            echo "Build number: << pipeline.number >>"
+      - run:
           name: Publish docker image
           command: |
             echo "Build number: ${CIRCLE_BUILD_NUM}"
