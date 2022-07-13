@@ -4,7 +4,12 @@ import Row from 'components/Layout/Row'
 import { useTranslation } from '../../../../../contexts/Localization'
 import { Text } from '@envoysvision/uikit'
 
-const ShrinkColumn = styled(Column)`
+const LabelColumn = styled(Column)`
+  padding-right: 16px;
+  flex: auto;
+`
+
+const TextColumn = styled(Column)`
   overflow: hidden;
   color: ${({ theme }) => theme.colors.mainDark};
   > * {
@@ -16,17 +21,17 @@ const ShrinkColumn = styled(Column)`
 const TextWithHeader = ({ title, children, small }: { title: string; children: any; small?: boolean }) => {
   const { t } = useTranslation()
   return (
-    <Row justify="space-between" style={{ paddingBottom: '20px' }}>
-      <Column style={{ flexShrink: 0, paddingRight: 16 }}>
+    <Row justify="space-between" style={{ paddingBottom: '20px', flexWrap: 'wrap' }}>
+      <LabelColumn>
         <Text small={small} fontSize="14px" color="mainDark">
           {t(title)}
         </Text>
-      </Column>
-      <ShrinkColumn>
+      </LabelColumn>
+      <TextColumn>
         <Text small={small} fontSize="14px" color={'darkClear'}>
           {children}
         </Text>
-      </ShrinkColumn>
+      </TextColumn>
     </Row>
   )
 }

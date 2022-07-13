@@ -4,8 +4,8 @@ import { useTranslation } from 'contexts/Localization'
 import { CompanyQuest } from '../../../../utils'
 import Divider from '../../components/Divider'
 import useToast from '../../../../../../hooks/useToast'
-import useTheme from '../../../../../../hooks/useTheme'
 import { CompanyStyledInput, QuestFooter, QuestionBlock, QuestionLabel, QuestionsBlock, Summary } from '../styles'
+import { breakpointMap } from '../../../../../../../../envoys-toolkit/packages/envoys-uikit/src/theme/base'
 
 interface AirdropQuestModalProps {
   quests: CompanyQuest[]
@@ -13,7 +13,6 @@ interface AirdropQuestModalProps {
 
 const AirdropQuestModal: React.FC<InjectedModalProps & AirdropQuestModalProps> = ({ quests, onDismiss }) => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
   const { isMd, isLg, isDesktop } = useMatchBreakpoints()
   const [stepsDone, setStepsDone] = useState<number>(0)
   const [steps, setSteps] = useState({})
@@ -59,10 +58,10 @@ const AirdropQuestModal: React.FC<InjectedModalProps & AirdropQuestModalProps> =
   let minWidth = '320px'
 
   if (isMd) {
-    minWidth = theme.breakpoints?.sm
+    minWidth = `${breakpointMap.sm}px`
   }
   if (isLg) {
-    minWidth = theme.breakpoints?.md
+    minWidth = `${breakpointMap.md}px`
   }
   if (isDesktop) {
     minWidth = '740px'
