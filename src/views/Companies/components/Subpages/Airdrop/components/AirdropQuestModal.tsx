@@ -5,7 +5,6 @@ import { CompanyQuest } from '../../../../utils'
 import Divider from '../../components/Divider'
 import useToast from '../../../../../../hooks/useToast'
 import { CompanyStyledInput, QuestFooter, QuestionBlock, QuestionLabel, QuestionsBlock, Summary } from '../styles'
-import { breakpointMap } from '../../../../../../../../envoys-toolkit/packages/envoys-uikit/src/theme/base'
 
 interface AirdropQuestModalProps {
   quests: CompanyQuest[]
@@ -58,12 +57,9 @@ const AirdropQuestModal: React.FC<InjectedModalProps & AirdropQuestModalProps> =
   let minWidth = '320px'
 
   if (isMd) {
-    minWidth = `${breakpointMap.sm}px`
+    minWidth = '576px'
   }
-  if (isLg) {
-    minWidth = `${breakpointMap.md}px`
-  }
-  if (isDesktop) {
+  if (isLg || isDesktop) {
     minWidth = '740px'
   }
 
