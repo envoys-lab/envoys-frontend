@@ -164,7 +164,9 @@ jobs:
           command: apk add curl
       - run:
           name: Run deploy
-          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
+          command: |
+            echo "Deploy number: << pipeline.number >>"
+            ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
 
   deploy_to_production:
     docker:
@@ -176,4 +178,6 @@ jobs:
           command: apk add curl
       - run:
           name: Run deploy
-          command: ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
+          command: |
+            echo "Deploy number: << pipeline.number >>"
+            ./.circleci/deploy.sh "${STACK_FRONTEND}" "<< pipeline.number >>"
