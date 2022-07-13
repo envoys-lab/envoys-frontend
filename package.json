@@ -40,7 +40,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@envoysvision/sdk": "^2.4.1",
-    "@envoysvision/uikit": "0.63.49",
+    "@envoysvision/uikit": "0.63.50",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",
     "@ethersproject/bignumber": "^5.5.0",
@@ -89,6 +89,7 @@
     "numeral": "^2.0.6",
     "react": "^17.0.1",
     "react-anchor-link-smooth-scroll": "^1.0.12",
+    "react-countdown": "^2.3.2",
     "react-countup": "^4.3.3",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.1",
