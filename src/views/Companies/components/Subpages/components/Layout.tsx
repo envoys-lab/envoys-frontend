@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Grid, useMatchBreakpoints } from '@envoysvision/uikit'
+import { Grid, useMatchBreakpoints } from '@envoysvision/uikit'
 import Column from '../../../../../components/Layout/Column'
 import { CompanyShortInfo } from '../../index'
 import Divider from './Divider'
@@ -17,9 +17,9 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ company, backLink, content, bottomContent, children }) => {
-  const { isDesktop, isLg, isXL } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const section = (
-    <Column>
+    <Column style={{ overflow: 'hidden' }}>
       <CompanyShortInfo name={company.name} description={company.description} logoUrl={company.logoUrl} switchMargin />
 
       <Column style={{ paddingTop: '40px' }}>{content}</Column>
@@ -36,22 +36,21 @@ const Layout: React.FC<LayoutProps> = ({ company, backLink, content, bottomConte
     return (
       <Page>
         {backLink}
-        <Flex p={'20px'} justifyContent={'center'} alignContent={'center'} flexDirection={'column'}>
+        <Grid
+          padding={'20px'}
+          justifyContent={'center'}
+          alignContent={'center'}
+          gridTemplateRows="1fr auto"
+          gridRowGap="30px"
+        >
           {section}
           <Divider />
-          <Column style={{ width: '100%' }}>{children}</Column>
-        </Flex>
+          <Column style={{ width: '100%', overflow: 'hidden' }}>{children}</Column>
+        </Grid>
       </Page>
     )
   }
 
-  let gridTemplate = '8fr auto 7fr'
-  if (isLg) {
-    gridTemplate = '9fr auto 6fr'
-  }
-  if (isXL) {
-    gridTemplate = '10fr auto 5fr'
-  }
   return (
     <Page>
       {backLink}
@@ -59,12 +58,12 @@ const Layout: React.FC<LayoutProps> = ({ company, backLink, content, bottomConte
         padding={'20px'}
         justifyContent={'center'}
         alignContent={'center'}
-        gridTemplateColumns={gridTemplate}
+        gridTemplateColumns="1fr auto 280px"
         gridColumnGap="30px"
       >
         {section}
         <DividerVertical />
-        <Column style={{ width: '100%' }}>{children}</Column>
+        <Column>{children}</Column>
       </Grid>
     </Page>
   )
