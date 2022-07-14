@@ -4,7 +4,15 @@ import { useTranslation } from 'contexts/Localization'
 import { CompanyQuest } from '../../../../utils'
 import Divider from '../../components/Divider'
 import useToast from '../../../../../../hooks/useToast'
-import { CompanyStyledInput, QuestFooter, QuestionBlock, QuestionLabel, QuestionsBlock, Summary } from '../styles'
+import {
+  CompanyStyledInput,
+  QuestFooter,
+  QuestionBlock,
+  QuestionInputBlock,
+  QuestionLabel,
+  QuestionsBlock,
+  Summary,
+} from '../styles'
 
 interface AirdropQuestModalProps {
   quests: CompanyQuest[]
@@ -64,15 +72,21 @@ const AirdropQuestModal: React.FC<InjectedModalProps & AirdropQuestModalProps> =
   }
 
   return (
-    <Modal title={t('Airdrop quest')} onDismiss={onDismiss} bodyPadding={'16px'} minWidth={minWidth} maxWidth={'740px'}>
+    <Modal
+      title={t('Airdrop quest')}
+      onDismiss={onDismiss}
+      bodyPadding={'16px 4px'}
+      minWidth={minWidth}
+      maxWidth={'740px'}
+    >
       <Flex flexDirection={'column'}>
         <QuestionsBlock>
           {quests.map((quest) => (
             <QuestionBlock key={`quest-${quest.id}`}>
-              <Text fontSize={'14px'} my={'20px'}>
+              <Text fontSize={'14px'} m={'20px'}>
                 {quest.question}
               </Text>
-              <Flex alignItems="center" style={{ height: 70, marginRight: -16 }}>
+              <QuestionInputBlock $valid={steps[quest.id]?.length > 0}>
                 <InputGroup
                   endIcon={
                     <QuestionLabel fontSize={'14px'} color={'primary'}>
@@ -85,7 +99,7 @@ const AirdropQuestModal: React.FC<InjectedModalProps & AirdropQuestModalProps> =
                     onChange={($event) => handleInputChange($event, quest.id)}
                   />
                 </InputGroup>
-              </Flex>
+              </QuestionInputBlock>
             </QuestionBlock>
           ))}
         </QuestionsBlock>
