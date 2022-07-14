@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Flex, Input, Text } from '@envoysvision/uikit'
 
 export const QuestionsBlock = styled(Flex)`
@@ -6,13 +6,16 @@ export const QuestionsBlock = styled(Flex)`
   grid-gap: 10px;
   overflow-y: auto;
   max-height: 60vh;
+  padding-right: 16px;
+  margin-left: 16px;
 `
 
 export const QuestFooter = styled(Flex)`
-  margin-top: 30px;
+  margin: 30px 16px 4px;
   flex-shrink: 0;
   flex-direction: column;
   position: relative;
+  align-items: center;
 `
 
 export const Summary = styled.div`
@@ -24,10 +27,21 @@ export const Summary = styled.div`
 `
 
 export const QuestionBlock = styled(Flex)`
-  padding: 0 20px;
   flex-direction: column;
   border-radius: 14px;
   background-color: ${({ theme }) => theme.colors.backgroundPage};
+`
+
+export const QuestionInputBlock = styled(Flex)<{ $valid: boolean }>`
+  align-items: center;
+  height: 70px;
+  padding: 0 0 0 20px;
+  ${({ $valid, theme }) =>
+    $valid &&
+    css`
+      border: 1px solid ${theme.colors.success};
+      border-radius: 14px;
+    `}
 `
 
 export const QuestionLabel = styled(Text)`
