@@ -16,6 +16,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
   z-index: 1;
   padding-left: 19px;
   padding-right: 11px;
+  transition: box-shadow ${({ theme }) => theme.animations.duration} ease-in-out;
 
   > span {
     transition: opacity ${({ theme }) => theme.animations.durationConnect} ease-in-out;
@@ -27,7 +28,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
     position: relative;
     > div,
     > svg {
-      transition-property: opacity, color;
+      transition-property: transform, opacity, color;
       transition-duration: ${({ theme }) => theme.animations.duration};
       transition-timing-function: ease-in-out;
     }
@@ -83,6 +84,7 @@ const MenuButton = styled(Button)<{ isDisconnecting: boolean; isConnecting: bool
           }
           > svg {
             opacity: 1;
+            transform: translateX(-1px);
             color: ${theme.colors.basicOrange};
           }
         }
@@ -148,8 +150,8 @@ const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
   const { onPresentConnectModal } = useWalletModal(login, logout, t)
 
   const lottieProps = {
-    height: 26,
-    width: 26,
+    height: 25,
+    width: 25,
     options: {
       loop: false,
       animationData: {},
@@ -177,7 +179,7 @@ const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
         <span style={{ flexShrink: 0 }}>{t('Connect Wallet')}</span>
         <Flex alignItems="center" justifyContent="flex-end" justifyItems={'flex-end'}>
           <Lottie {...lottieProps} style={{ margin: 0 }} />
-          {!withAccount && <AddCircleOutlineIcon height={20} width={20} />}
+          {!withAccount && <AddCircleOutlineIcon height={19} width={19} />}
         </Flex>
       </MenuButton>
     )

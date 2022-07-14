@@ -16,7 +16,6 @@ import {
 } from 'config/constants/types'
 import { NftToken, State as NftMarketState } from './nftMarket/types'
 import { CurrenciesState } from './currencies/reducer'
-import { Token } from '@envoysvision/sdk'
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, State, unknown, AnyAction>
 

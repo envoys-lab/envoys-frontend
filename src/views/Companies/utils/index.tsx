@@ -44,6 +44,9 @@ export interface BaseCompany {
   token: string
   _id: string
   holdersCount: number
+  sale?: CompanySaleDetails
+  airdrop?: CompanyAirdropDetails
+  quests?: CompanyQuest[]
 }
 
 export interface Member {
@@ -72,6 +75,7 @@ export interface BaseCompanyDetails {
 
 export interface CompanyToken {
   ticker: string
+  tickerName?: string
   supply: string
   distribution: string[]
   currencies: string[]
@@ -88,6 +92,39 @@ export interface AdditionalDetails {
   MVP: string
   platform: string
   whitelist?: WhiteListObj
+}
+
+export interface CompanyAirdropDetails {
+  airdropAddress: string
+  status: string
+  maxClaim: number
+  minClaim: number
+  claimed: number
+  yourClaim: number
+  totalTokens: number
+  allocations: any[]
+  endTime: string
+}
+
+export interface CompanySaleDetails {
+  saleAddress: string
+  softCap: number
+  hardCap: number
+  startTime: string
+  endTime: string
+  sold: number
+  toSell: number
+  minBuy: number
+  maxBuy: number
+  status: string
+  pureDates?: any
+}
+
+export interface CompanyQuest {
+  id: string
+  question: string
+  placeholder: string
+  buttonLabel: string
 }
 
 export interface WhiteListObj {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Flex } from '@envoysvision/uikit'
+import { Button, Flex } from '@envoysvision/uikit'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import styles from './CompanyButton.module.scss'
@@ -9,6 +9,7 @@ import { useTranslation } from '../../../../contexts/Localization'
 import useIsKYCVerified from '../../../../hooks/useIsKYCVerified'
 
 interface CompanyButtonProps {
+  id: string
   holders: number
   homePageUrl: string
   className?: string
@@ -39,7 +40,19 @@ const CompanyButtonBlock = styled(Flex)`
   }
 `
 
-const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButtonProps) => {
+const StyledButton = styled(Button)`
+  margin-top: 15px;
+  height: 45px;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.darkClear};
+  border: 1px solid rgba(19, 61, 101, 0.3) !important;
+`
+StyledButton.defaultProps = {
+  variant: 'tertiary',
+  size: 'sm',
+}
+
+const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const { t } = useTranslation()
   const router = useRouter()
   const [isKYCVerified, setIsKYCVerified] = useState(false)
@@ -55,6 +68,14 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
     }
     const defaultToken = 'BNB'
     router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${token}`)
+  }
+
+  const handleAirdrop = () => {
+    router.push(`/companies/airdrop/${id}`)
+  }
+
+  const handleBuy = () => {
+    router.push(`/companies/buy/${id}`)
   }
 
   const handleCompanyUrlClick = () => {
@@ -75,7 +96,10 @@ const CompanyButton = ({ holders, token, homePageUrl, className }: CompanyButton
         <div className={styles['company-button__button']} onClick={handleTrade}>
           {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
+        <StyledButton onClick={handleBuy}>{t('Buy')}</StyledButton>
+        <StyledButton onClick={handleAirdrop}>{t('Airdrop')}</StyledButton>
       </Flex>
+
       <div className={styles['company-button__holders']}>
         <AccountIcon className={styles['account-icon']} color="#F48020" />
         <span>Holders: {holders}</span>
