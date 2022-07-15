@@ -32,17 +32,18 @@ const Layout: React.FC<LayoutProps> = ({ company, backLink, content, bottomConte
       )}
     </Column>
   )
+
+  const commonProps = {
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding: '20px 10px 20px 16px',
+  }
+
   if (!isDesktop) {
     return (
       <Page>
         {backLink}
-        <Grid
-          padding={'20px'}
-          justifyContent={'center'}
-          alignContent={'center'}
-          gridTemplateRows="1fr auto"
-          gridRowGap="30px"
-        >
+        <Grid gridTemplateRows="1fr auto" gridRowGap="30px" {...commonProps}>
           {section}
           <Divider />
           <Column style={{ width: '100%', overflow: 'hidden' }}>{children}</Column>
@@ -54,13 +55,7 @@ const Layout: React.FC<LayoutProps> = ({ company, backLink, content, bottomConte
   return (
     <Page>
       {backLink}
-      <Grid
-        padding={'20px'}
-        justifyContent={'center'}
-        alignContent={'center'}
-        gridTemplateColumns="1fr auto 280px"
-        gridColumnGap="30px"
-      >
+      <Grid gridTemplateColumns="1fr auto  280px" gridColumnGap="30px" {...commonProps}>
         {section}
         <DividerVertical />
         <Column>{children}</Column>
