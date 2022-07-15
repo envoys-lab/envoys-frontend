@@ -55,7 +55,7 @@ const Airdrop = ({ id }: { id: string }) => {
 
       <CompanyProgress unit={unit} min={0} max={sale.toSell} current={sale.sold} />
 
-      <Flex alignItems="center" style={{ height: 70, marginRight: -16 }} my={'20px'}>
+      <Flex alignItems="center" style={{ height: 70 }} my={'20px'}>
         <InputGroup endIcon={<MaxButton onClick={handleMaxClick}>{t('MAX')}</MaxButton>}>
           <Input value={amount} placeholder="0,0" style={{ height: 70 }} onChange={handleAmountChange} />
         </InputGroup>
