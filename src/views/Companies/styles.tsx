@@ -8,7 +8,7 @@ export const CompanyHead = styled.div`
   display: inline-flex;
   justify-content: space-between;
   flex-direction: column;
-
+  width: 100%;
   ${({ theme }) => theme.mediaQueries.sm} {
     align-items: center;
     flex-direction: row;
@@ -24,7 +24,7 @@ export const CompanyTabs = styled.div`
     background-color: transparent;
   }
 
-  max-width: 728px;
+  max-width: 662px;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -36,11 +36,11 @@ export const CompanyTabs = styled.div`
 
 export const CompanyTabInfo = styled.div`
   padding-top: 25px;
-  max-width: 728px;
+  max-width: 662px;
   font-family: Roboto, sans-serif;
   color: #34495e;
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding-left: 35px;
+    padding-left: 10px;
   } ;
 `
 

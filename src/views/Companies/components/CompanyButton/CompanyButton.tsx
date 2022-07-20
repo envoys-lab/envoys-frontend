@@ -26,17 +26,17 @@ const CompanyButtonBlock = styled(Flex)`
     max-width: 272px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: min(25vw, 232px);
+    width: min(25vw, 220px);
     margin-top: 0;
     margin-left: 12px;
     align-items: flex-start;
-    max-width: 232px;
+    max-width: 220px;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     width: 25vw;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    min-width: 232px;
+    min-width: 220px;
   }
 `
 

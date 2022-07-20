@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { Flex, Text } from '@envoysvision/uikit'
 
 export const CompanyShortInfoBlock = styled(Flex)`
-  max-width: 728px;
+  max-width: 662px;
   align-items: center;
   flex-direction: row;
 `
