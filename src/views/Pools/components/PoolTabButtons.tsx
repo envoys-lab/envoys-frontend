@@ -78,7 +78,7 @@ const Wrapper = styled.div`
   }
 `
 
-const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools }) => {
+const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, viewMode, setViewMode }) => {
   const router = useRouter()
 
   const { t } = useTranslation()
