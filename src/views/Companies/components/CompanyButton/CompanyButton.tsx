@@ -26,17 +26,17 @@ const CompanyButtonBlock = styled(Flex)`
     max-width: 272px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
-    width: min(25vw, 232px);
+    width: min(25vw, 220px);
     margin-top: 0;
     margin-left: 12px;
     align-items: flex-start;
-    max-width: 232px;
+    max-width: 220px;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     width: 25vw;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    min-width: 232px;
+    min-width: 220px;
   }
 `
 
@@ -92,7 +92,9 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
   return (
     <CompanyButtonBlock className={`${styles['company-button']} ${className}`}>
       <Flex style={{ gridGap: '8px' }} flexDirection={'column'}>
-        {!isKYCVerified && <div>{t('You have to complete KYC verification to trade')}</div>}
+        {!isKYCVerified && (
+          <div style={{ margin: '0 12px' }}>{t('You have to complete KYC verification to trade')}</div>
+        )}
         <div className={styles['company-button__button']} onClick={handleTrade}>
           {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
@@ -101,8 +103,10 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
       </Flex>
 
       <div className={styles['company-button__holders']}>
-        <AccountIcon className={styles['account-icon']} color="#F48020" />
-        <span>Holders: {holders}</span>
+        <div style={{ margin: '0 12px' }}>
+          <AccountIcon className={styles['account-icon']} color="#F48020" />
+          <span>Holders: {holders}</span>
+        </div>
         <div className={styles['company-button__home-page-button']} onClick={handleCompanyUrlClick}>
           <div className={styles['company-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
           <div>
