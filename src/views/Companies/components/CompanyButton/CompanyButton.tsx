@@ -92,7 +92,9 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
   return (
     <CompanyButtonBlock className={`${styles['company-button']} ${className}`}>
       <Flex style={{ gridGap: '8px' }} flexDirection={'column'}>
-        {!isKYCVerified && <div>{t('You have to complete KYC verification to trade')}</div>}
+        {!isKYCVerified && (
+          <div style={{ margin: '0 12px' }}>{t('You have to complete KYC verification to trade')}</div>
+        )}
         <div className={styles['company-button__button']} onClick={handleTrade}>
           {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
@@ -101,8 +103,10 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
       </Flex>
 
       <div className={styles['company-button__holders']}>
-        <AccountIcon className={styles['account-icon']} color="#F48020" />
-        <span>Holders: {holders}</span>
+        <div style={{ margin: '0 12px' }}>
+          <AccountIcon className={styles['account-icon']} color="#F48020" />
+          <span>Holders: {holders}</span>
+        </div>
         <div className={styles['company-button__home-page-button']} onClick={handleCompanyUrlClick}>
           <div className={styles['company-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
           <div>
