@@ -33,6 +33,7 @@ import {
   getPancakeSquadContract,
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
+  getSaleFactoryContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
@@ -64,6 +65,11 @@ import { IPancakePair } from '../config/abi/types/IPancakePair'
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
+
+export const useSaleFactory = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getSaleFactoryContract(library.getSigner()), [library])
+}
 
 export const useIfoV1Contract = (address: string) => {
   const { library } = useActiveWeb3React()

@@ -1,4 +1,8 @@
 export default {
+  saleFactory: {
+    97: '0x929F065831aCa929D83C1aD7aCB837067513F7db',
+    56: '',
+  },
   masterChef: {
     97: '0x2061037E588b66Ef8379E1E5216D10bb26e07106', // TESTNET - Envoys - Master Chef
     56: '0xa722e0DE43244f4EBf48398237950f876bC77Ac5',
