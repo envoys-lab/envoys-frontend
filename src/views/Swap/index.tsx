@@ -398,8 +398,8 @@ export default function Swap() {
     const outputCurrency = currencies[Field.OUTPUT] as WrappedTokenInfo
     if (
       !isKYCVerified &&
-      (compTokenAddrs.includes(inputCurrency.address.toLowerCase()) ||
-        compTokenAddrs.includes(outputCurrency.address.toLowerCase()))
+      (compTokenAddrs.includes(inputCurrency.address?.toLowerCase()) ||
+        compTokenAddrs.includes(outputCurrency.address?.toLowerCase()))
     ) {
       router.push(`/settings`)
       return
