@@ -1,12 +1,16 @@
 import { ChainId, JSBI, Percent, Token } from '@envoysvision/sdk'
 import { mainnetTokens, testnetTokens } from './tokens'
 
+
 export const ROUTER_ADDRESS_CONFIG = {
   [ChainId.TESTNET]: '0x9445cBed74897f1998Daa160b2856A3046F7f5DA', // TESTNET - Envoys - Router Contract
   [ChainId.MAINNET]: '0xF83D2664935894F1A1E81171E2FF372Bd7dE8B89',
 }
 
-export const ROUTER_ADDRESS = ROUTER_ADDRESS_CONFIG[ChainId.TESTNET]
+export const ROUTER_ADDRESS = ROUTER_ADDRESS_CONFIG[process.env.NEXT_PUBLIC_CHAIN_ID]
+if(ROUTER_ADDRESS === undefined) {
+  throw Error("Invalid chain id, router address not found");
+}
 
 // a list of tokens by chain
 type ChainTokenList = {
