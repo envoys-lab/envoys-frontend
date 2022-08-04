@@ -28,7 +28,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'EVT-BNB LP',
     lpAddresses: {
       97: '0xde90D784072254Bb36D6867c5093e70b29032ffD', // TODO: Add pool identifier from MasterChef smart contract
-      56: ' 0x2206ca84db75ae620400ba7e54b7c59d6fdcf950',
+      56: '0x2206ca84db75ae620400ba7e54b7c59d6fdcf950',
     },
     token: serializedTokens.evt,
     quoteToken: serializedTokens.wbnb,
