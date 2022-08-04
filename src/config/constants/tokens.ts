@@ -112,27 +112,27 @@ export const mainnetTokens = defineTokens({
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     MAINNET,
-    '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', // TODO: Replace with MAINNET EVT
+    '0x75F8ADf88019E9B1d023fF4645DfAa350Bf3Fb04', // TODO: Replace with MAINNET EVT
     18,
     'EVT',
     'Envoys Vision Token',
-    'https://beta.envoys.vision/',
+    'https://app.envoys.vision/',
   ),
   evt: new Token(
     MAINNET,
-    '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79', // TODO: Replace with MAINNET EVT
+    '0x75F8ADf88019E9B1d023fF4645DfAa350Bf3Fb04', // TODO: Replace with MAINNET EVT
     18,
     'EVT',
     'Envoys Vision Token',
-    'https://beta.envoys.vision/',
+    'https://app.envoys.vision/',
   ),
   evb: new Token(
     MAINNET,
-    '0x12EcdD1a158AC9C942a890879C1b8D771B90EB37', // TODO: Replace with MAINNET EVB
+    '0x8EA816bd10a8B44e3B2Bb1E5EEE62a4eEBb0735F', // TODO: Replace with MAINNET EVB
     18,
     'EVT',
     'Envoys Vision Token',
-    'https://beta.envoys.vision/',
+    'https://app.envoys.vision/',
   ),
   tlos: new Token(MAINNET, '0xb6C53431608E626AC81a9776ac3e999c5556717c', 18, 'TLOS', 'Telos', 'https://www.telos.net/'),
   beta: new Token(
@@ -316,11 +316,11 @@ export const mainnetTokens = defineTokens({
   ),
   syrup: new Token(
     MAINNET,
-    '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
+    '0x8EA816bd10a8B44e3B2Bb1E5EEE62a4eEBb0735F',
     18,
-    'SYRUP',
-    'SyrupBar Token',
-    'https://pancakeswap.finance/',
+    'EVB',
+    'EnvoysBar Token',
+    'https://app.envoys.vision/',
   ),
   pha: new Token(
     MAINNET,

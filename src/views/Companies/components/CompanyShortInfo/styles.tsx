@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Flex, Text } from '@envoysvision/uikit'
 
 export const CompanyShortInfoBlock = styled(Flex)`
-  max-width: 728px;
+  max-width: 662px;
   align-items: center;
   flex-direction: row;
 `
@@ -24,7 +24,7 @@ export const SmallScreenLogo = styled.div`
   }
 `
 
-export const CompanyMainInfo = styled(Flex)`
+export const CompanyMainInfo = styled(Flex)<{ leftMargin: boolean }>`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
@@ -33,6 +33,15 @@ export const CompanyMainInfo = styled(Flex)`
     margin-right: 36px;
     align-items: flex-start;
   }
+
+  ${({ leftMargin }) =>
+    leftMargin &&
+    css`
+      margin-right: 0 !important;
+      ${({ theme }) => theme.mediaQueries.xxl} {
+        margin-left: 30px;
+      }
+    `}
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     align-items: flex-start;

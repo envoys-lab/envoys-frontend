@@ -18,7 +18,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'EVT',
     lpAddresses: {
       97: '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79', // 0x2061037E588b66Ef8379E1E5216D10bb26e07106
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82', // TODO: Replace with EVT MAINNET
+      56: '0x75F8ADf88019E9B1d023fF4645DfAa350Bf3Fb04', // TODO: Replace with EVT MAINNET
     },
     token: serializedTokens.syrup,
     quoteToken: serializedTokens.wbnb,
@@ -28,7 +28,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'EVT-BNB LP',
     lpAddresses: {
       97: '0xde90D784072254Bb36D6867c5093e70b29032ffD', // TODO: Add pool identifier from MasterChef smart contract
-      56: '',
+      56: ' 0x2206ca84db75ae620400ba7e54b7c59d6fdcf950',
     },
     token: serializedTokens.evt,
     quoteToken: serializedTokens.wbnb,
@@ -38,7 +38,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
       97: '0x66eDf8072b5C46E8a069cB9b3c6cf0198532a743', // TODO: Add pool identifier from MasterChef smart contract
-      56: '',
+      56: '0x58332999bdcef7acb1e82029262661e27de174c4',
     },
     token: serializedTokens.busd,
     quoteToken: serializedTokens.wbnb,

@@ -25,6 +25,12 @@ const GlobalStyle = createGlobalStyle`
       z-index: ${({ theme }) => theme.zIndices.modal};
     }
   }
+  
+  #staked-only {
+    &:hover + *, &:focus + *{
+      box-shadow: 0 2px 2px rgb(0 0 0 / 5%) !important;
+    }
+  }
 `
 
 export default GlobalStyle

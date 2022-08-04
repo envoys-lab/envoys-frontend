@@ -1,13 +1,9 @@
 const axios = require('axios')
 
-import { ENVOYS_API, COVALENTHQ_API_KEY, COVALENTHQ_API } from 'config/constants/endpoints'
+import { ENVOYS_API } from 'config/constants/endpoints'
 
 const envoysAxiosInstance = axios.create({
   baseURL: ENVOYS_API,
-})
-
-const covalenthqAxiosInstance = axios.create({
-  baseURL: COVALENTHQ_API,
 })
 
 const getCompanies = async (page = 1, size = 50) => {

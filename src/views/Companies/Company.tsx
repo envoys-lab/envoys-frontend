@@ -63,7 +63,12 @@ const Company = ({ companyId }: { companyId: string }) => {
           logoUrl={company.logoUrl}
           className={styles['company__head']}
         />
-        <CompanyButton token={company.token} holders={company.holdersCount} homePageUrl={company.homePageUrl} />
+        <CompanyButton
+          id={company._id}
+          token={company.token}
+          holders={company.holdersCount}
+          homePageUrl={company.homePageUrl}
+        />
       </CompanyHead>
       <CompanyTabs id="tabs">
         <Scrollspy

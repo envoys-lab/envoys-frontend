@@ -1,11 +1,11 @@
 import React from 'react'
 import { NextLinkFromReactRouter } from 'components/NextLink'
-import { ViewMode } from 'state/user/actions'
+// import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
-import ToggleView from './ToggleView/ToggleView'
+// import ToggleView from './ToggleView/ToggleView'
 
 const ToggleWrapper = styled.div`
   display: flex;
@@ -35,6 +35,7 @@ const TextContainer = styled.div<{ opacity?: number }>`
   user-select: none;
 `
 
+/*
 const ViewControls = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
@@ -43,7 +44,7 @@ const ViewControls = styled.div`
   width: 100%;
 
   > div {
-    padding: 8px 0px;
+    padding: 8px 0;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -55,6 +56,7 @@ const ViewControls = styled.div`
     }
   }
 `
+*/
 
 const Space = styled.div<{ size: number }>`
   min-width: ${({ size }) => size + 'px'};
@@ -83,7 +85,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const isExact = router.asPath === '/pools'
 
-  const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
+  // const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
 
   const liveOrFinishedSwitch = (
     <Wrapper>
@@ -102,7 +104,13 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   const stakedOnlySwitch = (
     <ToggleWrapper>
-      <Toggle checked={stakedOnly} onChange={() => setStakedOnly(!stakedOnly)} checkedColor="secondary" scale="ev" />
+      <Toggle
+        id="staked-only"
+        checked={stakedOnly}
+        onChange={() => setStakedOnly(!stakedOnly)}
+        checkedColor="secondary"
+        scale="ev"
+      />
       <Space size={8} />
       <TextContainer> {t('Staked only')}</TextContainer>
     </ToggleWrapper>

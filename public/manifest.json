@@ -2,7 +2,7 @@
   "short_name": "Envoys",
   "name": "Envoys",
   "description": "Envoys LP Tokens",
-  "homepage_url": "https://beta.envoys.vision/",
+  "homepage_url": "https://app.envoys.vision/",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#0F2B46",

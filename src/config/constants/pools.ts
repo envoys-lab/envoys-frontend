@@ -34,7 +34,7 @@ const pools: SerializedPoolConfig[] = [
     earningToken: serializedTokens.evt,
     contractAddress: {
       97: '0x2061037E588b66Ef8379E1E5216D10bb26e07106', // TESTNET - Envoys - Master Chef
-      56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+      56: '0xa722e0DE43244f4EBf48398237950f876bC77Ac5',
     },
     poolCategory: PoolCategory.CORE,
     harvest: true,
