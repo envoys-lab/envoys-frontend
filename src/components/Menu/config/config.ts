@@ -58,13 +58,21 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     items: [],
     iconComponent: MenuWallet,
   },
+  // {
+  //   label: t('OTC'),
+  //   icon: 'OTC',
+  //   active: false,
+  //   href: '/otc',
+  //   items: [],
+  //   iconComponent: MenuOTC,
+  // },
   {
-    label: t('OTC'),
-    icon: 'OTC',
-    active: false,
-    href: '/otc',
+    label: t('Info'),
+    icon: 'Info',
+    active: true,
+    href: '/info',
     items: [],
-    iconComponent: MenuOTC,
+    iconComponent: MenuOTC, // TODO: Add Info icon
   },
   {
     label: t('Settings'),
