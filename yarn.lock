@@ -636,10 +636,10 @@
     truffle-flattener "^1.4.4"
     truffle-hdwallet-provider "^1.0.17"
 
-"@envoysvision/sdk@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/@envoysvision/sdk/-/sdk-2.4.1.tgz"
-  integrity sha512-p6kEpKvMsOLX3R0Y/mO/Y2lNLzck+4n/AVuq4Qzhno9tNaia48Hqo+lTOzUec+pJXpBuI+UBsI065le9Asph3w==
+"@envoysvision/sdk@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@envoysvision/sdk/-/sdk-2.4.2.tgz#6dfd21ecfb328a6ffa2e408aa62179a02e287122"
+  integrity sha512-q/0ykJhS+REfTv2R2mHGfCAs6Jsedj++CMTBS+ZcH2g+ency2ljb6J5Xz5ClLyUjMFdYDHbFsFe+VyLcDeD58A==
   dependencies:
     "@envoysvision/envoys-swap-core" "^0.1.0"
     big.js "^5.2.2"

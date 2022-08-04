@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
-    "@envoysvision/sdk": "^2.4.1",
+    "@envoysvision/sdk": "^2.4.2",
     "@envoysvision/uikit": "0.63.50",
     "@ethersproject/abi": "^5.5.0",
     "@ethersproject/address": "^5.5.0",

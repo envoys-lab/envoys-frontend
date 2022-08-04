@@ -1,5 +1,4 @@
 import { ChainId } from '@envoysvision/sdk'
-import { CURRENT_CHAIN_ID } from 'config'
 
 // BNB
 export const DEFAULT_INPUT_CURRENCY = 'BNB'
@@ -10,4 +9,4 @@ const EVT_BY_NEY = {
   [ChainId.MAINNET]: '0x75F8ADf88019E9B1d023fF4645DfAa350Bf3Fb04', // TODO: REPLACE WTH EVT MAINNET
 }
 
-export const DEFAULT_OUTPUT_CURRENCY = EVT_BY_NEY[CURRENT_CHAIN_ID]
+export const DEFAULT_OUTPUT_CURRENCY = '0x55d398326f99059ff775485246999027b3197955' // TODO: Replace to EVT_BY_NEY[CURRENT_CHAIN_ID]
