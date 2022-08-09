@@ -3,7 +3,7 @@ import { mainnetTokens, testnetTokens } from './tokens'
 
 export const ROUTER_ADDRESS_CONFIG = {
   [ChainId.TESTNET]: '0x9445cBed74897f1998Daa160b2856A3046F7f5DA', // TESTNET - Envoys - Router Contract
-  [ChainId.MAINNET]: '0xF83D2664935894F1A1E81171E2FF372Bd7dE8B89',
+  [ChainId.MAINNET]: '0xc072106c53D38a15B00B2ECF2FEc41210e056A22',
 }
 
 export const ROUTER_ADDRESS = ROUTER_ADDRESS_CONFIG[process.env.NEXT_PUBLIC_CHAIN_ID]
