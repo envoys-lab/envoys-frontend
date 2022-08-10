@@ -51,7 +51,7 @@ const CompanySaleDetails: React.FC<{
   return (
     <>
       <TextWithHeader title="Private Sale Address">
-        <Link href="#" fontWeight={400} style={{ display: 'inline' }}>
+        <Link external={true} href={"https://bscscan.com/address/" + sale.address} fontWeight={400} style={{ display: 'inline' }}>
           {sale.address}
         </Link>
       </TextWithHeader>
