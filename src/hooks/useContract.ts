@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import {
   getBep20Contract,
@@ -34,6 +34,7 @@ import {
   getErc721CollectionContract,
   getBunnySpecialXmasContract,
   getSaleFactoryContract,
+  getSale,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
@@ -61,14 +62,21 @@ import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
 import { IPancakePair } from '../config/abi/types/IPancakePair'
+import { SaleFactory } from 'config/abi/types/SaleFactory'
+import { EnvoysSale } from 'config/abi/types/EnvoysSale'
 
 /**
  * Helper hooks to get specific contracts (by ABI)
  */
 
-export const useSaleFactory = () => {
-  const { library } = useActiveWeb3React()
-  return useMemo(() => getSaleFactoryContract(library.getSigner()), [library])
+export const useSaleFactory = (): SaleFactory => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(() => getSaleFactoryContract(getProviderOrSigner(library, account)), [library])
+}
+
+export const useSale = (address: string): EnvoysSale => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(() => getSale(address, getProviderOrSigner(library, account)), [library, address])
 }
 
 export const useIfoV1Contract = (address: string) => {

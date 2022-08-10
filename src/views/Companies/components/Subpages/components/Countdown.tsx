@@ -55,7 +55,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
   }
 }
 
-const CountdownRow: React.FC<{ title: string; endTime?: string }> = ({ title, endTime }) => {
+const CountdownRow: React.FC<{ title: string; endTime?: string | number }> = ({ title, endTime }) => {
   if (endTime === undefined) {
     return <Completionist />
   }

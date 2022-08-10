@@ -74,6 +74,7 @@ import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import saleFactoryAbi from 'config/abi/saleFactory.json'
+import envoysSaleAbi from 'config/abi/envoysSale.json'
 
 // Types
 import {
@@ -110,6 +111,7 @@ import {
   PancakeSquad,
   Erc721collection,
   PointCenterIfo,
+  EnvoysSale,
 } from 'config/abi/types'
 import { SaleFactory } from 'config/abi/types/SaleFactory'
 
@@ -120,6 +122,9 @@ const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
 
 export const getSaleFactoryContract = (signer?: Signer | Provider) => {
   return getContract(saleFactoryAbi, getSaleFactoryAddress(), signer) as SaleFactory
+}
+export const getSale = (address: string, signer?: Signer | Provider) => {
+  return getContract(envoysSaleAbi, address, signer) as EnvoysSale
 }
 export const getBep20Contract = (address: string, signer?: Signer | Provider) => {
   return getContract(bep20Abi, address, signer) as Erc20
