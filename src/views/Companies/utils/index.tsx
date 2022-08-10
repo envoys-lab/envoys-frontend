@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { useState } from 'react'
 import { getCompanies } from '../api'
 
@@ -22,6 +23,17 @@ export interface CompanyStage {
 interface CompanyRoadMapItem {
   title: string
   description: string
+}
+
+export interface SaleInfo {
+  contract: string
+  token: string
+  soft: ethers.BigNumberish
+  hard: ethers.BigNumberish
+  buyToken: string
+  price: ethers.BigNumberish
+  start: ethers.BigNumberish
+  end: ethers.BigNumberish
 }
 
 export interface BaseCompany {
