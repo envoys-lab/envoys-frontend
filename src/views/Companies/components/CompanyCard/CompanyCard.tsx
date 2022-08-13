@@ -7,6 +7,13 @@ import StarIcon from '../../assets/Star'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CompanyCardImage, CompanyCardName, CompanyCardStar, CompanyCardTopRow, StyledCompanyCard } from './styles'
 
+
+const camalize = (str: string) => {
+  if(str.length == 0) return "";
+  if(str.length == 1) return str.toUpperCase();
+  return str[0].toUpperCase() + str.slice(1);
+}
+
 const getDaysRange = (company: BaseCompany): string => {
   const { t } = useTranslation()
   let stage: CompanyStage
@@ -78,7 +85,7 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
 
       <Box ml={'64px'} mt={'5px'}>
         <Text color={'success'} fontSize={'14px'}>
-          {company.status}
+          {camalize(company.status)}
         </Text>
         <Text thin color={'mainDark'} fontSize={'14px'}>
           {getDaysRange(company)}
