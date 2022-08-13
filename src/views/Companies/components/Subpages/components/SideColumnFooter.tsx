@@ -3,7 +3,7 @@ import { ColumnCenter } from '../../../../../components/Layout/Column'
 import Divider from './Divider'
 
 interface ColumnFooterProps {
-  children: React.ReactNode[]
+  children: React.ReactNode[] | React.ReactNode
   withDivider?: boolean
 }
 
