@@ -35,6 +35,7 @@ import {
   getTradingCompetitionAddressV2,
   getBunnySpecialXmasAddress,
   getSaleFactoryAddress,
+  getAirdropFactoryAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -75,6 +76,8 @@ import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollectionAbi from 'config/abi/erc721collection.json'
 import saleFactoryAbi from 'config/abi/saleFactory.json'
 import envoysSaleAbi from 'config/abi/envoysSale.json'
+import airdropFactoryAbi from 'config/abi/airdropFactory.json'
+import envoysAirdropAbi from 'config/abi/envoysAirdrop.json'
 
 // Types
 import {
@@ -112,14 +115,22 @@ import {
   Erc721collection,
   PointCenterIfo,
   EnvoysSale,
+  SaleFactory,
+  EnvoysAirdrop,
+  AirdropFactory
 } from 'config/abi/types'
-import { SaleFactory } from 'config/abi/types/SaleFactory'
 
 const getContract = (abi: any, address: string, signer?: Signer | Provider) => {
   const signerOrProvider = signer ?? simpleRpcProvider
   return new Contract(address, abi, signerOrProvider)
 }
 
+export const getAirdropFactoryContract = (signer?: Signer | Provider) => {
+  return getContract(airdropFactoryAbi, getAirdropFactoryAddress(), signer) as AirdropFactory
+}
+export const getAirdrop = (address: string, signer?: Signer | Provider) => {
+  return getContract(envoysAirdropAbi, address, signer) as EnvoysAirdrop
+}
 export const getSaleFactoryContract = (signer?: Signer | Provider) => {
   return getContract(saleFactoryAbi, getSaleFactoryAddress(), signer) as SaleFactory
 }

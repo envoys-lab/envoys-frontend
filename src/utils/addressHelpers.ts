@@ -9,6 +9,9 @@ export const getAddress = (address: Address): string => {
   return address[chainId] ? address[chainId] : address[ChainId.MAINNET]
 }
 
+export const getAirdropFactoryAddress = () => {
+  return getAddress(addresses.airdropFactory)
+}
 export const getSaleFactoryAddress = () => {
   return getAddress(addresses.saleFactory)
 }

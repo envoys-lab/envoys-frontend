@@ -35,13 +35,17 @@ import {
   getBunnySpecialXmasContract,
   getSaleFactoryContract,
   getSale,
+  getAirdropFactoryContract,
+  getAirdrop,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 import { VaultKey } from 'state/types'
 import {
+  AirdropFactory,
   CakeVault,
   EnsPublicResolver,
   EnsRegistrar,
+  EnvoysAirdrop,
   Erc20,
   Erc20Bytes32,
   IfoPool,
@@ -69,14 +73,24 @@ import { EnvoysSale } from 'config/abi/types/EnvoysSale'
  * Helper hooks to get specific contracts (by ABI)
  */
 
-export const useSaleFactory = (): SaleFactory => {
+ export const useSaleFactory = (): SaleFactory => {
   const { library, account } = useActiveWeb3React()
   return useMemo(() => getSaleFactoryContract(getProviderOrSigner(library, account)), [library])
+}
+
+export const useAirdropFactory = (): AirdropFactory => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(() => getAirdropFactoryContract(getProviderOrSigner(library, account)), [library])
 }
 
 export const useSale = (address: string): EnvoysSale => {
   const { library, account } = useActiveWeb3React()
   return useMemo(() => getSale(address, getProviderOrSigner(library, account)), [library, address])
+}
+
+export const useAirdrop = (address: string): EnvoysAirdrop => {
+  const { library, account } = useActiveWeb3React()
+  return useMemo(() => getAirdrop(address, getProviderOrSigner(library, account)), [library, address])
 }
 
 export const useIfoV1Contract = (address: string) => {
