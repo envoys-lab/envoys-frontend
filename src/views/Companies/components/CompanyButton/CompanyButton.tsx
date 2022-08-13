@@ -7,7 +7,7 @@ import AccountIcon from 'views/Companies/assets/AccountIcon'
 import LinkIcon from 'views/Companies/assets/LinkIcon'
 import { useTranslation } from '../../../../contexts/Localization'
 import useIsKYCVerified from '../../../../hooks/useIsKYCVerified'
-import { useSaleFactory } from 'hooks/useContract'
+import { useAirdropFactory, useSaleFactory } from 'hooks/useContract'
 
 interface CompanyButtonProps {
   id: string
@@ -56,12 +56,21 @@ StyledButton.defaultProps = {
 const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyButtonProps) => {
   const { t } = useTranslation()
   const saleFactory = useSaleFactory();
+  const airdropFactory = useAirdropFactory();
   const [existSale, setExistSale] = React.useState(false); //saleFactory.sales(token);
+  const [existAirdrop, setExistAirdrop] = React.useState(false); //airdropFactory.airdrop(token);
 
   React.useEffect(() => {
-    saleFactory.sales(token).then(sale => {
+    const promises = [
+      saleFactory.sales(token),
+      airdropFactory.airdrops(token)
+    ];
+    Promise.all(promises).then(([sale, airdrop]) => {
       if(parseInt(sale) !== 0) {
         setExistSale(true);
+      }
+      if(parseInt(airdrop) !== 0) {
+        setExistAirdrop(true);
       }
     });
   }, []);
@@ -110,7 +119,7 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
           {t(isKYCVerified ? 'TRADE' : 'Verify')}
         </div>
         {existSale && <StyledButton onClick={handleBuy}>{t('Buy')}</StyledButton>}
-        <StyledButton onClick={handleAirdrop}>{t('Airdrop')}</StyledButton>
+        {existAirdrop && <StyledButton onClick={handleAirdrop}>{t('Airdrop')}</StyledButton>}
       </Flex>
 
       <div className={styles['company-button__holders']}>
