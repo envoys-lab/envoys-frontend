@@ -5,22 +5,34 @@ import { Token } from '@envoysvision/sdk'
 import { EnvoysAirdrop } from 'config/abi/types'
 import useTotalSupply from 'hooks/useTotalSupply'
 
-const AirdropTokenDetails: React.FC<{ 
-    token: Token, 
-    airdrop: EnvoysAirdrop,
-  }> = ({ token, airdrop }) => {
-  const totalSupply = useTotalSupply(token);
+const AirdropTokenDetails: React.FC<{
+  token: Token
+  airdrop: EnvoysAirdrop
+}> = ({ token, airdrop }) => {
+  const totalSupply = useTotalSupply(token)
 
   return (
     <>
       <TextWithHeader title="Token address">
-        <Link href={`https://bscscan.com/token/${token.address}`} external={true} fontWeight={400} ellipsis={true} style={{ display: 'inline' }}>
+        <Link
+          href={`https://bscscan.com/token/${token.address}`}
+          external={true}
+          fontWeight={400}
+          ellipsis={true}
+          style={{ display: 'inline' }}
+        >
           {token.address}
         </Link>
       </TextWithHeader>
 
       <TextWithHeader title="Airdrop address">
-        <Link href={`https://bscscan.com/address/${airdrop.address}`} external={true} fontWeight={400} ellipsis={true} style={{ display: 'inline' }}>
+        <Link
+          href={`https://bscscan.com/address/${airdrop.address}`}
+          external={true}
+          fontWeight={400}
+          ellipsis={true}
+          style={{ display: 'inline' }}
+        >
           {airdrop.address}
         </Link>
       </TextWithHeader>

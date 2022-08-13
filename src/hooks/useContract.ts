@@ -73,7 +73,7 @@ import { EnvoysSale } from 'config/abi/types/EnvoysSale'
  * Helper hooks to get specific contracts (by ABI)
  */
 
- export const useSaleFactory = (): SaleFactory => {
+export const useSaleFactory = (): SaleFactory => {
   const { library, account } = useActiveWeb3React()
   return useMemo(() => getSaleFactoryContract(getProviderOrSigner(library, account)), [library])
 }

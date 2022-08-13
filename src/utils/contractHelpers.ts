@@ -117,7 +117,7 @@ import {
   EnvoysSale,
   SaleFactory,
   EnvoysAirdrop,
-  AirdropFactory
+  AirdropFactory,
 } from 'config/abi/types'
 
 const getContract = (abi: any, address: string, signer?: Signer | Provider) => {

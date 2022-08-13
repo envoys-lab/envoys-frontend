@@ -26,22 +26,21 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Token } from '@envoysvision/sdk'
 import { BigNumber } from 'ethers'
 
-
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Airdrop = ({ id }: { id: string }) => {
   const { t } = useTranslation()
   const [company, setCompany] = useState<BaseCompany>()
-  const [airdrop, setAirdrop] = useState<EnvoysAirdrop | undefined>();
+  const [airdrop, setAirdrop] = useState<EnvoysAirdrop | undefined>()
   const [airdropInfo, setAirdropInfo] = useState<{
-    token: string;
-    amount: BigNumber;
-    start: BigNumber;
-    end: BigNumber;
-  }>();
-  const [tokenAddr, setTokenAddr] = useState<string>();
-  const token = useToken(tokenAddr);
+    token: string
+    amount: BigNumber
+    start: BigNumber
+    end: BigNumber
+  }>()
+  const [tokenAddr, setTokenAddr] = useState<string>()
+  const token = useToken(tokenAddr)
   const { account, library } = useActiveWeb3React()
-  
+
   useEffect(() => {
     handleGetCompany().then(initCompany)
   }, [])
@@ -51,25 +50,23 @@ const Airdrop = ({ id }: { id: string }) => {
   const handleGetCompany = async () => {
     const company = await getCompany(id)
     setCompany({ ...company, ...mock })
-    return company;
+    return company
   }
 
-  const airdropFactory = useAirdropFactory();
+  const airdropFactory = useAirdropFactory()
 
   const initCompany = async (company: any) => {
-    if(!company || !airdropFactory) return;
-    const address = await airdropFactory.airdrops(company.token);
-    const a = getAirdrop(address, getProviderOrSigner(library, account));
-    setAirdrop(a);
-    setTokenAddr(company.token);
-    
-    const info = await a.airdropInfo();
-    setAirdropInfo(info);
+    if (!company || !airdropFactory) return
+    const address = await airdropFactory.airdrops(company.token)
+    const a = getAirdrop(address, getProviderOrSigner(library, account))
+    setAirdrop(a)
+    setTokenAddr(company.token)
+
+    const info = await a.airdropInfo()
+    setAirdropInfo(info)
   }
 
   if (!company || !airdropFactory || !airdrop || !token || !airdropInfo) return <PageLoader />
-
-  
 
   return (
     <Layout
@@ -86,9 +83,7 @@ const Airdrop = ({ id }: { id: string }) => {
             [status]
           </Text>
         </TextWithHeader>
-        <TextWithHeader title="Your claimed">
-          0 {token.symbol}
-        </TextWithHeader>
+        <TextWithHeader title="Your claimed">0 {token.symbol}</TextWithHeader>
         <StyledButton width={'100%'} onClick={onGetAirdrop}>
           {t('Get Airdrop')}
         </StyledButton>
