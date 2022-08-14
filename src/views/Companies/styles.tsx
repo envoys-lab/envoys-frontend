@@ -3,7 +3,6 @@ import styled from 'styled-components'
 export const CompanyHead = styled.div`
   /* windows */
   background: ${({ theme }) => theme.colors.backgroundAlt};
-
   margin-top: 20px;
   display: inline-flex;
   justify-content: space-between;
@@ -12,7 +11,11 @@ export const CompanyHead = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     align-items: center;
     flex-direction: row;
-  } ;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: block;
+    position: relative;
+  }
 `
 
 export const CompanyTabs = styled.div`
