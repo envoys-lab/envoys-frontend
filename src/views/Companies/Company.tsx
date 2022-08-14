@@ -74,12 +74,12 @@ const Company = ({ companyId }: { companyId: string }) => {
         <Scrollspy
           offset={lowResolutionMode ? -95 : -35}
           className={styles.scrollspy}
-          items={['ico', 'about', 'roadmap', 'team', 'docs']}
+          items={['ido', 'about', 'roadmap', 'team', 'docs']}
           currentClassName={styles.isCurrent}
         >
           {visibleTabs.ico && (
-            <AnchorLink href="#ico">
-              <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('ICO Details')}</span>
+            <AnchorLink href="#ido">
+              <span style={{ whiteSpace: isMobile ? 'nowrap' : 'normal' }}>{t('IDO Details')}</span>
             </AnchorLink>
           )}
           {visibleTabs.about && <AnchorLink href="#about">{t('About')}</AnchorLink>}
@@ -88,7 +88,7 @@ const Company = ({ companyId }: { companyId: string }) => {
           {visibleTabs.documents && <AnchorLink href="#docs">{t('Docs')}</AnchorLink>}
         </Scrollspy>
       </CompanyTabs>
-      <CompanyTabInfo id="ico">
+      <CompanyTabInfo id="ido">
         <Box width={'100%'}>
           <div>{company?.videoUrl && <StyledFrame src={company.videoUrl} />}</div>
           <Box pt={'30px'}>

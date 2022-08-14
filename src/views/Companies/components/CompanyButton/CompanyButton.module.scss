@@ -6,7 +6,11 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
-
+  @include screenMinSize('xxl') {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
   &__button {
     box-shadow: 0 15px 20px -18px #f48020;
     border-radius: 14px;
