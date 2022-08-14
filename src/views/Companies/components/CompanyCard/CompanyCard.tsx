@@ -7,11 +7,10 @@ import StarIcon from '../../assets/Star'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CompanyCardImage, CompanyCardName, CompanyCardStar, CompanyCardTopRow, StyledCompanyCard } from './styles'
 
-
 const camalize = (str: string) => {
-  if(str.length == 0) return "";
-  if(str.length == 1) return str.toUpperCase();
-  return str[0].toUpperCase() + str.slice(1);
+  if (str.length == 0) return ''
+  if (str.length == 1) return str.toUpperCase()
+  return str[0].toUpperCase() + str.slice(1)
 }
 
 const getDaysRange = (company: BaseCompany): string => {
