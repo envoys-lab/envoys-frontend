@@ -57,7 +57,7 @@ const getButtonProps = (value: BigNumber, bnbBalance: BigNumber, minBetAmountBal
   }
 
   if (value.eq(0)) {
-    return { key: 'Enter an amount', disabled: true }
+    return { key: 'Enter amount', disabled: true }
   }
 
   return { key: 'Confirm', disabled: value.lt(minBetAmountBalance) }
