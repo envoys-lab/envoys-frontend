@@ -2,7 +2,7 @@ import { ChainId, Token } from '@envoysvision/sdk'
 import getLpAddress from 'utils/getLpAddress'
 
 const EVT_AS_STRING = '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79'
-const BNB_AS_STRING = '0xae13d989dac2f0debff460ac112a837c89baa7cd'
+const BNB_AS_STRING = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd'
 const EVT_AS_TOKEN = new Token(ChainId.TESTNET, EVT_AS_STRING, 18)
 const BNB_AS_TOKEN = new Token(ChainId.TESTNET, BNB_AS_STRING, 18)
 const EVT_BNB_LP = '0xde90D784072254Bb36D6867c5093e70b29032ffD'

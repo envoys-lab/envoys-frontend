@@ -2077,13 +2077,13 @@ export const mainnetTokens = defineTokens({
 export const testnetTokens = defineTokens({
   wbnb: new Token(
     TESTNET,
-    '0xae13d989dac2f0debff460ac112a837c89baa7cd',
+    '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
     18,
     'WBNB',
     'Wrapped BNB',
     'https://www.binance.com/',
   ),
-  bnb: new Token(TESTNET, '0xae13d989dac2f0debff460ac112a837c89baa7cd', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
+  bnb: new Token(TESTNET, '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(
     TESTNET,
     '0x35f64b2f6824d8Be046Ac854c5E4db72f6D9cE79',
@@ -2118,7 +2118,7 @@ export const testnetTokens = defineTokens({
   ),
   usdt: new Token(
     TESTNET,
-    '0x337610d27c682e347c9cd60bd4b3b107c9d34ddd',
+    '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
     18,
     'USDT',
     'USDT Token',
