@@ -101,12 +101,15 @@ const Company = ({ companyId }: { companyId: string }) => {
       </CompanyTabInfo>
       <CompanyTabInfo id="about">
         <CompanyTabInfoHeader>{t('About %company%', { company: company?.name })}</CompanyTabInfoHeader>
-        <About markdown={company.about.text} />
+        <About markdown={company.description} />
       </CompanyTabInfo>
-      <CompanyTabInfo id="roadmap">
-        <CompanyTabInfoHeader>{t('Roadmap')}</CompanyTabInfoHeader>
-        <Roadmap company={company} />
-      </CompanyTabInfo>
+      { company.roadmap.length > 0 && 
+        <CompanyTabInfo id="roadmap">
+          <CompanyTabInfoHeader>{t('Roadmap')}</CompanyTabInfoHeader>
+          <Roadmap company={company} />
+        </CompanyTabInfo>
+      }
+      { company.members.length > 0 &&
       <CompanyTabInfo id="team">
         <CompanyTabInfoHeader>{company?.name} Team</CompanyTabInfoHeader>
         <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
@@ -115,10 +118,14 @@ const Company = ({ companyId }: { companyId: string }) => {
         <CompanyTabInfoHeader>{company?.name} Interviews</CompanyTabInfoHeader>
         <CompanyInterviews members={company.members} />
       </CompanyTabInfo>
+      }
+
+      { company.documents && company.documents.length > 0 && 
       <CompanyTabInfo id="docs">
         <CompanyTabInfoHeader>{t('Docs')}</CompanyTabInfoHeader>
         {company.documents && company.documents.length && <Documents documents={company.documents} />}
       </CompanyTabInfo>
+      }
     </Page>
   )
 }

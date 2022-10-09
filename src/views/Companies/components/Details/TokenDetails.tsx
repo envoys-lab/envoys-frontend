@@ -27,14 +27,6 @@ const TokenDetails = ({ token, className }: TokenDetailsProps) => {
           </div>
         ))}
       </div>
-      <div className={`${styles['details-data']}`}>
-        Accepted Currencies
-        <div className={`${styles['details-data-inner']}`}>{token.currencies.join(', ')}</div>
-      </div>
-      <div className={`${styles['details-data']}`}>
-        Min Contribution
-        <div className={`${styles['details-data-inner']}`}>{token.minContribution}</div>
-      </div>
     </div>
   )
 }

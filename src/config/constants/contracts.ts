@@ -1,10 +1,10 @@
 export default {
   saleFactory: {
-    97: '0x929F065831aCa929D83C1aD7aCB837067513F7db',
+    97: '0xCE13afeF478dB995b9B80076268F0beF9A846814',
     56: '0xB719FC7b533784D49a92357C02A695Ec7f612FEc',
   },
   airdropFactory: {
-    97: '',
+    97: '0x68bEb8f54B53A4a4f1FD0AfadFcFe21EC0e6648C',
     56: '0xb0d3B4Ec504f9817908172C585e75FDf25dA206a',
   },
   masterChef: {

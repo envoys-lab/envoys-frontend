@@ -6,48 +6,90 @@ import { BaseCompany, CompanyStage, companyStatusOngoing, companyStatusPast, com
 import StarIcon from '../../assets/Star'
 import { useTranslation } from '../../../../contexts/Localization'
 import { CompanyCardImage, CompanyCardName, CompanyCardStar, CompanyCardTopRow, StyledCompanyCard } from './styles'
+import { useAirdrop, useAirdropFactory, useSale, useSaleFactory } from 'hooks/useContract'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { AirdropFactory, SaleFactory } from 'config/abi/types'
+import { getAirdrop, getSale } from 'utils/contractHelpers'
+import { getProviderOrSigner } from 'utils'
+import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
-const camalize = (str: string) => {
-  if (str.length == 0) return ''
-  if (str.length == 1) return str.toUpperCase()
-  return str[0].toUpperCase() + str.slice(1)
+enum CompanyStatus {
+  NotStarted,
+  Ongoing,
+  Ended
 }
 
-const getDaysRange = (company: BaseCompany): string => {
-  const { t } = useTranslation()
-  let stage: CompanyStage
-  const stages = company.stages.filter((stage) => stage.status === company.status)
-  if (stages && stages.length) {
-    stage = stages[0]
+const fetchAirdropStatus = async (airdropFactory: AirdropFactory, token: string, provider: Web3Provider) => {
+  const airdropAddress = await airdropFactory.airdrops(token);
+  if(airdropAddress === "0x0000000000000000000000000000000000000000") {
+    return {
+      exists: false
+    }
   }
-  const calcRange = (startDate: string | Date, endDate: string | Date): number => {
-    const start = new Date(startDate).getTime()
-    const end = new Date(endDate).getTime()
-    return Math.abs(end - start) / (1000 * 60 * 60 * 24)
+  const airdrop = getAirdrop(airdropAddress, provider);
+  const info = await airdrop.airdropInfo();
+  const currentTime = (await provider.getBlock("latest")).timestamp;
+
+  const endIn = info.end.sub(currentTime);
+  const startIn = info.start.sub(currentTime);
+
+  return {
+    exists: true,
+    endIn,
+    startIn
   }
 
-  let message
-  let rangeDays
-  switch (stage?.status) {
-    case companyStatusPast: {
-      message = 'Ended %days% days ago'
-      rangeDays = Math.ceil(calcRange(stage.endDate, new Date()))
-      break
+}
+
+const fetchSaleStatus = async (saleFactory: SaleFactory, token: string, provider: Web3Provider) => {
+  const saleAddress = await saleFactory.sales(token);
+  if(saleAddress === "0x0000000000000000000000000000000000000000") {
+    return {
+      exists: false
     }
-    case companyStatusOngoing: {
-      message = 'Will end in %days% days'
-      rangeDays = Math.ceil(calcRange(stage.endDate, new Date()))
-      break
-    }
-    case companyStatusUpcoming: {
-      message = 'Will start in %days% days'
-      rangeDays = Math.floor(calcRange(stage.startDate, new Date()))
-      break
-    }
-    default:
-      return ''
   }
-  return t(message, { days: rangeDays })
+  const sale = getSale(saleAddress, provider);
+  const info = await sale.saleInfo();
+  const currentTime = (await provider.getBlock("latest")).timestamp;
+
+  const endIn = info.end.sub(currentTime);
+  const startIn = info.start.sub(currentTime);
+
+  return {
+    exists: true,
+    endIn,
+    startIn
+  }
+
+}
+
+const formatTimestamp = (timestamp: number) => {
+  let negative = false;
+  if(timestamp < 0) {
+    timestamp = -timestamp;
+    negative = true;
+  }
+
+  const buff: string[] = [];
+
+  const days = Math.floor(timestamp / (3600 * 24));
+  const hours = Math.floor(timestamp / (3600));
+  const minutes = Math.floor(timestamp / (60));
+
+  if(days > 0) {
+    buff.push(`${days} days ${Math.floor((timestamp % (3600 * 24)) / 3600)} hours`)
+  } else if(hours > 0) {
+    buff.push(`${hours} hours`);
+  } else if(minutes > 0) {
+    buff.push(`${minutes} minutes`)
+  } else {
+    buff.push(`${timestamp} seconds`);
+  }
+  if(negative) {
+    buff.push("ago");
+  }
+
+  return buff.join(" ")
 }
 
 const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
@@ -57,18 +99,42 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
     router.push(`/companies/${_id}`)
   }
 
+  const {library, account} = useActiveWeb3React();
+
   const realLogoUrl =
     !company.logoUrl || company.logoUrl !== 'https://cloud.example/logo' ? company.logoUrl : '/images/company.png'
 
-  /*
-  let cName = company.name
-  if (cName === 'Default Company #1') {
-    cName = 'Veryyyyyyyyyyyyyyyyyyy long'
+  const airdropFactory = useAirdropFactory();
+  const saleFactory = useSaleFactory();
+
+  const [status, setStatus] = React.useState<CompanyStatus>(CompanyStatus.NotStarted);
+  const [statusTime, setStatusTime] = React.useState<number>(undefined);
+  const statusTimeString = React.useMemo(() => formatTimestamp(statusTime), [statusTime]);
+
+  
+  const updateStatus = async () => {
+
+    const airdropStatus = await fetchAirdropStatus(airdropFactory, company.token, library);
+    const saleStatus = await fetchSaleStatus(saleFactory, company.token, library);
+    console.log(airdropStatus);
+    if(
+      (airdropStatus.exists && airdropStatus.startIn.lt(0) && airdropStatus.endIn.gt(0)) ||
+      (saleStatus.exists && saleStatus.startIn.lt(0) && saleStatus.endIn.gt(0))
+    ) {
+      setStatus(CompanyStatus.Ongoing)
+      setStatusTime(airdropStatus.exists ? airdropStatus.endIn.toNumber() : saleStatus.endIn.toNumber())
+    } else if (!airdropStatus.exists && !saleStatus.exists) {
+      setStatus(CompanyStatus.NotStarted)
+    } else {
+      setStatus(CompanyStatus.Ended)
+      setStatusTime(airdropStatus.exists ? airdropStatus.endIn.toNumber() : saleStatus.endIn.toNumber())
+    }
   }
-  if (cName === 'Default Company #2') {
-    cName = 'Very looooooooooooooooong'
-  }
-  */
+
+  React.useEffect(() => {
+    updateStatus();
+  }, [company]);
+ 
 
   return (
     <StyledCompanyCard onClick={handleClick} key={company._id}>
@@ -77,17 +143,31 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
         <CompanyCardName>
           <Truncate lines={2}>{company.name}</Truncate>
         </CompanyCardName>
-        <CompanyCardStar>
+        {/* <CompanyCardStar>
           <StarIcon />
-        </CompanyCardStar>
+        </CompanyCardStar> */}
       </CompanyCardTopRow>
 
       <Box ml={'64px'} mt={'5px'}>
-        <Text color={'success'} fontSize={'14px'}>
-          {camalize(company.status)}
-        </Text>
+        {status === CompanyStatus.NotStarted &&
+          <Text color='silver' fontSize='14px'>
+            Not Started
+          </Text>
+        }
+        {status === CompanyStatus.Ongoing &&
+          <Text color='primary' fontSize='14px'>
+            Ongoing
+          </Text>
+        }
+        {status === CompanyStatus.Ended &&
+          <Text color='primary' fontSize='14px'>
+            Ended
+          </Text>
+        }
         <Text thin color={'mainDark'} fontSize={'14px'}>
-          {getDaysRange(company)}
+          {status === CompanyStatus.Ongoing && `Ends in ${statusTimeString}`}
+          {status === CompanyStatus.NotStarted && `Coming soon...`}
+          {status === CompanyStatus.Ended && `${statusTimeString}`}
         </Text>
       </Box>
     </StyledCompanyCard>

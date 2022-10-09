@@ -123,9 +123,10 @@ const Buy = ({ id }: { id: string }) => {
 
   const [totalSupply, setTotalSupply] = React.useState(0)
   React.useEffect(() => {
-    if (!saleContract || saleContract.address == ZERO_ADDR) return
+    if (!saleContract || saleContract.address == ZERO_ADDR || !token) return
     const contract = getContract(saleContract.address, ERC20_ABI, getProviderOrSigner(library, account))
     contract.totalSupply().then((supply) => {
+      
       setTotalSupply(parseFloat(ethers.utils.formatUnits(supply.toString(), token.decimals)))
     })
   }, [saleInfo.token])

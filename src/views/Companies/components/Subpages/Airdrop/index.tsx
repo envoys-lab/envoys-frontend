@@ -23,8 +23,19 @@ import { EnvoysAirdrop } from 'config/abi/types'
 import { getAirdrop } from 'utils/contractHelpers'
 import { getProviderOrSigner } from 'utils'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { Token } from '@envoysvision/sdk'
-import { BigNumber } from 'ethers'
+import { Token, TokenAmount } from '@envoysvision/sdk'
+import { BigNumber, ethers } from 'ethers'
+import useCurrentBlock from 'hooks/useCurrentBlock'
+import useTokenBalance from 'hooks/useTokenBalance'
+
+
+enum AirdropStatus {
+  Undefined,
+  CanGetAirdrop,
+  WaitToHarvest,
+  CanHarvest,
+  Closed
+}
 
 // http://localhost:3000/companies/6231a191e8e2c000132c2033
 const Airdrop = ({ id }: { id: string }) => {
@@ -40,12 +51,67 @@ const Airdrop = ({ id }: { id: string }) => {
   const [tokenAddr, setTokenAddr] = useState<string>()
   const token = useToken(tokenAddr)
   const { account, library } = useActiveWeb3React()
+  const block = useCurrentBlock();
+  const [debtBalance, setDebtBalance] = useState<string>("0");
+  
+
+  const [status, setStatus] = useState<AirdropStatus>(AirdropStatus.Undefined);
 
   useEffect(() => {
     handleGetCompany().then(initCompany)
   }, [])
 
-  const [onGetAirdrop] = useModal(<AirdropQuestModal quests={company?.quests} />, true, true, 'airdropQuestModal')
+  React.useEffect(() => {
+    if(!airdrop || !airdrop.address || !account || !block || !airdropInfo) return;
+
+    const update = () => {
+      airdrop.balanceOf(account).then(balance => {
+        setDebtBalance(ethers.utils.formatUnits(balance, token.decimals));
+        if(balance.eq("0")) {
+          if(
+            airdropInfo.start.lt(block.timestamp) 
+            && airdropInfo.end.gt(block.timestamp)
+          ) {
+            setStatus(AirdropStatus.CanGetAirdrop)
+          } else {
+            setStatus(AirdropStatus.Closed)
+          }
+        } else {
+          if(
+            airdropInfo.start.lt(block.timestamp) 
+            && airdropInfo.end.gt(block.timestamp)
+          ) {
+            setStatus(AirdropStatus.WaitToHarvest)
+          } else {
+            setStatus(AirdropStatus.CanHarvest)
+          }
+        }
+      });
+    }
+
+    update();
+    const interval = setInterval(() => update(), 3000);
+    return () => clearInterval(interval);
+  }, [airdrop, block]);
+
+  // const [onGetAirdrop] = useModal(<AirdropQuestModal quests={company?.quests} />, true, true, 'airdropQuestModal')
+  const onGetAirdrop = async () => {
+    if(!airdrop) return;
+
+    const address = await airdropFactory.airdrops(company.token)
+    const a = getAirdrop(address, getProviderOrSigner(library, account))
+
+    await a.airdrop();
+  }
+
+  const onHarvest = async () => {
+    if(!airdrop) return;
+
+    const address = await airdropFactory.airdrops(company.token)
+    const a = getAirdrop(address, getProviderOrSigner(library, account))
+
+    await a.harvest();
+  }
 
   const handleGetCompany = async () => {
     const company = await getCompany(id)
@@ -80,13 +146,27 @@ const Airdrop = ({ id }: { id: string }) => {
       <SideColumnFooter withDivider>
         <TextWithHeader title="Your allocation">
           <Text color={'primary'} fontSize="14px">
-            [status]
+            {status == AirdropStatus.CanGetAirdrop && t('can get airdrop')}
+            {status == AirdropStatus.WaitToHarvest && t('wait to harvest')}
+            {status == AirdropStatus.CanHarvest && t('can to harvest')}
+            {status == AirdropStatus.Closed && t('closed')}
+            {status == AirdropStatus.Undefined && t('...')}
           </Text>
         </TextWithHeader>
-        <TextWithHeader title="Your claimed">0 {token.symbol}</TextWithHeader>
-        <StyledButton width={'100%'} onClick={onGetAirdrop}>
-          {t('Get Airdrop')}
-        </StyledButton>
+        <TextWithHeader title="Your claimed">{debtBalance} {token.symbol}</TextWithHeader>
+
+        {status == AirdropStatus.CanGetAirdrop && 
+          <StyledButton width={'100%'} onClick={onGetAirdrop}>
+            {t('Get Airdrop')}
+          </StyledButton>
+        }
+
+        {status == AirdropStatus.WaitToHarvest && 
+          <StyledButton disabled width={'100%'} onClick={onHarvest}>
+            {t('Wait end airdrop...')}
+          </StyledButton>
+        }
+        
       </SideColumnFooter>
     </Layout>
   )
