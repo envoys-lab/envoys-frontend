@@ -150,7 +150,10 @@ const Buy = ({ id }: { id: string }) => {
     [saleInfo.soft],
   )
 
-  if (!company || saleContract.address === ZERO_ADDR) return <PageLoader />
+  if (!company || saleContract.address === ZERO_ADDR) {
+    console.log(company, saleContract)
+    return <PageLoader />
+  }
 
   const unit = company.details.token.ticker
 
