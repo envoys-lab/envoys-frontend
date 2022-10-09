@@ -103,29 +103,29 @@ const Company = ({ companyId }: { companyId: string }) => {
         <CompanyTabInfoHeader>{t('About %company%', { company: company?.name })}</CompanyTabInfoHeader>
         <About markdown={company.description} />
       </CompanyTabInfo>
-      { company.roadmap.length > 0 && 
+      {company.roadmap.length > 0 && (
         <CompanyTabInfo id="roadmap">
           <CompanyTabInfoHeader>{t('Roadmap')}</CompanyTabInfoHeader>
           <Roadmap company={company} />
         </CompanyTabInfo>
-      }
-      { company.members.length > 0 &&
-      <CompanyTabInfo id="team">
-        <CompanyTabInfoHeader>{company?.name} Team</CompanyTabInfoHeader>
-        <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
-        <CompanyTabInfoHeader>Advisors</CompanyTabInfoHeader>
-        <CompanyMembers members={company.members.filter((member) => member.advisor)} />
-        <CompanyTabInfoHeader>{company?.name} Interviews</CompanyTabInfoHeader>
-        <CompanyInterviews members={company.members} />
-      </CompanyTabInfo>
-      }
+      )}
+      {company.members.length > 0 && (
+        <CompanyTabInfo id="team">
+          <CompanyTabInfoHeader>{company?.name} Team</CompanyTabInfoHeader>
+          <CompanyMembers members={company.members.filter((member) => !member.advisor)} />
+          <CompanyTabInfoHeader>Advisors</CompanyTabInfoHeader>
+          <CompanyMembers members={company.members.filter((member) => member.advisor)} />
+          <CompanyTabInfoHeader>{company?.name} Interviews</CompanyTabInfoHeader>
+          <CompanyInterviews members={company.members} />
+        </CompanyTabInfo>
+      )}
 
-      { company.documents && company.documents.length > 0 && 
-      <CompanyTabInfo id="docs">
-        <CompanyTabInfoHeader>{t('Docs')}</CompanyTabInfoHeader>
-        {company.documents && company.documents.length && <Documents documents={company.documents} />}
-      </CompanyTabInfo>
-      }
+      {company.documents && company.documents.length > 0 && (
+        <CompanyTabInfo id="docs">
+          <CompanyTabInfoHeader>{t('Docs')}</CompanyTabInfoHeader>
+          {company.documents && company.documents.length && <Documents documents={company.documents} />}
+        </CompanyTabInfo>
+      )}
     </Page>
   )
 }

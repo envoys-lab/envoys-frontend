@@ -120,12 +120,12 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
       </Flex>
 
       <div className={styles['company-button__holders']}>
-        {holders > 0 &&
-          (<div style={{ margin: '0 12px' }}>
+        {holders > 0 && (
+          <div style={{ margin: '0 12px' }}>
             <AccountIcon className={styles['account-icon']} color="#F48020" />
             <span>Holders: {holders}</span>
-          </div>)
-        }
+          </div>
+        )}
         <div className={styles['company-button__home-page-button']} onClick={handleCompanyUrlClick}>
           <div className={styles['company-button__home-page-button-text']}>{getClearDomian(homePageUrl)}</div>
           <div>

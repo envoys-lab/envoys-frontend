@@ -38,9 +38,9 @@ const useCompany = (companyId: string) => {
 
     const interval = setInterval(updateCompany, 10000)
     return () => clearInterval(interval)
-  });
-  
-  return company;
+  })
+
+  return company
 }
 
 export { getCompanies, getCompany, useCompany }
