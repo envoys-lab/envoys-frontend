@@ -61,8 +61,9 @@ const fetchSaleStatus = async (saleFactory: SaleFactory, token: string, provider
   }
 }
 
-const formatTimestamp = (timestamp: number) => {
+const formatTimestamp = (ts: number) => {
   let negative = false
+  let timestamp = ts
   if (timestamp < 0) {
     timestamp = -timestamp
     negative = true
