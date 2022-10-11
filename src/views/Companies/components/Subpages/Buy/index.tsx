@@ -119,7 +119,7 @@ const Buy = ({ id }: { id: string }) => {
 
   useEffect(() => {
     handleGetSale()
-  }, [company, account, active])
+  }, [company, account, active, library])
 
   const [totalSupply, setTotalSupply] = React.useState(0)
   React.useEffect(() => {
