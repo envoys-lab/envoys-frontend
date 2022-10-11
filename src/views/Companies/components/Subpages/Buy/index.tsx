@@ -209,11 +209,13 @@ const Buy = ({ id }: { id: string }) => {
 
       <CompanyProgress unit={unit} min={0} max={soft} current={totalSupply} />
 
-      <Flex alignItems="center" style={{ height: 70 }} my={'20px'}>
-        <InputGroup endIcon={<MaxButton onClick={handleMaxClick}>{t('MAX')}</MaxButton>}>
-          <Input value={amountView} placeholder="0,0" style={{ height: 70 }} onChange={handleAmountChange} />
-        </InputGroup>
-      </Flex>
+      {status !== TokenSaleStatus.ENDED &&
+        <Flex alignItems="center" style={{ height: 70 }} my={'20px'}>
+          <InputGroup endIcon={<MaxButton onClick={handleMaxClick}>{t('MAX')}</MaxButton>}>
+            <Input value={amountView} placeholder="0,0" style={{ height: 70 }} onChange={handleAmountChange} />
+          </InputGroup>
+        </Flex>
+      }
 
       <Flex alignItems={'flex-end'} flexDirection={'column'}>
         {status === TokenSaleStatus.ENDED ? (
