@@ -131,7 +131,7 @@ const Buy = ({ id }: { id: string }) => {
   }, [saleInfo.token])
 
   const handleGetSale = async () => {
-    if (!company || !account || !active || !saleFactory) return
+    if (!company || !saleFactory) return
 
     const resp = await callWithEstimateGas(saleFactory, 'sales', [company.token])
     const addr = resp as unknown as string
@@ -151,7 +151,6 @@ const Buy = ({ id }: { id: string }) => {
   )
 
   if (!company || saleContract.address === ZERO_ADDR) {
-    console.log(company, saleContract)
     return <PageLoader />
   }
 
@@ -209,13 +208,13 @@ const Buy = ({ id }: { id: string }) => {
 
       <CompanyProgress unit={unit} min={0} max={soft} current={totalSupply} />
 
-      {status !== TokenSaleStatus.ENDED &&
+      {status !== TokenSaleStatus.ENDED && (
         <Flex alignItems="center" style={{ height: 70 }} my={'20px'}>
           <InputGroup endIcon={<MaxButton onClick={handleMaxClick}>{t('MAX')}</MaxButton>}>
             <Input value={amountView} placeholder="0,0" style={{ height: 70 }} onChange={handleAmountChange} />
           </InputGroup>
         </Flex>
-      }
+      )}
 
       <Flex alignItems={'flex-end'} flexDirection={'column'}>
         {status === TokenSaleStatus.ENDED ? (
