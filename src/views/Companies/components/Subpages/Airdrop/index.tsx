@@ -138,10 +138,10 @@ const Airdrop = ({ id }: { id: string }) => {
       <SideColumnFooter withDivider>
         <TextWithHeader title="Your allocation">
           <Text color={'primary'} fontSize="14px">
-            {status == AirdropStatus.CanGetAirdrop && t('can get airdrop')}
-            {status == AirdropStatus.WaitToHarvest && t('wait to harvest')}
-            {status == AirdropStatus.CanHarvest && t('can to harvest')}
-            {status == AirdropStatus.Closed && t('closed')}
+            {status == AirdropStatus.CanGetAirdrop && t('Can get airdrop')}
+            {status == AirdropStatus.WaitToHarvest && t('Wait to harvest')}
+            {status == AirdropStatus.CanHarvest && t('Can be harvested')}
+            {status == AirdropStatus.Closed && t('Closed')}
             {status == AirdropStatus.Undefined && t('...')}
           </Text>
         </TextWithHeader>
@@ -156,8 +156,14 @@ const Airdrop = ({ id }: { id: string }) => {
         )}
 
         {status == AirdropStatus.WaitToHarvest && (
-          <StyledButton disabled width={'100%'} onClick={onHarvest}>
-            {t('Wait end airdrop...')}
+          <StyledButton disabled width={'100%'}>
+            {t('Wait...')}
+          </StyledButton>
+        )}
+
+        {status == AirdropStatus.CanHarvest && (
+          <StyledButton width={'100%'} onClick={onHarvest}>
+            {t('Harvest')}
           </StyledButton>
         )}
       </SideColumnFooter>
