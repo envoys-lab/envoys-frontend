@@ -80,11 +80,13 @@ const CompanyButton = ({ id, holders, token, homePageUrl, className }: CompanyBu
 
   const handleTrade = () => {
     if (!isKYCVerified) {
-      router.push(`/settings`)
+      // router.push(`/settings`)
+      window.open(`/settings`, '_blank').focus();
       return
     }
     const defaultToken = 'BNB'
-    router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${token}`)
+    // router.push(`/swap?inputCurrency=${defaultToken}&outputCurrency=${token}`)
+    window.open(`/swap?inputCurrency=${defaultToken}&outputCurrency=${token}`, '_blank').focus();
   }
 
   const handleAirdrop = () => {
