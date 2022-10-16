@@ -205,7 +205,7 @@ const Buy = ({ id }: { id: string }) => {
         />
       }
     >
-      <CountdownRow title={'Private Sale'} endTime={endTime} />
+      <CountdownRow title={'Private sale'} endTime={endTime} />
 
       <CompanyProgress unit={unit} min={0} max={soft} current={totalSupply} />
 
