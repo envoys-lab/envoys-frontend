@@ -35,7 +35,7 @@ const AirdropAllocation = ({ airdrop }: { airdrop: EnvoysAirdrop }) => {
           ) : (
             <>
               {alloctaion.map((el) => {
-                return <>{el}</>
+                return <div>{el}</div>
               })}
             </>
           )}
