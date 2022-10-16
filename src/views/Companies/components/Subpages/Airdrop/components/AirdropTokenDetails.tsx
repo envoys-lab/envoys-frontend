@@ -13,7 +13,7 @@ const AirdropTokenDetails: React.FC<{
 
   return (
     <>
-      <TextWithHeader title="Token address">
+      <TextWithHeader title="Token address:">
         <Link
           href={`https://bscscan.com/token/${token.address}`}
           external={true}
@@ -25,7 +25,7 @@ const AirdropTokenDetails: React.FC<{
         </Link>
       </TextWithHeader>
 
-      <TextWithHeader title="Airdrop address">
+      <TextWithHeader title="Airdrop address:">
         <Link
           href={`https://bscscan.com/address/${airdrop.address}`}
           external={true}
@@ -37,9 +37,9 @@ const AirdropTokenDetails: React.FC<{
         </Link>
       </TextWithHeader>
 
-      <TextWithHeader title="Name">{token.name}</TextWithHeader>
-      <TextWithHeader title="Symbol">{token.symbol}</TextWithHeader>
-      <TextWithHeader title="Total tokens">
+      <TextWithHeader title="Name:">{token.name}</TextWithHeader>
+      <TextWithHeader title="Symbol:">{token.symbol}</TextWithHeader>
+      <TextWithHeader title="Total tokens:">
         {totalSupply && totalSupply.toFixed(2)} {token.symbol}
       </TextWithHeader>
     </>

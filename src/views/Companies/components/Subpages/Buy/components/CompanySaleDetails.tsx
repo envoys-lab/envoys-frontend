@@ -50,7 +50,7 @@ const CompanySaleDetails: React.FC<{
 }> = ({ sale, saleInfo, token, status, startAfter, endAfter }) => {
   return (
     <>
-      <TextWithHeader title="Private Sale Address">
+      <TextWithHeader title="Private sale Address:">
         <Link
           external={true}
           href={'https://bscscan.com/address/' + sale.address}
@@ -62,18 +62,18 @@ const CompanySaleDetails: React.FC<{
       </TextWithHeader>
       {saleInfo && token && (
         <>
-          <TextWithHeader title="Soft Cap">
+          <TextWithHeader title="Soft Cap:">
             {ethers.utils.formatUnits(saleInfo.soft, token.decimals)} {token.symbol}
           </TextWithHeader>
-          <TextWithHeader title="Hard Cap">
+          <TextWithHeader title="Hard Cap:">
             {ethers.utils.formatUnits(saleInfo.hard, token.decimals)} {token.symbol}
           </TextWithHeader>
 
           {status == TokenSaleStatus.NOT_STARTED && (
-            <TextWithHeader title="Start In">{formatTimestamp(startAfter)}</TextWithHeader>
+            <TextWithHeader title="Start In:">{formatTimestamp(startAfter)}</TextWithHeader>
           )}
           {status == TokenSaleStatus.STARTED && (
-            <TextWithHeader title="End In">{formatTimestamp(endAfter)}</TextWithHeader>
+            <TextWithHeader title="End In:">{formatTimestamp(endAfter)}</TextWithHeader>
           )}
         </>
       )}

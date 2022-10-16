@@ -241,7 +241,7 @@ const Buy = ({ id }: { id: string }) => {
         )}
       </Flex>
       <SideColumnFooter>
-        <TextWithHeader title="Status">
+        <TextWithHeader title="Status:">
           <Text color={'primary'} fontSize="14px">
             {statusString}
           </Text>

@@ -172,7 +172,7 @@ const Airdrop = ({ id }: { id: string }) => {
       }
       
       <SideColumnFooter withDivider>
-        <TextWithHeader title="Your allocation">
+        <TextWithHeader title="Your allocation:">
           <Text color={'primary'} fontSize="14px">
             {status == AirdropStatus.CanGetAirdrop && t('Can get airdrop')}
             {status == AirdropStatus.WaitToHarvest && t('Wait to harvest')}
@@ -181,7 +181,7 @@ const Airdrop = ({ id }: { id: string }) => {
             {status == AirdropStatus.Undefined && t('...')}
           </Text>
         </TextWithHeader>
-        <TextWithHeader title="Your claimed">
+        <TextWithHeader title="Your claimed:">
           {debtBalance} {token.symbol}
         </TextWithHeader>
 
