@@ -170,9 +170,9 @@ const Buy = ({ id }: { id: string }) => {
   const handleMaxClick = async () => {
     const contract = getContract(buyToken.address, ERC20_ABI, getProviderOrSigner(library, account))
     const balance = await contract.balanceOf(account)
-    const newVal = ethers.utils.formatUnits(balance, buyToken.decimals);
+    const newVal = ethers.utils.formatUnits(balance, buyToken.decimals)
     setAmount(parseFloat(newVal))
-    setAmountView(newVal);
+    setAmountView(newVal)
   }
 
   const handleBuy = async () => {

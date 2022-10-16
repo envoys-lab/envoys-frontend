@@ -56,38 +56,37 @@ const Airdrop = ({ id }: { id: string }) => {
 
   const [status, setStatus] = useState<AirdropStatus>(AirdropStatus.Undefined)
 
-  const [maxAirdropAmount, setMaxAirdropAmount] = useState<BigNumber>(BigNumber.from(0));
-  const [currentAirdropAmount, setCurrentAirdropAmount] = useState<BigNumber>(BigNumber.from(0));
+  const [maxAirdropAmount, setMaxAirdropAmount] = useState<BigNumber>(BigNumber.from(0))
+  const [currentAirdropAmount, setCurrentAirdropAmount] = useState<BigNumber>(BigNumber.from(0))
 
   useEffect(() => {
     handleGetCompany().then(initCompany)
   }, [])
 
   React.useEffect(() => {
-    if(!airdropInfo) return;
+    if (!airdropInfo) return
 
     setTimeout(async () => {
-      const currentTime = (await library.getBlock("latest")).timestamp
+      const currentTime = (await library.getBlock('latest')).timestamp
       setEndAfter(airdropInfo.end.sub(currentTime).toNumber())
     }, 1)
-    
-  }, [airdropInfo]);
+  }, [airdropInfo])
 
   const updateCountdownData = async () => {
-    const current = await airdrop.totalSupply();
-    const tokenAddress = airdropInfo.token;
-    const erc20 = getAirdrop(tokenAddress, library);
-    const max = await erc20.balanceOf(airdrop.address);
+    const current = await airdrop.totalSupply()
+    const tokenAddress = airdropInfo.token
+    const erc20 = getAirdrop(tokenAddress, library)
+    const max = await erc20.balanceOf(airdrop.address)
 
-    setCurrentAirdropAmount(current);
-    setMaxAirdropAmount(max);
+    setCurrentAirdropAmount(current)
+    setMaxAirdropAmount(max)
   }
 
   React.useEffect(() => {
     if (!airdrop || !airdrop.address || !account || !block || !airdropInfo) return
 
     const update = () => {
-      updateCountdownData();
+      updateCountdownData()
       airdrop.balanceOf(account).then((balance) => {
         setDebtBalance(ethers.utils.formatUnits(balance, token.decimals))
         if (balance.eq('0')) {
@@ -163,14 +162,17 @@ const Airdrop = ({ id }: { id: string }) => {
     >
       <CountdownRow title={'Airdrop'} endTime={endTime} />
 
-      {currentAirdropAmount.eq(0) && maxAirdropAmount.eq(0) ? 
-        <Skeleton height={15} width={"100%"} /> :
-        <CompanyProgress unit={token.symbol} 
-            min={0} 
-            max={parseFloat(ethers.utils.formatUnits(maxAirdropAmount, token.decimals))} 
-            current={parseFloat(ethers.utils.formatUnits(currentAirdropAmount, token.decimals))} />
-      }
-      
+      {currentAirdropAmount.eq(0) && maxAirdropAmount.eq(0) ? (
+        <Skeleton height={15} width={'100%'} />
+      ) : (
+        <CompanyProgress
+          unit={token.symbol}
+          min={0}
+          max={parseFloat(ethers.utils.formatUnits(maxAirdropAmount, token.decimals))}
+          current={parseFloat(ethers.utils.formatUnits(currentAirdropAmount, token.decimals))}
+        />
+      )}
+
       <SideColumnFooter withDivider>
         <TextWithHeader title="Your allocation:">
           <Text color={'primary'} fontSize="14px">

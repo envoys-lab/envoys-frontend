@@ -144,11 +144,9 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
           <StarIcon />
         </CompanyCardStar> */}
       </CompanyCardTopRow>
-        
+
       <Box ml={'64px'} mt={'5px'}>
-        {status == CompanyStatus.NotLoaded  &&
-          <Skeleton height={[120, null, 40]} width={[40, null, 175]} />
-        }
+        {status == CompanyStatus.NotLoaded && <Skeleton height={[120, null, 40]} width={[40, null, 175]} />}
         {status === CompanyStatus.NotStarted && (
           <Text color="silver" fontSize="14px">
             Not Started

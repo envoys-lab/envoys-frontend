@@ -61,7 +61,7 @@ const CountdownRow: React.FC<{ title: string; endTime?: string | number }> = ({ 
   }
   const { t } = useTranslation()
 
-  const endDate = (new Date(endTime)).getTime() * 1000;
+  const endDate = new Date(endTime).getTime() * 1000
   return (
     <Flex justifyItems={'space-between'} style={{ width: '100%' }} mb={'32px'}>
       <Flex style={{ width: '100%' }} alignSelf={'center'}>
