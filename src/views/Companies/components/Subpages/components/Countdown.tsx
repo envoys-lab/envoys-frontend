@@ -5,7 +5,7 @@ import { Flex, Text } from '@envoysvision/uikit'
 import { useTranslation } from '../../../../../contexts/Localization'
 import styled from 'styled-components'
 
-const Completionist = () => <span>You are good to go!</span>
+const Completionist = () => <span>Ended</span>
 
 const TimeBox = styled(Flex)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
@@ -61,7 +61,7 @@ const CountdownRow: React.FC<{ title: string; endTime?: string | number }> = ({ 
   }
   const { t } = useTranslation()
 
-  const endDate = new Date(endTime)
+  const endDate = (new Date(endTime)).getTime() * 1000;
   return (
     <Flex justifyItems={'space-between'} style={{ width: '100%' }} mb={'32px'}>
       <Flex style={{ width: '100%' }} alignSelf={'center'}>
@@ -70,7 +70,7 @@ const CountdownRow: React.FC<{ title: string; endTime?: string | number }> = ({ 
         </Text>
       </Flex>
       <Flex>
-        <Countdown date={endDate.getTime()} renderer={renderer} />
+        <Countdown date={endDate} renderer={renderer} />
       </Flex>
     </Flex>
   )

@@ -47,6 +47,7 @@ const Airdrop = ({ id }: { id: string }) => {
     start: BigNumber
     end: BigNumber
   }>()
+  const [endAfter, setEndAfter] = React.useState(0)
   const [tokenAddr, setTokenAddr] = useState<string>()
   const token = useToken(tokenAddr)
   const { account, library } = useActiveWeb3React()
@@ -58,6 +59,16 @@ const Airdrop = ({ id }: { id: string }) => {
   useEffect(() => {
     handleGetCompany().then(initCompany)
   }, [])
+
+  React.useEffect(() => {
+    if(!airdropInfo) return;
+    
+    setTimeout(async () => {
+      const currentTime = (await library.getBlock("latest")).timestamp
+      setEndAfter(airdropInfo.end.sub(currentTime).toNumber())
+    }, 1)
+    
+  }, [airdropInfo]);
 
   React.useEffect(() => {
     if (!airdrop || !airdrop.address || !account || !block || !airdropInfo) return
@@ -126,6 +137,9 @@ const Airdrop = ({ id }: { id: string }) => {
 
   if (!company || !airdropFactory || !airdrop || !token || !airdropInfo) return <PageLoader />
 
+  const timestampNow = Math.floor(Date.now() / 1000)
+  const endTime = timestampNow + endAfter
+
   return (
     <Layout
       company={company}
@@ -133,7 +147,7 @@ const Airdrop = ({ id }: { id: string }) => {
       content={<AirdropTokenDetails token={token} airdrop={airdrop} />}
       bottomContent={<AirdropAllocation airdrop={airdrop} />}
     >
-      <CountdownRow title={'Airdrop'} endTime={airdropInfo.end.toString()} />
+      <CountdownRow title={'Airdrop'} endTime={endTime} />
       <CompanyProgress unit={token.symbol} min={0} max={1} current={0} />
       <SideColumnFooter withDivider>
         <TextWithHeader title="Your allocation">
