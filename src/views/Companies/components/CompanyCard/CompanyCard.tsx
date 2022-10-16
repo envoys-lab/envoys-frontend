@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import Truncate from 'react-truncate'
-import { Box, Text } from '@envoysvision/uikit'
+import { Box, Skeleton, Text } from '@envoysvision/uikit'
 import { BaseCompany, CompanyStage, companyStatusOngoing, companyStatusPast, companyStatusUpcoming } from '../../utils'
 import StarIcon from '../../assets/Star'
 import { useTranslation } from '../../../../contexts/Localization'
@@ -14,6 +14,7 @@ import { getProviderOrSigner } from 'utils'
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 
 enum CompanyStatus {
+  NotLoaded,
   NotStarted,
   Ongoing,
   Ended,
@@ -106,7 +107,7 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
   const airdropFactory = useAirdropFactory()
   const saleFactory = useSaleFactory()
 
-  const [status, setStatus] = React.useState<CompanyStatus>(CompanyStatus.NotStarted)
+  const [status, setStatus] = React.useState<CompanyStatus>(CompanyStatus.NotLoaded)
   const [statusTime, setStatusTime] = React.useState<number>(undefined)
   const statusTimeString = React.useMemo(() => formatTimestamp(statusTime), [statusTime])
 
@@ -143,8 +144,11 @@ const CompanyCard: React.FC<{ company: BaseCompany }> = ({ company }) => {
           <StarIcon />
         </CompanyCardStar> */}
       </CompanyCardTopRow>
-
+        
       <Box ml={'64px'} mt={'5px'}>
+        {status == CompanyStatus.NotLoaded  &&
+          <Skeleton height={[120, null, 40]} width={[40, null, 175]} />
+        }
         {status === CompanyStatus.NotStarted && (
           <Text color="silver" fontSize="14px">
             Not Started
