@@ -181,11 +181,11 @@ const Buy = ({ id }: { id: string }) => {
 
   const statusString =
     status == TokenSaleStatus.ENDED
-      ? 'ended'
+      ? 'Ended'
       : status == TokenSaleStatus.NOT_STARTED
-      ? 'not started'
+      ? 'Not started'
       : status == TokenSaleStatus.STARTED
-      ? 'active'
+      ? 'Active'
       : 'UNDEFINED'
   const timestampNow = Math.floor(Date.now() / 1000)
   const endTime = timestampNow + endAfter
