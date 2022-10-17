@@ -66,10 +66,12 @@ const Airdrop = ({ id }: { id: string }) => {
   React.useEffect(() => {
     if (!airdropInfo) return
 
-    setTimeout(async () => {
+    const i = setInterval(async () => {
       const currentTime = (await library.getBlock('latest')).timestamp
       setEndAfter(airdropInfo.end.sub(currentTime).toNumber())
-    }, 1)
+    }, 1000)
+    return () => clearInterval(i);
+
   }, [airdropInfo])
 
   const updateCountdownData = async () => {

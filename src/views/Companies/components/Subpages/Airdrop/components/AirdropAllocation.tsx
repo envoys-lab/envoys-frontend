@@ -34,8 +34,8 @@ const AirdropAllocation = ({ airdrop }: { airdrop: EnvoysAirdrop }) => {
             <>{t('No data')}</>
           ) : (
             <>
-              {alloctaion.map((el) => {
-                return <div>{el}</div>
+              {alloctaion.map((el, index) => {
+                return <div key={index}>{el}</div>
               })}
             </>
           )}
