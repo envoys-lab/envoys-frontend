@@ -12,6 +12,7 @@ import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
+import { ethers } from 'ethers'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -82,13 +83,16 @@ export function useApproveCallback(
       return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
     })
 
+    const gasPrice = await tokenContract.provider.getGasPrice();
+
     // eslint-disable-next-line consistent-return
     return callWithGasPrice(
       tokenContract,
       'approve',
       [spender, useExact ? amountToApprove.raw.toString() : MaxUint256],
       {
-        gasLimit: calculateGasMargin(estimatedGas),
+        gasLimit: calculateGasMargin(estimatedGas.div(100).mul(120)),
+        gasPrice: gasPrice
       },
     )
       .then((response: TransactionResponse) => {
