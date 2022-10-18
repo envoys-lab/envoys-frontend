@@ -70,7 +70,12 @@ const CountdownRow: React.FC<{ title: string; endTime?: string | number }> = ({ 
         </Text>
       </Flex>
       <Flex>
-        <Countdown precision={4} date={endDate} renderer={renderer} intervalDelay={1000} /* now={() => new Date().getTime()}*/ />
+        <Countdown
+          precision={4}
+          date={endDate}
+          renderer={renderer}
+          intervalDelay={1000} /* now={() => new Date().getTime()}*/
+        />
       </Flex>
     </Flex>
   )

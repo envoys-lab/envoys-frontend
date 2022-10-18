@@ -83,7 +83,7 @@ export function useApproveCallback(
       return tokenContract.estimateGas.approve(spender, amountToApprove.raw.toString())
     })
 
-    const gasPrice = await tokenContract.provider.getGasPrice();
+    const gasPrice = await tokenContract.provider.getGasPrice()
 
     // eslint-disable-next-line consistent-return
     return callWithGasPrice(
@@ -92,7 +92,7 @@ export function useApproveCallback(
       [spender, useExact ? amountToApprove.raw.toString() : MaxUint256],
       {
         gasLimit: calculateGasMargin(estimatedGas.div(100).mul(120)),
-        gasPrice: gasPrice
+        gasPrice: gasPrice,
       },
     )
       .then((response: TransactionResponse) => {

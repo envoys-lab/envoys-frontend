@@ -70,8 +70,7 @@ const Airdrop = ({ id }: { id: string }) => {
       const currentTime = (await library.getBlock('latest')).timestamp
       setEndAfter(airdropInfo.end.sub(currentTime).toNumber())
     }, 1000)
-    return () => clearInterval(i);
-
+    return () => clearInterval(i)
   }, [airdropInfo])
 
   const updateCountdownData = async () => {
