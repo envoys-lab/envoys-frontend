@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 import { useLoadItems } from './utils'
 import { CompanyCard } from './components'
 import Page from '../../components/Layout/Page'
-import { Spinner, Grid } from '@envoysvision/uikit'
+import { Spinner, Grid, useMatchBreakpoints } from '@envoysvision/uikit'
 import { useTranslation } from '../../contexts/Localization'
 
 const CompaniesGrid = styled(Grid)<{ incompleteRowItemNumber?: boolean }>`
@@ -32,6 +32,20 @@ const CompaniesGrid = styled(Grid)<{ incompleteRowItemNumber?: boolean }>`
     `}
 `
 
+const MobileWrapper = styled('div')`
+  padding: 10px;
+`
+
+const Wrapper = ({ children }: { children: any }) => {
+  const { isMobile } = useMatchBreakpoints()
+
+  if (!isMobile) {
+    return <Page>{children}</Page>
+  } else {
+    return <MobileWrapper>{children}</MobileWrapper>
+  }
+}
+
 const Companies = () => {
   const { loading, items: companies, hasNextPage, error, loadMore } = useLoadItems()
   const { t } = useTranslation()
@@ -54,7 +68,7 @@ const Companies = () => {
   }
 
   return (
-    <Page>
+    <Wrapper>
       {companies?.length === 0 && <Spinner />}
       <CompaniesGrid incompleteRowItemNumber={companies?.length < 3 && !hasNextPage}>
         {companies.map((item) => renderCompany(item))}
@@ -64,7 +78,7 @@ const Companies = () => {
           <div>{companies?.length > 0 && t('Loading')}</div>
         </div>
       )}
-    </Page>
+    </Wrapper>
   )
 }
 
