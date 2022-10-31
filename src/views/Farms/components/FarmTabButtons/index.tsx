@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, NotificationDot } from '@envoysvision/uikit'
+import { ButtonMenu, ButtonMenuItem, NotificationDot, useMatchBreakpoints } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 import { useRouter } from 'next/router'
 import { NextLinkFromReactRouter } from 'components/NextLink'
@@ -28,9 +28,11 @@ const FarmTabButtons: React.FC<FarmTabButtonsProps> = ({ hasStakeInFinishedFarms
       activeIndex = 0
       break
   }
+  const { isMobile } = useMatchBreakpoints()
+  const mobileStyle = isMobile ? { margin: '10px 0px' } : {}
 
   return (
-    <Wrapper>
+    <Wrapper style={mobileStyle}>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tevd" slim={true}>
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
           {t('Live')}

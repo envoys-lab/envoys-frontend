@@ -3,7 +3,7 @@ import { NextLinkFromReactRouter } from 'components/NextLink'
 // import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot } from '@envoysvision/uikit'
+import { ButtonMenu, ButtonMenuItem, Toggle, Text, NotificationDot, useMatchBreakpoints } from '@envoysvision/uikit'
 import { useTranslation } from 'contexts/Localization'
 // import ToggleView from './ToggleView/ToggleView'
 
@@ -87,8 +87,11 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
 
   // const viewModeToggle = <ToggleView viewMode={viewMode} onToggle={(mode: ViewMode) => setViewMode(mode)} />
 
+  const { isMobile } = useMatchBreakpoints()
+  const mobileStyle = isMobile ? { margin: '10px 0px' } : {}
+
   const liveOrFinishedSwitch = (
-    <Wrapper>
+    <Wrapper style={mobileStyle}>
       <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="tevd">
         <ButtonMenuItem as={NextLinkFromReactRouter} to="/pools" replace>
           {t('Live')}
@@ -105,6 +108,7 @@ const PoolTabButtons = ({ stakedOnly, setStakedOnly, hasStakeInFinishedPools, vi
   const stakedOnlySwitch = (
     <ToggleWrapper>
       <Toggle
+        style={mobileStyle}
         id="staked-only"
         checked={stakedOnly}
         onChange={() => setStakedOnly(!stakedOnly)}
