@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const ENVOYS_PUBLIC_API = 'https://api.beta.envoys.vision'
+const ENVOYS_PUBLIC_API = process.env.NEXT_PUBLIC_ENVOYS_API as string;
 
 const axiosInstance = axios.create({
   baseURL: ENVOYS_PUBLIC_API,
